@@ -24,6 +24,7 @@
     "includes": [
       "src/**",
       "tests/**",
+      "scripts/**",
       "*.json",
       "*.ts",
       "*.mjs",

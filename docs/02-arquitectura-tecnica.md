@@ -315,6 +315,8 @@ export function resumen(p: Partida): TarjetaFinal;
 
 Sin mutación, sin efectos secundarios, sin `Date`, sin `Math.random`. Todo el azar sale del RNG sembrado con un hash de seed + año + momento + contador.
 
+**Nota de implementación (ENGINE-001):** el bucle anual se ordena como **decisión de verano → decisión de febrero → resolución del COAC**, con un paso adicional `continuar` para pasar del resultado de temporada al año siguiente o al fin. El resultado de la temporada se calcula con el estado previo a la decisión de febrero. El `engine` recibe el banco de contenido y los parámetros numéricos por inyección (nunca importa de `content`).
+
 ---
 
 ## 8. El techo oculto
