@@ -1,28 +1,42 @@
 # dependencies
 node_modules/
+**/node_modules/
 
 # build output
 dist/
-
-# Astro
+build/
+.output/
 .astro/
+.netlify/
+.vercel/
 
 # env
 .env
 .env.local
 .env.*.local
+!.env.example
 
-# IDE
-.vscode/
-.idea/
+# logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# OS
-.DS_Store
-Thumbs.db
+# caches
+.cache/
+.vite/
+.turbo/
+coverage/
 
 # test
 playwright-report/
 test-results/
+blob-report/
 
-# Local Netlify folder
-.netlify
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
