@@ -1,0 +1,34 @@
+---
+import GameIsland from "../components/GameIsland.svelte"
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="Coplero">
+  <main>
+    <h1>Coplero</h1>
+    <p>Juego de decisiones estratégicas CEO</p>
+    <GameIsland client:load />
+  </main>
+</Layout>
+
+<style>
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #888;
+    margin-bottom: 2rem;
+  }
+</style>

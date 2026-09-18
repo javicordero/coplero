@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# Astro
+.astro/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# test
+playwright-report/
+test-results/
+
+# Local Netlify folder
+.netlify
