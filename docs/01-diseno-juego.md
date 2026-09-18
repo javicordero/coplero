@@ -1,0 +1,220 @@
+# 01 · Diseño del juego
+
+> 📜 Documento de diseño del juego Coplero.
+>
+> Personaje, modalidades, estructura del COAC, sistema de decisiones, curva de carrera y reglas de las condicionales. El banco de situaciones vive en dos páginas aparte, una por momento del año.
+
+---
+
+## 1. Creación del personaje
+
+Es el primer paso de la partida. El jugador define:
+
+| Campo | Descripción |
+| --- | --- |
+| Nombre o apodo | Texto libre. Puede usarse un apodo tipo carnavalero. |
+| Edad | Marca el punto de partida de la carrera. |
+| Localidad | De dónde es el personaje: Cádiz capital, provincia, fuera… |
+| Sexo / género | Cambia el título dinámico del juego. |
+
+### Título dinámico según el género
+
+| Selección | Título del juego |
+| --- | --- |
+| Masculino | **Coplero** |
+| Femenino | **Coplera** |
+| No binario | **Coplere** |
+
+---
+
+## 2. Modalidades y variantes
+
+Tras crear el personaje se elige **una de las 2 modalidades** jugables. Cada modalidad tiene **3 variantes**, y cada variante tiene su **título** y **subtítulo**.
+
+### 🎺 Comparsista
+
+| Variante | Subtítulo |
+| --- | --- |
+| **Clásico** | Más clásico que un tenor con bigote. |
+| **Nueva escuela** | Buscas innovar tanto en la modalidad como en el carnaval, buscando nuevas formas. |
+| **Evolución con raíces** | Buscando el progreso, respetando la esencia. |
+
+### 🤡 Chirigotero
+
+| Variante | Subtítulo |
+| --- | --- |
+| **Lolosedismo** | Te gusta el humor visual. |
+| **Clásico** | 3x4 de pellizco. |
+| **Interpretar el personaje** | Busca todo el tiempo el humor, sin salirse del personaje. |
+
+### Decisiones comunes y decisiones exclusivas
+
+> ✅ Resuelto: el banco **no** es uniforme. Cada situación declara un campo opcional `modalidades` y otro `variantes`:
+>
+> - Si el campo no existe, la situación es **común** a comparsista y chirigotero. Es el caso de la mayoría (dinero, grupo, jurado, prensa).
+> - Si existe, la situación solo entra en la baraja de esa modalidad o variante. Ejemplo: el cierre de popurrí "Vámonos por Cai / Canto a la vida" es exclusivo de chirigotero.
+> - La variante elegida no filtra por sí sola el tono del texto: lo hace el propio contenido de la situación.
+>
+> Esto ya está contemplado en los tipos del motor, así que añadir situaciones exclusivas no obliga a tocar código.
+
+### La variante puede cambiar durante la carrera
+
+La variante inicial **no es fija**. Determinadas decisiones desplazan al personaje de una variante a otra (un clásico que apuesta año tras año por músicos de fuera y cierres corales acaba siendo de nueva escuela). El motor guarda la variante actual y el historial de cambios, y la tarjeta final lo narra: *"empezaste como clásico y acabaste siendo un renovador"*.
+
+En la misma línea, se contempla como ampliación **compaginar las dos modalidades** en años distintos (probar suerte de comparsista tras años de chirigotero o al revés), y más adelante añadir **corista** y **cuartetero** como modalidades jugables.
+
+---
+
+## 3. Estructura del COAC
+
+El concurso tiene **4 fases**. Estos números aplican **a cada modalidad por separado**: comparsas y chirigotas compiten en su propio bombo.
+
+| Fase | Agrupaciones |
+| --- | --- |
+| Preliminares | Entre 30 y 50 |
+| Cuartos de final | 16 |
+| Semifinales | 10 |
+| Final | 4 |
+
+### Premios ajenos al COAC
+
+Se otorga **uno de cada por año**, además de los premios propios del concurso, y son independientes de la clasificación.
+
+| Premio | A qué se da | Condición de acceso |
+| --- | --- | --- |
+| **Copla para Andalucía** | A la mejor letra dedicada a Andalucía del año | Normalmente entre las 6-7 mejores de su modalidad; excepcionalmente hasta el top 10 |
+| **Aguja de oro** | Al mejor disfraz o tipo del concurso | Peso alto de Puesta en escena; normalmente finalistas o top 6-7 |
+| **Candela y espino** | A la agrupación con más carga de crítica social y compromiso político | Normalmente entre las 6-7 mejores; excepcionalmente hasta el top 10 |
+
+**Cómo los resuelve el motor.** Cada año, tras resolver la fase alcanzada:
+
+1. Se comprueba el **umbral de clasificación** (final o top 6-7; top 10 solo con una tirada extra de baja probabilidad para Copla para Andalucía y Candela y espino).
+2. Se calcula una **afinidad** con cada premio a partir de atributos y flags: Copla para Andalucía mira Letra y flags de temática andaluza o de tierra; Aguja de oro mira Puesta en escena y flags de vestuario (`vestuario_caro`, `tipo_cambiado`); Candela y espino mira Letra y flags de crítica (`tema_social`, `pasodoble_duro`, `rechazo_patrocinio`).
+3. Entre los candidatos que pasan el umbral, se elige con el RNG ponderado por afinidad. Un mismo año se puede llevar más de uno, pero es raro.
+
+Son uno de los mejores generadores de relato: dan algo que contar incluso en carreras que nunca ganan el concurso.
+
+> 📌 El motor deberá **almacenar el puesto** de cada temporada, no solo la fase, para poder aplicar los umbrales top 6-7 / top 10. Las flags temáticas propias de Copla para Andalucía (temática andaluza o de tierra) se añadirán al banco en el futuro.
+
+---
+
+## 4. Sistema de decisiones
+
+Cada año de carnaval plantea **2 decisiones**:
+
+1. Una en **verano** del año anterior: preparación, letra, ensayos, presupuesto…
+2. Otra en **febrero** del año del carnaval: concurso, jurado, público, prensa…
+
+Es decir, si el carnaval es el de 2027, la primera decisión ocurre en verano de 2026 y la segunda en febrero de 2027.
+
+### Reglas del sistema
+
+- Cada decisión ofrece **2 opciones**, y en algunos casos **3**.
+- Toda opción tiene **título** y **subtítulo o descripción**.
+- No hay decisiones buenas ni malas: simplemente conducen la carrera hacia un sitio u otro.
+- **El techo de la carrera está predeterminado de forma aleatoria** desde el inicio de la partida y permanece oculto al jugador durante toda la partida y también al final.
+- La misma decisión puede hacerte caer de la final a no pasar de cuartos… o darte el primer premio.
+- El objetivo real no es ganar: es que el jugador construya su propia historia y se forje sus películas.
+
+> ⚠️ **Separación por momento del año.** Las decisiones de verano y las de febrero son conjuntos distintos. Una situación de verano (elección del tema del repertorio, presupuesto de vestuario, un componente que deja el grupo) no puede salir en febrero, y viceversa: una situación sobre el jurado, la reacción del público en el Falla o la prensa durante el concurso no tiene sentido en julio.
+>
+> El campo `momento: verano | febrero` es obligatorio en toda situación y condicional, y el motor filtra por él. Dentro de cada momento se mantiene la separación por tipo (contenido / personaje).
+
+---
+
+## 5. Banco de decisiones
+
+El banco está dividido en **dos bloques grandes por momento**, y dentro de cada uno por categorías. Cada año sale **una de contenido + una de personaje** (nunca dos del mismo tipo).
+
+| Tipo | Categorías | Qué mueve |
+| --- | --- | --- |
+| 🎨 Contenido | Letra · Música · Puesta en escena | Letra, Música, Puesta en escena |
+| 🧍 Personaje | Jurado · Dinero · Grupo · Prensa · Carrera · Concurso | Popularidad, Cohesión, Dinero |
+
+> ✅ **Categorías ampliadas.** Además de las anteriores, el banco usa dos categorías de personaje: **Carrera** ("Carrera y grupo consagrado") y **Concurso** ("Enfado con el concurso"). Son categorías y situaciones a la vez, y pueden ser momentáneas (con sus condiciones de aparición).
+
+Cada opción lleva **título + subtítulo**, los **atributos** que mueve y la **flag** que deja en el historial del personaje.
+
+> 📚 Las situaciones están en dos páginas hermanas, una por momento:
+>
+> - 3. Banco de decisiones · Verano — preparación: letra, música, dinero, grupo, decisiones de carrera.
+> - 4. Banco de decisiones · Febrero — concurso: repertorio en escena, jurado, prensa, público y eventos especiales.
+
+---
+
+## 6. Situaciones condicionales
+
+Cada opción deja una **flag** en el historial del personaje. Una situación condicional **no se dispara obligatoriamente**: la flag solo **abre la posibilidad** de que esa situación entre en la baraja del año. Que salga o no lo decide el azar.
+
+### Reglas
+
+- **Requisito:** una o varias flags activas en el historial. No tiene que ser la decisión inmediatamente anterior.
+- **Ventana:** número de años durante los que la situación puede aparecer desde que se activó la flag. Si pasa la ventana, se cierra.
+- **Probabilidad:** si la flag está activa y estamos dentro de la ventana, se tira dado cada año. Si no sale, puede volver a tirarse el año siguiente mientras dure la ventana.
+- Una condicional **ocupa una de las 2 decisiones del año**, la de su tipo y su momento.
+- Una condicional puede **consumir** la flag (aparece una sola vez) o dejarla activa si es de rasgo permanente. **Consumir no borra la flag del historial**: la marca como consumida y desactiva su capacidad de disparar; sigue disponible para la tarjeta final y los logros.
+- Las condicionales también dejan flags: se pueden encadenar cadenas de 2-3 situaciones.
+
+> ✅ **¿Caducan las flags?** Resuelto: las flags **no se borran nunca** del historial, porque la tarjeta final y los logros necesitan la carrera completa. Lo que caduca es su **capacidad de disparar condicionales**, mediante la ventana de años. Una flag fuera de ventana sigue en el historial pero ya no abre nada.
+
+Las condicionales están listadas en la página de su momento correspondiente.
+
+---
+
+## 7. Duración, curva de carrera y equilibrio
+
+Es la parte más importante del diseño: que la dificultad no frustre pero tampoco regale nada.
+
+### Duración
+
+**La carrera dura un número fijo de años, todavía por determinar.** Referencia provisional: 20 años · 2 decisiones por año · 40 decisiones. El personaje se retira al agotar esos años y la partida termina con el epílogo y la tarjeta. El número de decisiones por año será **parametrizable** (los modos rápido/lento se añadirán más adelante).
+
+### Forma del arco
+
+La mayoría de partidas deben seguir el arco **empezar humilde → ascender → declive en los últimos años**, con variaciones:
+
+- Ascensos rápidos (pico en el año 5-6) y ascensos lentos (pico en el 14-15).
+- Carreras de "reconocimiento tardío": muchos años en zona media-baja y punto álgido justo al final.
+- Casos raros de éxito inmediato: llegar a la final el primer año, o incluso ganarlo, en un porcentaje muy pequeño de partidas.
+
+### Distribución objetivo
+
+| Resultado a lo largo de la carrera | Objetivo aproximado |
+| --- | --- |
+| Pisa la final alguna vez | 60-70% de las partidas |
+| No pasa nunca de cuartos | ~10% |
+| No pasa nunca de preliminares | ~5% |
+| Gana al menos un primer premio | 20-25% |
+| Gana 5 o más primeros premios | ~3% |
+| Gana 10 o más | ~1% |
+| Gana 15 o más (carrera legendaria) | <0,3% |
+| Racha de 5 primeros premios seguidos | muy raro, pero posible |
+
+Esa distribución es la que se valida con el simulador masivo de miles de partidas: si los números reales no cuadran, se ajustan los pesos del techo y el ruido, no las situaciones.
+
+---
+
+## 8. Ampliación con situaciones reales del Carnaval de Cádiz
+
+Se quiere ampliar el banco inspirándose en episodios reales de la historia del Carnaval de Cádiz y del COAC — polémicas de letras, decisiones del jurado, sponsors, cambios de modalidad, rupturas de grupos históricos — convertidos en situaciones genéricas, **sin usar nombres reales de personas o agrupaciones**, para no atribuir hechos concretos a alguien identificable.
+
+Cada situación nueva se archiva directamente en la página de su momento y con su tipo y categoría, de modo que el motor pueda filtrar sin trabajo extra.
+
+---
+
+## 9. Pendiente de definir
+
+- [ ] Cerrar los valores numéricos de atributos de cada opción con el simulador masivo.
+- [ ] Ampliar el banco a 60-80 situaciones (30-40 por momento).
+- [ ] Añadir más cadenas condicionales de 3 eslabones.
+- [ ] Ampliar el banco con más decisiones de 3 opciones.
+- [ ] Textos de resultado de cada fase del COAC (pasas / te quedas fuera) y epílogos de retirada.
+- [ ] Diseño de la tarjeta final compartible: qué datos incluye y formato de imagen.
+- [ ] Definir los logros e insignias por hitos raros, no solo por ganar (ejemplo: *"nunca cambiaste de variante en toda tu carrera"*), y los finales alternativos según el conjunto de flags acumuladas y no solo según el resultado del COAC.
+- [x] Etiquetar el campo `momento: verano | febrero` en cada situación → banco ya dividido en dos páginas.
+- [x] Decidir si el banco se filtra por modalidad/variante → sí, con los campos `modalidades` y `variantes` opcionales.
+- [x] Decidir si las flags caducan → no caducan; caduca su ventana de disparo.
+- [x] Decidir si la duración es fija → sí, un número fijo de años, **todavía por determinar** (referencia provisional: 20 años / 40 decisiones).
+- [x] Categorías del banco → contenido (Letra, Música, Puesta en escena) y personaje (Jurado, Dinero, Grupo, Prensa, Carrera, Concurso).
+- [x] Condiciones para optar a los premios ajenos al COAC → definidas en la sección 3.
+- [x] Definir cómo se calcula el techo de carrera → ver 2. Arquitectura técnica, sección 8.

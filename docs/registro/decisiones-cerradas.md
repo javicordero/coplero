@@ -1,0 +1,90 @@
+# Registro · Decisiones cerradas
+
+Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro es **derivado**: la fuente de verdad es el documento correspondiente. No incluye lo que sigue abierto (ver `decisiones-pendientes.md`).
+
+## Arquitectura
+
+| Decisión | Detalle | Fuente |
+|---|---|---|
+| Framework Web | Astro solo. Descartados Angular y Astro + Angular Elements | 02 §1–4 |
+| Framework de la isla | **Svelte** (no Preact) | 02 §4 |
+| Modelo de proyecto | Proyecto único, **sin monorepo** | 02 §6 |
+| Carpeta raíz | `coplero/` | 02 §6 |
+| Nombres engine/content | `seed.ts`, `types.ts`, `schema.ts` (nomenclatura actual del scaffold) | 02 §6 |
+| Capas | `engine` (TS puro) → `content` (datos) → `web` (Astro + isla) | 02 §5 |
+| Regla engine | No importa nada de UI, ni DOM, ni framework, ni `Math.random()`, ni `Date.now()` | 02 §5 |
+| Regla content | No contiene lógica; son objetos; validados con Zod | 02 §5 |
+| Determinismo | Semilla + decisiones → misma partida siempre | 02 §5 |
+| Modelo de engine | Reducer puro: `crearPartida`, `siguientePaso`, `elegir`, `resumen` | 02 §7 |
+| Estado | Serializable, sin clases; `Partida` con `version: 1` | 02 §7 |
+| Árbol de requisitos | `flag`, `flagRepetida`, **`faseAlcanzada`**, `todas`, `alguna`, `ninguna`, `atributo` | 02 §7 |
+| Requisitos de hito | `faseAlcanzada` se evalúa **dentro de la misma partida**; cada partida es independiente | 02 §7 |
+| `flagRepetida` | Modificador `consecutivos?: boolean` para exigir "años seguidos" | 02 §7 |
+| Consumo de flags | Consumir **no borra** del historial: la marca como consumida y desactiva su disparo | 01 §6, 02 §7 |
+| Opciones que saltan el COAC | Campo `saltaCOAC` en `Opcion` | 02 §7 |
+| Temporada | Guarda `fase`, **`puesto`**, `premios` y `fueraDeConcurso` | 02 §7 |
+| Categorías | `letra`, `musica`, **`puestaEnEscena`**, `jurado`, `dinero`, `grupo`, `prensa`, **`carrera`**, **`concurso`** | 01 §5, 02 §7 |
+| Duración | Número **fijo** de años, todavía por determinar (referencia: 20/40) | 01 §7 |
+| Decisiones por año | **Parametrizable** (v1: 2; modos rápido/lento más adelante) | 01 §4, 02 §8 |
+| Batacazo | Puede **atravesar el `suelo`**; el `clamp` solo aplica a la resolución normal | 02 §8 |
+| Reciclaje de pool | Si el pool se agota, recicla las menos recientes **ignorando `unicaVez`** como último recurso | 02 §9 |
+| Techo oculto | Predeterminado por RNG al crear la partida; nunca se muestra; no se serializa | 01 §4, 02 §8 |
+| Válvulas narrativas | Batacazo 3% y Milagro 2% | 02 §8 |
+| Código de partida | Base64url comprimido en la URL; sin base de datos en v1 | 02 §10 |
+| Compresión del codec | **`fflate`** (`deflate` → bytes → base64url) | 02 §10 |
+| Imagen OG | `satori` + `resvg-js` en endpoint edge; fuentes en `public/fonts`; requiere `prerender = false` | 02 §10 |
+| Adapter de deploy | `@astrojs/netlify` configurado (estático + función SSR on-demand); `netlify.toml` sin catch-all | 02 §11 |
+| Seguridad de dependencias | `overrides` para `sharp@^0.35.4`, `fflate@^0.8.3` y `@netlify/functions-dev@^2.0.7`; `npm audit` = 0 vulnerabilidades | 02 §11 |
+| Persistencia | `localStorage` con versión de esquema; guardar en cada elección | 02 §10 |
+| Saneamiento y moderación | Definidos: normalización + límites, escape `< > & " '`, lista de bloqueo, validación cliente + servidor/OG | 05 §7 |
+| Simulación | `scripts/simular.ts`, 10.000 partidas; `tsx` **instalado** | 02 §11 |
+| Deploy | **Netlify** | 02 §11, 06 |
+| Tests clave | Determinismo, integridad de contenido, snapshot | 02 §11 |
+| Orden de trabajo | engine+content → isla → ampliar banco → tarjeta/OG → presentación → métricas | 02 §12 |
+
+## Juego
+
+| Decisión | Detalle | Fuente |
+|---|---|---|
+| Creación de personaje | Nombre/apodo, edad, localidad, sexo/género | 01 §1 |
+| Título dinámico | Coplero / Coplera / Coplere | 01 §1 |
+| Modalidades v1 | 2 jugables: Comparsista y Chirigotero | 01 §2 |
+| Variantes | 3 por modalidad, con título y subtítulo | 01 §2 |
+| Variante mutable | Puede cambiar durante la carrera; guarda variante actual e historial | 01 §2 |
+| Filtrado del banco | Campos opcionales `modalidades` y `variantes`; ausencia = común | 01 §2 |
+| Fases COAC | 4: Preliminares (30-50), Cuartos (16), Semifinales (10), Final (4), por modalidad | 01 §3 |
+| Premios ajenos | 3: Copla para Andalucía, Aguja de oro, Candela y espino; uno de cada por año | 01 §3 |
+| Puesto | Se almacena el puesto además de la fase (umbrales top 6-7 / top 10) | 01 §3, 02 §7 |
+| Decisiones por año | 2: una en verano (año anterior) y una en febrero | 01 §4 |
+| Opciones por decisión | 2 normalmente, 3 en algunos casos; siempre título + subtítulo | 01 §4 |
+| Momento | Campo obligatorio `verano \| febrero`; el motor filtra por él | 01 §4 |
+| Set de categorías | Contenido (Letra, Música, Puesta en escena) y Personaje (Jurado, Dinero, Grupo, Prensa, Carrera, Concurso) | 01 §5 |
+| Reparto por año | Una decisión de contenido + una de personaje, nunca dos del mismo tipo | 01 §5 |
+| Flags | No se borran nunca; caduca su ventana de disparo | 01 §6 |
+| Condicionales | No obligatorias; requisito + ventana + probabilidad; pueden consumir flag; pueden encadenarse | 01 §6 |
+| Distribución objetivo | Tabla de resultados objetivo a lo largo de la carrera | 01 §7 |
+| Inspiración en hechos reales | Situaciones genéricas, **sin nombres reales** de personas o agrupaciones | 01 §8 |
+
+## Producto
+
+| Decisión | Detalle | Fuente |
+|---|---|---|
+| Mobile-first real | Móvil primero; escritorio mismo layout, 420-480 px centrados | 05 §1 |
+| Indicador de contexto | Año, momento y tipo siempre visibles en la decisión | 05 §1 |
+| Continuar partida | Acción principal de la home si hay partida guardada | 05 §1 |
+| Transiciones | 200-300 ms, no bloqueantes, saltables | 05 §1 |
+| Modo oscuro/claro | Detección de sistema + conmutador manual | 05 §1 |
+| Compartir v1 | PNG 9:16 y 1:1, Web Share API, OG dinámico, watermark, copia al portapapeles, código corto | 05 §2 |
+| Buy Me a Coffee | Reutilizar la cuenta de acordesgaditanos con `?utm_source=coplero` | 05 §5 |
+| Analítica | Recomendada sin cookies (Plausible/Umami/Cloudflare); sin banner | 05 §7 |
+| AdSense | Exige dominio propio y CMP con Consent Mode | 05 §7, 06 |
+| `.netlify.app` | Válido para lanzar y compartir sin monetización; no válido para AdSense | 06 |
+| Dominio | Necesario para AdSense; `.com` o `.es` | 06 |
+| Migración de dominio | Netlify añade dominio y SSL gratis; redirección desde `.netlify.app` | 06 |
+| Simulación masiva | Confirmada como herramienta imprescindible de balance | 05 §8 |
+| Preload | No aplica precargar decisiones (ya en memoria); sí fuentes/imágenes y reservar hueco de tarjeta | 05 §8 |
+
+## Ver también
+
+- `decisiones-pendientes.md` — backlog abierto, explicaciones y huecos diferidos.
+- `docs/README.md` — mapa de documentos.
