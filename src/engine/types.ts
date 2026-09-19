@@ -48,6 +48,24 @@ export const FASES_COAC: readonly FaseCOAC[] = [
   "final",
 ] as const
 
+/** Niveles del techo: las 4 fases más podio y primer premio (docs/02 §8). */
+export type NivelCOAC =
+  | "preliminares"
+  | "cuartos"
+  | "semifinales"
+  | "final"
+  | "podio"
+  | "primer_premio"
+
+export const NIVELES_COAC: readonly NivelCOAC[] = [
+  "preliminares",
+  "cuartos",
+  "semifinales",
+  "final",
+  "podio",
+  "primer_premio",
+] as const
+
 export interface Personaje {
   nombre: string
   edad: number
@@ -143,12 +161,14 @@ export interface EventoHistorial {
 }
 
 export interface Destino {
-  techo: FaseCOAC
-  suelo: FaseCOAC
+  techo: NivelCOAC
+  suelo: NivelCOAC
   anoPico: number
   anosCarrera: number
   volatilidad: number
   carisma: number
+  /** El milagro se sortea una sola vez por carrera (docs/02 §8). */
+  milagro: boolean
 }
 
 export interface ResultadoTemporada {

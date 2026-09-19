@@ -1,7 +1,7 @@
 import type { ParametrosMotor } from "./parametros"
 import { elegirPonderado, rngPara } from "./seed"
-import type { Destino, FaseCOAC, Personaje } from "./types"
-import { FASES_COAC } from "./types"
+import type { Destino, NivelCOAC, Personaje } from "./types"
+import { NIVELES_COAC } from "./types"
 
 function carismaBase(personaje: Personaje, params: ParametrosMotor): number {
   const localidad = personaje.localidad.trim().toLowerCase()
@@ -24,21 +24,27 @@ export function generarDestino(
   params: ParametrosMotor,
 ): Destino {
   const rng = rngPara(seed, "destino")
-  const techo = elegirPonderado<FaseCOAC>(
+  const techo = elegirPonderado<NivelCOAC>(
     rng,
-    FASES_COAC.map((fase) => ({ valor: fase, peso: params.pesosTecho[fase] })),
+    NIVELES_COAC.map((nivel) => ({
+      valor: nivel,
+      peso: params.pesosTecho[nivel],
+    })),
   )
   const anosCarrera = params.anosCarreraPorDefecto
   const anoPico = 2 + Math.floor(rng() * Math.max(1, anosCarrera - 3))
   const volatilidad =
     params.volatilidadMin +
     rng() * (params.volatilidadMax - params.volatilidadMin)
+  const milagro = rng() < params.milagro
+  const crack = rng() < params.probabilidadCrack
   return {
     techo,
     suelo: "preliminares",
     anoPico,
     anosCarrera,
     volatilidad,
-    carisma: carismaBase(personaje, params),
+    carisma: carismaBase(personaje, params) + (crack ? params.bonusCrack : 0),
+    milagro,
   }
 }

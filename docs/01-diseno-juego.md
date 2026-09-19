@@ -181,16 +181,17 @@ La mayoría de partidas deben seguir el arco **empezar humilde → ascender → 
 
 | Resultado a lo largo de la carrera | Objetivo aproximado |
 | --- | --- |
-| Pisa la final alguna vez | 60-70% de las partidas |
+| Pisa la final alguna vez | ~45% de las partidas |
 | No pasa nunca de cuartos | ~10% |
-| No pasa nunca de preliminares | ~5% |
-| Gana al menos un primer premio | 20-25% |
-| Gana 5 o más primeros premios | ~3% |
-| Gana 10 o más | ~1% |
-| Gana 15 o más (carrera legendaria) | <0,3% |
+| No pasa nunca de preliminares | ~7% |
+| Gana al menos un primer premio | ~27% |
+| Gana 3 o más primeros premios | ~11% |
+| Gana 5 o más primeros premios | ~6% |
+| Gana 10 o más | ~0,4% |
+| Gana 15 o más (carrera legendaria) | ~0,1% |
 | Racha de 5 primeros premios seguidos | muy raro, pero posible |
 
-Esa distribución es la que se valida con el simulador masivo de miles de partidas: si los números reales no cuadran, se ajustan los pesos del techo y el ruido, no las situaciones.
+> 📌 Objetivos actualizados (2026-09-19): la final se fija en ~45% y los premios suben ligeramente para resultar más agradables al jugador (~27% gana al menos un primer premio). Esa distribución es la que valida el simulador masivo; si los números reales no cuadran, se ajustan los pesos del techo, los umbrales y el ruido, no las situaciones.
 
 ---
 

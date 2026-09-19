@@ -4,7 +4,13 @@ export {
   aplicarEfectos,
   clampAtributo,
 } from "./atributos"
-export { fasePorPuntuacion, indiceFase, resolverCoac } from "./coac"
+export {
+  indiceFase,
+  indiceNivel,
+  nivelAFase,
+  nivelPorPuntuacion,
+  resolverCoac,
+} from "./coac"
 export {
   actualizarFlags,
   consumirFlagsDeRequisito,

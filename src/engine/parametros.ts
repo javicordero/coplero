@@ -1,4 +1,4 @@
-import type { Atributo, FaseCOAC, PremioTipo } from "./types"
+import type { Atributo, NivelCOAC, PremioTipo } from "./types"
 
 export interface DefinicionPremio {
   tipo: PremioTipo
@@ -13,8 +13,14 @@ export interface ModificadoresCreacion {
 }
 
 export interface ParametrosMotor {
-  pesosTecho: Record<FaseCOAC, number>
-  umbralesFase: { final: number; semifinales: number; cuartos: number }
+  pesosTecho: Record<NivelCOAC, number>
+  umbralesNivel: {
+    cuartos: number
+    semifinales: number
+    final: number
+    podio: number
+    primer_premio: number
+  }
   bonoAnoPico: number
   volatilidadMin: number
   volatilidadMax: number
@@ -27,6 +33,10 @@ export interface ParametrosMotor {
   }
   batacazo: number
   milagro: number
+  /** Probabilidad, por carrera, de nacer como "crack" (carisma extra que genera carreras dominantes). */
+  probabilidadCrack: number
+  /** Carisma extra que recibe una carrera "crack". */
+  bonusCrack: number
   anosCarreraPorDefecto: number
   decisionesPorAno: number
   premios: DefinicionPremio[]
@@ -40,8 +50,21 @@ export interface ParametrosMotor {
  * Todos son inyectables y sustituibles sin tocar el motor.
  */
 export const PARAMETROS_POR_DEFECTO: ParametrosMotor = {
-  pesosTecho: { preliminares: 5, cuartos: 12, semifinales: 20, final: 63 },
-  umbralesFase: { final: 78, semifinales: 62, cuartos: 42 },
+  pesosTecho: {
+    preliminares: 7,
+    cuartos: 3,
+    semifinales: 47,
+    final: 6,
+    podio: 28,
+    primer_premio: 9,
+  },
+  umbralesNivel: {
+    cuartos: 42,
+    semifinales: 54,
+    final: 60,
+    podio: 62,
+    primer_premio: 68,
+  },
   bonoAnoPico: 10,
   volatilidadMin: 0.2,
   volatilidadMax: 0.6,
@@ -54,6 +77,8 @@ export const PARAMETROS_POR_DEFECTO: ParametrosMotor = {
   },
   batacazo: 0.03,
   milagro: 0.02,
+  probabilidadCrack: 0.01,
+  bonusCrack: 10,
   anosCarreraPorDefecto: 20,
   decisionesPorAno: 2,
   premios: [
@@ -86,7 +111,7 @@ export const PARAMETROS_POR_DEFECTO: ParametrosMotor = {
   modificadoresCreacion: {
     carismaPorLocalidad: { cádiz: 3, cadiz: 3 },
   },
-  multiplicadorRuido: 15,
+  multiplicadorRuido: 6,
   atributosIniciales: 50,
 }
 

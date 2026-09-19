@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { fasePorPuntuacion, indiceFase, resolverCoac } from "../coac"
+import { indiceNivel, nivelPorPuntuacion, resolverCoac } from "../coac"
 import { PARAMETROS_POR_DEFECTO } from "../parametros"
 import type { Atributos, Destino } from "../types"
 import { rngDe } from "./helpers"
@@ -20,17 +20,20 @@ const destino = (parcial: Partial<Destino>): Destino => ({
   anosCarrera: 20,
   volatilidad: 0,
   carisma: 0,
+  milagro: false,
   ...parcial,
 })
 
 const sinValvulas = { ...PARAMETROS_POR_DEFECTO, batacazo: 0, milagro: 0 }
 
 describe("resolución del COAC", () => {
-  it("mapea puntuación a fase por umbrales", () => {
-    expect(fasePorPuntuacion(90, PARAMETROS_POR_DEFECTO)).toBe("final")
-    expect(fasePorPuntuacion(70, PARAMETROS_POR_DEFECTO)).toBe("semifinales")
-    expect(fasePorPuntuacion(50, PARAMETROS_POR_DEFECTO)).toBe("cuartos")
-    expect(fasePorPuntuacion(10, PARAMETROS_POR_DEFECTO)).toBe("preliminares")
+  it("mapea puntuación a nivel por umbrales", () => {
+    expect(nivelPorPuntuacion(85, PARAMETROS_POR_DEFECTO)).toBe("primer_premio")
+    expect(nivelPorPuntuacion(65, PARAMETROS_POR_DEFECTO)).toBe("podio")
+    expect(nivelPorPuntuacion(61, PARAMETROS_POR_DEFECTO)).toBe("final")
+    expect(nivelPorPuntuacion(55, PARAMETROS_POR_DEFECTO)).toBe("semifinales")
+    expect(nivelPorPuntuacion(45, PARAMETROS_POR_DEFECTO)).toBe("cuartos")
+    expect(nivelPorPuntuacion(10, PARAMETROS_POR_DEFECTO)).toBe("preliminares")
   })
 
   it("acota al techo", () => {
@@ -68,16 +71,16 @@ describe("resolución del COAC", () => {
       milagroUsado: false,
     })
     expect(r.fase).toBe("semifinales")
-    expect(indiceFase(r.fase)).toBeLessThan(indiceFase("final"))
+    expect(indiceNivel(r.nivel)).toBeLessThan(indiceNivel("final"))
   })
 
   it("el milagro rompe el techo una sola vez", () => {
-    const params = { ...PARAMETROS_POR_DEFECTO, batacazo: 0, milagro: 1 }
+    const params = { ...PARAMETROS_POR_DEFECTO, batacazo: 0 }
     const primera = resolverCoac({
       atributos: atributos(50),
-      destino: destino({ techo: "cuartos" }),
+      destino: destino({ techo: "cuartos", milagro: true }),
       anoActual: 1,
-      rng: rngDe([0.5, 0.5, 0.0]),
+      rng: rngDe([0.5, 0.5]),
       params,
       milagroUsado: false,
     })
@@ -86,9 +89,9 @@ describe("resolución del COAC", () => {
 
     const segunda = resolverCoac({
       atributos: atributos(50),
-      destino: destino({ techo: "cuartos" }),
+      destino: destino({ techo: "cuartos", milagro: true }),
       anoActual: 2,
-      rng: rngDe([0.5, 0.5, 0.0]),
+      rng: rngDe([0.5, 0.5]),
       params,
       milagroUsado: true,
     })
@@ -96,19 +99,35 @@ describe("resolución del COAC", () => {
     expect(segunda.fase).toBe("cuartos")
   })
 
-  it("el puesto cae en la banda de la fase", () => {
+  it("el nivel primer_premio da el puesto 1", () => {
     const r = resolverCoac({
       atributos: atributos(100),
-      destino: destino({ techo: "final" }),
+      destino: destino({ techo: "primer_premio" }),
       anoActual: 1,
       rng: rngDe([0.5]),
       params: sinValvulas,
       milagroUsado: false,
     })
     expect(r.fase).toBe("final")
-    expect(r.puesto).toBeGreaterThanOrEqual(1)
-    expect(r.puesto).toBeLessThanOrEqual(4)
+    expect(r.nivel).toBe("primer_premio")
+    expect(r.puesto).toBe(1)
+  })
 
+  it("el techo podio también puede ganar", () => {
+    const r = resolverCoac({
+      atributos: atributos(100),
+      destino: destino({ techo: "podio" }),
+      anoActual: 1,
+      rng: rngDe([0.5]),
+      params: sinValvulas,
+      milagroUsado: false,
+    })
+    expect(r.fase).toBe("final")
+    expect(r.nivel).toBe("podio")
+    expect(r.puesto).toBe(1)
+  })
+
+  it("el puesto cae en la banda de su nivel", () => {
     const p = resolverCoac({
       atributos: atributos(50),
       destino: destino({ techo: "final" }),

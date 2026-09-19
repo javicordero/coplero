@@ -28,8 +28,11 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Decisiones por año | **Parametrizable** (v1: 2; modos rápido/lento más adelante) | 01 §4, 02 §8 |
 | Batacazo | Puede **atravesar el `suelo`**; el `clamp` solo aplica a la resolución normal | 02 §8 |
 | Reciclaje de pool | Si el pool se agota, recicla las menos recientes **ignorando `unicaVez`** como último recurso | 02 §9 |
-| Techo oculto | Predeterminado por RNG al crear la partida; nunca se muestra; no se serializa | 01 §4, 02 §8 |
-| Válvulas narrativas | Batacazo 3% y Milagro 2% | 02 §8 |
+| Techo oculto | Predeterminado por RNG al crear la partida; nunca se muestra; no se serializa; **6 niveles** | 01 §4, 02 §8 |
+| Válvulas narrativas | Batacazo **3% anual** y Milagro **2% por carrera** (se sortea una sola vez al crear) | 02 §8 |
+| Niveles del techo | `preliminares`, `cuartos`, `semifinales`, `final`, `podio`, `primer_premio`; `podio` puede ganar (1-3) y `primer_premio` gana con más facilidad (C12) | 02 §8 |
+| Calibración del techo (2026-09-19) | Pesos `7/3/47/6/28/9`; umbrales de nivel `42/54/60/62/68`; `multiplicadorRuido` 6. Medido con 10.000 carreras: final 43,5%, no cuartos 10,4%, no preliminares 7,1%, ≥1 primer premio 27,2%, ≥3 11,5%, ≥5 5,8%, ≥10 0,4%, ≥15 0,1% | 01 §7, 02 §8 |
+| Factor "crack" | ~1% de las carreras nacen con carisma extra oculto (`probabilidadCrack` 0,01; `bonusCrack` 10), que genera la cola legendaria (carreras que ganan 10-15 primeros premios). Se sortea al crear la partida y no se muestra | 01 §7, 02 §8 |
 | Código de partida | Base64url comprimido en la URL; sin base de datos en v1 | 02 §10 |
 | Compresión del codec | **`fflate`** (`deflate` → bytes → base64url) | 02 §10 |
 | Imagen OG | `satori` + `resvg-js` en endpoint edge; fuentes en `public/fonts`; requiere `prerender = false` | 02 §10 |
