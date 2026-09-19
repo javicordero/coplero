@@ -1,0 +1,136 @@
+import { describe, expect, it } from "vitest"
+import { bancoContenido } from "../index"
+import {
+  cobertura,
+  contarSituacionesPorMomento,
+  flagsDeclaradas,
+  flagsReferenciadas,
+  flagsSinDeclarar,
+  situacionesInalcanzablesEstaticas,
+} from "../informe"
+import { flagsDeRequisito } from "../schema"
+
+const TODAS = [
+  ...bancoContenido.situaciones,
+  ...(bancoContenido.condicionales ?? []),
+]
+
+// Nombres reales que nunca deben aparecer. Lista extensible para el futuro.
+const NOMBRES_REALES_PROHIBIDOS: string[] = []
+
+describe("integridad del banco real", () => {
+  it("los ids son únicos en todo el banco", () => {
+    const ids = TODAS.map((s) => s.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it("toda situación declara momento, tipo y categoría válidos", () => {
+    for (const s of TODAS) {
+      expect(["verano", "febrero"]).toContain(s.momento)
+      expect(["contenido", "personaje"]).toContain(s.tipo)
+      expect([
+        "letra",
+        "musica",
+        "puestaEnEscena",
+        "jurado",
+        "dinero",
+        "grupo",
+        "prensa",
+        "carrera",
+        "concurso",
+      ]).toContain(s.categoria)
+    }
+  })
+
+  it("cada opción tiene título y subtítulo y hay al menos dos", () => {
+    for (const s of TODAS) {
+      expect(s.opciones.length).toBeGreaterThanOrEqual(2)
+      const ids = s.opciones.map((o) => o.id)
+      expect(new Set(ids).size).toBe(ids.length)
+      for (const o of s.opciones) {
+        expect(o.titulo.length).toBeGreaterThan(0)
+        expect(o.subtitulo.length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it("toda flag referenciada existe declarada en alguna opción", () => {
+    const declaradas = new Set(flagsDeclaradas(bancoContenido))
+    for (const c of bancoContenido.condicionales ?? []) {
+      for (const flag of flagsDeRequisito(c.requiere)) {
+        expect(declaradas.has(flag)).toBe(true)
+      }
+    }
+    expect(flagsSinDeclarar(bancoContenido)).toEqual([])
+  })
+
+  it("las modalidades usadas son válidas", () => {
+    for (const s of TODAS) {
+      for (const m of s.modalidades ?? []) {
+        expect(["comparsista", "chirigotero"]).toContain(m)
+      }
+    }
+  })
+
+  it("hay cobertura común por cada momento y tipo", () => {
+    const cob = cobertura(bancoContenido)
+    for (const momento of ["verano", "febrero"] as const) {
+      for (const tipo of ["contenido", "personaje"] as const) {
+        expect(cob[momento][tipo]).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it("las opciones que implican no concursar llevan saltaCOAC", () => {
+    const esperadas = [
+      ["v_enfado_coac", "calle"],
+      ["v_enfado_coac", "gira"],
+      ["f_jurado", "no_ir"],
+    ]
+    for (const [situacionId, opcionId] of esperadas) {
+      const opcion = TODAS.find((s) => s.id === situacionId)?.opciones.find(
+        (o) => o.id === opcionId,
+      )
+      expect(opcion?.saltaCOAC).toBe(true)
+    }
+  })
+
+  it("ninguna opción usa `consume` (las flags no se borran)", () => {
+    for (const s of TODAS) {
+      for (const o of s.opciones) {
+        expect(o.consume ?? []).toEqual([])
+      }
+    }
+  })
+
+  it("no aparecen nombres reales prohibidos", () => {
+    for (const s of TODAS) {
+      const textos = [
+        s.titulo,
+        s.texto,
+        ...s.opciones.flatMap((o) => [o.titulo, o.subtitulo]),
+      ]
+      for (const prohibido of NOMBRES_REALES_PROHIBIDOS) {
+        expect(textos.some((t) => t.includes(prohibido))).toBe(false)
+      }
+    }
+  })
+
+  it("el recuento documentado es el esperado (18/9/11)", () => {
+    expect(contarSituacionesPorMomento(bancoContenido)).toEqual({
+      verano: 18,
+      febrero: 9,
+    })
+    expect(bancoContenido.situaciones.length).toBe(27)
+    expect(bancoContenido.condicionales?.length).toBe(11)
+  })
+
+  it("no hay situaciones estáticamente inalcanzables", () => {
+    expect(situacionesInalcanzablesEstaticas(bancoContenido)).toEqual([])
+  })
+
+  it("las flags declaradas y referenciadas se exponen en el informe", () => {
+    expect(flagsDeclaradas(bancoContenido).length).toBeGreaterThan(0)
+    expect(flagsReferenciadas(bancoContenido).length).toBeGreaterThan(0)
+  })
+})

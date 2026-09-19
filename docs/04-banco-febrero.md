@@ -63,6 +63,8 @@ No son decisiones: son alteraciones del concurso que el motor puede lanzar con b
 
 ## Pendiente de este bloque
 
+> ✅ Importado en CONTENT-001 a `src/content/decisiones/febrero/` y `src/content/condicionales/febrero.ts` (9 situaciones + 4 condicionales). Los **eventos especiales** siguen fuera de alcance (T5).
+
 - [ ] Ampliar el pool base de febrero a 30-40 situaciones.
 - [ ] Escribir el equivalente de comparsa del cierre de popurrí.
 - [ ] Textos de resultado de cada fase (pasas / te quedas fuera) por modalidad.

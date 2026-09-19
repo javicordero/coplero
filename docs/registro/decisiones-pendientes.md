@@ -2,7 +2,7 @@
 
 Este documento recoge todo lo **no cerrado**. Ninguna contradicción se resuelve en silencio: aquí se deja constancia. Cuando algo se decida, se actualiza primero el documento fuente (`docs/01`–`docs/06`) y después este registro.
 
-**Todas las contradicciones C1–C12 y los huecos T1–T17 están resueltos, diferidos o fuera de alcance.** No queda ningún punto abierto que bloquee el desarrollo. Ver `decisiones-cerradas.md` para lo resuelto.
+**Todas las contradicciones C1–C13 y los huecos T1–T17 están resueltos, diferidos o fuera de alcance.** No queda ningún punto abierto que bloquee el desarrollo. Ver `decisiones-cerradas.md` para lo resuelto.
 
 ---
 
@@ -11,6 +11,10 @@ Este documento recoge todo lo **no cerrado**. Ninguna contradicción se resuelve
 ### C12 · "Primer premio": techo de 6 niveles frente al objetivo de 20-25% ✅ Resuelta
 
 `02` §8 define el techo con 6 niveles y `clamp(..., suelo, techo)` como tope de la resolución normal; solo el 8% con techo `primer_premio` podría ganar, pero `01` §7 pide que el 20-25% gane alguna vez. **Decisión (a):** el techo `podio` también permite ganar (puestos 1-3) y `primer_premio` gana con más facilidad, de modo que el 30% (podio + primer_premio) puede ganar y el objetivo es alcanzable manteniendo la estructura de 6 niveles. Además, la implementación vuelve a la estructura de 6 niveles (antes colapsaba `podio` y `primer_premio` en `final`).
+
+### C13 · "tema_social dos años seguidos" frente a `unicaVez: true` ✅ Resuelta
+
+`docs/03` pide `tema_social` **dos años seguidos** para el condicional "El público espera otra vez tu registro social", pero la clarificación Q2 de CONTENT-001 marca todas las situaciones con `unicaVez: true`: la situación que concede la flag (`v_letra_tema`) no se repite en años consecutivos, así que `flagRepetida` con `consecutivos: true` sería **inalcanzable**. **Decisión confirmada por diseño:** modelar el requisito como `flagRepetida` `veces: 2` **sin** exigir consecutivos ("el tema ha vuelto"), que sí es alcanzable. La regla de repetición queda: una situación **no** sale dos años seguidos, pero puede volver más tarde (reciclado); las flags se acumulan aunque no en años consecutivos.
 
 ---
 
@@ -32,9 +36,9 @@ Los eventos de febrero (`04`) y los micro-eventos sin decisión (`05` §1) no ti
 
 Cerrados por la calibración del 2026-09-19: **pesos del techo** (`7/3/47/6/28/9`), **umbrales de nivel** (`42/54/60/62/68`), **multiplicador de ruido** (6) y **factor crack** (`probabilidadCrack` 0,01 / `bonusCrack` 10), verificados con el simulador (10.000 carreras: final 43,5%, no cuartos 10,4%, no preliminares 7,1%, ≥1 27,2%, ≥3 11,5%, ≥5 5,8%, ≥10 0,4%, ≥15 0,1%). Sin cerrar: `bonoAnoPico`, afinidades de premios y modificadores por creación de personaje (edad, localidad, género). Se revisarán cuando exista el banco real de `content`, porque dependen del crecimiento de atributos de las opciones.
 
-### T17 · Banco real de contenido para la simulación
+### T17 · Banco real de contenido para la simulación ✅ Resuelto
 
-La CLI `scripts/simular.ts` usa el banco de pruebas (`src/engine/__tests__/fixtures.ts`) mientras no exista el banco real de `src/content/`. El banco es **inyectado** en el módulo `src/simulacion/`, así que la corrección de la herramienta no depende de él; al llegar `content`, la CLI debe resolverlo y retirar la deuda.
+Resuelto en CONTENT-001: `scripts/simular.ts` usa `bancoContenido` de `src/content` y se retiró el import del banco de pruebas. El banco de pruebas (`src/engine/__tests__/fixtures.ts`) se conserva **solo** para los tests del motor y del módulo de simulación, que lo inyectan explícitamente.
 
 ---
 
@@ -59,7 +63,7 @@ La CLI `scripts/simular.ts` usa el banco de pruebas (`src/engine/__tests__/fixtu
 - [ ] Cerrar los valores numéricos con el simulador masivo.
 - [ ] Calibrar el techo y la volatilidad contra la distribución objetivo.
 - [ ] Añadir las flags de temática andaluza/tierra para Copla para Andalucía (T2).
-- [ ] Conectar `scripts/simular.ts` al banco real de `content` y retirar el banco de pruebas (T17).
+- [x] Conectar `scripts/simular.ts` al banco real de `content` y retirar el banco de pruebas (T17).
 
 ## D. Backlog de producto / infraestructura
 

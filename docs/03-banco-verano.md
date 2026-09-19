@@ -84,6 +84,8 @@ Cada año de carrera saca **una decisión de contenido y una de personaje**. Las
 
 ## Pendiente de este bloque
 
+> ✅ Importado en CONTENT-001 a `src/content/decisiones/verano/` y `src/content/condicionales/verano.ts` (18 situaciones + 7 condicionales), con `unicaVez: true` y `texto` vacío.
+
 - [ ] Ampliar el pool base de verano a 30-40 situaciones (mitad del objetivo total de 60-80).
 - [ ] Marcar qué situaciones son exclusivas de comparsista o de chirigotero con el campo `modalidades`.
 - [ ] Afinar los valores numéricos con el simulador masivo, no a mano.

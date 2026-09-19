@@ -1,0 +1,216 @@
+import type { Condicional } from "../schema"
+
+// Condicionales de verano. Fuente: docs/03-banco-verano.md
+export const condicionalesVerano: Condicional[] = [
+  {
+    id: "cv_grupo_consagrado",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "carrera",
+    titulo:
+      "Has ganado premios con el grupo consagrado; tus amigos te llaman para volver",
+    texto: "",
+    unicaVez: true,
+    requiere: { tipo: "flag", flag: "autor_grupo_consagrado" },
+    ventanaAnos: 4,
+    probabilidad: 0.5,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "volver",
+        titulo: "Volver con los tuyos",
+        subtitulo: "El cariño no se puntúa",
+        efectos: { cohesion: 3, popularidad: -1 },
+        flags: ["regreso_a_la_pena"],
+      },
+      {
+        id: "seguir",
+        titulo: "Seguir donde se gana",
+        subtitulo: "Quiero ganar lo máximo posible",
+        efectos: { popularidad: 1, letra: 1, cohesion: -1 },
+        flags: ["carrera_de_elite"],
+      },
+    ],
+  },
+  {
+    id: "cv_plazo_inscripcion",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "concurso",
+    titulo: "Se acerca el plazo de inscripción tras tu año fuera del concurso",
+    texto: "",
+    unicaVez: true,
+    requiere: {
+      tipo: "alguna",
+      de: [
+        { tipo: "flag", flag: "ano_callejero" },
+        { tipo: "flag", flag: "ano_de_gira" },
+      ],
+    },
+    ventanaAnos: 2,
+    probabilidad: 0.8,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "volver",
+        titulo: "Volver al COAC",
+        subtitulo: "Lo echaba de menos",
+        efectos: { cohesion: 1, popularidad: 1 },
+        flags: ["regreso_al_coac"],
+      },
+      {
+        id: "fuera",
+        titulo: "Seguir fuera",
+        subtitulo: "Calle o teatro, pero sin jurado",
+        efectos: { dinero: 2, popularidad: -1 },
+        flags: ["sigo_fuera"],
+      },
+    ],
+  },
+  {
+    id: "cv_patrocinador_rival",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "dinero",
+    titulo: "El patrocinador que rechazaste aparece con tu rival",
+    texto: "",
+    unicaVez: true,
+    requiere: { tipo: "flag", flag: "rechazo_patrocinio" },
+    ventanaAnos: 2,
+    probabilidad: 0.5,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "cuple",
+        titulo: "Cuplé al asunto",
+        subtitulo: "Que se ría Cádiz",
+        efectos: { popularidad: 2 },
+      },
+      {
+        id: "no_trapo",
+        titulo: "No entrar al trapo",
+        subtitulo: "Cada uno con lo suyo",
+        efectos: { cohesion: 1 },
+      },
+    ],
+  },
+  {
+    id: "cv_registro_social",
+    momento: "verano",
+    tipo: "contenido",
+    categoria: "letra",
+    titulo: "El público espera otra vez tu registro social",
+    texto: "",
+    unicaVez: true,
+    // La doc dice "tema_social dos años seguidos". Una situación nunca sale dos
+    // años seguidos, así que la flag no puede concederse en años consecutivos;
+    // se modela como "el tema ha vuelto" (veces 2, sin exigir consecutivos).
+    // Contradicción registrada como C13.
+    requiere: { tipo: "flagRepetida", flag: "tema_social", veces: 2 },
+    ventanaAnos: 1,
+    probabilidad: 0.7,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "repetir",
+        titulo: "Repetir registro",
+        subtitulo: "Es lo que soy",
+        efectos: { letra: 1, popularidad: 1 },
+      },
+      {
+        id: "romper",
+        titulo: "Romper con lo esperado",
+        subtitulo: "Que no me encasillen",
+        efectos: { letra: 2, popularidad: -2 },
+      },
+    ],
+  },
+  {
+    id: "cv_vuelta",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "concurso",
+    titulo: "Vuelves al concurso tras el año que no fuiste",
+    texto: "",
+    unicaVez: true,
+    requiere: {
+      tipo: "alguna",
+      de: [
+        { tipo: "flag", flag: "year_sabatico" },
+        { tipo: "flag", flag: "ano_callejero" },
+        { tipo: "flag", flag: "ano_de_gira" },
+      ],
+    },
+    ventanaAnos: 1,
+    probabilidad: 1,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "humildad",
+        titulo: "Entrar con humildad",
+        subtitulo: "Un año fuera enseña",
+        efectos: { cohesion: 2 },
+      },
+      {
+        id: "saco",
+        titulo: "Entrar a saco",
+        subtitulo: "Vengo a cobrarme lo mío",
+        efectos: { popularidad: 2, cohesion: -1 },
+      },
+    ],
+  },
+  {
+    id: "cv_musico_firma",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "musica",
+    titulo: "El músico de fuera quiere firmar la música",
+    texto: "",
+    unicaVez: true,
+    requiere: { tipo: "flag", flag: "musico_externo" },
+    ventanaAnos: 2,
+    probabilidad: 0.5,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "compartir",
+        titulo: "Compartir la firma",
+        subtitulo: "Lo justo es lo justo",
+        efectos: { cohesion: 1, popularidad: 1 },
+      },
+      {
+        id: "negar",
+        titulo: "Negarte",
+        subtitulo: "La música es de la agrupación",
+        efectos: { cohesion: -1, musica: 1 },
+      },
+    ],
+  },
+  {
+    id: "cv_local_venta",
+    momento: "verano",
+    tipo: "personaje",
+    categoria: "dinero",
+    titulo: "El local de siempre se pone en venta",
+    texto: "",
+    unicaVez: true,
+    requiere: { tipo: "flag", flag: "local_de_siempre" },
+    ventanaAnos: 3,
+    probabilidad: 0.4,
+    consumeFlag: false,
+    opciones: [
+      {
+        id: "comprar",
+        titulo: "Comprarlo entre todos",
+        subtitulo: "Casa propia",
+        efectos: { dinero: -4, cohesion: 3 },
+      },
+      {
+        id: "mudarse",
+        titulo: "Mudarse por fin",
+        subtitulo: "Toca soltar",
+        efectos: { dinero: 1, cohesion: -1 },
+      },
+    ],
+  },
+]
