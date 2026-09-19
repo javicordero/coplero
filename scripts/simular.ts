@@ -1,70 +1,124 @@
-// Simulador masivo de balance. Uso: npm run simular [n]
-// NOTA: usa el banco de fixtures (el banco real de content llega en su feature).
-
-import { bancoPrueba, inputPrueba } from "../src/engine/__tests__/fixtures"
-import type { CrearPartidaInput, FaseCOAC, Partida } from "../src/engine/index"
+import { writeFileSync } from "node:fs"
+// DEUDA TEMPORAL (T036): mientras no exista el banco real de `src/content`,
+// el simulador usa el banco de pruebas del motor. Aislado aquí a propósito.
+import { bancoPrueba } from "../src/engine/__tests__/fixtures"
+import type { PerfilJugador } from "../src/simulacion/index"
 import {
-  continuar,
-  crearPartida,
-  elegir,
-  FASES_COAC,
-  indiceFase,
-  rngPara,
-  siguientePaso,
-} from "../src/engine/index"
+  formatearInforme,
+  informeAJson,
+  PERFILES_POR_DEFECTO,
+  simular,
+} from "../src/simulacion/index"
 
-const TOTAL = Number.parseInt(process.argv[2] ?? "10000", 10)
+const MAX_CARRERAS = 100_000
 
-function jugar(input: CrearPartidaInput): Partida {
-  let p = crearPartida(input, bancoPrueba)
-  let step = 0
-  while (step++ < 5000) {
-    const paso = siguientePaso(p, bancoPrueba)
-    if (paso.tipo === "fin") return p
-    if (paso.tipo === "error") throw new Error(JSON.stringify(paso.error))
-    if (paso.tipo === "resultado") {
-      p = continuar(p)
+const AYUDA = `Uso: npm run simular -- [N] [opciones]
+
+  N                      Numero de carreras (por defecto 10000; max 100000)
+  --seed <base>          Semilla base (por defecto "sim")
+  --json <ruta>          Vuelca el informe completo a un archivo JSON
+  --perfiles <a,b,...>   Perfiles a usar (${PERFILES_POR_DEFECTO.map((p) => p.id).join(", ")})
+  --quiet                Omite el informe de texto
+  --help                 Muestra esta ayuda
+
+Codigos de salida: 0 ok | 1 errores de contenido/motor | 2 argumentos invalidos`
+
+interface Argumentos {
+  n: number
+  seedBase: string
+  json?: string
+  perfiles: PerfilJugador[]
+  quiet: boolean
+}
+
+function error(mensaje: string): never {
+  console.error(`Error: ${mensaje}`)
+  process.exit(2)
+}
+
+function parsear(argv: string[]): Argumentos | "help" {
+  let n = 10_000
+  let seedBase = "sim"
+  let json: string | undefined
+  let quiet = false
+  let posicional: string | undefined
+  const ids: string[] = []
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i]
+    if (arg === "--help" || arg === "-h") return "help"
+    if (arg === "--quiet") {
+      quiet = true
       continue
     }
-    const opciones = paso.situacion.opciones
-    const rng = rngPara(input.seed, "jugador", step)
-    const opcion = opciones[Math.floor(rng() * opciones.length)]
-    const res = elegir(p, opcion.id, bancoPrueba)
-    if (!res.ok) throw new Error(JSON.stringify(res.error))
-    p = res.valor
+    if (arg === "--seed") {
+      seedBase = argv[++i] ?? error("--seed requiere un valor")
+      continue
+    }
+    if (arg === "--json") {
+      json = argv[++i] ?? error("--json requiere una ruta")
+      continue
+    }
+    if (arg === "--perfiles") {
+      const valor = argv[++i]
+      if (!valor) error("--perfiles requiere al menos un id")
+      ids.push(
+        ...valor
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      )
+      continue
+    }
+    if (arg.startsWith("--")) error(`argumento desconocido: ${arg}`)
+    if (posicional === undefined) posicional = arg
+    else error(`argumento de sobra: ${arg}`)
   }
-  throw new Error("carrera sin terminar")
+
+  if (posicional !== undefined) {
+    const valor = Number(posicional)
+    if (!Number.isInteger(valor) || valor < 1 || valor > MAX_CARRERAS) {
+      error(
+        `numero de carreras invalido: ${posicional} (entero entre 1 y ${MAX_CARRERAS})`,
+      )
+    }
+    n = valor
+  }
+
+  const perfiles =
+    ids.length === 0
+      ? [...PERFILES_POR_DEFECTO]
+      : ids.map((id) => {
+          const perfil = PERFILES_POR_DEFECTO.find((p) => p.id === id)
+          if (!perfil) error(`perfil desconocido: ${id}`)
+          return perfil
+        })
+
+  return { n, seedBase, json, perfiles, quiet }
 }
 
-const fases = new Map<FaseCOAC, number>()
-let pisanFinal = 0
-let gananPrimerPremio = 0
-const premiosPorTipo = new Map<string, number>()
+const parseado = parsear(process.argv.slice(2))
+if (parseado === "help") {
+  console.log(AYUDA)
+  process.exit(0)
+}
+
 const inicio = performance.now()
+const informe = simular({
+  banco: bancoPrueba,
+  n: parseado.n,
+  seedBase: parseado.seedBase,
+  perfiles: parseado.perfiles,
+})
+const ms = performance.now() - inicio
 
-for (let i = 0; i < TOTAL; i++) {
-  const fin = jugar({ ...inputPrueba, seed: `sim-${i}` })
-  let mejorIdx = 0
-  let gano = false
-  for (const t of fin.temporadas) {
-    if (!t.fueraDeConcurso) mejorIdx = Math.max(mejorIdx, indiceFase(t.fase))
-    if (t.premios.length > 0) gano = true
-    for (const pr of t.premios)
-      premiosPorTipo.set(pr.tipo, (premiosPorTipo.get(pr.tipo) ?? 0) + 1)
-  }
-  const mejor = FASES_COAC[mejorIdx]
-  fases.set(mejor, (fases.get(mejor) ?? 0) + 1)
-  if (mejor === "final") pisanFinal++
-  if (gano) gananPrimerPremio++
+if (!parseado.quiet) {
+  console.log(formatearInforme(informe))
+  console.log(`\nTiempo: ${ms.toFixed(0)} ms`)
+}
+if (parseado.json) {
+  writeFileSync(parseado.json, informeAJson(informe), "utf8")
+  if (!parseado.quiet) console.log(`Informe JSON: ${parseado.json}`)
 }
 
-const ms = performance.now() - inicio
-const pct = (n: number) => `${((n / TOTAL) * 100).toFixed(1)}%`
-
-console.log(`Carreras: ${TOTAL} en ${ms.toFixed(0)} ms`)
-console.log(`Pisan la final: ${pct(pisanFinal)}`)
-console.log(`Con al menos un premio ajeno: ${pct(gananPrimerPremio)}`)
-console.log("Distribución de mejor fase:")
-for (const [fase, n] of fases) console.log(`  ${fase}: ${pct(n)}`)
-console.log("Premios ajenos repartidos:")
-for (const [tipo, n] of premiosPorTipo) console.log(`  ${tipo}: ${n}`)
+process.exit(informe.meta.generadoConError ? 1 : 0)

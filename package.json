@@ -13,7 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "simular": "tsx scripts/simular.ts 10000"
+    "simular": "tsx scripts/simular.ts"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.6",

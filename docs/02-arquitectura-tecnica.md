@@ -120,6 +120,18 @@ coplero/
 │   │   └── __tests__/
 │   │       └── integridad.test.ts  # ids únicos, flags referenciadas existen…
 │   │
+│   ├── simulacion/                 # 🧪 balance (dev): juego masivo + informe
+│   │   ├── index.ts                # API pública del módulo
+│   │   ├── tipos.ts                # informe, perfiles, configuraciones, hallazgos
+│   │   ├── perfiles.ts             # 3 perfiles de decisión (uniforme, codicioso, errático)
+│   │   ├── configuraciones.ts      # configuraciones por defecto
+│   │   ├── jugar.ts                # juega una carrera completa con un perfil
+│   │   ├── estadisticas.ts         # agregación de métricas del informe
+│   │   ├── auditoria.ts            # detector de estados imposibles (13 reglas)
+│   │   ├── informe.ts              # formato de texto + JSON
+│   │   ├── simular.ts              # orquestador: N carreras → informe
+│   │   └── __tests__/
+│   │
 │   ├── juego/                      # 🎮 la isla
 │   │   ├── Juego.svelte            # raíz: enruta por fase
 │   │   ├── estado.ts               # store: envuelve el engine
@@ -327,16 +339,16 @@ Es el corazón del "copero-ismo". Propuesta concreta.
 
 ```tsx
 const techo = elegirPonderado(rng, [
-  ['nunca_pasa_preliminares',  5],
-  ['cuartos',                 12],
-  ['semifinales',             20],
-  ['final',                   33],
-  ['podio',                   22],
-  ['primer_premio',            8],
+  ['nunca_pasa_preliminares',  7],
+  ['cuartos',                  3],
+  ['semifinales',             47],
+  ['final',                    6],
+  ['podio',                   28],
+  ['primer_premio',            9],
 ]);
 ```
 
-Estos pesos están calibrados contra la distribución objetivo del diseño (60-70% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~5% no pasan de preliminares). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final una o dos veces y decae. Si el simulador masivo no reproduce esa distribución, se ajustan estos pesos y la volatilidad, nunca las situaciones.
+Estos pesos están calibrados contra la distribución objetivo del diseño (~45% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~7% no pasan de preliminares, ~27% ganan al menos un primer premio, ~11% ganan 3 o más). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final y decae. Los **umbrales de nivel** (`umbralesNivel`, `42/54/60/62/68`) traducen puntuación a nivel, y un pequeño porcentaje de carreras nace como **crack** (`probabilidadCrack`/`bonusCrack`: carisma extra oculto que genera carreras legendarias). Todo se calibra con el simulador; si no reproduce la distribución, se ajustan pesos, umbrales y ruido, nunca las situaciones.
 
 Modificadores leves y legibles según la creación de personaje, para que esas primeras elecciones importen sin romper la sorpresa: edad joven suma un año de carrera, ser de Cádiz capital suma carisma base, etc. Nunca deterministas.
 
@@ -356,7 +368,7 @@ El `clamp(..., suelo, techo)` aplica a la **resolución normal**. El **batacazo*
 Con dos válvulas de escape para que haya películas:
 
 - **Batacazo** (3%): baja una fase por debajo de lo que le tocaba, pudiendo atravesar el `suelo`. Genera relato.
-- **Milagro** (2%): rompe el techo **una sola vez** en toda la carrera. El jugador nunca sabrá si ese resultado era su techo o su milagro, y eso es exactamente lo que hace rejugar.
+- **Milagro** (2% de las carreras; se sortea una sola vez al crear la partida): rompe el techo **una sola vez** en toda la carrera. El jugador nunca sabrá si ese resultado era su techo o su milagro, y eso es exactamente lo que hace rejugar.
 
 > 🔒 **El techo nunca se le muestra al jugador.** Ni durante la partida ni en la tarjeta final: si se enseña, se pierde la gracia y desaparece la duda de "¿hasta dónde podía haber llegado?", que es justo lo que hace rejugar.
 >
@@ -418,14 +430,14 @@ Dos detalles que evitan bugs feos más tarde:
     "build":   "astro build",
     "test":    "vitest run",
     "check":   "tsc -b && biome check .",
-    "simular": "tsx scripts/simular.ts 10000"   // balance del juego
+    "simular": "tsx scripts/simular.ts"   // balance del juego (n y opciones por argumento)
   }
 }
 ```
 
 Un solo comando, sin copiar bundles a mano, con hashing y cache-busting automáticos de Astro. **Deploy en Netlify**. El adapter `@astrojs/netlify` ya está configurado en `astro.config.mjs` (salida estática + función SSR on-demand para las rutas con `prerender = false`), y las dependencias `satori` y `@resvg/resvg-js` están instaladas. El catch-all de redirección se ha retirado de `netlify.toml` para no sombrear las rutas on-demand. Se mantienen `overrides` en `package.json` para forzar versiones seguras de dependencias transitivas (`sharp@^0.35.4`, `fflate@^0.8.3`) y eliminar `extract-zip` (subiendo `@netlify/functions-dev@^2.0.7`); `npm audit` queda en **0 vulnerabilidades**. La CI se integrará en Netlify o mediante GitHub Actions más adelante (ver hueco T12).
 
-`scripts/simular.ts` es la herramienta más infravalorada del proyecto: lanza 10.000 partidas con jugadores aleatorios e imprime la distribución de fases alcanzadas, cuántas veces sale cada situación, qué condicionales nunca se disparan y qué atributos se desbocan. Sin eso, el balance es a ciegas.
+El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable que juega carreras, agrega métricas y audita estados imposibles) y `scripts/simular.ts` (CLI delgada). Lanza N carreras automáticas con perfiles y configuraciones variados e imprime la distribución de fases, premios, duración, años de pico, el ranking de situaciones, los condicionales que nunca se disparan, los atributos mínimos/máximos/medios y cualquier estado imposible detectado; puede volcar el mismo informe a JSON. El banco de contenido se inyecta: mientras no exista `src/content`, la CLI usa el banco de pruebas (deuda registrada). Sin esto, el balance es a ciegas.
 
 **Tests que sí importan:**
 

@@ -225,10 +225,10 @@ Las skills viven en `.agents/skills/`. Usar la skill adecuada antes de tocar la 
 Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` por falsos positivos con la sintaxis de plantilla.
 
 <!-- SPECKIT START -->
-Plan de implementación activo: `specs/001-deterministic-engine/plan.md`
-Spec: `specs/001-deterministic-engine/spec.md`
-Investigación: `specs/001-deterministic-engine/research.md`
-Modelo de datos: `specs/001-deterministic-engine/data-model.md`
-Contrato de API: `specs/001-deterministic-engine/contracts/engine-api.md`
-Validación: `specs/001-deterministic-engine/quickstart.md`
+Plan de implementación activo: `specs/002-massive-simulation/plan.md`
+Spec: `specs/002-massive-simulation/spec.md`
+Investigación: `specs/002-massive-simulation/research.md`
+Modelo de datos: `specs/002-massive-simulation/data-model.md`
+Contratos: `specs/002-massive-simulation/contracts/cli.md`, `specs/002-massive-simulation/contracts/modulo-simulacion.md`
+Validación: `specs/002-massive-simulation/quickstart.md`
 <!-- SPECKIT END -->
