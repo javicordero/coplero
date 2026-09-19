@@ -99,26 +99,30 @@ coplero/
 │   │       └── simulacion.test.ts      # 10.000 partidas: distribuciones
 │   │
 │   ├── content/                    # ⭐ el banco, como datos
-│   │   ├── index.ts
+│   │   ├── index.ts                # ensambla + valida (bancoContenido)
 │   │   ├── schema.ts               # Zod: valida TODO en build time
-│   │   ├── modalidades.ts
+│   │   ├── modalidades.ts          # catálogos cerrados (momento, tipo, categoría…)
+│   │   ├── informe.ts              # recuentos, flags y alcanzabilidad estática
 │   │   ├── decisiones/
 │   │   │   ├── verano/
 │   │   │   │   ├── contenido.ts    # letra, música, puesta en escena
-│   │   │   │   └── personaje.ts    # dinero, grupo
+│   │   │   │   └── personaje.ts    # dinero, grupo, carrera, concurso
 │   │   │   └── febrero/
 │   │   │       ├── contenido.ts
 │   │   │       └── personaje.ts    # jurado, prensa, público
 │   │   ├── condicionales/
 │   │   │   ├── verano.ts
 │   │   │   └── febrero.ts
-│   │   ├── textos/
-│   │   │   ├── fases.ts            # "pasas / te quedas fuera"
-│   │   │   ├── premios.ts
-│   │   │   └── epilogos.ts         # cierre de carrera
-│   │   ├── nombres.ts              # apodos sugeridos, tipos de agrupación
+│   │   ├── textos/                 # (pendiente) textos de fase, premios, epílogos
+│   │   ├── nombres.ts              # (pendiente) apodos sugeridos
 │   │   └── __tests__/
-│   │       └── integridad.test.ts  # ids únicos, flags referenciadas existen…
+│   │       ├── integridad.test.ts       # ids únicos, flags referenciadas existen…
+│   │       ├── integridad-negativos.test.ts
+│   │       ├── alcanzabilidad.test.ts   # ninguna situación inalcanzable
+│   │       ├── imports.test.ts          # content no importa de engine/web
+│   │       ├── carrera.test.ts          # carrera completa con el banco real
+│   │       ├── informe.test.ts
+│   │       └── compatibilidad.test.ts   # satisface BancoContenido
 │   │
 │   ├── simulacion/                 # 🧪 balance (dev): juego masivo + informe
 │   │   ├── index.ts                # API pública del módulo
@@ -430,14 +434,15 @@ Dos detalles que evitan bugs feos más tarde:
     "build":   "astro build",
     "test":    "vitest run",
     "check":   "tsc -b && biome check .",
-    "simular": "tsx scripts/simular.ts"   // balance del juego (n y opciones por argumento)
+    "simular": "tsx scripts/simular.ts",   // balance del juego (n y opciones por argumento)
+    "contenido:informe": "tsx scripts/informe-contenido.ts"   // recuentos, flags y alcanzabilidad
   }
 }
 ```
 
 Un solo comando, sin copiar bundles a mano, con hashing y cache-busting automáticos de Astro. **Deploy en Netlify**. El adapter `@astrojs/netlify` ya está configurado en `astro.config.mjs` (salida estática + función SSR on-demand para las rutas con `prerender = false`), y las dependencias `satori` y `@resvg/resvg-js` están instaladas. El catch-all de redirección se ha retirado de `netlify.toml` para no sombrear las rutas on-demand. Se mantienen `overrides` en `package.json` para forzar versiones seguras de dependencias transitivas (`sharp@^0.35.4`, `fflate@^0.8.3`) y eliminar `extract-zip` (subiendo `@netlify/functions-dev@^2.0.7`); `npm audit` queda en **0 vulnerabilidades**. La CI se integrará en Netlify o mediante GitHub Actions más adelante (ver hueco T12).
 
-El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable que juega carreras, agrega métricas y audita estados imposibles) y `scripts/simular.ts` (CLI delgada). Lanza N carreras automáticas con perfiles y configuraciones variados e imprime la distribución de fases, premios, duración, años de pico, el ranking de situaciones, los condicionales que nunca se disparan, los atributos mínimos/máximos/medios y cualquier estado imposible detectado; puede volcar el mismo informe a JSON. El banco de contenido se inyecta: mientras no exista `src/content`, la CLI usa el banco de pruebas (deuda registrada). Sin esto, el balance es a ciegas.
+El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable que juega carreras, agrega métricas y audita estados imposibles) y `scripts/simular.ts` (CLI delgada). Lanza N carreras automáticas con perfiles y configuraciones variados e imprime la distribución de fases, premios, duración, años de pico, el ranking de situaciones, los condicionales que nunca se disparan, los atributos mínimos/máximos/medios y cualquier estado imposible detectado; puede volcar el mismo informe a JSON. Desde CONTENT-001 la CLI consume el **banco real** de `src/content` (deuda T17 cerrada). El banco se inyecta en el módulo de simulación, que no conoce de dónde procede. Además, `scripts/informe-contenido.ts` (`npm run contenido:informe`) resume recuentos, flags declaradas/referenciadas y situaciones inalcanzables, combinando análisis estático y 10.000 carreras. Sin esto, el balance es a ciegas.
 
 **Tests que sí importan:**
 

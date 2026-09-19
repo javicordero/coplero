@@ -1,7 +1,5 @@
 import { writeFileSync } from "node:fs"
-// DEUDA TEMPORAL (T036): mientras no exista el banco real de `src/content`,
-// el simulador usa el banco de pruebas del motor. Aislado aquí a propósito.
-import { bancoPrueba } from "../src/engine/__tests__/fixtures"
+import { bancoContenido } from "../src/content"
 import type { PerfilJugador } from "../src/simulacion/index"
 import {
   formatearInforme,
@@ -105,7 +103,7 @@ if (parseado === "help") {
 
 const inicio = performance.now()
 const informe = simular({
-  banco: bancoPrueba,
+  banco: bancoContenido,
   n: parseado.n,
   seedBase: parseado.seedBase,
   perfiles: parseado.perfiles,
