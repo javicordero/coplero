@@ -4,5 +4,11 @@ import { defineConfig } from "astro/config"
 
 export default defineConfig({
   integrations: [svelte()],
-  adapter: netlify(),
+  adapter: netlify({
+    devFeatures: {
+      environmentVariables: false,
+      images: true,
+      edgeFunctions: false,
+    },
+  }),
 })
