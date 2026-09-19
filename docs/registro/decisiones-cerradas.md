@@ -56,8 +56,9 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Variante mutable | Puede cambiar durante la carrera; guarda variante actual e historial | 01 §2 |
 | Filtrado del banco | Campos opcionales `modalidades` y `variantes`; ausencia = común | 01 §2 |
 | Fases COAC | 4: Preliminares (30-50), Cuartos (16), Semifinales (10), Final (4), por modalidad | 01 §3 |
-| Premios ajenos | 3: Copla para Andalucía, Aguja de oro, Candela y espino; uno de cada por año | 01 §3 |
-| Puesto | Se almacena el puesto además de la fase (umbrales top 6-7 / top 10) | 01 §3, 02 §7 |
+| Premios ajenos | 3: Copla para Andalucía, Aguja de oro, Candela y espino; se resuelven **de forma independiente** cada año (puede caer más de uno) | 01 §3 |
+| Puesto | Se almacena el puesto además de la fase; umbrales por premio (Aguja: final; Copla/Candela: semifinales) | 01 §3, 02 §7 |
+| Calibración de premios (2026-09-19) | **Azar puro** (sin afinidad por atributos/flags). Aguja de oro: final ≈21% y tramo excepcional desde semis ≈0,5% (`umbralPuestoExcepcional`/`probabilidadExcepcional`); Copla y Candela: ≈15% por aparición desde semis. Medido con 8.000 carreras: aguja 0,74/carrera, copla 1,98, candela 1,99 | 01 §3 |
 | Decisiones por año | 2: una en verano (año anterior) y una en febrero | 01 §4 |
 | Opciones por decisión | 2 normalmente, 3 en algunos casos; siempre título + subtítulo | 01 §4 |
 | Momento | Campo obligatorio `verano \| febrero`; el motor filtra por él | 01 §4 |

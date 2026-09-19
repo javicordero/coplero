@@ -35,12 +35,21 @@ export function resolverPremios(args: {
 
   const premios: Premio[] = []
   for (const def of params.premios) {
-    if (temporada.puesto > def.umbralPuesto) continue
+    let probabilidad: number
+    if (temporada.puesto <= def.umbralPuesto) {
+      probabilidad = Math.max(
+        0,
+        Math.min(1, def.probabilidadBase + afinidadDe(def, atributos, flags)),
+      )
+    } else if (
+      def.umbralPuestoExcepcional !== undefined &&
+      temporada.puesto <= def.umbralPuestoExcepcional
+    ) {
+      probabilidad = def.probabilidadExcepcional ?? 0
+    } else {
+      continue
+    }
     const rng = rngPara(seed, "premios", def.tipo, ano)
-    const probabilidad = Math.max(
-      0,
-      Math.min(1, def.probabilidadBase + afinidadDe(def, atributos, flags)),
-    )
     if (rng() < probabilidad) premios.push({ tipo: def.tipo, ano })
   }
   return premios

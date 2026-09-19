@@ -6,6 +6,12 @@ export interface DefinicionPremio {
   probabilidadBase: number
   pesosAtributos: Partial<Record<Atributo, number>>
   flagsAfinidad: Record<string, number>
+  /**
+   * Tramo excepcional: si no se alcanza `umbralPuesto` pero sí este umbral
+   * (p. ej. llegar solo a semifinales), se sortea con `probabilidadExcepcional`.
+   */
+  umbralPuestoExcepcional?: number
+  probabilidadExcepcional?: number
 }
 
 export interface ModificadoresCreacion {
@@ -84,28 +90,26 @@ export const PARAMETROS_POR_DEFECTO: ParametrosMotor = {
   premios: [
     {
       tipo: "aguja_de_oro",
-      umbralPuesto: 7,
-      probabilidadBase: 0.25,
-      pesosAtributos: { puestaEnEscena: 0.05 },
-      flagsAfinidad: { vestuario_caro: 0.3, tipo_cambiado: 0.2 },
+      umbralPuesto: 4,
+      probabilidadBase: 0.21,
+      pesosAtributos: {},
+      flagsAfinidad: {},
+      umbralPuestoExcepcional: 10,
+      probabilidadExcepcional: 0.005,
     },
     {
       tipo: "copla_para_andalucia",
       umbralPuesto: 10,
       probabilidadBase: 0.15,
-      pesosAtributos: { letra: 0.05 },
+      pesosAtributos: {},
       flagsAfinidad: {},
     },
     {
       tipo: "candela_y_espino",
       umbralPuesto: 10,
       probabilidadBase: 0.15,
-      pesosAtributos: { letra: 0.03 },
-      flagsAfinidad: {
-        tema_social: 0.3,
-        pasodoble_duro: 0.25,
-        rechazo_patrocinio: 0.2,
-      },
+      pesosAtributos: {},
+      flagsAfinidad: {},
     },
   ],
   modificadoresCreacion: {

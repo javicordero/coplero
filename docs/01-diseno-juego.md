@@ -82,15 +82,17 @@ Se otorga **uno de cada por año**, además de los premios propios del concurso,
 
 | Premio | A qué se da | Condición de acceso |
 | --- | --- | --- |
-| **Copla para Andalucía** | A la mejor letra dedicada a Andalucía del año | Normalmente entre las 6-7 mejores de su modalidad; excepcionalmente hasta el top 10 |
-| **Aguja de oro** | Al mejor disfraz o tipo del concurso | Peso alto de Puesta en escena; normalmente finalistas o top 6-7 |
-| **Candela y espino** | A la agrupación con más carga de crítica social y compromiso político | Normalmente entre las 6-7 mejores; excepcionalmente hasta el top 10 |
+| **Copla para Andalucía** | A la mejor letra dedicada a Andalucía del año | Llegar a **semifinales** o más; ~15% por aparición |
+| **Aguja de oro** | Al mejor disfraz o tipo del concurso | Llegar a la **final**; ~20-21% por final (rarísima desde semis) |
+| **Candela y espino** | A la agrupación con más carga de crítica social y compromiso político | Llegar a **semifinales** o más; ~15% por aparición |
 
-**Cómo los resuelve el motor.** Cada año, tras resolver la fase alcanzada:
+**Cómo los resuelve el motor.** Cada año, tras resolver la fase alcanzada, y de forma **independiente por premio** (**azar puro**, sin afinidad por atributos ni flags):
 
-1. Se comprueba el **umbral de clasificación** (final o top 6-7; top 10 solo con una tirada extra de baja probabilidad para Copla para Andalucía y Candela y espino).
-2. Se calcula una **afinidad** con cada premio a partir de atributos y flags: Copla para Andalucía mira Letra y flags de temática andaluza o de tierra; Aguja de oro mira Puesta en escena y flags de vestuario (`vestuario_caro`, `tipo_cambiado`); Candela y espino mira Letra y flags de crítica (`tema_social`, `pasodoble_duro`, `rechazo_patrocinio`).
-3. Entre los candidatos que pasan el umbral, se elige con el RNG ponderado por afinidad. Un mismo año se puede llevar más de uno, pero es raro.
+1. **Aguja de oro:** hay que **llegar a la final**; cada final da ~20-21% de opciones. Excepcionalmente (≈0,5%) se puede ganar llegando **solo a semifinales**.
+2. **Copla para Andalucía** y **Candela y espino:** se opta desde **semifinales**; ~15% por aparición (semifinal o final). La media ronda **2 por carrera**, pero depende de la asiduidad: quien no llega casi nunca a semis se queda a 0, y hay carreras que la ganan 5 veces.
+3. Un mismo año puede caer más de uno (son independientes).
+
+> 📌 Valores calibrados con el simulador (`src/engine/parametros.ts` → `premios`): aguja ≈0,74 por carrera; Copla ≈2,0 y Candela ≈2,0. El tramo excepcional de la aguja se define con `umbralPuestoExcepcional`/`probabilidadExcepcional`.
 
 Son uno de los mejores generadores de relato: dan algo que contar incluso en carreras que nunca ganan el concurso.
 
