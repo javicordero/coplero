@@ -1,6 +1,7 @@
 <script lang="ts">
 import { variantesDe } from "../content/index"
 import { crearJuego } from "./estado.svelte"
+import { almacenNavegador } from "./persistencia"
 import { mensajeError, MODALIDADES_INFO } from "./presentacion"
 import CrearPersonaje from "./pantallas/CrearPersonaje.svelte"
 import Decision from "./pantallas/Decision.svelte"
@@ -10,16 +11,6 @@ import ErrorPantalla from "./pantallas/Error.svelte"
 import FinCarrera from "./pantallas/FinCarrera.svelte"
 import Intro from "./pantallas/Intro.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
-
-function almacenNavegador() {
-  if (typeof localStorage !== "undefined") return localStorage
-  const memoria = new Map<string, string>()
-  return {
-    getItem: (clave: string) => memoria.get(clave) ?? null,
-    setItem: (clave: string, valor: string) => void memoria.set(clave, valor),
-    removeItem: (clave: string) => void memoria.delete(clave),
-  }
-}
 
 const juego = crearJuego(almacenNavegador())
 
@@ -46,10 +37,11 @@ function empezarDeCero() {
 >
   {#if juego.pantalla === "intro"}
     <Intro
-      hayGuardado={juego.hayGuardado}
+      estadoGuardado={juego.estadoGuardado}
       aviso={juego.aviso}
       onEmpezar={empezarDeCero}
       onContinuar={juego.continuarPartida}
+      onVerResultado={juego.continuarPartida}
     />
   {:else if juego.pantalla === "crear-personaje"}
     <CrearPersonaje onCrear={juego.crearPersonaje} />

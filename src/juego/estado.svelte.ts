@@ -16,8 +16,15 @@ import {
   siguientePaso,
   type VarianteId,
 } from "../engine/index"
-import { type Almacen, borrar, cargar, guardar } from "./persistencia"
-import { normalizarNombre } from "./presentacion"
+import {
+  type Almacen,
+  borrar,
+  estadoGuardado as calcularEstadoGuardado,
+  cargar,
+  type EstadoGuardado,
+  guardar,
+} from "./persistencia"
+import { AVISO_GUARDADO_DESCARTADO, normalizarNombre } from "./presentacion"
 
 export type Pantalla =
   | "intro"
@@ -53,7 +60,7 @@ export interface Juego {
   readonly resumen: ResumenCarrera | null
   readonly error: ErrorMotor | null
   readonly aviso: string | null
-  readonly hayGuardado: boolean
+  readonly estadoGuardado: EstadoGuardado
   readonly modalidad: Modalidad | null
   empezar(): void
   crearPersonaje(datos: DatosCreacion): void
@@ -76,8 +83,13 @@ export function crearJuego(
   let paso = $state<Paso | null>(null)
   let resumen = $state<ResumenCarrera | null>(null)
   let error = $state<ErrorMotor | null>(null)
-  let aviso = $state<string | null>(null)
-  let hayGuardado = $state(cargar(almacen).partida !== null)
+  const cargaInicial = cargar(almacen)
+  let aviso = $state<string | null>(
+    cargaInicial.descartado ? AVISO_GUARDADO_DESCARTADO : null,
+  )
+  let estadoGuardado = $state<EstadoGuardado>(
+    calcularEstadoGuardado(cargaInicial.partida),
+  )
   let personaje = $state<Personaje | null>(null)
   let modalidad = $state<Modalidad | null>(null)
   let seed = $state<string>("")
@@ -85,7 +97,7 @@ export function crearJuego(
   function persistir(): void {
     if (!partida) return
     guardar(almacen, partida)
-    hayGuardado = true
+    estadoGuardado = calcularEstadoGuardado(partida)
   }
 
   function refrescarPaso(): void {
@@ -169,19 +181,19 @@ export function crearJuego(
     personaje = null
     modalidad = null
     seed = ""
-    hayGuardado = false
+    estadoGuardado = "ninguno"
   }
 
   function continuarPartida(): void {
     const resultado = cargar(almacen)
     if (resultado.descartado) {
-      aviso = "La partida guardada no era compatible y se ha descartado."
-      hayGuardado = false
+      aviso = AVISO_GUARDADO_DESCARTADO
+      estadoGuardado = "ninguno"
       pantalla = "intro"
       return
     }
     if (!resultado.partida) {
-      aviso = null
+      estadoGuardado = "ninguno"
       pantalla = "intro"
       return
     }
@@ -210,8 +222,8 @@ export function crearJuego(
     get aviso() {
       return aviso
     },
-    get hayGuardado() {
-      return hayGuardado
+    get estadoGuardado() {
+      return estadoGuardado
     },
     get modalidad() {
       return modalidad

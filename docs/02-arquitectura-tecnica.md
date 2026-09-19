@@ -420,7 +420,7 @@ Dos detalles que evitan bugs feos más tarde:
 
 **Imagen OG.** `satori` + `resvg-js` en el endpoint edge, con la tipografía cargada desde `public/fonts`. Es lo que hace que el enlace de WhatsApp muestre la tarjeta y no un rectángulo gris: para un juego viral no es un extra, es la mitad del producto.
 
-**Persistencia local.** `localStorage` con versión de esquema. Si la versión no coincide tras un deploy que cambia el formato, se migra o se descarta con un aviso amable. Guardar en cada elección, no al final.
+**Persistencia local.** `localStorage` (sin backend) con **doble versión de esquema**: la del sobre de guardado (`VERSION_GUARDADO`, en `web`) y la de `Partida` (`VERSION_PARTIDA`, en el `engine`). Se guarda **en cada elección** y al crear la partida, nunca al final. Si una versión no coincide, o el guardado está dañado, se **elimina** y se muestra un **aviso puntual** (una sola vez) ofreciendo empezar de cero; en v1 **no hay migración**. Si el almacenamiento no está disponible (modo privado, permisos, cuota), se usa un almacén **no-op**: la carrera se juega igual, **sin aviso**, y simplemente no hay "Continuar" después. La pantalla inicial distingue **en curso** ("Continuar") de **terminada** ("Ver resultado" + "Empezar de cero"). Gana la última pestaña que guarde (sin sincronización entre pestañas).
 
 ---
 

@@ -225,10 +225,10 @@ Las skills viven en `.agents/skills/`. Usar la skill adecuada antes de tocar la 
 Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` por falsos positivos con la sintaxis de plantilla.
 
 <!-- SPECKIT START -->
-Plan de implementación activo: `specs/004-playable-ui/plan.md`
-Spec: `specs/004-playable-ui/spec.md`
-Investigación: `specs/004-playable-ui/research.md`
-Modelo de datos: `specs/004-playable-ui/data-model.md`
-Contratos: `specs/004-playable-ui/contracts/pantallas.md`, `specs/004-playable-ui/contracts/estado.md`
-Validación: `specs/004-playable-ui/quickstart.md`
+Plan de implementación activo: `specs/005-local-save/plan.md`
+Spec: `specs/005-local-save/spec.md`
+Investigación: `specs/005-local-save/research.md`
+Modelo de datos: `specs/005-local-save/data-model.md`
+Contratos: `specs/005-local-save/contracts/persistencia.md`, `specs/005-local-save/contracts/estado.md`
+Validación: `specs/005-local-save/quickstart.md`
 <!-- SPECKIT END -->
