@@ -1,13 +1,12 @@
 ---
-import GameIsland from "../components/GameIsland.svelte"
 import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout title="Coplero">
   <main>
     <h1>Coplero</h1>
-    <p>Juego de decisiones estratégicas CEO</p>
-    <GameIsland client:load />
+    <p>Juego narrativo de decisiones sobre el Carnaval de Cádiz.</p>
+    <a href="/jugar">Jugar</a>
   </main>
 </Layout>
 
@@ -20,15 +19,23 @@ import Layout from "../layouts/Layout.astro"
     min-height: 100vh;
     padding: 2rem;
     text-align: center;
+    gap: 1rem;
   }
 
   h1 {
     font-size: 3rem;
-    margin-bottom: 1rem;
   }
 
   p {
     color: #888;
-    margin-bottom: 2rem;
+  }
+
+  a {
+    padding: 0.75rem 1.5rem;
+    background: #ededed;
+    color: #0a0a0a;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
   }
 </style>

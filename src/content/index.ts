@@ -28,6 +28,7 @@ export type {
   Situacion,
   TipoDecision,
 } from "./schema"
+export * from "./variantes"
 export {
   BancoContenidoSchema,
   CondicionalSchema,
