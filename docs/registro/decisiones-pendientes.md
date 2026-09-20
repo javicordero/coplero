@@ -2,7 +2,17 @@
 
 Este documento recoge todo lo **no cerrado**. Ninguna contradicción se resuelve en silencio: aquí se deja constancia. Cuando algo se decida, se actualiza primero el documento fuente (`docs/01`–`docs/06`) y después este registro.
 
-**Todas las contradicciones C1–C13 y los huecos T1–T20 están resueltos, diferidos o fuera de alcance.** No queda ningún punto abierto que bloquee el desarrollo. Ver `decisiones-cerradas.md` para lo resuelto.
+**Las contradicciones C1–C13 y los huecos T1–T20 están resueltos, diferidos o fuera de alcance.** Quedan abiertos **C14** (endpoint OG: edge vs. Node) y **T21** (validar el OG en el deploy de Netlify), ambos pendientes del primer despliegue. Ver `decisiones-cerradas.md` para lo resuelto.
+
+---
+
+## Contradicciones abiertas
+
+### C14 · Endpoint OG "edge" (constitución/docs) frente a Function Node por `resvg-js` ⬜ Abierta (pendiente de deploy)
+
+La constitución (Principio técnico: "Imagen OG con `satori` + `resvg-js` en endpoint **edge**") y `docs/02` §10 dicen que el endpoint OG se sirve en el **edge**. Pero `@resvg/resvg-js` es un **módulo nativo (N-API)** y **no puede ejecutarse en Netlify Edge Functions** (Deno, sin N-API). La implementación real de la 007 (`src/pages/api/og/[codigo].png.ts`, `prerender = false`, adapter con `edgeFunctions: false`) usa una **Netlify Function con runtime Node**, lo cual es coherente con `resvg-js` pero contradice la documentación.
+
+No se resuelve en silencio. Queda **pendiente del primer deploy** para confirmar que el binario nativo (`@resvg/resvg-js-linux-x64-gnu`) se empaqueta y ejecuta bien en Netlify Functions. Resolución prevista: **(a)** corregir la constitución (PATCH) y `docs/02` §10 para decir "Netlify Function (runtime Node)"; o **(b)** si el runtime Node también falla, migrar a `@resvg/resvg-wasm` y entonces sí poder usar edge.
 
 ---
 
@@ -40,6 +50,14 @@ Cerrados por la calibración del 2026-09-19: **pesos del techo** (`7/3/47/6/28/9
 
 Resuelto en CONTENT-001: `scripts/simular.ts` usa `bancoContenido` de `src/content` y se retiró el import del banco de pruebas. El banco de pruebas (`src/engine/__tests__/fixtures.ts`) se conserva **solo** para los tests del motor y del módulo de simulación, que lo inyectan explícitamente.
 
+### T21 · Validar el endpoint OG (`resvg-js`) en el deploy de Netlify ⬜ Pendiente de deploy
+
+El endpoint `/api/og/[codigo].png` (OG-001, feature 007) usa `satori` + `@resvg/resvg-js`. `resvg-js` es un módulo **nativo**: el build local solo empaqueta el binario de la plataforma de compilación (aquí `@resvg/resvg-js-win32-x64-msvc`). Falta validar en **Linux x64** (imagen de build de Netlify) que se empaqueta y ejecuta `@resvg/resvg-js-linux-x64-gnu`.
+
+**RECORDATORIO EN EL PRIMER DEPLOY**: al desplegar en Netlify, comprobar `/api/og/<codigo>.png`, `?t=9x16` y `?t=1x1` (deben devolver `image/png` con la tarjeta). Señal de fallo en los logs de Functions: `Cannot find module '@resvg/resvg-js-linux-x64-gnu'` o `... *.node`. Si aparece, aplicar la **opción B** de C14 (`@resvg/resvg-wasm`) antes de dar OG-001 por cerrado. Cerrar C14 y esta tarea a la vez.
+
+> Nota: la validación real exige construir en Linux (CI de Netlify o WSL); construir en Windows no sirve porque empaqueta el binario `win32-x64`.
+
 ---
 
 ## B. Fuera de alcance (no se tiene en cuenta)
@@ -70,8 +88,8 @@ Resuelto en CONTENT-001: `scripts/simular.ts` usa `bancoContenido` de `src/conte
 - [ ] Elegir herramienta de analítica sin cookies (Plausible / Umami / Cloudflare).
 - [ ] Decidir dominio (`coplero.com` vs `coplero.es`) y registrador.
 - [ ] Preparar CMP con Consent Mode para AdSense.
-- [ ] Implementar las rutas on-demand `/r/[codigo]` y `/api/og/[codigo].png` (adapter y deps ya listos).
-- [ ] Diseñar formatos de imagen 9:16 y 1:1 y su generación.
+- [x] Rutas on-demand `/r/[codigo]` y `/api/og/[codigo].png` implementadas (feature 007). Queda **validar el OG en Netlify** (T21).
+- [x] Formatos de imagen `og` 1200×630, `9:16` 1080×1920 y `1:1` 1080×1080 implementados y su generación (feature 007).
 
 ## E. Preguntas abiertas de infraestructura
 
