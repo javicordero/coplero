@@ -333,6 +333,8 @@ Sin mutación, sin efectos secundarios, sin `Date`, sin `Math.random`. Todo el a
 
 **Nota de implementación (ENGINE-001):** el bucle anual se ordena como **decisión de verano → decisión de febrero → resolución del COAC**, con un paso adicional `continuar` para pasar del resultado de temporada al año siguiente o al fin. El resultado de la temporada se calcula con el estado previo a la decisión de febrero. El `engine` recibe el banco de contenido y los parámetros numéricos por inyección (nunca importa de `content`).
 
+**Nota de implementación (TRAYECTORIA-001 / feature 006):** la trayectoria vive en `Partida.trayectoria` (`modalidadInicial`, `varianteInicial` y `cambios[]` con año, modalidad y variante). Los cambios se disparan por campos de datos de las opciones: `Opcion.cambiaModalidad` (actualiza la modalidad y abre un paso `variante` para elegir una variante válida de la nueva modalidad) y `Opcion.cambiaVariante` (desplaza la variante vigente sin anunciarlo como mecánica). Tras un cambio, la selección de decisiones usa la modalidad y la variante vigentes. El catálogo de variantes viaja en el banco (`BancoContenido.variantes`) para que el motor valide la elección sin importar de `content`. `VERSION_PARTIDA` sube a **2** (sin migración, coherente con el guardado de 005).
+
 ---
 
 ## 8. El techo oculto
@@ -376,7 +378,7 @@ Con dos válvulas de escape para que haya películas:
 
 > 🔒 **El techo nunca se le muestra al jugador.** Ni durante la partida ni en la tarjeta final: si se enseña, se pierde la gracia y desaparece la duda de "¿hasta dónde podía haber llegado?", que es justo lo que hace rejugar.
 >
-> Lo que sí se muestra al terminar es un **resumen narrativo de la carrera**: años en activo, mejor fase alcanzada, premios, tres hitos de la trayectoria, evolución de variante y una frase de cierre. El campo `destino` existe en el estado del juego, pero es interno y no se serializa en el código de partida compartible.
+> Lo que sí se muestra al terminar es una **tarjeta final** con el resumen narrativo de la carrera: nombre/apodo, modalidad y variante iniciales, evolución de modalidad y variante, años en activo y años sin concursar, mejor fase alcanzada, primeros premios y otros premios, tres hitos narrativos (derivados de datos ya presentes en la partida) y una frase de cierre. El campo `destino` existe en el estado del juego, pero es interno y no se serializa en el código de partida compartible.
 
 ---
 

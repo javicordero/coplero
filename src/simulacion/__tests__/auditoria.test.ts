@@ -24,7 +24,7 @@ function decision(over: Partial<DecisionRegistrada> = {}): DecisionRegistrada {
 
 describe("auditarCarrera", () => {
   it("expone el catalogo completo de reglas", () => {
-    expect(REGLAS_ESTADO_IMPOSIBLE).toHaveLength(13)
+    expect(REGLAS_ESTADO_IMPOSIBLE).toHaveLength(15)
   })
 
   it("no marca nada en una carrera coherente", () => {
@@ -170,5 +170,28 @@ describe("auditarCarrera", () => {
       ],
     })
     expect(reglas(registroFalso({ partida }))).toContain("saltaCOACIncoherente")
+  })
+
+  it("detecta una trayectoria incoherente", () => {
+    const partida = partidaFalsa({
+      modalidad: "chirigotero",
+      variante: "ch_a",
+      trayectoria: {
+        modalidadInicial: "comparsista",
+        varianteInicial: "c_a",
+        cambios: [],
+      },
+    })
+    expect(reglas(registroFalso({ partida }))).toContain(
+      "trayectoriaIncoherente",
+    )
+  })
+
+  it("detecta una variante fuera del catálogo", () => {
+    const registro = registroFalso()
+    const hallazgos = auditarCarrera(registro, [
+      { id: "otra", modalidad: "comparsista" },
+    ])
+    expect(hallazgos.map((h) => h.regla)).toContain("varianteInvalida")
   })
 })

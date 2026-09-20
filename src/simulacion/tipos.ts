@@ -58,6 +58,8 @@ export type ReglaEstadoImposible =
   | "faseEnNoConcurso"
   | "composicionAnualIncorrecta"
   | "saltaCOACIncoherente"
+  | "trayectoriaIncoherente"
+  | "varianteInvalida"
 
 export interface HallazgoEstadoImposible {
   regla: ReglaEstadoImposible

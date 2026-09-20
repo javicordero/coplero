@@ -12,6 +12,7 @@ import {
   RequisitoSchema,
   SituacionSchema,
 } from "./schema"
+import { VARIANTES } from "./variantes"
 
 export * from "./informe"
 export * from "./modalidades"
@@ -46,6 +47,7 @@ export const bancoContenidoBruto: unknown = {
     ...situacionesFebreroPersonaje,
   ],
   condicionales: [...condicionalesVerano, ...condicionalesFebrero],
+  variantes: VARIANTES.map((v) => ({ id: v.id, modalidad: v.modalidad })),
 }
 
 /**

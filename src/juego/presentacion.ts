@@ -100,6 +100,9 @@ export const MODALIDADES_INFO: ModalidadInfo[] = [
   },
 ]
 
+/** Enunciado del paso de cambio de variante tras cambiar de modalidad. */
+export const TITULO_CAMBIO_VARIANTE = "Tu nueva forma de trabajar"
+
 /** Aviso puntual cuando un guardado no se pudo restaurar (FR-008). */
 export const AVISO_GUARDADO_DESCARTADO =
   "La partida guardada ya no se ha podido recuperar con esta versión. Puedes empezar una carrera nueva."
@@ -110,6 +113,8 @@ export function mensajeError(error: ErrorMotor): string {
       return "La partida guardada no es compatible con esta versión."
     case "OPCION_INVALIDA":
       return "Esa opción ya no está disponible."
+    case "VARIANTE_INVALIDA":
+      return "Esa variante ya no está disponible."
     case "CONTENIDO_INSUFICIENTE":
       return `No hay contenido disponible para ${etiquetaMomento(error.momento)} / ${etiquetaTipo(error.tipo)}.`
   }

@@ -16,5 +16,6 @@ export function construirResumen(p: Partida): ResumenCarrera {
     anosEnActivos: p.temporadas.length,
     mejorFase,
     premios: p.premios,
+    trayectoria: p.trayectoria,
   }
 }

@@ -58,6 +58,10 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Modalidades v1 | 2 jugables: Comparsista y Chirigotero | 01 §2 |
 | Variantes | 3 por modalidad, con título y subtítulo | 01 §2 |
 | Variante mutable | Puede cambiar durante la carrera; guarda variante actual e historial | 01 §2 |
+| Cambio de variante (2026-09-20) | Se produce por **situaciones normales**: la opción elegida desplaza la variante internamente, sin presentarse como mecánica al jugador; el motor registra el historial (T18; se implementa en la feature 006) | 01 §2 |
+| Cambio de modalidad (2026-09-20) | **2 situaciones de verano** (chirigotero → comparsista y comparsista → chirigotero) con 2 opciones (seguir / cambiar); al cambiar, el jugador elige una **variante de la nueva modalidad** y el motor registra el año (T19; se implementa en la feature 006) | 01 §2 |
+| Trayectoria en `Partida` (2026-09-20) | `modalidadInicial`, `varianteInicial` y `cambios[]` (año, modalidad, variante); los cambios se disparan con `Opcion.cambiaModalidad`/`Opcion.cambiaVariante`; el catálogo de variantes viaja en el banco; `VERSION_PARTIDA` sube a **2** (006) | 01 §2, 02 §7 |
+| Cambios repetibles y de baja frecuencia (2026-09-20) | Modalidad y variante pueden cambiar y **volver**; se modelan como **condicionales de baja probabilidad** (5% variante, 4% modalidad desde el año 4) para no bloquear el reciclado del pool; la selección posterior usa la modalidad/variante vigentes; el cambio de variante no se anuncia como mecánica (006) | 01 §2, 02 §7 |
 | Filtrado del banco | Campos opcionales `modalidades` y `variantes`; ausencia = común | 01 §2 |
 | Fases COAC | 4: Preliminares (30-50), Cuartos (16), Semifinales (10), Final (4), por modalidad | 01 §3 |
 | Premios ajenos | 3: Copla para Andalucía, Aguja de oro, Candela y espino; se resuelven **de forma independiente** cada año (puede caer más de uno) | 01 §3 |
@@ -83,6 +87,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Transiciones | 200-300 ms, no bloqueantes, saltables | 05 §1 |
 | Modo oscuro/claro | Detección de sistema + conmutador manual | 05 §1 |
 | Compartir v1 | PNG 9:16 y 1:1, Web Share API, OG dinámico, watermark, copia al portapapeles, código corto | 05 §2 |
+| Tarjeta final (2026-09-20) | Contrato `TarjetaFinal` generado por el motor + presentación: nombre/apodo, modalidad y variante iniciales, evolución de modalidad y variante, años en activo y sin concursar, mejor fase, primeros premios y otros, tres hitos (derivados de datos existentes) y frase de cierre. Nunca muestra datos ocultos. Alcance completo: código en URL + PNG 9:16/1:1 + OG + compartir nativo (T20; se implementa en la feature 007, que depende de la 006) | 01 §2, 02 §8 |
 | Buy Me a Coffee | Reutilizar la cuenta de acordesgaditanos con `?utm_source=coplero` | 05 §5 |
 | Analítica | Recomendada sin cookies (Plausible/Umami/Cloudflare); sin banner | 05 §7 |
 | AdSense | Exige dominio propio y CMP con Consent Mode | 05 §7, 06 |

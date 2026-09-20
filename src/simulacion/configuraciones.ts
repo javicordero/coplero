@@ -1,11 +1,11 @@
 import type { ConfiguracionPartida } from "./tipos"
 
-// Variantes provisionales hasta que exista el banco real de `content`.
+// Variantes reales del catálogo de `content` (docs/01 §2).
 export const CONFIGURACIONES_POR_DEFECTO: readonly ConfiguracionPartida[] = [
   {
     id: "comparsista",
     modalidad: "comparsista",
-    variante: "clasico",
+    variante: "clasico_comparsista",
     genero: "masculino",
     localidad: "Cádiz",
     edad: 30,
@@ -13,7 +13,7 @@ export const CONFIGURACIONES_POR_DEFECTO: readonly ConfiguracionPartida[] = [
   {
     id: "chirigotero",
     modalidad: "chirigotero",
-    variante: "clasico",
+    variante: "clasico_chirigotero",
     genero: "masculino",
     localidad: "Cádiz",
     edad: 28,
@@ -21,7 +21,7 @@ export const CONFIGURACIONES_POR_DEFECTO: readonly ConfiguracionPartida[] = [
   {
     id: "comparsista-femenino",
     modalidad: "comparsista",
-    variante: "clasico",
+    variante: "clasico_comparsista",
     genero: "femenino",
     localidad: "San Fernando",
     edad: 27,
@@ -29,7 +29,7 @@ export const CONFIGURACIONES_POR_DEFECTO: readonly ConfiguracionPartida[] = [
   {
     id: "chirigotero-no-binario",
     modalidad: "chirigotero",
-    variante: "clasico",
+    variante: "clasico_chirigotero",
     genero: "no_binario",
     localidad: "Puerto Real",
     edad: 25,

@@ -3,6 +3,7 @@ import {
   continuar,
   crearPartida,
   elegir,
+  elegirVarianteDeCambio,
   siguientePaso,
 } from "../../engine/index"
 import { CONFIGURACIONES_POR_DEFECTO } from "../../simulacion/index"
@@ -43,6 +44,19 @@ function jugar(config: (typeof CONFIGURACIONES_POR_DEFECTO)[number]) {
       partida = resultado.valor
     } else if (paso.tipo === "resultado") {
       partida = continuar(partida)
+    } else if (paso.tipo === "variante") {
+      const validas = (bancoContenido.variantes ?? []).filter(
+        (v) => v.modalidad === paso.modalidad,
+      )
+      const resultado = elegirVarianteDeCambio(
+        partida,
+        validas[0].id,
+        bancoContenido,
+      )
+      if (!resultado.ok) {
+        throw new Error(`variante inválida: ${JSON.stringify(resultado.error)}`)
+      }
+      partida = resultado.valor
     }
     pasos += 1
   }

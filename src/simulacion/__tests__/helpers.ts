@@ -39,6 +39,11 @@ export function partidaFalsa(over: Partial<Partida> = {}): Partida {
     milagroUsado: false,
     saltaTemporada: false,
     resultadoPendiente: null,
+    trayectoria: {
+      modalidadInicial: "comparsista",
+      varianteInicial: "clasico",
+      cambios: [],
+    },
     destino: {
       techo: "final",
       suelo: "preliminares",

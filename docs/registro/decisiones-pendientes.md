@@ -2,7 +2,7 @@
 
 Este documento recoge todo lo **no cerrado**. Ninguna contradicción se resuelve en silencio: aquí se deja constancia. Cuando algo se decida, se actualiza primero el documento fuente (`docs/01`–`docs/06`) y después este registro.
 
-**Todas las contradicciones C1–C13 y los huecos T1–T17 están resueltos, diferidos o fuera de alcance.** No queda ningún punto abierto que bloquee el desarrollo. Ver `decisiones-cerradas.md` para lo resuelto.
+**Todas las contradicciones C1–C13 y los huecos T1–T20 están resueltos, diferidos o fuera de alcance.** No queda ningún punto abierto que bloquee el desarrollo. Ver `decisiones-cerradas.md` para lo resuelto.
 
 ---
 

@@ -12,6 +12,9 @@ describe("resumen de carrera", () => {
     expect(resumen.anosEnActivos).toBeGreaterThan(0)
     expect(typeof resumen.mejorFase).toBe("string")
     expect(Array.isArray(resumen.premios)).toBe(true)
+    expect(resumen.trayectoria.modalidadInicial).toBe(inputPrueba.modalidad)
+    expect(resumen.trayectoria.varianteInicial).toBe(inputPrueba.variante)
+    expect(Array.isArray(resumen.trayectoria.cambios)).toBe(true)
 
     const serializado = JSON.stringify(resumen)
     expect(serializado).not.toContain("destino")

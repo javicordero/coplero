@@ -44,7 +44,7 @@ function elegirDe(candidatas: Situacion[], p: Partida): Situacion {
   const rng = rngPara(p.seed, "seleccion", p.anoActual, p.momento, p.contador)
   return elegirPonderado(
     rng,
-    candidatas.map((s) => ({ valor: s, peso: 1 })),
+    candidatas.map((s) => ({ valor: s, peso: s.peso ?? 1 })),
   )
 }
 
@@ -63,6 +63,9 @@ export function seleccionarSituacion(
       (c) =>
         c.momento === p.momento &&
         c.tipo === tipo &&
+        (!c.modalidades || c.modalidades.includes(p.modalidad)) &&
+        (!c.variantes || c.variantes.includes(p.variante)) &&
+        (c.minAno === undefined || p.anoActual - p.anoInicio + 1 >= c.minAno) &&
         requisitoCumplido(c.requiere, p) &&
         dentroDeVentana(c.requiere, p, c.ventanaAnos) &&
         noVistaPermitida(c, p),

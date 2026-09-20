@@ -26,6 +26,8 @@ export interface Opcion {
   consume?: string[]
   peso?: number
   saltaCOAC?: boolean
+  cambiaModalidad?: Modalidad
+  cambiaVariante?: string
 }
 
 export type Requisito =
@@ -54,6 +56,7 @@ export interface Situacion {
   variantes?: string[]
   minAno?: number
   unicaVez?: boolean
+  peso?: number
 }
 
 export interface Condicional extends Situacion {
@@ -64,10 +67,16 @@ export interface Condicional extends Situacion {
   prioridad?: number
 }
 
+export interface CatalogoVariante {
+  id: string
+  modalidad: Modalidad
+}
+
 export interface BancoContenido {
   situaciones: Situacion[]
   condicionales?: Condicional[]
   modalidades?: Modalidad[]
+  variantes?: CatalogoVariante[]
 }
 
 const EfectosSchema = z.strictObject({
@@ -88,6 +97,8 @@ export const OpcionSchema: z.ZodType<Opcion> = z.strictObject({
   consume: z.array(z.string().min(1)).optional(),
   peso: z.number().optional(),
   saltaCOAC: z.boolean().optional(),
+  cambiaModalidad: z.enum(MODALIDADES).optional(),
+  cambiaVariante: z.string().min(1).optional(),
 })
 
 export const RequisitoSchema: z.ZodType<Requisito> = z.lazy(() =>
@@ -130,6 +141,7 @@ const SituacionBase = z.strictObject({
   variantes: z.array(z.string().min(1)).optional(),
   minAno: z.number().int().positive().optional(),
   unicaVez: z.boolean().optional(),
+  peso: z.number().positive().optional(),
 })
 
 function comprobarIdsDeOpciones(s: Situacion, ctx: z.RefinementCtx): void {
@@ -180,6 +192,14 @@ export const BancoContenidoSchema: z.ZodType<BancoContenido> = z
     situaciones: z.array(SituacionSchema),
     condicionales: z.array(CondicionalSchema).optional(),
     modalidades: z.array(z.enum(MODALIDADES)).optional(),
+    variantes: z
+      .array(
+        z.strictObject({
+          id: z.string().min(1),
+          modalidad: z.enum(MODALIDADES),
+        }),
+      )
+      .optional(),
   })
   .superRefine((banco, ctx) => {
     const todas = [...banco.situaciones, ...(banco.condicionales ?? [])]
@@ -210,6 +230,67 @@ export const BancoContenidoSchema: z.ZodType<BancoContenido> = z
             path: ["condicionales"],
             message: `la flag referenciada "${flag}" (en "${condicional.id}") no la declara ninguna opción`,
           })
+        }
+      }
+    }
+
+    const catalogo = new Map<string, Modalidad>()
+    for (const v of banco.variantes ?? []) catalogo.set(v.id, v.modalidad)
+    const comprobarVariante = (
+      varianteId: string,
+      lugar: string,
+      modalidadesPermitidas: Modalidad[] | undefined,
+    ) => {
+      if (catalogo.size === 0) return
+      const modalidadDe = catalogo.get(varianteId)
+      if (modalidadDe === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["situaciones"],
+          message: `la variante "${varianteId}" (en ${lugar}) no está en el catálogo`,
+        })
+        return
+      }
+      if (
+        modalidadesPermitidas &&
+        !modalidadesPermitidas.includes(modalidadDe)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["situaciones"],
+          message: `la variante "${varianteId}" (en ${lugar}) no pertenece a sus modalidades`,
+        })
+      }
+    }
+
+    for (const s of todas) {
+      for (const varianteId of s.variantes ?? []) {
+        comprobarVariante(varianteId, `filtro de "${s.id}"`, s.modalidades)
+      }
+      for (const opcion of s.opciones) {
+        if (
+          opcion.cambiaModalidad !== undefined &&
+          opcion.cambiaVariante !== undefined
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["situaciones"],
+            message: `la opción "${opcion.id}" (en "${s.id}") no puede cambiar modalidad y variante a la vez`,
+          })
+        }
+        if (opcion.cambiaModalidad !== undefined && s.momento !== "verano") {
+          ctx.addIssue({
+            code: "custom",
+            path: ["situaciones"],
+            message: `la opción "${opcion.id}" (en "${s.id}") cambia de modalidad fuera de verano`,
+          })
+        }
+        if (opcion.cambiaVariante !== undefined) {
+          comprobarVariante(
+            opcion.cambiaVariante,
+            `opción "${opcion.id}" de "${s.id}"`,
+            s.modalidades,
+          )
         }
       }
     }

@@ -4,14 +4,16 @@ import type { Variante } from "../../content/index"
 let {
   variantes,
   onElegir,
+  titulo = "Elige variante",
 }: {
   variantes: Variante[]
   onElegir: (variante: string) => void
+  titulo?: string
 } = $props()
 </script>
 
 <section data-testid="variante">
-  <h2>Elige variante</h2>
+  <h2>{titulo}</h2>
   <ul>
     {#each variantes as variante (variante.id)}
       <li>

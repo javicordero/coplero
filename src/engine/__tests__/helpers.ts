@@ -1,4 +1,10 @@
-import { continuar, crearPartida, elegir, siguientePaso } from "../partida"
+import {
+  continuar,
+  crearPartida,
+  elegir,
+  elegirVarianteDeCambio,
+  siguientePaso,
+} from "../partida"
 import { rngPara } from "../seed"
 import type { BancoContenido, CrearPartidaInput, Partida, Paso } from "../types"
 
@@ -32,6 +38,22 @@ export function jugarCarrera(
     }
     if (paso.tipo === "resultado") {
       actual = continuar(actual)
+      continue
+    }
+    if (paso.tipo === "variante") {
+      const validas = (banco.variantes ?? []).filter(
+        (v) => v.modalidad === paso.modalidad,
+      )
+      if (validas.length === 0) {
+        throw new Error("sin variantes para resolver el cambio de modalidad")
+      }
+      const res = elegirVarianteDeCambio(actual, validas[0].id, banco)
+      if (!res.ok) {
+        throw new Error(
+          `elegirVarianteDeCambio con error: ${JSON.stringify(res.error)}`,
+        )
+      }
+      actual = res.valor
       continue
     }
     const opciones = paso.situacion.opciones

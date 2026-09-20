@@ -8,7 +8,7 @@ describe("informe de contenido", () => {
     const informe = construirInformeContenido(bancoContenido)
     expect(informe.situacionesPorMomento).toEqual({ verano: 18, febrero: 9 })
     expect(informe.totalSituaciones).toBe(27)
-    expect(informe.totalCondicionales).toBe(11)
+    expect(informe.totalCondicionales).toBe(15)
   })
 
   it("expone flags declaradas y referenciadas sin huérfanas", () => {

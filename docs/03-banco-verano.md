@@ -79,12 +79,18 @@ Cada año de carrera saca **una decisión de contenido y una de personaje**. Las
 | Vuelves al concurso tras el año que no fuiste | `year_sabatico` o `ano_callejero` o `ano_de_gira` | Año siguiente · 100% | **Entrar con humildad** · Un año fuera enseña — Cohesión +2 | **Entrar a saco** · Vengo a cobrarme lo mío — Popularidad +2, Cohesión -1 |
 | El músico de fuera quiere firmar la música | `musico_externo` | 2 años · 50% | **Compartir la firma** · Lo justo es lo justo — Cohesión +1, Popularidad +1 | **Negarte** · La música es de la agrupación — Cohesión -1, Música +1 |
 | El local de siempre se pone en venta | `local_de_siempre` | 3 años · 40% | **Comprarlo entre todos** · Casa propia — Dinero -4, Cohesión +3 | **Mudarse por fin** · Toca soltar — Dinero +1, Cohesión -1 |
+| El grupo debate cómo enfocar el repertorio (comparsista) | Siempre | — · 5% | **Mantener lo que funciona** · Fiel a la tradición → variante clásica | **Darle una vuelta / Cambiar sin perder la esencia** → nueva escuela / evolución con raíces |
+| El grupo quiere reírse de otra manera (chirigotero) | Siempre | — · 5% | **Seguir con el humor de siempre** → variante clásica | **Apoyarse en el gesto / No salirse del personaje** → lolosedismo / interpretar el personaje |
+| La modalidad se te queda pequeña (chirigotero → comparsista) | Siempre (desde el año 4) | — · 4% | **Seguir con la chirigota** · Cohesión +1 | **Dar el salto a la comparsa** · Popularidad +1, Cohesión -1 → cambio de modalidad y elección de variante |
+| La modalidad se te queda pequeña (comparsista → chirigotero) | Siempre (desde el año 4) | — · 4% | **Seguir con la comparsa** · Cohesión +1 | **Dar el salto a la chirigota** · Popularidad +1, Cohesión -1 → cambio de modalidad y elección de variante |
 
 ---
 
 ## Pendiente de este bloque
 
 > ✅ Importado en CONTENT-001 a `src/content/decisiones/verano/` y `src/content/condicionales/verano.ts` (18 situaciones + 7 condicionales), con `unicaVez: true` y `texto` vacío.
+>
+> ✅ TRAYECTORIA-001 (006) añade 4 condicionales de trayectoria (`cv_enfoque_*` y `cv_salto_*`): repetibles, de baja frecuencia y sin bloqueo del reciclado del pool. Los `cv_enfoque_*` cambian la variante por dentro; los `cv_salto_*` cambian de modalidad y abren la elección de la nueva variante. Ver `docs/01` §2 y `docs/02` §7.
 
 - [ ] Ampliar el pool base de verano a 30-40 situaciones (mitad del objetivo total de 60-80).
 - [ ] Marcar qué situaciones son exclusivas de comparsista o de chirigotero con el campo `modalidades`.

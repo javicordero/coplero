@@ -30,6 +30,7 @@ export {
   continuar,
   crearPartida,
   elegir,
+  elegirVarianteDeCambio,
   resumen,
   siguientePaso,
 } from "./partida"
@@ -49,4 +50,9 @@ export {
   toPublica,
 } from "./selector"
 export { deserializar, serializar } from "./serializar"
+export {
+  crearTrayectoria,
+  registrarCambio,
+  variantePertenece,
+} from "./trayectoria"
 export * from "./types"

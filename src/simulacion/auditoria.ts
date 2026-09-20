@@ -1,4 +1,4 @@
-import type { FaseCOAC, Modalidad } from "../engine/index"
+import type { CatalogoVariante, FaseCOAC, Modalidad } from "../engine/index"
 import { ATRIBUTO_MAX, ATRIBUTO_MIN } from "../engine/index"
 import { mejorFaseDe } from "./comun"
 import type {
@@ -21,6 +21,8 @@ export const REGLAS_ESTADO_IMPOSIBLE: readonly ReglaEstadoImposible[] = [
   "faseEnNoConcurso",
   "composicionAnualIncorrecta",
   "saltaCOACIncoherente",
+  "trayectoriaIncoherente",
+  "varianteInvalida",
 ] as const
 
 const BANDAS: Record<FaseCOAC, readonly [number, number]> = {
@@ -34,6 +36,7 @@ const MODALIDADES: readonly Modalidad[] = ["comparsista", "chirigotero"]
 
 export function auditarCarrera(
   registro: RegistroCarrera,
+  catalogoVariantes?: readonly CatalogoVariante[],
 ): HallazgoEstadoImposible[] {
   const p = registro.partida
   const hallazgos: HallazgoEstadoImposible[] = []
@@ -110,6 +113,51 @@ export function auditarCarrera(
     add("modalidadVarianteInvalida", `modalidad=${p.modalidad}`)
   }
   if (!p.variante) add("modalidadVarianteInvalida", "variante vacia")
+
+  const catalogo = catalogoVariantes ?? []
+  const enCatalogo = (variante: string, modalidad: Modalidad) =>
+    catalogo.some((v) => v.id === variante && v.modalidad === modalidad)
+  // Mientras se elige la variante, el valor vigente es el antiguo (aún no válido).
+  if (catalogo.length > 0 && p.fase !== "variante") {
+    if (!enCatalogo(p.variante, p.modalidad)) {
+      add("varianteInvalida", `${p.variante}@${p.modalidad}`)
+    }
+    for (const cambio of p.trayectoria.cambios) {
+      if (!enCatalogo(cambio.variante, cambio.modalidad)) {
+        add(
+          "varianteInvalida",
+          `cambio ${cambio.variante}@${cambio.modalidad}(${cambio.ano})`,
+        )
+      }
+    }
+  }
+
+  const cambios = p.trayectoria.cambios
+  if (cambios.length === 0) {
+    if (
+      p.modalidad !== p.trayectoria.modalidadInicial ||
+      p.variante !== p.trayectoria.varianteInicial
+    ) {
+      add(
+        "trayectoriaIncoherente",
+        "sin cambios pero estado distinto del inicial",
+      )
+    }
+  } else {
+    const ultimo = cambios[cambios.length - 1]
+    if (ultimo.modalidad !== p.modalidad || ultimo.variante !== p.variante) {
+      add(
+        "trayectoriaIncoherente",
+        `ultimo ${ultimo.modalidad}/${ultimo.variante} != ${p.modalidad}/${p.variante}`,
+      )
+    }
+    for (let i = 1; i < cambios.length; i++) {
+      if (cambios[i].ano < cambios[i - 1].ano) {
+        add("trayectoriaIncoherente", `anos desordenados en pos ${i}`)
+        break
+      }
+    }
+  }
 
   const porAno = new Map<number, typeof registro.decisiones>()
   for (const d of registro.decisiones) {

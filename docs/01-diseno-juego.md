@@ -59,9 +59,13 @@ Tras crear el personaje se elige **una de las 2 modalidades** jugables. Cada mod
 
 ### La variante puede cambiar durante la carrera
 
-La variante inicial **no es fija**. Determinadas decisiones desplazan al personaje de una variante a otra (un clásico que apuesta año tras año por músicos de fuera y cierres corales acaba siendo de nueva escuela). El motor guarda la variante actual y el historial de cambios, y la tarjeta final lo narra: *"empezaste como clásico y acabaste siendo un renovador"*.
+La variante inicial **no es fija**. El cambio se produce a través de **situaciones normales**: para el jugador son una decisión más, pero internamente la opción elegida desplaza la variante (un clásico que apuesta año tras año por músicos de fuera y cierres corales acaba siendo de nueva escuela). El motor guarda la variante actual y el historial de cambios, y la tarjeta final lo narra: *"empezaste como clásico y acabaste siendo un renovador"*.
 
-En la misma línea, se contempla como ampliación **compaginar las dos modalidades** en años distintos (probar suerte de comparsista tras años de chirigotero o al revés), y más adelante añadir **corista** y **cuartetero** como modalidades jugables.
+### La modalidad puede cambiarse a mitad de carrera
+
+Existen **2 situaciones de verano** —una para chirigotero → comparsista y otra para comparsista → chirigotero— con **2 opciones** cada una: seguir con la modalidad actual o cambiarla. Si el jugador decide cambiar, a continuación elige una **variante de la nueva modalidad** antes de seguir, y el motor registra el cambio con su año. La tarjeta final muestra la modalidad inicial y el cambio si lo hubo.
+
+En la misma línea, se contempla como ampliación futura añadir **corista** y **cuartetero** como modalidades jugables.
 
 ---
 

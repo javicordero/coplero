@@ -1,6 +1,53 @@
 import { describe, expect, it } from "vitest"
+import type { BancoContenido } from "../../engine/index"
 import { crearJuego } from "../estado.svelte"
 import { type Almacen, CLAVE_GUARDADO } from "../persistencia"
+
+function bancoConCambio(): BancoContenido {
+  const opciones = [
+    { id: "seguir", titulo: "Seguir", subtitulo: "x" },
+    {
+      id: "cambiar",
+      titulo: "Cambiar",
+      subtitulo: "x",
+      cambiaModalidad: "chirigotero" as const,
+    },
+  ]
+  const verano = (id: string, tipo: "contenido" | "personaje") => ({
+    id,
+    momento: "verano" as const,
+    tipo,
+    categoria: "carrera" as const,
+    titulo: "Salto",
+    texto: "",
+    modalidades: ["comparsista" as const],
+    opciones,
+  })
+  const febrero = (id: string, tipo: "contenido" | "personaje") => ({
+    id,
+    momento: "febrero" as const,
+    tipo,
+    categoria: "concurso" as const,
+    titulo: "Concurso",
+    texto: "",
+    opciones: [
+      { id: "a", titulo: "A", subtitulo: "a" },
+      { id: "b", titulo: "B", subtitulo: "b" },
+    ],
+  })
+  return {
+    situaciones: [
+      verano("v_c", "contenido"),
+      verano("v_p", "personaje"),
+      febrero("f_c", "contenido"),
+      febrero("f_p", "personaje"),
+    ],
+    variantes: [
+      { id: "c_a", modalidad: "comparsista" },
+      { id: "ch_a", modalidad: "chirigotero" },
+    ],
+  }
+}
 
 function almacenMemoria(): Almacen {
   const mapa = new Map<string, string>()
@@ -160,5 +207,60 @@ describe("estado del juego", () => {
     iniciar(juego, "Sin guardar")
     expect(juego.pantalla).toBe("decision")
     expect(juego.error).toBeNull()
+  })
+
+  it("el cambio de modalidad abre la pantalla de cambio de variante", () => {
+    const juego = crearJuego(almacenMemoria(), {
+      generarSeed: () => "seed-cambio",
+      banco: bancoConCambio(),
+    })
+    juego.empezar()
+    juego.crearPersonaje(datos("El Chato"))
+    juego.elegirModalidad("comparsista")
+    juego.elegirVariante("c_a")
+    expect(juego.pantalla).toBe("decision")
+
+    juego.elegirOpcion("cambiar")
+    expect(juego.pantalla).toBe("cambio-variante")
+    expect(juego.paso?.tipo).toBe("variante")
+    expect(juego.partida?.modalidad).toBe("chirigotero")
+    expect(juego.partida?.trayectoria.cambios).toHaveLength(0)
+
+    juego.elegirVarianteCambio("ch_a")
+    expect(juego.pantalla).toBe("decision")
+    expect(juego.partida?.variante).toBe("ch_a")
+    expect(juego.partida?.trayectoria.cambios).toHaveLength(1)
+    expect(juego.error).toBeNull()
+  })
+
+  it("guarda y restaura en medio del cambio de variante", () => {
+    const almacen = almacenMemoria()
+    const juego = crearJuego(almacen, {
+      generarSeed: () => "seed-cambio",
+      banco: bancoConCambio(),
+    })
+    juego.empezar()
+    juego.crearPersonaje(datos("El Chato"))
+    juego.elegirModalidad("comparsista")
+    juego.elegirVariante("c_a")
+    juego.elegirOpcion("cambiar")
+    expect(juego.pantalla).toBe("cambio-variante")
+
+    const restaurado = crearJuego(almacen, {
+      generarSeed: () => "otra-seed",
+      banco: bancoConCambio(),
+    })
+    restaurado.continuarPartida()
+    expect(restaurado.pantalla).toBe("cambio-variante")
+    expect(restaurado.partida?.modalidad).toBe("chirigotero")
+
+    restaurado.elegirVarianteCambio("ch_a")
+    expect(restaurado.partida?.trayectoria.cambios).toEqual([
+      {
+        ano: restaurado.partida?.anoActual,
+        modalidad: "chirigotero",
+        variante: "ch_a",
+      },
+    ])
   })
 })

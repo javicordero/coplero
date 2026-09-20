@@ -39,7 +39,7 @@ export type Modalidad = "comparsista" | "chirigotero"
 export type VarianteId = string
 
 export type FaseCOAC = "preliminares" | "cuartos" | "semifinales" | "final"
-export type FasePartida = "creacion" | "decision" | "coac" | "fin"
+export type FasePartida = "creacion" | "decision" | "variante" | "coac" | "fin"
 
 export const FASES_COAC: readonly FaseCOAC[] = [
   "preliminares",
@@ -82,6 +82,10 @@ export interface Opcion {
   consume?: string[]
   peso?: number
   saltaCOAC?: boolean
+  /** Efecto interno: cambia la modalidad vigente y abre la elección de variante. */
+  cambiaModalidad?: Modalidad
+  /** Efecto interno: desplaza la variante vigente sin mostrarlo como mecánica. */
+  cambiaVariante?: VarianteId
 }
 
 export interface Situacion {
@@ -96,6 +100,8 @@ export interface Situacion {
   variantes?: VarianteId[]
   minAno?: number
   unicaVez?: boolean
+  /** Peso relativo para la selección; ausente equivale a 1. */
+  peso?: number
 }
 
 export type Requisito =
@@ -120,10 +126,17 @@ export interface Condicional extends Situacion {
   prioridad?: number
 }
 
+export interface CatalogoVariante {
+  id: VarianteId
+  modalidad: Modalidad
+}
+
 export interface BancoContenido {
   situaciones: Situacion[]
   condicionales?: Condicional[]
   modalidades?: Modalidad[]
+  /** Catálogo de variantes válidas; permite al motor validar la elección tras un cambio. */
+  variantes?: CatalogoVariante[]
 }
 
 export interface Flag {
@@ -171,6 +184,20 @@ export interface Destino {
   milagro: boolean
 }
 
+/** Estado resultante tras un cambio de modalidad o variante. */
+export interface CambioTrayectoria {
+  ano: number
+  modalidad: Modalidad
+  variante: VarianteId
+}
+
+/** Recorrido de la carrera en cuanto a modalidad y variante. */
+export interface Trayectoria {
+  modalidadInicial: Modalidad
+  varianteInicial: VarianteId
+  cambios: CambioTrayectoria[]
+}
+
 export interface ResultadoTemporada {
   fase: FaseCOAC
   puesto: number
@@ -201,6 +228,7 @@ export interface Partida {
   milagroUsado: boolean
   saltaTemporada: boolean
   resultadoPendiente: ResultadoTemporada | null
+  trayectoria: Trayectoria
   destino: Destino
 }
 
@@ -236,10 +264,12 @@ export interface ResumenCarrera {
   anosEnActivos: number
   mejorFase: FaseCOAC
   premios: Premio[]
+  trayectoria: Trayectoria
 }
 
 export type Paso =
   | { tipo: "decision"; momento: Momento; situacion: SituacionPublica }
+  | { tipo: "variante"; modalidad: Modalidad }
   | { tipo: "resultado"; temporada: Temporada }
   | { tipo: "fin"; resumen: ResumenCarrera }
   | { tipo: "error"; error: ErrorMotor }
@@ -251,9 +281,10 @@ export type ErrorMotor =
       versionEsperada: number
     }
   | { codigo: "OPCION_INVALIDA"; opcionId: string }
+  | { codigo: "VARIANTE_INVALIDA"; varianteId: VarianteId }
   | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento; tipo: TipoDecision }
 
 export type Resultado<T, E> = { ok: true; valor: T } | { ok: false; error: E }
 
-export const VERSION_PARTIDA = 1
+export const VERSION_PARTIDA = 2
 export const ANO_BASE = 1

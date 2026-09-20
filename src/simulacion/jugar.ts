@@ -9,6 +9,7 @@ import {
   continuar,
   crearPartida,
   elegir,
+  elegirVarianteDeCambio,
   rngPara,
   siguientePaso,
 } from "../engine/index"
@@ -64,6 +65,24 @@ export function jugarCarrera(args: {
       }
       if (paso.tipo === "resultado") {
         p = continuar(p)
+        continue
+      }
+      if (paso.tipo === "variante") {
+        const opciones = (banco.variantes ?? []).filter(
+          (v) => v.modalidad === paso.modalidad,
+        )
+        if (opciones.length === 0) {
+          anotarError(errores, "VARIANTE_INVALIDA")
+          break
+        }
+        const rngVariante = rngPara(p.seed, "variante-cambio", p.contador)
+        const elegida = opciones[Math.floor(rngVariante() * opciones.length)]
+        const resVariante = elegirVarianteDeCambio(p, elegida.id, banco)
+        if (!resVariante.ok) {
+          anotarError(errores, resVariante.error.codigo)
+          break
+        }
+        p = resVariante.valor
         continue
       }
 
@@ -124,6 +143,6 @@ export function jugarCarrera(args: {
     anoPico: p.destino.anoPico,
     hallazgos: [],
   }
-  registro.hallazgos = auditarCarrera(registro)
+  registro.hallazgos = auditarCarrera(registro, banco.variantes)
   return registro
 }

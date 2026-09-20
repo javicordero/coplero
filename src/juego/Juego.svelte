@@ -2,7 +2,11 @@
 import { variantesDe } from "../content/index"
 import { crearJuego } from "./estado.svelte"
 import { almacenNavegador } from "./persistencia"
-import { mensajeError, MODALIDADES_INFO } from "./presentacion"
+import {
+  mensajeError,
+  MODALIDADES_INFO,
+  TITULO_CAMBIO_VARIANTE,
+} from "./presentacion"
 import CrearPersonaje from "./pantallas/CrearPersonaje.svelte"
 import Decision from "./pantallas/Decision.svelte"
 import ElegirModalidad from "./pantallas/ElegirModalidad.svelte"
@@ -54,6 +58,12 @@ function empezarDeCero() {
     <ElegirVariante
       variantes={variantesDe(juego.modalidad ?? "comparsista")}
       onElegir={juego.elegirVariante}
+    />
+  {:else if juego.pantalla === "cambio-variante" && juego.paso?.tipo === "variante"}
+    <ElegirVariante
+      titulo={TITULO_CAMBIO_VARIANTE}
+      variantes={variantesDe(juego.paso.modalidad)}
+      onElegir={juego.elegirVarianteCambio}
     />
   {:else if juego.pantalla === "decision" && juego.paso?.tipo === "decision" && indicadorDecision}
     <Decision

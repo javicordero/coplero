@@ -116,13 +116,13 @@ describe("integridad del banco real", () => {
     }
   })
 
-  it("el recuento documentado es el esperado (18/9/11)", () => {
+  it("el recuento documentado es el esperado (18/9/15)", () => {
     expect(contarSituacionesPorMomento(bancoContenido)).toEqual({
       verano: 18,
       febrero: 9,
     })
     expect(bancoContenido.situaciones.length).toBe(27)
-    expect(bancoContenido.condicionales?.length).toBe(11)
+    expect(bancoContenido.condicionales?.length).toBe(15)
   })
 
   it("no hay situaciones estáticamente inalcanzables", () => {
@@ -132,5 +132,68 @@ describe("integridad del banco real", () => {
   it("las flags declaradas y referenciadas se exponen en el informe", () => {
     expect(flagsDeclaradas(bancoContenido).length).toBeGreaterThan(0)
     expect(flagsReferenciadas(bancoContenido).length).toBeGreaterThan(0)
+  })
+})
+
+describe("trayectoria: situaciones de cambio", () => {
+  const buscar = (id: string) => TODAS.find((s) => s.id === id)
+
+  it("el cambio de modalidad es de verano, con 2 opciones y filtrado por modalidad", () => {
+    const aComparsista = buscar("cv_salto_a_comparsista")
+    expect(aComparsista?.momento).toBe("verano")
+    expect(aComparsista?.modalidades).toEqual(["chirigotero"])
+    expect(aComparsista?.opciones).toHaveLength(2)
+    expect(
+      aComparsista?.opciones.some((o) => o.cambiaModalidad === "comparsista"),
+    ).toBe(true)
+    expect(aComparsista?.unicaVez).toBe(false)
+
+    const aChirigotero = buscar("cv_salto_a_chirigotero")
+    expect(aChirigotero?.momento).toBe("verano")
+    expect(aChirigotero?.modalidades).toEqual(["comparsista"])
+    expect(aChirigotero?.opciones).toHaveLength(2)
+    expect(
+      aChirigotero?.opciones.some((o) => o.cambiaModalidad === "chirigotero"),
+    ).toBe(true)
+    expect(aChirigotero?.unicaVez).toBe(false)
+  })
+
+  it("el cambio de variante es de verano, repetible y sin filtro de variante", () => {
+    for (const id of ["cv_enfoque_comparsista", "cv_enfoque_chirigotero"]) {
+      const s = buscar(id)
+      expect(s?.momento).toBe("verano")
+      expect(s?.unicaVez).toBe(false)
+      expect(s?.variantes).toBeUndefined()
+      expect(s?.modalidades).toHaveLength(1)
+      const cambian = s?.opciones.filter((o) => o.cambiaVariante) ?? []
+      expect(cambian.length).toBeGreaterThanOrEqual(2)
+    }
+  })
+
+  it("los cambios de variante apuntan a variantes de su propia modalidad", () => {
+    const catalogo = new Map(
+      (bancoContenido.variantes ?? []).map((v) => [v.id, v.modalidad]),
+    )
+    for (const s of TODAS) {
+      for (const o of s.opciones) {
+        if (!o.cambiaVariante) continue
+        const modalidad = catalogo.get(o.cambiaVariante)
+        expect(modalidad).toBeDefined()
+        expect(o.cambiaModalidad).toBeUndefined()
+        expect(s.modalidades ?? []).toContain(modalidad)
+      }
+    }
+  })
+
+  it("ninguna opción cambia de modalidad fuera de verano", () => {
+    for (const s of TODAS) {
+      for (const o of s.opciones) {
+        if (o.cambiaModalidad) expect(s.momento).toBe("verano")
+      }
+    }
+  })
+
+  it("el catálogo de variantes del banco cubre las 6 variantes", () => {
+    expect(bancoContenido.variantes).toHaveLength(6)
   })
 })

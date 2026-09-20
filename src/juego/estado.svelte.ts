@@ -1,12 +1,14 @@
 // Estado reactivo de la isla. Envuelve el motor: no contiene reglas de juego.
 // Fábrica (sin estado de módulo) para no filtrar partidas entre peticiones SSR.
 
-import { bancoContenido } from "../content/index"
+import { bancoContenido as bancoReal } from "../content/index"
 import {
+  type BancoContenido,
   continuar as continuarMotor,
   crearPartida,
   type ErrorMotor,
   elegir,
+  elegirVarianteDeCambio,
   type Genero,
   type Modalidad,
   type Partida,
@@ -31,6 +33,7 @@ export type Pantalla =
   | "crear-personaje"
   | "modalidad"
   | "variante"
+  | "cambio-variante"
   | "decision"
   | "resultado"
   | "fin"
@@ -45,6 +48,8 @@ export interface DatosCreacion {
 
 export interface OpcionesJuego {
   generarSeed?: () => string
+  /** Banco inyectable para tests; por defecto, el banco real de `content`. */
+  banco?: BancoContenido
 }
 
 function seedPorDefecto(): string {
@@ -67,6 +72,7 @@ export interface Juego {
   elegirModalidad(modalidad: Modalidad): void
   elegirVariante(variante: VarianteId): void
   elegirOpcion(opcionId: string): void
+  elegirVarianteCambio(variante: VarianteId): void
   continuar(): void
   reiniciar(): void
   continuarPartida(): void
@@ -77,6 +83,7 @@ export function crearJuego(
   opciones: OpcionesJuego = {},
 ): Juego {
   const generarSeed = opciones.generarSeed ?? seedPorDefecto
+  const banco = opciones.banco ?? bancoReal
 
   let pantalla = $state<Pantalla>("intro")
   let partida = $state<Partida | null>(null)
@@ -102,7 +109,7 @@ export function crearJuego(
 
   function refrescarPaso(): void {
     if (!partida) return
-    const siguiente = siguientePaso(partida, bancoContenido)
+    const siguiente = siguientePaso(partida, banco)
     paso = siguiente
     if (siguiente.tipo === "error") {
       error = siguiente.error
@@ -112,6 +119,10 @@ export function crearJuego(
     if (siguiente.tipo === "fin") {
       resumen = siguiente.resumen
       pantalla = "fin"
+      return
+    }
+    if (siguiente.tipo === "variante") {
+      pantalla = "cambio-variante"
       return
     }
     pantalla = siguiente.tipo === "resultado" ? "resultado" : "decision"
@@ -142,17 +153,27 @@ export function crearJuego(
 
   function elegirVariante(variante: VarianteId): void {
     if (!personaje || !modalidad) return
-    partida = crearPartida(
-      { seed, personaje, modalidad, variante },
-      bancoContenido,
-    )
+    partida = crearPartida({ seed, personaje, modalidad, variante }, banco)
     refrescarPaso()
     persistir()
   }
 
   function elegirOpcion(opcionId: string): void {
     if (!partida || paso?.tipo !== "decision") return
-    const resultado = elegir(partida, opcionId, bancoContenido)
+    const resultado = elegir(partida, opcionId, banco)
+    if (!resultado.ok) {
+      error = resultado.error
+      pantalla = "error"
+      return
+    }
+    partida = resultado.valor
+    refrescarPaso()
+    persistir()
+  }
+
+  function elegirVarianteCambio(varianteId: VarianteId): void {
+    if (!partida || paso?.tipo !== "variante") return
+    const resultado = elegirVarianteDeCambio(partida, varianteId, banco)
     if (!resultado.ok) {
       error = resultado.error
       pantalla = "error"
@@ -233,6 +254,7 @@ export function crearJuego(
     elegirModalidad,
     elegirVariante,
     elegirOpcion,
+    elegirVarianteCambio,
     continuar,
     reiniciar,
     continuarPartida,

@@ -8,6 +8,11 @@ import { resolverPremios } from "./premios"
 import { construirResumen } from "./resumen"
 import { rngPara } from "./seed"
 import { seleccionarSituacion, tipoActual, toPublica } from "./selector"
+import {
+  crearTrayectoria,
+  registrarCambio,
+  variantePertenece,
+} from "./trayectoria"
 import type {
   Atributos,
   BancoContenido,
@@ -21,6 +26,7 @@ import type {
   Resultado,
   ResultadoTemporada,
   Temporada,
+  VarianteId,
 } from "./types"
 import { ANO_BASE, VERSION_PARTIDA } from "./types"
 
@@ -62,6 +68,7 @@ export function crearPartida(
     milagroUsado: false,
     saltaTemporada: false,
     resultadoPendiente: null,
+    trayectoria: crearTrayectoria(input.modalidad, input.variante),
     destino: generarDestino(input.seed, input.personaje, params),
   }
 }
@@ -69,6 +76,9 @@ export function crearPartida(
 export function siguientePaso(p: Partida, banco: BancoContenido): Paso {
   if (p.fase === "fin") {
     return { tipo: "fin", resumen: construirResumen(p) }
+  }
+  if (p.fase === "variante") {
+    return { tipo: "variante", modalidad: p.modalidad }
   }
   if (p.fase === "coac") {
     const temporada = p.temporadas[p.temporadas.length - 1]
@@ -130,6 +140,19 @@ export function elegir(
 
   const ano = p.anoActual
   const momento = p.momento
+  const cambiaModalidad =
+    momento === "verano" &&
+    opcion.cambiaModalidad !== undefined &&
+    opcion.cambiaModalidad !== p.modalidad
+      ? opcion.cambiaModalidad
+      : undefined
+  const cambiaVariante =
+    cambiaModalidad === undefined &&
+    opcion.cambiaVariante !== undefined &&
+    opcion.cambiaVariante !== p.variante &&
+    variantePertenece(banco.variantes, p.modalidad, opcion.cambiaVariante)
+      ? opcion.cambiaVariante
+      : undefined
   const atributos = aplicarEfectos(p.atributos, opcion.efectos)
   let flags = actualizarFlags(p.flags, opcion, ano)
   const esCondicional = "requiere" in situacion
@@ -201,6 +224,9 @@ export function elegir(
       }
     }
     momentoNuevo = "febrero"
+    if (cambiaModalidad !== undefined) {
+      fase = "variante"
+    }
   } else {
     const base: ResultadoTemporada = resultadoPendiente ?? {
       fase: "preliminares",
@@ -229,6 +255,8 @@ export function elegir(
     ok: true,
     valor: {
       ...p,
+      modalidad: cambiaModalidad ?? p.modalidad,
+      variante: cambiaVariante ?? p.variante,
       atributos,
       flags,
       vistas,
@@ -241,6 +269,44 @@ export function elegir(
       milagroUsado,
       saltaTemporada,
       resultadoPendiente,
+      trayectoria: cambiaVariante
+        ? registrarCambio(p.trayectoria, p.modalidad, cambiaVariante, ano)
+        : p.trayectoria,
+      contador: p.contador + 1,
+    },
+  }
+}
+
+/**
+ * Resuelve la elección de variante abierta tras un cambio de modalidad.
+ * Valida que la variante pertenezca a la modalidad vigente.
+ */
+export function elegirVarianteDeCambio(
+  p: Partida,
+  varianteId: VarianteId,
+  banco: BancoContenido,
+): Resultado<Partida, ErrorMotor> {
+  if (p.fase !== "variante") {
+    return {
+      ok: false,
+      error: { codigo: "OPCION_INVALIDA", opcionId: varianteId },
+    }
+  }
+  if (!variantePertenece(banco.variantes, p.modalidad, varianteId)) {
+    return { ok: false, error: { codigo: "VARIANTE_INVALIDA", varianteId } }
+  }
+  return {
+    ok: true,
+    valor: {
+      ...p,
+      variante: varianteId,
+      trayectoria: registrarCambio(
+        p.trayectoria,
+        p.modalidad,
+        varianteId,
+        p.anoActual,
+      ),
+      fase: "decision",
       contador: p.contador + 1,
     },
   }
