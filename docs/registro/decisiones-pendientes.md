@@ -2,7 +2,7 @@
 
 Este documento recoge todo lo **no cerrado**. Ninguna contradicción se resuelve en silencio: aquí se deja constancia. Cuando algo se decida, se actualiza primero el documento fuente (`docs/01`–`docs/06`) y después este registro.
 
-**Las contradicciones C1–C13 y los huecos T1–T20 están resueltos, diferidos o fuera de alcance.** Quedan abiertos **C14** (endpoint OG: edge vs. Node) y **T21** (validar el OG en el deploy de Netlify), ambos pendientes del primer despliegue. Ver `decisiones-cerradas.md` para lo resuelto.
+**Las contradicciones C1–C13 y C15 y los huecos T1–T20 están resueltos, diferidos o fuera de alcance.** Quedan abiertos **C14** (endpoint OG: edge vs. Node) y **T21** (validar el OG en el deploy de Netlify). Ver `decisiones-cerradas.md` para lo resuelto.
 
 ---
 
@@ -14,8 +14,6 @@ La constitución (Principio técnico: "Imagen OG con `satori` + `resvg-js` en en
 
 No se resuelve en silencio. Queda **pendiente del primer deploy** para confirmar que el binario nativo (`@resvg/resvg-js-linux-x64-gnu`) se empaqueta y ejecuta bien en Netlify Functions. Resolución prevista: **(a)** corregir la constitución (PATCH) y `docs/02` §10 para decir "Netlify Function (runtime Node)"; o **(b)** si el runtime Node también falla, migrar a `@resvg/resvg-wasm` y entonces sí poder usar edge.
 
----
-
 ## Contradicciones resueltas
 
 ### C12 · "Primer premio": techo de 6 niveles frente al objetivo de 20-25% ✅ Resuelta
@@ -25,6 +23,12 @@ No se resuelve en silencio. Queda **pendiente del primer deploy** para confirmar
 ### C13 · "tema_social dos años seguidos" frente a `unicaVez: true` ✅ Resuelta
 
 `docs/03` pide `tema_social` **dos años seguidos** para el condicional "El público espera otra vez tu registro social", pero la clarificación Q2 de CONTENT-001 marca todas las situaciones con `unicaVez: true`: la situación que concede la flag (`v_letra_tema`) no se repite en años consecutivos, así que `flagRepetida` con `consecutivos: true` sería **inalcanzable**. **Decisión confirmada por diseño:** modelar el requisito como `flagRepetida` `veces: 2` **sin** exigir consecutivos ("el tema ha vuelto"), que sí es alcanzable. La regla de repetición queda: una situación **no** sale dos años seguidos, pero puede volver más tarde (reciclado); las flags se acumulan aunque no en años consecutivos.
+
+### C15 · "Las decisiones no afectan al resultado" frente al modelo de atributos ✅ Resuelta (2026-09-20)
+
+Diseño: las decisiones **no afectan al resultado**; lo fijan el `destino` oculto y el azar. Los **atributos parten de un valor estándar** y solo cambian por **excepciones declaradas** (unas pocas, con intercambio visible). Implementado en la feature **008**: se añadió `Opcion.excepcion` (regla Zod `efectos` ⇔ `excepcion`), se retiraron **los 80 `efectos`** del banco (quedan 4 opciones excepción en 2 situaciones) y se **recalibró** solo con parámetros, **sin tocar `coac.ts` ni las situaciones**.
+
+Calibración final (`parametros.ts`, 10.000 carreras): pesos del techo `7/3/47/16/18/9`; umbrales `42/45/48/54/57`; `volatilidad` 0,4–1,3; `bonoAnoPico` 14; `probabilidadCrack` 0,003 / `bonusCrack` 12. Resultado: final 43,6 % · no cuartos 10,4 % · no preliminares 7,1 % · ≥1 primer premio 26,1 % · ≥3 11,4 % · ≥5 6,3 % · ≥10 0,4 % · ≥15 0,1 %. Actualizados `docs/01` §2 y `docs/02` §8. El efecto diferido y el 60/40 quedan fuera de alcance.
 
 ---
 
@@ -44,7 +48,7 @@ Los eventos de febrero (`04`) y los micro-eventos sin decisión (`05` §1) no ti
 
 ### T13 · Valores numéricos del juego
 
-Cerrados por la calibración del 2026-09-19: **pesos del techo** (`7/3/47/6/28/9`), **umbrales de nivel** (`42/54/60/62/68`), **multiplicador de ruido** (6) y **factor crack** (`probabilidadCrack` 0,01 / `bonusCrack` 10), verificados con el simulador (10.000 carreras: final 43,5%, no cuartos 10,4%, no preliminares 7,1%, ≥1 27,2%, ≥3 11,5%, ≥5 5,8%, ≥10 0,4%, ≥15 0,1%). Sin cerrar: `bonoAnoPico`, afinidades de premios y modificadores por creación de personaje (edad, localidad, género). Se revisarán cuando exista el banco real de `content`, porque dependen del crecimiento de atributos de las opciones.
+Cierres previos (2026-09-19): `multiplicadorRuido` 6. **Recalibrado el 2026-09-20 (feature 008, al retirar los `efectos` del banco)**: **pesos del techo** `7/3/47/16/18/9`, **umbrales de nivel** `42/45/48/54/57`, `volatilidad` 0,4–1,3, `bonoAnoPico` 14 y **factor crack** `probabilidadCrack` 0,003 / `bonusCrack` 12, verificados con el simulador (10.000 carreras: final 43,6 %, no cuartos 10,4 %, no preliminares 7,1 %, ≥1 26,1 %, ≥3 11,4 %, ≥5 6,3 %, ≥10 0,4 %, ≥15 0,1 %). Sin cerrar: afinidades de premios y modificadores por creación de personaje (edad, localidad, género).
 
 ### T17 · Banco real de contenido para la simulación ✅ Resuelto
 

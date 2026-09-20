@@ -4,6 +4,7 @@ import { construirInformeContenido } from "../src/content/informe"
 import { simular } from "../src/simulacion/index"
 
 const N_POR_DEFECTO = 10_000
+const UMBRAL_EXCEPCIONES = 6
 
 const AYUDA = `Uso: npm run contenido:informe -- [opciones]
 
@@ -67,6 +68,17 @@ const lineas = [
   `Situaciones de verano: ${estatico.situacionesPorMomento.verano}`,
   `Situaciones de febrero: ${estatico.situacionesPorMomento.febrero}`,
   `Condicionales: ${estatico.totalCondicionales}`,
+  `Total de opciones: ${estatico.totalOpciones}`,
+  `Excepciones declaradas (${estatico.excepciones.length}, umbral ${UMBRAL_EXCEPCIONES}): ${
+    estatico.excepciones
+      .map((e) => `${e.situacionId}/${e.opcionId}`)
+      .join(", ") || "ninguna"
+  }`,
+  `  por categoria: ${
+    Object.entries(estatico.excepcionesPorCategoria)
+      .map(([c, n]) => `${c}: ${n}`)
+      .join(", ") || "ninguna"
+  }`,
   "",
   `Flags declaradas (${estatico.flagsDeclaradas.length}): ${estatico.flagsDeclaradas.join(", ")}`,
   `Flags referenciadas (${estatico.flagsReferenciadas.length}): ${estatico.flagsReferenciadas.join(", ")}`,
@@ -91,6 +103,7 @@ if (parseado.json) {
 const integridadRota =
   estatico.flagsSinDeclarar.length > 0 ||
   estatico.situacionesInalcanzablesEstaticas.length > 0 ||
+  estatico.excepciones.length > UMBRAL_EXCEPCIONES ||
   nuncaVistas.length > 0 ||
   nuncaDisparados.length > 0
 

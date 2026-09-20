@@ -2,6 +2,7 @@
 // Sin lógica de juego: solo recuentos y análisis de los datos.
 
 import {
+  type Categoria,
   MODALIDADES,
   MOMENTOS,
   type Momento,
@@ -9,10 +10,20 @@ import {
 } from "./modalidades"
 import { type BancoContenido, flagsDeRequisito } from "./schema"
 
+export interface ExcepcionContenido {
+  situacionId: string
+  opcionId: string
+  categoria: Categoria
+  momento: Momento
+}
+
 export interface InformeContenido {
   situacionesPorMomento: Record<Momento, number>
   totalSituaciones: number
   totalCondicionales: number
+  totalOpciones: number
+  excepciones: ExcepcionContenido[]
+  excepcionesPorCategoria: Partial<Record<Categoria, number>>
   flagsDeclaradas: string[]
   flagsReferenciadas: string[]
   flagsSinDeclarar: string[]
@@ -28,6 +39,39 @@ export function contarSituacionesPorMomento(
 ): Record<Momento, number> {
   const conteo = { verano: 0, febrero: 0 } as Record<Momento, number>
   for (const s of banco.situaciones) conteo[s.momento] += 1
+  return conteo
+}
+
+export function totalOpciones(banco: BancoContenido): number {
+  let total = 0
+  for (const s of todas(banco)) total += s.opciones.length
+  return total
+}
+
+export function excepciones(banco: BancoContenido): ExcepcionContenido[] {
+  const lista: ExcepcionContenido[] = []
+  for (const s of todas(banco)) {
+    for (const opcion of s.opciones) {
+      if (opcion.excepcion === true) {
+        lista.push({
+          situacionId: s.id,
+          opcionId: opcion.id,
+          categoria: s.categoria,
+          momento: s.momento,
+        })
+      }
+    }
+  }
+  return lista
+}
+
+export function excepcionesPorCategoria(
+  banco: BancoContenido,
+): Partial<Record<Categoria, number>> {
+  const conteo: Partial<Record<Categoria, number>> = {}
+  for (const e of excepciones(banco)) {
+    conteo[e.categoria] = (conteo[e.categoria] ?? 0) + 1
+  }
   return conteo
 }
 
@@ -95,6 +139,9 @@ export function construirInformeContenido(
     situacionesPorMomento: contarSituacionesPorMomento(banco),
     totalSituaciones: banco.situaciones.length,
     totalCondicionales: (banco.condicionales ?? []).length,
+    totalOpciones: totalOpciones(banco),
+    excepciones: excepciones(banco),
+    excepcionesPorCategoria: excepcionesPorCategoria(banco),
     flagsDeclaradas: flagsDeclaradas(banco),
     flagsReferenciadas: flagsReferenciadas(banco),
     flagsSinDeclarar: flagsSinDeclarar(banco),

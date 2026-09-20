@@ -117,9 +117,10 @@ Es decir, si el carnaval es el de 2027, la primera decisión ocurre en verano de
 
 - Cada decisión ofrece **2 opciones**, y en algunos casos **3**.
 - Toda opción tiene **título** y **subtítulo o descripción**.
-- No hay decisiones buenas ni malas: simplemente conducen la carrera hacia un sitio u otro.
+- No hay decisiones buenas ni malas: **las decisiones no cambian el resultado**; sirven para contar la historia. El desenlace de cada temporada lo fijan el techo oculto y el azar.
+- **Los atributos parten de un valor estándar** y, por defecto, las decisiones no los mueven. Solo unas **pocas excepciones declaradas** (marcadas con `excepcion: true` en el contenido) mejoran o empeoran atributos, con una **contrapartida visible** en el texto y siempre acotadas por el techo.
 - **El techo de la carrera está predeterminado de forma aleatoria** desde el inicio de la partida y permanece oculto al jugador durante toda la partida y también al final.
-- La misma decisión puede hacerte caer de la final a no pasar de cuartos… o darte el primer premio.
+- La misma decisión puede hacerte no pasar de cuartos… o, con otro destino, ganar el primer premio.
 - El objetivo real no es ganar: es que el jugador construya su propia historia y se forje sus películas.
 
 > ⚠️ **Separación por momento del año.** Las decisiones de verano y las de febrero son conjuntos distintos. Una situación de verano (elección del tema del repertorio, presupuesto de vestuario, un componente que deja el grupo) no puede salir en febrero, y viceversa: una situación sobre el jurado, la reacción del público en el Falla o la prensa durante el concurso no tiene sentido en julio.
@@ -132,14 +133,14 @@ Es decir, si el carnaval es el de 2027, la primera decisión ocurre en verano de
 
 El banco está dividido en **dos bloques grandes por momento**, y dentro de cada uno por categorías. Cada año sale **una de contenido + una de personaje** (nunca dos del mismo tipo).
 
-| Tipo | Categorías | Qué mueve |
+| Tipo | Categorías | Ámbito |
 | --- | --- | --- |
 | 🎨 Contenido | Letra · Música · Puesta en escena | Letra, Música, Puesta en escena |
 | 🧍 Personaje | Jurado · Dinero · Grupo · Prensa · Carrera · Concurso | Popularidad, Cohesión, Dinero |
 
 > ✅ **Categorías ampliadas.** Además de las anteriores, el banco usa dos categorías de personaje: **Carrera** ("Carrera y grupo consagrado") y **Concurso** ("Enfado con el concurso"). Son categorías y situaciones a la vez, y pueden ser momentáneas (con sus condiciones de aparición).
 
-Cada opción lleva **título + subtítulo**, los **atributos** que mueve y la **flag** que deja en el historial del personaje.
+Cada opción lleva **título + subtítulo** y la **flag** que deja en el historial del personaje. Por defecto **no mueve atributos**; solo las **excepciones declaradas** (unas pocas en todo el banco) llevan efectos, y su intercambio se explica en el subtítulo.
 
 > 📚 Las situaciones están en dos páginas hermanas, una por momento:
 >

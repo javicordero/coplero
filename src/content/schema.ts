@@ -22,6 +22,8 @@ export interface Opcion {
   titulo: string
   subtitulo: string
   efectos?: Partial<Record<Atributo, number>>
+  /** Marca la opción como excepción: única vía por la que una decisión mueve atributos. */
+  excepcion?: boolean
   flags?: string[]
   consume?: string[]
   peso?: number
@@ -123,18 +125,38 @@ const EfectosSchema = z.strictObject({
   dinero: z.number().int().optional(),
 })
 
-export const OpcionSchema: z.ZodType<Opcion> = z.strictObject({
-  id: z.string().min(1),
-  titulo: z.string().min(1),
-  subtitulo: z.string().min(1),
-  efectos: EfectosSchema.optional(),
-  flags: z.array(z.string().min(1)).optional(),
-  consume: z.array(z.string().min(1)).optional(),
-  peso: z.number().optional(),
-  saltaCOAC: z.boolean().optional(),
-  cambiaModalidad: z.enum(MODALIDADES).optional(),
-  cambiaVariante: z.string().min(1).optional(),
-})
+export const OpcionSchema: z.ZodType<Opcion> = z
+  .strictObject({
+    id: z.string().min(1),
+    titulo: z.string().min(1),
+    subtitulo: z.string().min(1),
+    efectos: EfectosSchema.optional(),
+    excepcion: z.boolean().optional(),
+    flags: z.array(z.string().min(1)).optional(),
+    consume: z.array(z.string().min(1)).optional(),
+    peso: z.number().optional(),
+    saltaCOAC: z.boolean().optional(),
+    cambiaModalidad: z.enum(MODALIDADES).optional(),
+    cambiaVariante: z.string().min(1).optional(),
+  })
+  .superRefine((opcion, ctx) => {
+    const tieneEfectos =
+      opcion.efectos !== undefined && Object.keys(opcion.efectos).length > 0
+    if (tieneEfectos && opcion.excepcion !== true) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["excepcion"],
+        message: `la opción "${opcion.id}" tiene "efectos" pero no está declarada como excepción (excepcion: true)`,
+      })
+    }
+    if (opcion.excepcion === true && !tieneEfectos) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["efectos"],
+        message: `la opción "${opcion.id}" está declarada como excepción pero no tiene "efectos"`,
+      })
+    }
+  })
 
 export const RequisitoSchema: z.ZodType<Requisito> = z.lazy(() =>
   z.discriminatedUnion("tipo", [

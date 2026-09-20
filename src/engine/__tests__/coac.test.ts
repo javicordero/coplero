@@ -29,10 +29,11 @@ const sinValvulas = { ...PARAMETROS_POR_DEFECTO, batacazo: 0, milagro: 0 }
 describe("resolución del COAC", () => {
   it("mapea puntuación a nivel por umbrales", () => {
     expect(nivelPorPuntuacion(85, PARAMETROS_POR_DEFECTO)).toBe("primer_premio")
-    expect(nivelPorPuntuacion(65, PARAMETROS_POR_DEFECTO)).toBe("podio")
-    expect(nivelPorPuntuacion(61, PARAMETROS_POR_DEFECTO)).toBe("final")
-    expect(nivelPorPuntuacion(55, PARAMETROS_POR_DEFECTO)).toBe("semifinales")
-    expect(nivelPorPuntuacion(45, PARAMETROS_POR_DEFECTO)).toBe("cuartos")
+    expect(nivelPorPuntuacion(65, PARAMETROS_POR_DEFECTO)).toBe("primer_premio")
+    expect(nivelPorPuntuacion(56, PARAMETROS_POR_DEFECTO)).toBe("podio")
+    expect(nivelPorPuntuacion(50, PARAMETROS_POR_DEFECTO)).toBe("final")
+    expect(nivelPorPuntuacion(46, PARAMETROS_POR_DEFECTO)).toBe("semifinales")
+    expect(nivelPorPuntuacion(43, PARAMETROS_POR_DEFECTO)).toBe("cuartos")
     expect(nivelPorPuntuacion(10, PARAMETROS_POR_DEFECTO)).toBe("preliminares")
   })
 
@@ -129,7 +130,7 @@ describe("resolución del COAC", () => {
 
   it("el puesto cae en la banda de su nivel", () => {
     const p = resolverCoac({
-      atributos: atributos(50),
+      atributos: atributos(43),
       destino: destino({ techo: "final" }),
       anoActual: 1,
       rng: rngDe([0.5]),

@@ -354,7 +354,7 @@ const techo = elegirPonderado(rng, [
 ]);
 ```
 
-Estos pesos están calibrados contra la distribución objetivo del diseño (~45% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~7% no pasan de preliminares, ~27% ganan al menos un primer premio, ~11% ganan 3 o más). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final y decae. Los **umbrales de nivel** (`umbralesNivel`, `42/54/60/62/68`) traducen puntuación a nivel, y un pequeño porcentaje de carreras nace como **crack** (`probabilidadCrack`/`bonusCrack`: carisma extra oculto que genera carreras legendarias). Todo se calibra con el simulador; si no reproduce la distribución, se ajustan pesos, umbrales y ruido, nunca las situaciones.
+Estos pesos están calibrados contra la distribución objetivo del diseño (~45% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~7% no pasan de preliminares, ~27% ganan al menos un primer premio, ~11% ganan 3 o más). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final y decae. Los **umbrales de nivel** (`umbralesNivel`, `42/45/48/54/57`) traducen puntuación a nivel, y un pequeño porcentaje de carreras nace como **crack** (`probabilidadCrack`/`bonusCrack`: carisma extra oculto que genera carreras legendarias). Todo se calibra con el simulador; si no reproduce la distribución, se ajustan pesos, umbrales y ruido, nunca las situaciones.
 
 Modificadores leves y legibles según la creación de personaje, para que esas primeras elecciones importen sin romper la sorpresa: edad joven suma un año de carrera, ser de Cádiz capital suma carisma base, etc. Nunca deterministas.
 
@@ -370,6 +370,8 @@ faseAlcanzada = clamp(faseSegunPuntuacion(puntuacion), suelo, techo)
 ```
 
 El `clamp(..., suelo, techo)` aplica a la **resolución normal**. El **batacazo** puede atravesar el `suelo`: esa es su gracia narrativa. El número de decisiones por año es **parametrizable** (v1: 2; los modos rápido/lento llegarán más adelante).
+
+> 🔓 **Las decisiones no mueven atributos por defecto (feature 008).** Los atributos parten de un valor estándar (`atributosIniciales`) y permanecen ahí salvo que una **excepción declarada** del contenido (`excepcion: true`, unas pocas) los mejore o empeore, siempre con una contrapartida visible y acotada por `[suelo, techo]`. Con los atributos en su valor estándar, la puntuación base es constante y el desenlace lo fijan el `destino` (techo/suelo), el ruido, el `bonoAnoPico` y el `carisma`: como manda el diseño, no existe una estrategia óptima. Los efectos se retiraron el 2026-09-20 (C15 cerrada) y los valores por defecto se recalibraron con el simulador.
 
 Con dos válvulas de escape para que haya películas:
 

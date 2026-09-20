@@ -135,6 +135,38 @@ describe("integridad del banco real", () => {
   })
 })
 
+describe("excepciones declaradas", () => {
+  const opciones = TODAS.flatMap((s) => s.opciones.map((o) => ({ s, o })))
+
+  it("ninguna opción tiene efectos sin declararse excepción", () => {
+    for (const { o } of opciones) {
+      const tieneEfectos =
+        o.efectos !== undefined && Object.keys(o.efectos).length > 0
+      if (tieneEfectos) expect(o.excepcion).toBe(true)
+    }
+  })
+
+  it("ninguna excepción está vacía", () => {
+    for (const { o } of opciones) {
+      if (o.excepcion === true) {
+        expect(o.efectos).toBeDefined()
+        expect(Object.keys(o.efectos ?? {}).length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it("hay pocas excepciones y todas con intercambio (sube y baja)", () => {
+    const excepciones = opciones.filter(({ o }) => o.excepcion === true)
+    expect(excepciones.length).toBeGreaterThan(0)
+    expect(excepciones.length).toBeLessThanOrEqual(6)
+    for (const { o } of excepciones) {
+      const valores = Object.values(o.efectos ?? {})
+      expect(valores.some((v) => v > 0)).toBe(true)
+      expect(valores.some((v) => v < 0)).toBe(true)
+    }
+  })
+})
+
 describe("trayectoria: situaciones de cambio", () => {
   const buscar = (id: string) => TODAS.find((s) => s.id === id)
 
