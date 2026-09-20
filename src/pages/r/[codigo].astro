@@ -22,6 +22,8 @@ const descripcion = tarjeta
 <Layout
   title={`${titulo} · Coplero`}
   description={descripcion}
+  canonical={tarjeta ? Astro.url.href : undefined}
+  noindex={!tarjeta}
   og={{
     title: titulo,
     description: descripcion,

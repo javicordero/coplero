@@ -13,10 +13,11 @@ Dos rutas on-demand (`export const prerender = false`) con el adapter `@astrojs/
 | Datos | `decodificar(codigo)`. Si `ok` → render de `Tarjeta.svelte` con la `TarjetaFinal`. |
 | Código inválido / versión incompatible | Página amable: mensaje claro, sin errores técnicos ni pantallas bloqueadas, con enlace a `/jugar` (FR-024). |
 | Metadatos | `title`, `description`, `og:title`, `og:description`, `og:image` (`/api/og/<codigo>.png`), `og:url`, `twitter:card=summary_large_image`. |
+| Indexación | Tarjeta válida: indexable y con `<link rel="canonical">` a `/r/<codigo>`. Código inválido / versión incompatible: `<meta name="robots" content="noindex">` y **sin** canónica (FR-031, SC-014). |
 | Contenido | La tarjeta completa (identidad, datos destacados, trayectoria, premios, hitos, frase y pie con marca de agua). Nunca datos ocultos. |
 | Accesibilidad | WCAG 2.2 AA (estructura semántica, contraste, texto alternativo). |
 
-`Layout.astro` gana props opcionales de Open Graph; sin ellas se comporta como hasta ahora.
+`Layout.astro` gana props opcionales de Open Graph y de cabecera SEO (`canonical`, `noindex`); sin ellas se comporta como hasta ahora.
 
 ## `GET /api/og/[codigo].png` — imágenes de compartir
 

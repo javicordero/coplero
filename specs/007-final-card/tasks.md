@@ -135,6 +135,21 @@ Proyecto único (Principio V): `src/`, `tests/`, `public/`, `docs/` en la raíz.
 
 ---
 
+## Phase 7: Refuerzo de indexabilidad de la página de resultado (FR-031 · US3)
+
+**Goal**: la tarjeta válida es indexable y expone una URL canónica estable; el código inválido, corrupto o de versión incompatible se sirve con `noindex` y sin canónica.
+
+**Independent Test**: abrir una tarjeta válida y comprobar que incluye `rel="canonical"` y NO incluye `robots=noindex`; abrir un código inválido y comprobar que incluye `robots=noindex` y NO incluye `rel="canonical"`.
+
+- [X] T040 [US3] Ampliar `src/layouts/Layout.astro` con props opcionales `canonical?: string` y `noindex?: boolean`; emitir `<link rel="canonical" href={canonical}>` y `<meta name="robots" content="noindex">` solo cuando correspondan (por defecto, ninguna de las dos).
+- [X] T041 [US3] En `src/pages/r/[codigo].astro`, pasar `canonical={Astro.url.href}` cuando `resultado.ok` y pasar `noindex` cuando el código es inválido. Depende de T040.
+- [X] T042 [P] [US3] Añadir a `tests/e2e/compartir.spec.ts` la verificación de `rel="canonical"` + ausencia de `noindex` en la tarjeta válida, y `robots=noindex` + ausencia de canónica en el código inválido.
+- [X] T043 [US3] Ejecutar `npm run check` y `npm run test:e2e`; confirmar SC-014 (100% válidas indexables con canónica; 100% inválidas con `noindex`).
+
+**Checkpoint**: FR-031 y SC-014 se cumplen y quedan cubiertos por el E2E.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -143,6 +158,7 @@ Proyecto único (Principio V): `src/`, `tests/`, `public/`, `docs/` en la raíz.
 - **Foundational (Phase 2)**: depende de Setup y **bloquea** las tres historias.
 - **User Stories (Phases 3–5)**: dependen de Foundational; pueden ir en paralelo o en orden P1 → P2 → P3.
 - **Polish (Phase 6)**: depende de las historias que se quieran cerrar.
+- **Indexabilidad (Phase 7, FR-031)**: depende de la página de resultado de US3 (T030); se puede cerrar de forma independiente al resto.
 
 ### User Story Dependencies
 
@@ -170,6 +186,7 @@ Proyecto único (Principio V): `src/`, `tests/`, `public/`, `docs/` en la raíz.
 - T019 y T020 en paralelo; T023 y T024 en paralelo.
 - T027 y T031 en paralelo con T028.
 - T034, T035, T038 y T039 en paralelo al final.
+- T042 en paralelo con T041 (ficheros distintos: test vs. página/layout).
 
 ---
 

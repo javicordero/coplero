@@ -22,7 +22,7 @@ Convertir el fin de carrera en una **TarjetaFinal** generada por el motor (pura,
 
 **Project Type**: Aplicación web (Astro estático + una isla Svelte). Proyecto único, sin monorepo
 
-**Performance Goals**: la tarjeta dentro del bucle es render local sin red; `/r/:codigo` se sirve como HTML con 0 kB de JS; las imágenes se generan on-demand y se cachean; el código de una carrera completa < 2000 caracteres (SC-008)
+**Performance Goals**: la tarjeta dentro del bucle es render local sin red; `/r/:codigo` se sirve como HTML con 0 kB de JS; las imágenes se generan on-demand y se cachean; el código de una carrera completa < 2000 caracteres (SC-008); `/r/:codigo` es indexable con URL canónica cuando la tarjeta es válida y `noindex` cuando el código es inválido (FR-031)
 
 **Constraints**: `engine` sin DOM, sin `Math.random()`/`Date.now()`, sin importar `content`/`web`; azar solo del RNG sembrado; estado serializable sin clases; la tarjeta, el código y las imágenes **nunca** exponen `destino`; sin `seed` en el código; saneamiento de texto libre; WCAG 2.2 AA
 
@@ -86,9 +86,9 @@ src/
 ├── utilities/
 │   └── compartir.ts        # (NUEVO) acciones Web Share/clipboard/descarga (sin lógica de juego)
 ├── layouts/
-│   └── Layout.astro        # props Open Graph opcionales (solo cabecera)
+│   └── Layout.astro        # props Open Graph opcionales + `canonical`/`noindex` (solo cabecera)
 ├── pages/
-│   ├── r/[codigo].astro    # (NUEVO) prerender=false: decodifica y renderiza la tarjeta (0 kB JS)
+│   ├── r/[codigo].astro    # (NUEVO) prerender=false: decodifica y renderiza la tarjeta (0 kB JS); canónica si válida, `noindex` si no
 │   └── api/og/[codigo].png.ts  # (NUEVO) prerender=false: PNG og/9x16/1x1 con satori + resvg
 ├── simulacion/
 │   ├── jugar.ts            # paso "fin" produce tarjeta

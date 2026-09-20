@@ -10,9 +10,17 @@ interface Props {
   title?: string
   description?: string
   og?: OpenGraph
+  canonical?: string
+  noindex?: boolean
 }
 
-const { title = "Coplero", description, og } = Astro.props
+const {
+  title = "Coplero",
+  description,
+  og,
+  canonical,
+  noindex = false,
+} = Astro.props
 ---
 
 <!doctype html>
@@ -23,6 +31,8 @@ const { title = "Coplero", description, og } = Astro.props
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
     {
       og && (
         <>

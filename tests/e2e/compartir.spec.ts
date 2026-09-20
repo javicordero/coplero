@@ -104,3 +104,25 @@ test("la tarjeta y la página de resultado pasan WCAG 2.2 AA", async ({
   await expect(page.getByTestId("tarjeta")).toBeVisible()
   expect(await violacionesGraves(page)).toEqual([])
 })
+
+test("la tarjeta válida es indexable y el código inválido no", async ({
+  page,
+}) => {
+  test.setTimeout(60_000)
+  await jugarHastaFin(page)
+
+  await page.getByTestId("copiar-enlace").click()
+  const enlace = await page.evaluate(() => navigator.clipboard.readText())
+  await page.goto(enlace)
+  await expect(page.getByTestId("tarjeta")).toBeVisible()
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(1)
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0)
+
+  await page.goto("/r/codigo-invalido")
+  await expect(page.getByTestId("codigo-invalido")).toBeVisible()
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  )
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0)
+})

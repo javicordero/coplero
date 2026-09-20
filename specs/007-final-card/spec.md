@@ -21,6 +21,7 @@
 - Q: ¿Qué muestra la fila "Trayectoria" del ejemplo? → A: Los cambios de modalidad y variante: una secuencia de chips inicio → cambios → final (con año), en orden cronológico.
 - Q: ¿Qué tres datos destacados muestra la barra de estadísticas? → A: Separados y nunca sumados: (1) primeros premios del COAC, (2) mejor posición alcanzada en el COAC —relevante cuando no hay premio del COAC— y (3) otros premios (ajenos).
 - Q: ¿En qué consiste mostrar los premios «separados»? → A: Los «otros premios» se desglosan por tipo con su recuento (p. ej. «Copla para Andalucía: 1», «Candela y espino: 3»); los tipos que no se han ganado no aparecen en absoluto (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran aparte.
+- Q: ¿Qué páginas de resultado pueden indexarse en buscadores? → A: Opción A: la tarjeta válida es indexable y expone una URL canónica estable (`/r/<codigo>`); el código inválido, corrupto o de versión incompatible se sirve con `noindex` y sin canónica, para no ensuciar el índice.
 
 > Nota de alcance: las mecánicas que producen los cambios de modalidad y variante se especifican y se implementan en la feature **006 · Cambios de trayectoria**. Esta feature **consume** esos datos para mostrarlos; no los genera.
 
@@ -90,6 +91,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **Nombre/apodo con caracteres especiales o intento de inyección**: se sanea y se escapa siempre; nunca se interpreta como HTML ni se incrusta crudo en la imagen social.
 - **Milagro o batacazo**: no pueden aparecer como tales ni delatarse; se narran como un buen o mal año.
 - **Código de partida corrupto o de otra versión**: se descarta con aviso claro y se ofrece jugar; nunca se interpreta a medias.
+- **Códigos inválidos e indexación**: las páginas de error de resultado nunca deben aparecer en buscadores, aunque el enlace se comparta muchas veces.
 - **Imagen social con campos vacíos o texto largo**: la composición debe resistir nombres vacíos, carreras sin premios y nombres al límite de longitud.
 - **Determinismo**: misma semilla + mismas decisiones ⇒ misma tarjeta, siempre.
 
@@ -135,6 +137,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **FR-028**: La fila de trayectoria MUST mostrar la secuencia inicio → cambios → final de modalidad y variante, con el año de cada cambio, en orden cronológico.
 - **FR-029**: La barra de datos destacados MUST mostrar tres cifras separadas y nunca sumadas entre sí: (a) primeros premios del COAC, (b) mejor posición alcanzada en el COAC —que debe verse cuando no haya premio del COAC— y (c) otros premios (ajenos), desglosados por tipo con su recuento y omitiendo los tipos no ganados.
 - **FR-030**: La tarjeta MUST ofrecer el conjunto de acciones de compartir de la referencia: compartir nativo, copiar texto/enlace, descargar la imagen y copiar o abrir el enlace de resultado.
+- **FR-031**: La página de resultado MUST ser indexable cuando la tarjeta es válida y MUST exponer una URL canónica estable (`/r/<codigo>`); cuando el código es inválido, corrupto o de versión incompatible, MUST marcarse como `noindex` y MUST NOT declarar canónica.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -162,6 +165,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **SC-011**: Las carreras con cambio de modalidad y/o variante reflejan la trayectoria completa en el 100% de los casos; las que no los tienen no inventan cambios.
 - **SC-012**: La tarjeta y la página de resultado superan una auditoría automática de accesibilidad de WCAG 2.2 nivel AA sin violaciones de severidad crítica o seria.
 - **SC-013**: El 100% de las tarjetas muestran la composición completa (identidad, datos destacados, trayectoria, premios y pie) y ninguna incluye una valoración global ni un número héroe.
+- **SC-014**: El 100% de las tarjetas válidas exponen una URL canónica y son indexables; el 100% de los códigos inválidos, corruptos o de versión incompatible se sirven con `noindex`.
 
 ## Assumptions
 
