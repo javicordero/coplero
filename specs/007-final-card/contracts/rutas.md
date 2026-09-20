@@ -1,0 +1,44 @@
+# Contrato — Rutas de resultado e imágenes (feature 007)
+
+Dos rutas on-demand (`export const prerender = false`) con el adapter `@astrojs/netlify` ya configurado. Sin base de datos: todo sale del código de la URL.
+
+## `GET /r/[codigo]` — página de resultado
+
+`src/pages/r/[codigo].astro`
+
+| Aspecto | Contrato |
+|---|---|
+| Render | On-demand (SSR). HTML con **0 kB de JS** (componente Svelte sin directiva `client:*`). |
+| JS en la isla | Ninguno: la página es para el visitante; compartir ocurre en `/jugar`. |
+| Datos | `decodificar(codigo)`. Si `ok` → render de `Tarjeta.svelte` con la `TarjetaFinal`. |
+| Código inválido / versión incompatible | Página amable: mensaje claro, sin errores técnicos ni pantallas bloqueadas, con enlace a `/jugar` (FR-024). |
+| Metadatos | `title`, `description`, `og:title`, `og:description`, `og:image` (`/api/og/<codigo>.png`), `og:url`, `twitter:card=summary_large_image`. |
+| Contenido | La tarjeta completa (identidad, datos destacados, trayectoria, premios, hitos, frase y pie con marca de agua). Nunca datos ocultos. |
+| Accesibilidad | WCAG 2.2 AA (estructura semántica, contraste, texto alternativo). |
+
+`Layout.astro` gana props opcionales de Open Graph; sin ellas se comporta como hasta ahora.
+
+## `GET /api/og/[codigo].png` — imágenes de compartir
+
+`src/pages/api/og/[codigo].png.ts`
+
+| Aspecto | Contrato |
+|---|---|
+| Parámetro | `t=og\|9x16\|1x1` (por defecto `og`). Valor desconocido ⇒ `og`. |
+| Tamaños | `og` 1200×630 · `9x16` 1080×1920 · `1x1` 1080×1080. |
+| Render | `satori` (árbol de elementos, sin React) + `@resvg/resvg-js`; tipografía TTF desde `public/fonts/`. |
+| Contenido | Nombre/apodo (salvo `null`), modalidad, variante, años, mejor fase, primeros premios, otros premios y **marca de agua discreta** con la URL del juego (FR-022). Nunca datos ocultos ni texto sin sanear (FR-019/FR-020). |
+| Código inválido | Devuelve una imagen genérica del juego (200) para no romper previsualizaciones; la página sí muestra el aviso amable. |
+| Caché | `Cache-Control: public, max-age=31536000, immutable` (el contenido depende solo del código). |
+| Respuesta | `Content-Type: image/png`. |
+
+## Orden de prioridad de la tarjeta (resumen)
+
+1. Isla (`/jugar`): la tarjeta se muestra al terminar, con panel de compartir (ver `ui.md`).
+2. Enlace `/r/<codigo>`: reproduce la tarjeta sin guardado local.
+3. Imágenes: se generan on-demand al compartir o al pedir el enlace en redes.
+
+## Fuera de alcance
+
+- Ranking / "ver jugadores" de la referencia externa: sin backend (v1).
+- Fallback de Web Share en navegadores sin soporte (T16).

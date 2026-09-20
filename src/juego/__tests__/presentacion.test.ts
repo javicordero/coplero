@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
+  DIRECCION_JUEGO,
+  ETIQUETA_ANONIMO,
   etiquetaFase,
   etiquetaModalidad,
   etiquetaMomento,
@@ -38,6 +40,11 @@ describe("presentacion", () => {
       expect(modalidad.titulo.length).toBeGreaterThan(0)
       expect(modalidad.subtitulo.length).toBeGreaterThan(0)
     }
+  })
+
+  it("define el nombre anónimo y la dirección del juego", () => {
+    expect(ETIQUETA_ANONIMO.length).toBeGreaterThan(0)
+    expect(DIRECCION_JUEGO.length).toBeGreaterThan(0)
   })
 
   it("compone un mensaje legible para cada error del motor", () => {

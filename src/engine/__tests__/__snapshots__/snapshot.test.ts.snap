@@ -4,16 +4,36 @@ exports[`snapshot de partida de referencia > mantiene estable una carrera de ref
 
 exports[`snapshot de partida de referencia > mantiene estable una carrera de referencia 2`] = `
 {
-  "anosEnActivos": 20,
+  "anosDeCarrera": 20,
+  "anosEnActivo": 20,
+  "anosSinConcursar": [],
+  "cambios": [],
+  "fraseCierre": "Cada febrero, ahí estabas.",
+  "hitos": [
+    {
+      "ano": 1,
+      "texto": "Debutaste en 1",
+      "tipo": "debut",
+    },
+    {
+      "ano": null,
+      "texto": "20 años de carrera",
+      "tipo": "duracion",
+    },
+    {
+      "ano": null,
+      "texto": "Tu mejor resultado fue preliminares",
+      "tipo": "mejor_resultado",
+    },
+  ],
   "mejorFase": "preliminares",
-  "modalidad": "comparsista",
+  "mejorPuesto": 17,
+  "modalidadFinal": "comparsista",
+  "modalidadInicial": "comparsista",
   "nombre": "El Chato",
-  "premios": [],
-  "trayectoria": {
-    "cambios": [],
-    "modalidadInicial": "comparsista",
-    "varianteInicial": "clasico",
-  },
-  "variante": "clasico",
+  "otrosPremios": [],
+  "primerosPremios": [],
+  "varianteFinal": "clasico",
+  "varianteInicial": "clasico",
 }
 `;

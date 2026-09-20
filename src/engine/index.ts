@@ -12,6 +12,14 @@ export {
   resolverCoac,
 } from "./coac"
 export {
+  base64UrlABytes,
+  bytesABase64Url,
+  codificar,
+  decodificar,
+  type ErrorCodigo,
+  VERSION_CODIGO,
+} from "./codec"
+export {
   actualizarFlags,
   consumirFlagsDeRequisito,
   dentroDeVentana,
@@ -35,7 +43,6 @@ export {
   siguientePaso,
 } from "./partida"
 export { resolverPremios } from "./premios"
-export { construirResumen } from "./resumen"
 export {
   createRng,
   elegirIndice,
@@ -50,6 +57,7 @@ export {
   toPublica,
 } from "./selector"
 export { deserializar, serializar } from "./serializar"
+export { construirTarjeta, hashEstable, sinNombre } from "./tarjeta"
 export {
   crearTrayectoria,
   registrarCambio,

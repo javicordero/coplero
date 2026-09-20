@@ -5,9 +5,9 @@ import { generarDestino } from "./destino"
 import type { ParametrosMotor } from "./parametros"
 import { resolverParametros } from "./parametros"
 import { resolverPremios } from "./premios"
-import { construirResumen } from "./resumen"
 import { rngPara } from "./seed"
 import { seleccionarSituacion, tipoActual, toPublica } from "./selector"
+import { construirTarjeta } from "./tarjeta"
 import {
   crearTrayectoria,
   registrarCambio,
@@ -75,7 +75,7 @@ export function crearPartida(
 
 export function siguientePaso(p: Partida, banco: BancoContenido): Paso {
   if (p.fase === "fin") {
-    return { tipo: "fin", resumen: construirResumen(p) }
+    return { tipo: "fin", tarjeta: construirTarjeta(p, banco) }
   }
   if (p.fase === "variante") {
     return { tipo: "variante", modalidad: p.modalidad }
@@ -329,6 +329,6 @@ export function continuar(p: Partida): Partida {
   }
 }
 
-export function resumen(p: Partida) {
-  return construirResumen(p)
+export function resumen(p: Partida, banco: BancoContenido) {
+  return construirTarjeta(p, banco)
 }

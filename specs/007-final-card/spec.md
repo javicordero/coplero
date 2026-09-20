@@ -14,6 +14,13 @@
 
 - Q: ¿Qué alcance tiene "datos adecuados para compartir"? → A: Alcance completo: contrato de la tarjeta + presentación en el fin de carrera + código de partida en la URL (página de resultado) + imagen PNG 9:16 y 1:1 + imagen de previsualización social (Open Graph) + compartir nativo.
 - Q: ¿De dónde salen los tres hitos narrativos? → A: El motor los deriva de datos que ya existen en la partida (resultado del COAC, premios, cambios de trayectoria, años sin concursar), con un orden de prioridad y relleno neutro. No se inventan ni exigen contenido nuevo.
+- Q: ¿Cómo representar una carrera con varios cambios de modalidad/variante (006 permite cambiar y volver)? → A: Trayectoria cronológica completa: la tarjeta lista cada cambio con su año y la modalidad/variante resultantes, y de ahí deriva los valores inicial y final; no colapsa los cambios intermedios.
+- Q: ¿Qué lleva el código de partida compartido? → A: Autocontenido y sin semilla: contiene la tarjeta ya derivada (todos los campos visibles) y su versión de esquema; no requiere re-simular ni acceso al motor, y no incluye el `seed` para que no pueda deducirse el `destino`.
+- Q: ¿Qué nivel de accesibilidad deben cumplir la tarjeta y la página de resultado? → A: WCAG 2.2 nivel AA (contraste, foco visible, nombres accesibles, no depender solo del color, operable por teclado y compatible con lector de pantalla).
+- Q: ¿Número "héroe" tipo OVR del ejemplo de copero.com? → A: No se incluye: se descarta la valoración global numérica por no tener sentido en Coplero. La adaptación de la referencia se limita a la estructura de póster y al conjunto de acciones de compartir.
+- Q: ¿Qué muestra la fila "Trayectoria" del ejemplo? → A: Los cambios de modalidad y variante: una secuencia de chips inicio → cambios → final (con año), en orden cronológico.
+- Q: ¿Qué tres datos destacados muestra la barra de estadísticas? → A: Separados y nunca sumados: (1) primeros premios del COAC, (2) mejor posición alcanzada en el COAC —relevante cuando no hay premio del COAC— y (3) otros premios (ajenos).
+- Q: ¿En qué consiste mostrar los premios «separados»? → A: Los «otros premios» se desglosan por tipo con su recuento (p. ej. «Copla para Andalucía: 1», «Candela y espino: 3»); los tipos que no se han ganado no aparecen en absoluto (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran aparte.
 
 > Nota de alcance: las mecánicas que producen los cambios de modalidad y variante se especifican y se implementan en la feature **006 · Cambios de trayectoria**. Esta feature **consume** esos datos para mostrarlos; no los genera.
 
@@ -47,7 +54,7 @@ La tarjeta cuenta lo que hizo singular a esa carrera: si el jugador cambió de m
 
 **Acceptance Scenarios**:
 
-1. **Given** una carrera con cambio de modalidad, **When** se muestra la tarjeta, **Then** se indica que hubo cambio y en qué año.
+1. **Given** una carrera con uno o varios cambios de modalidad, **When** se muestra la tarjeta, **Then** se listan, en orden cronológico, todos los cambios con su año y la modalidad resultante, y se derivan la modalidad inicial y la final.
 2. **Given** una carrera en la que la variante final difiere de la inicial, **When** se muestra la tarjeta, **Then** se narra la evolución (de dónde a dónde, con el año del cambio).
 3. **Given** una carrera con años sin concursar, **When** se muestra la tarjeta, **Then** esos años se recogen como parte de la historia, con sus años.
 4. **Given** una carrera sin cambios de modalidad ni variante y sin años fuera de concurso, **When** se muestra la tarjeta, **Then** no se inventan cambios ni ausencias.
@@ -79,6 +86,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **Menos de tres hitos "destacados"**: se completan con hitos neutros de trayectoria (debut, duración, mejor resultado); nunca se inventan sucesos ni se rellena con datos ocultos.
 - **Todos o casi todos los años fuera de concurso**: se trata como relato coherente de retirada o ausencia, no como error.
 - **Cambio de modalidad o variante en el último año**: la tarjeta debe reflejarlo correctamente.
+- **Varios cambios de modalidad y vuelta a la modalidad inicial**: se narran todos en orden cronológico, sin colapsarlos ni descartar la vuelta.
 - **Nombre/apodo con caracteres especiales o intento de inyección**: se sanea y se escapa siempre; nunca se interpreta como HTML ni se incrusta crudo en la imagen social.
 - **Milagro o batacazo**: no pueden aparecer como tales ni delatarse; se narran como un buen o mal año.
 - **Código de partida corrupto o de otra versión**: se descarta con aviso claro y se ofrece jugar; nunca se interpreta a medias.
@@ -95,22 +103,22 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **FR-002**: La generación MUST ser pura y determinista (misma semilla y mismas decisiones ⇒ misma tarjeta).
 - **FR-003**: La tarjeta MUST contener únicamente información que el jugador pueda conocer.
 - **FR-004**: La tarjeta MUST NOT contener, exponer ni permitir deducir el techo, el suelo, el carisma, la volatilidad, el año pico, el milagro ni ningún otro dato interno del motor.
-- **FR-005**: La tarjeta MUST mostrar el nombre o apodo, la modalidad, la variante inicial y los años en activo.
+- **FR-005**: La tarjeta MUST mostrar el nombre o apodo, la modalidad inicial y la final (si difieren), la variante inicial y los años en activo.
 - **FR-006**: La tarjeta MUST mostrar la mejor fase alcanzada.
-- **FR-007**: La tarjeta MUST mostrar los premios diferenciando los **primeros premios** del COAC de los **otros premios**, con el año de cada uno.
-- **FR-008**: La tarjeta MUST mostrar la evolución de variante (valor inicial, valor final y año de cada cambio) siempre que la variante haya cambiado durante la carrera.
-- **FR-009**: La tarjeta MUST indicar si hubo cambio de modalidad y en qué año.
+- **FR-007**: La tarjeta MUST mostrar separados los primeros premios del COAC y los otros premios. Los **otros premios** MUST agruparse por tipo con su recuento (p. ej., «Copla para Andalucía: 1», «Candela y espino: 3»); los tipos sin premio MUST omitirse por completo (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran con su año.
+- **FR-008**: La tarjeta MUST mostrar la evolución de variante (valor inicial, valor final y año de cada cambio) en orden cronológico, siempre que la variante haya cambiado durante la carrera; los cambios de variante pueden pertenecer a modalidades distintas si hubo cambio de modalidad.
+- **FR-009**: La tarjeta MUST listar, en orden cronológico, cada cambio de modalidad con su año y la modalidad resultante, y MUST derivar de ahí la modalidad inicial y la final; MUST soportar cambios repetidos y la vuelta a una modalidad anterior.
 - **FR-010**: La tarjeta MUST recoger los años sin concursar como parte de la narración, con sus años.
 - **FR-011**: La tarjeta MUST incluir exactamente tres hitos narrativos, derivados de datos ya presentes en la partida; si no hay tres hitos destacados, MUST completarse con hitos neutros de trayectoria sin inventar sucesos.
 - **FR-012**: La tarjeta MUST incluir una frase/resumen de carrera que cierre la historia, elegida de forma determinista por el motor.
 - **FR-013**: La presentación de la tarjeta MUST limitarse a renderizar los datos del motor; la UI MUST NOT calcular, resumir ni derivar información de juego.
 - **FR-014**: Todo texto libre mostrado (nombre/apodo) MUST sanearse y escaparse; nunca se interpreta como HTML.
-- **FR-015**: La tarjeta MUST ser legible en móvil sin desplazamiento horizontal y MUST NOT provocar cargas de red adicionales dentro del bucle jugable.
+- **FR-015**: La tarjeta MUST ser legible en móvil sin desplazamiento horizontal y MUST NOT provocar cargas de red adicionales dentro del bucle jugable. La tarjeta y la página de resultado MUST cumplir **WCAG 2.2 nivel AA** (contraste suficiente, foco visible, nombres accesibles, sin depender solo del color, operables por teclado y compatibles con lector de pantalla).
 - **FR-016**: La tarjeta MUST presentar el fin de carrera de forma comprensible aunque la carrera haya sido discreta, sin juicios de valor sobre el resultado.
 
 **Compartir**
 
-- **FR-017**: El sistema MUST codificar la tarjeta en un código de partida compacto que viaje en la URL, sin incluir información oculta del motor ni la partida completa.
+- **FR-017**: El sistema MUST codificar la tarjeta en un código de partida compacto que viaje en la URL. El código MUST ser autocontenido (contiene la tarjeta ya derivada y su versión de esquema) y MUST NOT incluir el `seed`, información oculta del motor ni la partida completa; reconstruir la tarjeta MUST NOT requerir re-simulación ni acceso al motor.
 - **FR-018**: El sistema MUST renderizar una página de resultado a partir del código de partida, en un dispositivo distinto y sin acceso al guardado local del jugador original.
 - **FR-019**: El sistema MUST generar una imagen de la tarjeta en formato 9:16 y otra en 1:1.
 - **FR-020**: El sistema MUST generar una imagen de previsualización social para el enlace compartido.
@@ -119,13 +127,22 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **FR-023**: El texto a compartir MUST NOT contener datos técnicos ni información del motor que el jugador no pueda conocer.
 - **FR-024**: Ante un código inválido, corrupto o de versión incompatible, el sistema MUST mostrar una página amable con una vía para jugar, sin errores técnicos ni pantallas bloqueadas.
 
+**Composición de la tarjeta (adaptación de la referencia externa)**
+
+- **FR-025**: La tarjeta MUST presentarse como una composición visual tipo póster (identidad, datos destacados, fila de trayectoria, fila de premios y pie con marca de agua y llamada a la acción), no como una lista de texto.
+- **FR-026**: La tarjeta MUST NOT incluir una valoración global ni un número "héroe" (no procede en Coplero).
+- **FR-027**: La tarjeta MUST permitir ocultar el nombre/apodo de quien comparte (privacidad) antes de compartir; con el nombre oculto, ni la tarjeta, ni el código, ni las imágenes lo muestran.
+- **FR-028**: La fila de trayectoria MUST mostrar la secuencia inicio → cambios → final de modalidad y variante, con el año de cada cambio, en orden cronológico.
+- **FR-029**: La barra de datos destacados MUST mostrar tres cifras separadas y nunca sumadas entre sí: (a) primeros premios del COAC, (b) mejor posición alcanzada en el COAC —que debe verse cuando no haya premio del COAC— y (c) otros premios (ajenos), desglosados por tipo con su recuento y omitiendo los tipos no ganados.
+- **FR-030**: La tarjeta MUST ofrecer el conjunto de acciones de compartir de la referencia: compartir nativo, copiar texto/enlace, descargar la imagen y copiar o abrir el enlace de resultado.
+
 ### Key Entities *(include if feature involves data)*
 
-- **TarjetaFinal**: agregado de solo lectura que representa una carrera terminada tal y como se le muestra al jugador. Reúne identidad (nombre/apodo, modalidad y variante iniciales), trayectoria, resultado (años en activo, mejor fase, premios), narración (hitos y frase de cierre) y los datos necesarios para compartirla. Nunca incluye información oculta del motor.
-- **Trayectoria**: recorrido de la carrera en cuanto a modalidad y variante (valores iniciales, cambios con su año y valores finales) y años sin concursar. La produce el motor con los datos de la feature 006; la tarjeta solo la presenta.
+- **TarjetaFinal**: agregado de solo lectura que representa una carrera terminada tal y como se le muestra al jugador. Reúne identidad (nombre/apodo, modalidad y variante iniciales), trayectoria, resultado (años en activo, mejor fase, mejor posición en el COAC, primeros premios del COAC y otros premios, separados), narración (hitos y frase de cierre) y los datos necesarios para compartirla. Nunca incluye información oculta del motor.
+- **Trayectoria**: recorrido de la carrera en cuanto a modalidad y variante (valores iniciales, cambios cronológicos con su año y valores finales) y años sin concursar. La produce el motor con los datos de la feature 006; la tarjeta solo la presenta.
 - **Hito narrativo**: suceso destacado de la carrera, con una etiqueta textual y el año en que ocurrió. Se deriva de datos existentes (resultado del COAC, premios, cambios de trayectoria, años sin concursar) y puede ser un hito neutro de trayectoria.
 - **Premio**: distinción obtenida por el personaje, clasificada como primer premio del COAC u otro premio, con su año.
-- **Código de partida**: representación compacta y compartible de la tarjeta que viaja en la URL y permite reconstruir la tarjeta sin el guardado original.
+- **Código de partida**: representación compacta y compartible de la tarjeta ya derivada que viaja en la URL y permite reconstruir la tarjeta sin el guardado original, sin re-simular y sin incluir el `seed`.
 - **Datos ocultos (excluidos)**: techo, suelo, carisma, volatilidad, año pico, milagro y cualquier otro campo interno del motor. No forman parte de la tarjeta, del código de partida ni de las imágenes bajo ningún concepto.
 
 ## Success Criteria *(mandatory)*
@@ -143,6 +160,8 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **SC-009**: El 100% de las carreras compartidas generan correctamente las imágenes 9:16 y 1:1 con marca de agua y sin datos ocultos.
 - **SC-010**: El 100% de los códigos inválidos o corruptos se resuelven con una página amable y una vía para jugar, sin errores visibles.
 - **SC-011**: Las carreras con cambio de modalidad y/o variante reflejan la trayectoria completa en el 100% de los casos; las que no los tienen no inventan cambios.
+- **SC-012**: La tarjeta y la página de resultado superan una auditoría automática de accesibilidad de WCAG 2.2 nivel AA sin violaciones de severidad crítica o seria.
+- **SC-013**: El 100% de las tarjetas muestran la composición completa (identidad, datos destacados, trayectoria, premios y pie) y ninguna incluye una valoración global ni un número héroe.
 
 ## Assumptions
 
@@ -150,10 +169,13 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **Sin edad, localidad ni género en la tarjeta**: no forman parte de los campos solicitados; se dejan fuera salvo que diseño los reclame más adelante.
 - **Orden de prioridad de los hitos**: el motor prioriza ganar el COAC, alcanzar el podio o la final, ganar un premio ajeno (especialmente la Aguja de oro), el cambio de modalidad, el cambio de variante y los años sin concursar; completa con hitos neutros de trayectoria (debut, duración, mejor resultado).
 - **Textos de hitos y frase de cierre**: el motor decide *qué* se narra de forma determinista; los textos concretos podrán vivir como contenido y se irán puliendo; si falta un texto, se usa un texto neutro, nunca un dato oculto.
+- **El código no incluye el `seed`**: esto ajusta la mención de `docs/02` §10 (que listaba el seed en el código). La tarjeta compartida es autocontenida; las elecciones de texto se derivan de sus datos visibles, nunca del `seed`, para no permitir deducir el `destino`.
 - **Dependencia de la feature 006**: la tarjeta presupone que el motor ya registra la trayectoria (cambios de modalidad y variante). Sin 006, esos campos estarían siempre vacíos.
 - **El destino permanece interno** (`docs/02` §8, constitución I): la tarjeta, el código de partida y las imágenes jamás lo exponen, ni directa ni indirectamente.
 - **Presentación dentro de la isla existente**: la tarjeta se muestra en la pantalla de fin de carrera del bucle jugable (móvil, ancho máximo 420-480 px).
 - **Sin fallback de compartir**: no se contempla un plan alternativo para navegadores sin capacidad de compartir nativo (hueco T16, fuera de alcance).
+- **Adaptación de la referencia externa (copero.com)**: se adopta la estructura de tarjeta-póster (identidad, datos destacados, fila de trayectoria, premios, pie con marca de agua y CTA) y el conjunto de acciones de compartir, pero **sin** número héroe. El listado de "ver jugadores"/ranking de la referencia queda **fuera de alcance** (no hay backend ni ranking en la v1).
+- **Privacidad del nombre**: por defecto la tarjeta muestra el nombre/apodo; el jugador puede ocultarlo antes de compartir (FR-027). Ocultarlo afecta a la tarjeta, al código y a las imágenes.
 - **Saneamiento** según `docs/05` §7 (nombre/apodo: recorte, colapso de espacios, límite de longitud y escapado; también en la generación de imágenes).
 - **La página de resultado y las imágenes son HTML/imagen estática o de borde**, sin base de datos: el código viaja en la URL (coherente con la constitución y `docs/02` §10).
 - **Dependencia interna**: `ResumenCarrera` (`src/engine/resumen.ts`) es el antecedente directo de la tarjeta y se ampliará o sustituirá según el contrato final.

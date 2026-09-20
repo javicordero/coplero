@@ -137,6 +137,8 @@ export interface BancoContenido {
   modalidades?: Modalidad[]
   /** Catálogo de variantes válidas; permite al motor validar la elección tras un cambio. */
   variantes?: CatalogoVariante[]
+  /** Textos de la tarjeta final (hitos y frases), inyectados desde `content`. */
+  textosTarjeta?: TextosTarjeta
 }
 
 export interface Flag {
@@ -198,6 +200,77 @@ export interface Trayectoria {
   cambios: CambioTrayectoria[]
 }
 
+/** Categoría de un hito de la tarjeta final. */
+export type TipoHito =
+  | "ganar_coac"
+  | "podio"
+  | "final"
+  | "premio_aguja"
+  | "premio_copla"
+  | "premio_candela"
+  | "cambio_modalidad"
+  | "cambio_variante"
+  | "anos_sin_concursar"
+  | "debut"
+  | "duracion"
+  | "mejor_resultado"
+
+/** Bucket de desenlace para elegir la frase de cierre. */
+export type BucketFrase =
+  | "campeon"
+  | "podio"
+  | "finalista"
+  | "semifinales"
+  | "cuartos"
+  | "preliminares"
+  | "retirada"
+
+/** Resultado destacado del COAC (primer premio o podio). */
+export interface LogroCOAC {
+  ano: number
+  puesto: number
+  tipo: "primer_premio" | "podio"
+}
+
+/** Premio ajeno agrupado por tipo, con su recuento y años. */
+export interface PremioResumen {
+  tipo: PremioTipo
+  veces: number
+  anos: number[]
+}
+
+/** Suceso narrado en la tarjeta final. */
+export interface HitoTarjeta {
+  tipo: TipoHito
+  ano: number | null
+  texto: string
+}
+
+/** Agregado de solo lectura con la historia visible de una carrera terminada. */
+export interface TarjetaFinal {
+  nombre: string | null
+  modalidadInicial: Modalidad
+  modalidadFinal: Modalidad
+  varianteInicial: VarianteId
+  varianteFinal: VarianteId
+  cambios: CambioTrayectoria[]
+  anosDeCarrera: number
+  anosEnActivo: number
+  anosSinConcursar: number[]
+  mejorFase: FaseCOAC
+  mejorPuesto: number | null
+  primerosPremios: LogroCOAC[]
+  otrosPremios: PremioResumen[]
+  hitos: HitoTarjeta[]
+  fraseCierre: string
+}
+
+/** Catálogo de textos de la tarjeta (datos inyectados desde `content`). */
+export interface TextosTarjeta {
+  hitos: Record<TipoHito, string[]>
+  frases: Record<BucketFrase, string[]>
+}
+
 export interface ResultadoTemporada {
   fase: FaseCOAC
   puesto: number
@@ -257,21 +330,11 @@ export interface SituacionPublica {
   opciones: OpcionPublica[]
 }
 
-export interface ResumenCarrera {
-  nombre: string
-  modalidad: Modalidad
-  variante: VarianteId
-  anosEnActivos: number
-  mejorFase: FaseCOAC
-  premios: Premio[]
-  trayectoria: Trayectoria
-}
-
 export type Paso =
   | { tipo: "decision"; momento: Momento; situacion: SituacionPublica }
   | { tipo: "variante"; modalidad: Modalidad }
   | { tipo: "resultado"; temporada: Temporada }
-  | { tipo: "fin"; resumen: ResumenCarrera }
+  | { tipo: "fin"; tarjeta: TarjetaFinal }
   | { tipo: "error"; error: ErrorMotor }
 
 export type ErrorMotor =
@@ -287,4 +350,5 @@ export type ErrorMotor =
 export type Resultado<T, E> = { ok: true; valor: T } | { ok: false; error: E }
 
 export const VERSION_PARTIDA = 2
+export const VERSION_TARJETA = 1
 export const ANO_BASE = 1

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { BancoContenido } from "../../engine/index"
+import { type BancoContenido, decodificar } from "../../engine/index"
 import { crearJuego } from "../estado.svelte"
 import { type Almacen, CLAVE_GUARDADO } from "../persistencia"
 
@@ -107,8 +107,8 @@ describe("estado del juego", () => {
     const juego = nuevoJuego(almacenMemoria())
     jugarCarrera(juego)
     expect(juego.pantalla).toBe("fin")
-    expect(juego.resumen).not.toBeNull()
-    expect(juego.resumen?.nombre).toBe("El Chato")
+    expect(juego.tarjeta).not.toBeNull()
+    expect(juego.tarjeta?.nombre).toBe("El Chato")
     expect(juego.error).toBeNull()
   })
 
@@ -181,7 +181,7 @@ describe("estado del juego", () => {
     expect(restaurado.estadoGuardado).toBe("terminada")
     restaurado.continuarPartida()
     expect(restaurado.pantalla).toBe("fin")
-    expect(restaurado.resumen?.nombre).toBe("El Chato")
+    expect(restaurado.tarjeta?.nombre).toBe("El Chato")
   })
 
   it("descarta un guardado inservible con un aviso puntual", () => {
@@ -262,5 +262,30 @@ describe("estado del juego", () => {
         variante: "ch_a",
       },
     ])
+  })
+
+  it("oculta el nombre y genera un código compartible", () => {
+    const juego = nuevoJuego(almacenMemoria())
+    jugarCarrera(juego)
+    expect(juego.tarjeta?.nombre).toBe("El Chato")
+
+    const codigo = juego.codigo()
+    expect(codigo).toBeTruthy()
+    if (codigo) {
+      const decodificado = decodificar(codigo)
+      expect(decodificado.ok).toBe(true)
+      if (decodificado.ok) expect(decodificado.valor.nombre).toBe("El Chato")
+    }
+
+    juego.alternarNombre()
+    expect(juego.nombreOculto).toBe(true)
+    expect(juego.tarjeta?.nombre).toBeNull()
+    const codigoAnonimo = juego.codigo()
+    expect(codigoAnonimo).not.toBe(codigo)
+    if (codigoAnonimo) {
+      const decodificado = decodificar(codigoAnonimo)
+      expect(decodificado.ok).toBe(true)
+      if (decodificado.ok) expect(decodificado.valor.nombre).toBeNull()
+    }
   })
 })

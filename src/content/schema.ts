@@ -72,11 +72,46 @@ export interface CatalogoVariante {
   modalidad: Modalidad
 }
 
+/** Categorías de hito de la tarjeta final (deben coincidir con el motor). */
+export const TIPOS_HITO = [
+  "ganar_coac",
+  "podio",
+  "final",
+  "premio_aguja",
+  "premio_copla",
+  "premio_candela",
+  "cambio_modalidad",
+  "cambio_variante",
+  "anos_sin_concursar",
+  "debut",
+  "duracion",
+  "mejor_resultado",
+] as const
+export type TipoHito = (typeof TIPOS_HITO)[number]
+
+/** Buckets de desenlace para las frases de cierre. */
+export const BUCKETS_FRASE = [
+  "campeon",
+  "podio",
+  "finalista",
+  "semifinales",
+  "cuartos",
+  "preliminares",
+  "retirada",
+] as const
+export type BucketFrase = (typeof BUCKETS_FRASE)[number]
+
+export interface TextosTarjeta {
+  hitos: Record<TipoHito, string[]>
+  frases: Record<BucketFrase, string[]>
+}
+
 export interface BancoContenido {
   situaciones: Situacion[]
   condicionales?: Condicional[]
   modalidades?: Modalidad[]
   variantes?: CatalogoVariante[]
+  textosTarjeta?: TextosTarjeta
 }
 
 const EfectosSchema = z.strictObject({
@@ -173,6 +208,21 @@ const CondicionalBase = SituacionBase.extend({
 export const CondicionalSchema: z.ZodType<Condicional> =
   CondicionalBase.superRefine(comprobarIdsDeOpciones)
 
+function recordDeTexto<T extends string>(
+  claves: readonly T[],
+): z.ZodType<Record<T, string[]>> {
+  const shape: Record<string, z.ZodArray<z.ZodString>> = {}
+  for (const clave of claves) {
+    shape[clave] = z.array(z.string().min(1)).min(1)
+  }
+  return z.strictObject(shape) as unknown as z.ZodType<Record<T, string[]>>
+}
+
+export const TextosTarjetaSchema: z.ZodType<TextosTarjeta> = z.strictObject({
+  hitos: recordDeTexto(TIPOS_HITO),
+  frases: recordDeTexto(BUCKETS_FRASE),
+})
+
 export function flagsDeRequisito(req: Requisito): string[] {
   switch (req.tipo) {
     case "flag":
@@ -200,6 +250,7 @@ export const BancoContenidoSchema: z.ZodType<BancoContenido> = z
         }),
       )
       .optional(),
+    textosTarjeta: TextosTarjetaSchema.optional(),
   })
   .superRefine((banco, ctx) => {
     const todas = [...banco.situaciones, ...(banco.condicionales ?? [])]

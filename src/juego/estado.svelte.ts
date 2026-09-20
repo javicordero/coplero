@@ -4,6 +4,7 @@
 import { bancoContenido as bancoReal } from "../content/index"
 import {
   type BancoContenido,
+  codificar,
   continuar as continuarMotor,
   crearPartida,
   type ErrorMotor,
@@ -14,8 +15,9 @@ import {
   type Partida,
   type Paso,
   type Personaje,
-  type ResumenCarrera,
   siguientePaso,
+  sinNombre,
+  type TarjetaFinal,
   type VarianteId,
 } from "../engine/index"
 import {
@@ -62,7 +64,8 @@ export interface Juego {
   readonly pantalla: Pantalla
   readonly partida: Partida | null
   readonly paso: Paso | null
-  readonly resumen: ResumenCarrera | null
+  readonly tarjeta: TarjetaFinal | null
+  readonly nombreOculto: boolean
   readonly error: ErrorMotor | null
   readonly aviso: string | null
   readonly estadoGuardado: EstadoGuardado
@@ -76,6 +79,8 @@ export interface Juego {
   continuar(): void
   reiniciar(): void
   continuarPartida(): void
+  alternarNombre(): void
+  codigo(): string | null
 }
 
 export function crearJuego(
@@ -88,7 +93,9 @@ export function crearJuego(
   let pantalla = $state<Pantalla>("intro")
   let partida = $state<Partida | null>(null)
   let paso = $state<Paso | null>(null)
-  let resumen = $state<ResumenCarrera | null>(null)
+  let tarjeta = $state<TarjetaFinal | null>(null)
+  let tarjetaBase = $state<TarjetaFinal | null>(null)
+  let nombreOculto = $state(false)
   let error = $state<ErrorMotor | null>(null)
   const cargaInicial = cargar(almacen)
   let aviso = $state<string | null>(
@@ -117,7 +124,8 @@ export function crearJuego(
       return
     }
     if (siguiente.tipo === "fin") {
-      resumen = siguiente.resumen
+      tarjetaBase = siguiente.tarjeta
+      tarjeta = nombreOculto ? sinNombre(siguiente.tarjeta) : siguiente.tarjeta
       pantalla = "fin"
       return
     }
@@ -196,7 +204,9 @@ export function crearJuego(
     pantalla = "intro"
     partida = null
     paso = null
-    resumen = null
+    tarjeta = null
+    tarjetaBase = null
+    nombreOculto = false
     error = null
     aviso = null
     personaje = null
@@ -224,6 +234,17 @@ export function crearJuego(
     refrescarPaso()
   }
 
+  function alternarNombre(): void {
+    nombreOculto = !nombreOculto
+    if (tarjetaBase) {
+      tarjeta = nombreOculto ? sinNombre(tarjetaBase) : tarjetaBase
+    }
+  }
+
+  function codigo(): string | null {
+    return tarjeta ? codificar(tarjeta) : null
+  }
+
   return {
     get pantalla() {
       return pantalla
@@ -234,8 +255,11 @@ export function crearJuego(
     get paso() {
       return paso
     },
-    get resumen() {
-      return resumen
+    get tarjeta() {
+      return tarjeta
+    },
+    get nombreOculto() {
+      return nombreOculto
     },
     get error() {
       return error
@@ -258,5 +282,7 @@ export function crearJuego(
     continuar,
     reiniciar,
     continuarPartida,
+    alternarNombre,
+    codigo,
   }
 }

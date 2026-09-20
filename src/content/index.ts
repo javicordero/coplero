@@ -11,7 +11,9 @@ import {
   OpcionSchema,
   RequisitoSchema,
   SituacionSchema,
+  TextosTarjetaSchema,
 } from "./schema"
+import { TEXTOS_TARJETA } from "./textos/tarjeta"
 import { VARIANTES } from "./variantes"
 
 export * from "./informe"
@@ -36,6 +38,7 @@ export {
   OpcionSchema,
   RequisitoSchema,
   SituacionSchema,
+  TextosTarjetaSchema,
 }
 
 /** Datos crudos del banco, sin validar. */
@@ -48,6 +51,7 @@ export const bancoContenidoBruto: unknown = {
   ],
   condicionales: [...condicionalesVerano, ...condicionalesFebrero],
   variantes: VARIANTES.map((v) => ({ id: v.id, modalidad: v.modalidad })),
+  textosTarjeta: TEXTOS_TARJETA,
 }
 
 /**

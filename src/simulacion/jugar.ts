@@ -6,6 +6,7 @@ import type {
   Situacion,
 } from "../engine/index"
 import {
+  construirTarjeta,
   continuar,
   crearPartida,
   elegir,
@@ -142,6 +143,7 @@ export function jugarCarrera(args: {
     atributosFinales: p.atributos,
     anoPico: p.destino.anoPico,
     hallazgos: [],
+    tarjeta: construirTarjeta(p, banco),
   }
   registro.hallazgos = auditarCarrera(registro, banco.variantes)
   return registro

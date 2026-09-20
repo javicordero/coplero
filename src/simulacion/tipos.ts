@@ -11,6 +11,7 @@ import type {
   Paso,
   Premio,
   Situacion,
+  TarjetaFinal,
   TipoDecision,
   VarianteId,
 } from "../engine/index"
@@ -60,6 +61,7 @@ export type ReglaEstadoImposible =
   | "saltaCOACIncoherente"
   | "trayectoriaIncoherente"
   | "varianteInvalida"
+  | "tarjetaIncoherente"
 
 export interface HallazgoEstadoImposible {
   regla: ReglaEstadoImposible
@@ -100,6 +102,7 @@ export interface RegistroCarrera {
   atributosFinales: Atributos
   anoPico: number
   hallazgos: HallazgoEstadoImposible[]
+  tarjeta?: TarjetaFinal
 }
 
 export interface MetricasPrincipales {

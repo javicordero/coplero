@@ -8,7 +8,7 @@ import {
   flagsSinDeclarar,
   situacionesInalcanzablesEstaticas,
 } from "../informe"
-import { flagsDeRequisito } from "../schema"
+import { BUCKETS_FRASE, flagsDeRequisito, TIPOS_HITO } from "../schema"
 
 const TODAS = [
   ...bancoContenido.situaciones,
@@ -195,5 +195,23 @@ describe("trayectoria: situaciones de cambio", () => {
 
   it("el catálogo de variantes del banco cubre las 6 variantes", () => {
     expect(bancoContenido.variantes).toHaveLength(6)
+  })
+
+  it("los textos de la tarjeta cubren todos los tipos de hito y buckets", () => {
+    const textos = bancoContenido.textosTarjeta
+    expect(textos).toBeDefined()
+    if (!textos) return
+    for (const tipo of TIPOS_HITO) {
+      expect(textos.hitos[tipo]?.length).toBeGreaterThan(0)
+      for (const plantilla of textos.hitos[tipo]) {
+        expect(plantilla.trim().length).toBeGreaterThan(0)
+      }
+    }
+    for (const bucket of BUCKETS_FRASE) {
+      expect(textos.frases[bucket]?.length).toBeGreaterThan(0)
+      for (const frase of textos.frases[bucket]) {
+        expect(frase.trim().length).toBeGreaterThan(0)
+      }
+    }
   })
 })

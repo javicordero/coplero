@@ -23,6 +23,7 @@ export const REGLAS_ESTADO_IMPOSIBLE: readonly ReglaEstadoImposible[] = [
   "saltaCOACIncoherente",
   "trayectoriaIncoherente",
   "varianteInvalida",
+  "tarjetaIncoherente",
 ] as const
 
 const BANDAS: Record<FaseCOAC, readonly [number, number]> = {
@@ -192,6 +193,33 @@ export function auditarCarrera(
       (d) => d.ano === t.ano && d.saltaCOAC,
     )
     if (!salto) add("saltaCOACIncoherente", `ano ${t.ano} fuera sin saltaCOAC`)
+  }
+
+  const tarjeta = registro.tarjeta
+  if (tarjeta) {
+    if (tarjeta.hitos.length !== 3) {
+      add("tarjetaIncoherente", `hitos=${tarjeta.hitos.length}`)
+    }
+    const clavesOcultas = [
+      "destino",
+      "techo",
+      "suelo",
+      "anoPico",
+      "anosCarrera",
+      "volatilidad",
+      "carisma",
+      "milagro",
+    ]
+    const claves = Object.keys(tarjeta)
+    for (const clave of clavesOcultas) {
+      if (claves.includes(clave))
+        add("tarjetaIncoherente", `clave oculta ${clave}`)
+    }
+    for (const premio of tarjeta.otrosPremios) {
+      if (premio.veces <= 0) {
+        add("tarjetaIncoherente", `premio ${premio.tipo} veces=${premio.veces}`)
+      }
+    }
   }
 
   return hallazgos

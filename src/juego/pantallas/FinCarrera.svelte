@@ -1,64 +1,179 @@
 <script lang="ts">
-import { VARIANTES } from "../../content/index"
-import type { ResumenCarrera } from "../../engine/index"
+import type { TarjetaFinal } from "../../engine/index"
 import {
-  etiquetaFase,
-  etiquetaModalidad,
-  etiquetaPremio,
-} from "../presentacion"
+  compartirNativo,
+  copiarTexto,
+  descargarImagen,
+  textoCompartir,
+  urlResultado,
+} from "../../utilities/compartir"
+import { DIRECCION_JUEGO } from "../presentacion"
+import Tarjeta from "../Tarjeta.svelte"
 
-let { resumen, onReiniciar }: { resumen: ResumenCarrera; onReiniciar: () => void } =
-  $props()
+let {
+  tarjeta,
+  codigo,
+  nombreOculto,
+  onAlternarNombre,
+  onReiniciar,
+}: {
+  tarjeta: TarjetaFinal
+  codigo: string | null
+  nombreOculto: boolean
+  onAlternarNombre: () => void
+  onReiniciar: () => void
+} = $props()
 
-let tituloVariante = $derived(
-  VARIANTES.find((v) => v.id === resumen.variante)?.titulo ?? resumen.variante,
-)
+let avisoAccion = $state<string | null>(null)
+
+function origen(): string {
+  return typeof window !== "undefined"
+    ? window.location.origin
+    : `https://${DIRECCION_JUEGO}`
+}
+
+let enlace = $derived(codigo ? urlResultado(codigo, origen()) : "")
+
+async function alCompartir() {
+  if (!codigo) return
+  const ok = await compartirNativo({
+    title: "Coplero",
+    text: textoCompartir(tarjeta, enlace),
+    url: enlace,
+  })
+  avisoAccion = ok
+    ? null
+    : "Tu navegador no permite compartir directamente; copia el enlace."
+}
+
+async function alCopiar() {
+  if (!codigo) return
+  const ok = await copiarTexto(textoCompartir(tarjeta, enlace))
+  avisoAccion = ok ? "Texto copiado." : "No se pudo copiar."
+}
+
+async function alDescargar(formato: "9x16" | "1x1") {
+  if (!codigo) return
+  const ok = await descargarImagen(
+    `${origen()}/api/og/${codigo}.png?t=${formato}`,
+    `coplero-${formato}.png`,
+  )
+  avisoAccion = ok ? "Imagen descargada." : "No se pudo descargar la imagen."
+}
+
+async function alCopiarEnlace() {
+  const ok = await copiarTexto(enlace)
+  avisoAccion = ok ? "Enlace copiado." : "No se pudo copiar."
+}
 </script>
 
-<section data-testid="fin">
-  <h2>Fin de la carrera</h2>
-  <p>
-    <strong>{resumen.nombre}</strong> ·
-    {etiquetaModalidad(resumen.modalidad)} · {tituloVariante}
+<section class="fin" data-testid="fin">
+  <h2 class="titulo">Carrera finalizada</h2>
+  <Tarjeta {tarjeta} />
+
+  <div class="privacidad">
+    <button
+      type="button"
+      class="toggle"
+      aria-pressed={nombreOculto}
+      onclick={onAlternarNombre}
+      data-testid="toggle-nombre"
+    >
+      {nombreOculto ? "Mostrar nombre" : "Ocultar nombre"}
+    </button>
+  </div>
+
+  <div class="acciones" role="group" aria-label="Compartir la tarjeta">
+    <button type="button" onclick={alCompartir} data-testid="compartir">
+      Compartir
+    </button>
+    <button type="button" onclick={alCopiar} data-testid="copiar-texto">
+      Copiar texto
+    </button>
+    <button
+      type="button"
+      onclick={() => alDescargar("9x16")}
+      data-testid="descargar-9x16"
+    >
+      Imagen 9:16
+    </button>
+    <button
+      type="button"
+      onclick={() => alDescargar("1x1")}
+      data-testid="descargar-1x1"
+    >
+      Imagen 1:1
+    </button>
+    <button type="button" onclick={alCopiarEnlace} data-testid="copiar-enlace">
+      Copiar enlace
+    </button>
+  </div>
+
+  <p class="aviso" aria-live="polite" data-testid="aviso-accion">
+    {avisoAccion ?? ""}
   </p>
-  <p>Años en activo: {resumen.anosEnActivos}</p>
-  <p>Mejor fase: {etiquetaFase(resumen.mejorFase)}</p>
-  {#if resumen.premios.length > 0}
-    <ul>
-      {#each resumen.premios as premio (premio.ano + premio.tipo)}
-        <li>{etiquetaPremio(premio.tipo)} ({premio.ano})</li>
-      {/each}
-    </ul>
-  {:else}
-    <p>Sin premios en toda la carrera.</p>
-  {/if}
-  <button type="button" onclick={onReiniciar} data-testid="reiniciar">
+
+  <button
+    type="button"
+    class="reiniciar"
+    onclick={onReiniciar}
+    data-testid="reiniciar"
+  >
     Empezar de nuevo
   </button>
 </section>
 
 <style>
-  section {
+  .fin {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
-  ul {
-    list-style: none;
+  .titulo {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #a0aec0;
+    text-align: center;
+  }
+
+  .privacidad {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    justify-content: center;
+  }
+
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
   }
 
   button {
-    margin-top: 1rem;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
+    min-height: 44px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
     border: 1px solid #555;
     background: #ededed;
     color: #0a0a0a;
     cursor: pointer;
+  }
+
+  .toggle {
+    background: transparent;
+    color: #ededed;
+  }
+
+  .aviso {
+    min-height: 1.2rem;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 0.85rem;
+  }
+
+  .reiniciar {
+    margin-top: 0.5rem;
   }
 </style>

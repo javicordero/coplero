@@ -1,0 +1,72 @@
+---
+import { decodificar } from "../../engine/index"
+import { DIRECCION_JUEGO } from "../../juego/presentacion"
+import Tarjeta from "../../juego/Tarjeta.svelte"
+import Layout from "../../layouts/Layout.astro"
+
+export const prerender = false
+
+const { codigo } = Astro.params
+const resultado = decodificar(codigo ?? "")
+const tarjeta = resultado.ok ? resultado.valor : null
+
+const imagen = new URL(`/api/og/${codigo}.png`, Astro.url).href
+const titulo = tarjeta
+  ? `Carrera de ${tarjeta.nombre ?? "un coplero"}`
+  : "Tarjeta no disponible"
+const descripcion = tarjeta
+  ? (tarjeta.hitos[0]?.texto ?? tarjeta.fraseCierre)
+  : "Esta tarjeta no está disponible."
+---
+
+<Layout
+  title={`${titulo} · Coplero`}
+  description={descripcion}
+  og={{
+    title: titulo,
+    description: descripcion,
+    imageUrl: imagen,
+    url: Astro.url.href,
+  }}
+>
+  <main class="resultado">
+    {
+      tarjeta ? (
+        <Tarjeta tarjeta={tarjeta} />
+      ) : (
+        <section class="aviso" data-testid="codigo-invalido">
+          <h1>Esta tarjeta no está disponible</h1>
+          <p>
+            El enlace puede estar incompleto o ser de una versión anterior. No
+            pasa nada: puedes empezar una carrera nueva.
+          </p>
+          <a href="/jugar">Juega tu carrera en {DIRECCION_JUEGO}</a>
+        </section>
+      )
+    }
+  </main>
+</Layout>
+
+<style>
+  .resultado {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .aviso {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .aviso a {
+    color: #f6ad55;
+    font-weight: 600;
+  }
+</style>

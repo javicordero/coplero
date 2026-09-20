@@ -1,9 +1,18 @@
 ---
-interface Props {
-  title?: string
+interface OpenGraph {
+  title: string
+  description: string
+  imageUrl: string
+  url?: string
 }
 
-const { title = "Coplero" } = Astro.props
+interface Props {
+  title?: string
+  description?: string
+  og?: OpenGraph
+}
+
+const { title = "Coplero", description, og } = Astro.props
 ---
 
 <!doctype html>
@@ -13,6 +22,19 @@ const { title = "Coplero" } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {
+      og && (
+        <>
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={og.title} />
+          <meta property="og:description" content={og.description} />
+          <meta property="og:image" content={og.imageUrl} />
+          {og.url && <meta property="og:url" content={og.url} />}
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )
+    }
   </head>
   <body>
     <slot />
