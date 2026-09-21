@@ -1,0 +1,134 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { FAQ, MODALIDADES_RESUMEN } from "../sitio/contenido"
+import { REGLAS } from "../sitio/reglas"
+---
+
+<Layout
+  title="Cómo jugar · Coplero"
+  description="Reglas de Coplero: cómo se avanza por el COAC, las modalidades y las preguntas frecuentes."
+>
+  <main class="como-jugar">
+    <h1>Cómo jugar</h1>
+
+    <section class="bloque">
+      <h2>Las reglas</h2>
+      {
+        REGLAS.map((regla) => (
+          <article>
+            <h3>{regla.titulo}</h3>
+            <p>{regla.texto}</p>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="bloque">
+      <h2>Modalidades</h2>
+      <div class="rejilla">
+        {
+          MODALIDADES_RESUMEN.map((modalidad) => (
+            <article class="modalidad">
+              <h3>{modalidad.nombre}</h3>
+              <p>{modalidad.descripcion}</p>
+              <p class="foco">{modalidad.enQueDecide}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq">
+        {
+          FAQ.map((entrada) => (
+            <details>
+              <summary>{entrada.pregunta}</summary>
+              <p>{entrada.respuesta}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <a class="cta" href="/jugar">Empezar a jugar</a>
+  </main>
+</Layout>
+
+<style>
+  .como-jugar {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+  .bloque {
+    padding: 1.5rem 0;
+    border-top: 1px solid #1d2733;
+  }
+  p {
+    color: #cdd6e0;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .rejilla {
+    display: grid;
+    gap: 1rem;
+  }
+  .modalidad {
+    border: 1px solid #1d2733;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #0d151e;
+  }
+  .foco {
+    color: #f6ad55;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .faq details {
+    border-bottom: 1px solid #1d2733;
+    padding: 0.75rem 0;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #e6eef8;
+  }
+  .faq summary:hover {
+    color: #f6ad55;
+  }
+  .faq p {
+    margin-top: 0.5rem;
+  }
+  .cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.85rem 1.6rem;
+    background: #f6ad55;
+    color: #1a1206;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .cta:hover {
+    background: #ffc477;
+  }
+  @media (min-width: 640px) {
+    .rejilla {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

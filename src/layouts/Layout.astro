@@ -1,4 +1,7 @@
 ---
+import Footer from "../components/Footer.astro"
+import Header from "../components/Header.astro"
+
 interface OpenGraph {
   title: string
   description: string
@@ -47,7 +50,13 @@ const {
     }
   </head>
   <body>
-    <slot />
+    <div class="sitio">
+      <Header />
+      <div class="contenido">
+        <slot />
+      </div>
+      <Footer />
+    </div>
   </body>
 </html>
 
@@ -63,6 +72,18 @@ const {
     background: #0a0a0a;
     color: #ededed;
     min-height: 100vh;
+  }
+
+  .sitio {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   :focus-visible {

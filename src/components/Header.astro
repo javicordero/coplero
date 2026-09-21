@@ -1,0 +1,31 @@
+---
+// Cabecera del sitio (011). Estática: 0 kB de JS.
+// La marca lleva `data-marca`; en /jugar la isla la actualiza según el sexo del personaje.
+---
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="marca" href="/">
+      <span data-marca>Coplero</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    width: 100%;
+  }
+  .wrap {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .marca {
+    color: #f6ad55;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+</style>

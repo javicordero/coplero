@@ -1,0 +1,74 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { AUTOR } from "../../sitio/contenido"
+---
+
+<Layout
+  title="Política de cookies · Coplero"
+  description="Coplero no usa cookies de seguimiento."
+>
+  <main class="legal">
+    <h1>Política de cookies</h1>
+
+    <p>
+      Coplero <strong>no usa cookies de seguimiento</strong> ni de publicidad, y
+      no hace falta que aceptes ningún banner.
+    </p>
+
+    <h2>Almacenamiento local</h2>
+    <p>
+      Para que puedas parar y continuar tu partida, el juego guarda el estado en
+      el almacenamiento local del navegador (<code>localStorage</code>). Es
+      <strong>funcionalidad esencial</strong> del servicio, no sirve para
+      identificarte y no se comparte con nadie.
+    </p>
+
+    <h2>Enlaces a otros sitios</h2>
+    <p>
+      El pie tiene enlaces a redes sociales y a Acordes Gaditanos. Si los pulsas,
+      esos sitios pueden usar sus propias cookies; esto ya depende de ellos, no
+      de Coplero.
+    </p>
+
+    <h2>Cómo borrarlas</h2>
+    <p>
+      Puedes borrar el almacenamiento local del sitio desde los ajustes de tu
+      navegador. Perderás la partida en curso.
+    </p>
+
+    <h2>Responsable</h2>
+    <p>Este proyecto lo mantiene {AUTOR}.</p>
+
+    <p class="fecha">Última actualización: septiembre de 2026.</p>
+  </main>
+</Layout>
+
+<style>
+  .legal {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  h2 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.15rem;
+  }
+  p {
+    color: #cdd6e0;
+  }
+  code {
+    background: #1d2733;
+    padding: 0 0.25rem;
+    border-radius: 4px;
+  }
+  .fecha {
+    margin-top: 1.5rem;
+    color: #8b98a5;
+    font-size: 0.85rem;
+  }
+</style>

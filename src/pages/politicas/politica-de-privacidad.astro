@@ -1,0 +1,88 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { AUTOR } from "../../sitio/contenido"
+---
+
+<Layout
+  title="Política de privacidad · Coplero"
+  description="Qué datos trata Coplero y cuáles no."
+>
+  <main class="legal">
+    <h1>Política de privacidad</h1>
+
+    <p>
+      Coplero es un juego gratuito que funciona en tu navegador. No hay cuentas
+      ni inicio de sesión.
+    </p>
+
+    <h2>Qué datos se tratan</h2>
+    <p>
+      Coplero <strong>no recoge datos personales</strong> ni los envía a ningún
+      servidor. La única información que se guarda es tu partida en curso, y se
+      guarda <strong>solo en tu propio dispositivo</strong> mediante el
+      almacenamiento local del navegador (<code>localStorage</code>).
+    </p>
+
+    <h2>Qué no se hace</h2>
+    <ul>
+      <li>No hay analítica ni seguimiento de usuarios.</li>
+      <li>No hay cookies de terceros ni publicidad.</li>
+      <li>No se comparte ningún dato con terceros.</li>
+    </ul>
+
+    <h2>Cómo borrar tus datos</h2>
+    <p>
+      Puedes eliminar la partida guardada borrando los datos del sitio desde los
+      ajustes de tu navegador. Al hacerlo, la partida en curso se pierde.
+    </p>
+
+    <h2>Responsable</h2>
+    <p>
+      Este proyecto lo mantiene {AUTOR}. Para cualquier duda sobre privacidad,
+      puedes escribir a través de <a
+        href="https://acordesgaditanos.com"
+        target="_blank"
+        rel="noopener noreferrer">Acordes Gaditanos</a
+      >.
+    </p>
+
+    <p class="fecha">Última actualización: septiembre de 2026.</p>
+  </main>
+</Layout>
+
+<style>
+  .legal {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  h2 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.15rem;
+  }
+  p,
+  li {
+    color: #cdd6e0;
+  }
+  ul {
+    padding-left: 1.25rem;
+  }
+  a {
+    color: #f6ad55;
+  }
+  code {
+    background: #1d2733;
+    padding: 0 0.25rem;
+    border-radius: 4px;
+  }
+  .fecha {
+    margin-top: 1.5rem;
+    color: #8b98a5;
+    font-size: 0.85rem;
+  }
+</style>

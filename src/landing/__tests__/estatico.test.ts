@@ -5,12 +5,25 @@ import { describe, expect, it } from "vitest"
 const RAIZ = process.cwd()
 const leer = (relativo: string) => readFileSync(join(RAIZ, relativo), "utf8")
 
-describe("landing estática (0 kB de JS)", () => {
-  it("las fuentes de la landing no usan islas ni scripts", () => {
-    for (const fichero of [
-      "src/pages/index.astro",
-      "src/components/Footer.astro",
-    ]) {
+const FUENTES_ESTATICAS = [
+  "src/pages/index.astro",
+  "src/pages/como-jugar.astro",
+  "src/pages/politicas/politica-de-privacidad.astro",
+  "src/pages/politicas/politica-de-cookies.astro",
+  "src/components/Header.astro",
+  "src/components/Footer.astro",
+]
+
+const HTML_CONSTRUIDO = [
+  "dist/index.html",
+  "dist/como-jugar/index.html",
+  "dist/politicas/politica-de-privacidad/index.html",
+  "dist/politicas/politica-de-cookies/index.html",
+]
+
+describe("páginas estáticas (0 kB de JS)", () => {
+  it("sus fuentes no usan islas ni scripts", () => {
+    for (const fichero of FUENTES_ESTATICAS) {
       const fuente = leer(fichero)
       expect(
         fuente,
@@ -23,8 +36,11 @@ describe("landing estática (0 kB de JS)", () => {
   })
 
   it("el HTML construido no incluye <script> (cuando existe dist/)", () => {
-    const dist = join(RAIZ, "dist", "index.html")
-    if (!existsSync(dist)) return
-    expect(leer("dist/index.html")).not.toMatch(/<script/i)
+    for (const fichero of HTML_CONSTRUIDO) {
+      if (!existsSync(join(RAIZ, fichero))) continue
+      expect(leer(fichero), `${fichero} no debe tener <script>`).not.toMatch(
+        /<script/i,
+      )
+    }
   })
 })

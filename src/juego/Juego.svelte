@@ -6,6 +6,7 @@ import {
   mensajeError,
   MODALIDADES_INFO,
   TITULO_CAMBIO_VARIANTE,
+  tituloDelJuego,
 } from "./presentacion"
 import CrearPersonaje from "./pantallas/CrearPersonaje.svelte"
 import Decision from "./pantallas/Decision.svelte"
@@ -31,6 +32,14 @@ function empezarDeCero() {
   juego.reiniciar()
   juego.empezar()
 }
+
+// La marca de la cabecera refleja el sexo del personaje (FR-006):
+// al montar con partida guardada y cada vez que cambia.
+$effect(() => {
+  const genero = juego.personaje?.genero ?? juego.partida?.personaje.genero
+  const marca = document.querySelector<HTMLElement>("[data-marca]")
+  if (marca) marca.textContent = genero ? tituloDelJuego(genero) : "Coplero"
+})
 </script>
 
 <main
@@ -99,7 +108,7 @@ function empezarDeCero() {
     max-width: 480px;
     margin: 0 auto;
     padding: 2rem 1rem;
-    min-height: 100vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;

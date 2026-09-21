@@ -1,4 +1,5 @@
-// Datos de la landing (`/`). Son contenido estático, no lógica de juego.
+// Contenido compartido del sitio (portada, pie y /como-jugar).
+// Son datos estáticos, no lógica de juego.
 
 import type { Modalidad } from "../content/modalidades"
 
@@ -105,11 +106,7 @@ export const FAQ: PreguntaFAQ[] = [
 
 /** Cuentas de acordesgaditanos mientras Coplero no tenga las suyas (docs/05 §3). */
 export const REDES: EnlaceSocial[] = [
-  {
-    id: "x",
-    nombre: "X",
-    url: "https://x.com/acordesgaditano",
-  },
+  { id: "x", nombre: "X", url: "https://x.com/acordesgaditano" },
   {
     id: "youtube",
     nombre: "YouTube",
@@ -130,11 +127,7 @@ export const REDES: EnlaceSocial[] = [
     nombre: "LinkedIn",
     url: "https://www.linkedin.com/in/javier-cordero-toscano",
   },
-  {
-    id: "github",
-    nombre: "GitHub",
-    url: "https://github.com/javicordero",
-  },
+  { id: "github", nombre: "GitHub", url: "https://github.com/javicordero" },
 ]
 
 export const AUTOR = "Javier Cordero Toscano"

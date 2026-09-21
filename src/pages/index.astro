@@ -1,15 +1,9 @@
 ---
-import Footer from "../components/Footer.astro"
 import { DIRECCION_JUEGO } from "../juego/presentacion"
 import Tarjeta from "../juego/Tarjeta.svelte"
-import {
-  ACORDES_GADITANOS,
-  FAQ,
-  MODALIDADES_RESUMEN,
-  PASOS,
-} from "../landing/contenido"
 import { CODIGO_EJEMPLO, EJEMPLO_TARJETA } from "../landing/ejemploTarjeta"
 import Layout from "../layouts/Layout.astro"
+import { ACORDES_GADITANOS, PASOS } from "../sitio/contenido"
 
 const URL_SITIO = `https://${DIRECCION_JUEGO}`
 const titulo = "Coplero — juego narrativo del Carnaval de Cádiz"
@@ -28,135 +22,70 @@ const descripcion =
     url: `${URL_SITIO}/`,
   }}
 >
-  <div class="pagina">
-    <header class="top">
-      <span class="marca">Coplero</span>
-    </header>
+  <main>
+    <section class="hero">
+      <h1>Coplero</h1>
+      <p class="claim">
+        Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
+        Cada partida es una historia distinta.
+      </p>
+      <a class="cta" href="/jugar">Empezar a jugar</a>
+      <p class="micro">Gratis y sin registro · unos minutos</p>
+    </section>
 
-    <main>
-      <section class="hero">
-        <h1>Coplero</h1>
-        <p class="claim">
-          Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
-          Cada partida es una historia distinta.
-        </p>
-        <a class="cta" href="/jugar">Empezar a jugar</a>
-        <p class="micro">Gratis y sin registro · unos minutos</p>
-      </section>
+    <section id="que-es" class="bloque">
+      <h2>Qué es Coplero y cómo funciona</h2>
+      <p>
+        Coplero es un juego narrativo sobre el Carnaval de Cádiz. Eliges
+        comparsista o chirigotero, montas tu agrupación y, año tras año, decides
+        en verano qué preparar y en febrero cómo jugártela en el concurso.
+      </p>
+      <p>
+        No se trata de ganar: se trata de ver hasta dónde llega tu historia. Al
+        final recibes una tarjeta con toda tu carrera lista para compartir.
+      </p>
+      <ol class="pasos">
+        {
+          PASOS.map((paso) => (
+            <li>
+              <span class="numero">{paso.numero}</span>
+              <div>
+                <h3>{paso.titulo}</h3>
+                <p>{paso.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="autor">
+        Es el hermano pequeño de <a
+          href={ACORDES_GADITANOS}
+          target="_blank"
+          rel="noopener noreferrer">Acordes Gaditanos</a
+        >, la web de acordes del Carnaval de Cádiz. Mismo creador, misma afición.
+      </p>
+    </section>
 
-      <section id="que-es" class="bloque">
-        <h2>¿Qué es Coplero?</h2>
-        <p>
-          Coplero es un juego narrativo sobre el Carnaval de Cádiz. Eliges
-          comparsista o chirigotero, montas tu agrupación y, año tras año,
-          decides en verano qué preparar y en febrero cómo jugártela en el
-          concurso.
-        </p>
-        <p>
-          No se trata de ganar: se trata de ver hasta dónde llega tu historia.
-          Al final recibes una tarjeta con toda tu carrera lista para compartir.
-        </p>
-        <p class="autor">
-          Es el hermano pequeño de <a
-            href={ACORDES_GADITANOS}
-            target="_blank"
-            rel="noopener noreferrer">Acordes Gaditanos</a
-          >, la web de acordes del Carnaval de Cádiz. Mismo creador, misma
-          afición.
-        </p>
-      </section>
-
-      <section id="como-funciona" class="bloque">
-        <h2>Cómo funciona</h2>
-        <ol class="pasos">
-          {
-            PASOS.map((paso) => (
-              <li>
-                <span class="numero">{paso.numero}</span>
-                <div>
-                  <h3>{paso.titulo}</h3>
-                  <p>{paso.texto}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </section>
-
-      <section id="modalidades" class="bloque">
-        <h2>Elige tu modalidad</h2>
-        <div class="rejilla">
-          {
-            MODALIDADES_RESUMEN.map((modalidad) => (
-              <article class="modalidad">
-                <h3>{modalidad.nombre}</h3>
-                <p>{modalidad.descripcion}</p>
-                <p class="foco">{modalidad.enQueDecide}</p>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section id="ejemplo" class="bloque">
-        <h2>Tu tarjeta final</h2>
-        <p>
-          Así termina una carrera: un póster con tu trayectoria, tus premios y
-          los momentos que la hicieron tuya.
-        </p>
-        <div class="ejemplo">
-          <Tarjeta tarjeta={EJEMPLO_TARJETA} />
-        </div>
-      </section>
-
-      <section id="faq" class="bloque">
-        <h2>Preguntas frecuentes</h2>
-        <div class="faq">
-          {
-            FAQ.map((entrada) => (
-              <details>
-                <summary>{entrada.pregunta}</summary>
-                <p>{entrada.respuesta}</p>
-              </details>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="cierre">
-        <h2>¿Hasta dónde llega tu carrera?</h2>
-        <a class="cta" href="/jugar">Jugar ahora</a>
-      </section>
-    </main>
-
-    <Footer />
-  </div>
+    <section id="ejemplo" class="bloque">
+      <h2>Tu tarjeta final</h2>
+      <p>
+        Así termina una carrera: un póster con tu trayectoria, tus premios y los
+        momentos que la hicieron tuya.
+      </p>
+      <div class="ejemplo">
+        <Tarjeta tarjeta={EJEMPLO_TARJETA} />
+      </div>
+      <a class="cta" href="/jugar">Empezar a jugar</a>
+    </section>
+  </main>
 </Layout>
 
 <style>
-  .pagina {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
   main {
-    flex: 1;
     width: 100%;
     max-width: 680px;
     margin: 0 auto;
     padding: 0 1rem 2rem;
-  }
-  .top {
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  .marca {
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #f6ad55;
   }
   .hero {
     display: flex;
@@ -164,12 +93,19 @@ const descripcion =
     align-items: flex-start;
     justify-content: center;
     gap: 1rem;
-    min-height: 70vh;
+    min-height: 60vh;
     padding: 2rem 0;
   }
   h1 {
     font-size: clamp(2.5rem, 12vw, 4rem);
     line-height: 1;
+  }
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.05rem;
   }
   .claim {
     font-size: 1.15rem;
@@ -196,25 +132,15 @@ const descripcion =
     padding: 2rem 0;
     border-top: 1px solid #1d2733;
   }
-  h2 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
-  }
-  h3 {
-    font-size: 1.05rem;
-  }
   p {
     color: #cdd6e0;
     line-height: 1.6;
     margin-bottom: 0.75rem;
   }
-  .autor a {
-    color: #f6ad55;
-  }
   .pasos {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0.5rem 0 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -235,51 +161,16 @@ const descripcion =
     color: #f6ad55;
     font-weight: 700;
   }
-  .rejilla {
-    display: grid;
-    gap: 1rem;
-  }
-  .modalidad {
-    border: 1px solid #1d2733;
-    border-radius: 12px;
-    padding: 1rem;
-    background: #0d151e;
-  }
-  .foco {
-    color: #f6ad55;
-    margin: 0;
+  .autor {
+    color: #8b98a5;
     font-size: 0.9rem;
+  }
+  .autor a {
+    color: #f6ad55;
   }
   .ejemplo {
     overflow: hidden;
     border-radius: 12px;
-  }
-  .faq details {
-    border-bottom: 1px solid #1d2733;
-    padding: 0.75rem 0;
-  }
-  .faq summary {
-    cursor: pointer;
-    font-weight: 600;
-    color: #e6eef8;
-  }
-  .faq summary:hover {
-    color: #f6ad55;
-  }
-  .faq p {
-    margin-top: 0.5rem;
-  }
-  .cierre {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 2.5rem 0;
-    border-top: 1px solid #1d2733;
-  }
-  @media (min-width: 640px) {
-    .rejilla {
-      grid-template-columns: 1fr 1fr;
-    }
+    margin-bottom: 1.25rem;
   }
 </style>

@@ -162,13 +162,15 @@ coplero/
 │   │   └── Compartir.astro
 │   ├── pages/
 │   │   ├── index.astro                 # landing (0 kB JS)
-│   │   ├── como-jugar.astro            # 0 kB JS
+│   │   ├── como-jugar.astro            # reglas + FAQ (0 kB JS)
+│   │   ├── politicas/                  # privacidad y cookies (0 kB JS)
 │   │   ├── jugar.astro                 # única página con isla
 │   │   ├── r/[codigo].astro            # tarjeta compartida (SSR edge)
 │   │   └── api/
 │   │       └── og/[codigo].png.ts      # imagen OG dinámica
+│   ├── sitio/                          # contenido compartido (redes, autor, FAQ, reglas)
 │   ├── landing/                        # datos de la landing (0 kB JS)
-│   ├── components/                     # componentes .astro estáticos
+│   ├── components/                     # Header.astro y Footer.astro (marco del sitio)
 │   └── styles/
 │
 └── public/
@@ -416,10 +418,14 @@ Dos detalles que evitan bugs feos más tarde:
 | Ruta | Render | JS | Función |
 | --- | --- | --- | --- |
 | `/` | Estático | 0 kB | Landing, título dinámico, CTA |
-| `/como-jugar` | Estático | 0 kB | Reglas |
+| `/como-jugar` | Estático | 0 kB | Reglas, modalidades y FAQ |
+| `/politicas/politica-de-privacidad` | Estático | 0 kB | Privacidad |
+| `/politicas/politica-de-cookies` | Estático | 0 kB | Cookies |
 | `/jugar` | Estático + isla | ~25 kB | Todo el bucle jugable |
 | `/r/:codigo` | SSR edge (cacheado) | 0 kB | Tarjeta compartida |
 | `/api/og/:codigo.png` | Edge | — | Imagen Open Graph generada |
+
+**Marco del sitio.** Todas las páginas salvo el panel interno comparten `Header.astro` y `Footer.astro` (montados desde `Layout.astro`): marco de 680 px, cabecera estática con la marca —que en `/jugar` pasa a «Coplero»/«Coplera»/«Coplere» según el sexo del personaje— y pie con la estructura de acordesgaditanos (redes, autor, legal, copyright). El bucle jugable mantiene su columna de 420–480 px centrada.
 
 **El código de partida.** No hace falta base de datos en la v1: se codifica la **tarjeta final ya derivada** (`TarjetaFinal`: identidad, trayectoria, resultado, premios, tres hitos y frase de cierre) en base64url comprimido dentro de la propia URL, y la página de resultado lo decodifica. **No incluye el `seed`** ni la `Partida`, para que no pueda deducirse el `destino`, y lleva su propia versión de esquema (`VERSION_CODIGO`), independiente de `VERSION_PARTIDA`. Cero backend, cero coste, cero GDPR. La compresión se hace con **`fflate`** (`deflate` → bytes → base64url puro). Si más adelante se quieren estadísticas globales ("solo el 3% ha ganado el COAC"), se añade un KV y se guarda el código con un contador, sin cambiar nada más.
 

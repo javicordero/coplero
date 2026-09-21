@@ -63,6 +63,7 @@ function seedPorDefecto(): string {
 export interface Juego {
   readonly pantalla: Pantalla
   readonly partida: Partida | null
+  readonly personaje: Personaje | null
   readonly paso: Paso | null
   readonly tarjeta: TarjetaFinal | null
   readonly nombreOculto: boolean
@@ -251,6 +252,9 @@ export function crearJuego(
     },
     get partida() {
       return partida
+    },
+    get personaje() {
+      return personaje
     },
     get paso() {
       return paso
