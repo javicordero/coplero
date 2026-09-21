@@ -1,41 +1,285 @@
 ---
+import Footer from "../components/Footer.astro"
+import { DIRECCION_JUEGO } from "../juego/presentacion"
+import Tarjeta from "../juego/Tarjeta.svelte"
+import {
+  ACORDES_GADITANOS,
+  FAQ,
+  MODALIDADES_RESUMEN,
+  PASOS,
+} from "../landing/contenido"
+import { CODIGO_EJEMPLO, EJEMPLO_TARJETA } from "../landing/ejemploTarjeta"
 import Layout from "../layouts/Layout.astro"
+
+const URL_SITIO = `https://${DIRECCION_JUEGO}`
+const titulo = "Coplero — juego narrativo del Carnaval de Cádiz"
+const descripcion =
+  "Crea tu personaje, elige modalidad y construye tu carrera en el COAC a base de decisiones. Gratis, sin registro, y acaba en una tarjeta para compartir."
 ---
 
-<Layout title="Coplero">
-  <main>
-    <h1>Coplero</h1>
-    <p>Juego narrativo de decisiones sobre el Carnaval de Cádiz.</p>
-    <a href="/jugar">Jugar</a>
-  </main>
+<Layout
+  title={titulo}
+  description={descripcion}
+  canonical={`${URL_SITIO}/`}
+  og={{
+    title: titulo,
+    description: descripcion,
+    imageUrl: `${URL_SITIO}/api/og/${CODIGO_EJEMPLO}.png`,
+    url: `${URL_SITIO}/`,
+  }}
+>
+  <div class="pagina">
+    <header class="top">
+      <span class="marca">Coplero</span>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Coplero</h1>
+        <p class="claim">
+          Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
+          Cada partida es una historia distinta.
+        </p>
+        <a class="cta" href="/jugar">Empezar a jugar</a>
+        <p class="micro">Gratis y sin registro · unos minutos</p>
+      </section>
+
+      <section id="que-es" class="bloque">
+        <h2>¿Qué es Coplero?</h2>
+        <p>
+          Coplero es un juego narrativo sobre el Carnaval de Cádiz. Eliges
+          comparsista o chirigotero, montas tu agrupación y, año tras año,
+          decides en verano qué preparar y en febrero cómo jugártela en el
+          concurso.
+        </p>
+        <p>
+          No se trata de ganar: se trata de ver hasta dónde llega tu historia.
+          Al final recibes una tarjeta con toda tu carrera lista para compartir.
+        </p>
+        <p class="autor">
+          Es el hermano pequeño de <a
+            href={ACORDES_GADITANOS}
+            target="_blank"
+            rel="noopener noreferrer">Acordes Gaditanos</a
+          >, la web de acordes del Carnaval de Cádiz. Mismo creador, misma
+          afición.
+        </p>
+      </section>
+
+      <section id="como-funciona" class="bloque">
+        <h2>Cómo funciona</h2>
+        <ol class="pasos">
+          {
+            PASOS.map((paso) => (
+              <li>
+                <span class="numero">{paso.numero}</span>
+                <div>
+                  <h3>{paso.titulo}</h3>
+                  <p>{paso.texto}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section id="modalidades" class="bloque">
+        <h2>Elige tu modalidad</h2>
+        <div class="rejilla">
+          {
+            MODALIDADES_RESUMEN.map((modalidad) => (
+              <article class="modalidad">
+                <h3>{modalidad.nombre}</h3>
+                <p>{modalidad.descripcion}</p>
+                <p class="foco">{modalidad.enQueDecide}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="ejemplo" class="bloque">
+        <h2>Tu tarjeta final</h2>
+        <p>
+          Así termina una carrera: un póster con tu trayectoria, tus premios y
+          los momentos que la hicieron tuya.
+        </p>
+        <div class="ejemplo">
+          <Tarjeta tarjeta={EJEMPLO_TARJETA} />
+        </div>
+      </section>
+
+      <section id="faq" class="bloque">
+        <h2>Preguntas frecuentes</h2>
+        <div class="faq">
+          {
+            FAQ.map((entrada) => (
+              <details>
+                <summary>{entrada.pregunta}</summary>
+                <p>{entrada.respuesta}</p>
+              </details>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="cierre">
+        <h2>¿Hasta dónde llega tu carrera?</h2>
+        <a class="cta" href="/jugar">Jugar ahora</a>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
 </Layout>
 
 <style>
-  main {
+  .pagina {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+  }
+  .top {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .marca {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f6ad55;
+  }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
+    gap: 1rem;
+    min-height: 70vh;
+    padding: 2rem 0;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    line-height: 1;
+  }
+  .claim {
+    font-size: 1.15rem;
+    color: #cdd6e0;
+    max-width: 34ch;
+  }
+  .cta {
+    display: inline-block;
+    padding: 0.85rem 1.6rem;
+    background: #f6ad55;
+    color: #1a1206;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .cta:hover {
+    background: #ffc477;
+  }
+  .micro {
+    font-size: 0.85rem;
+    color: #8b98a5;
+  }
+  .bloque {
+    padding: 2rem 0;
+    border-top: 1px solid #1d2733;
+  }
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.05rem;
+  }
+  p {
+    color: #cdd6e0;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .autor a {
+    color: #f6ad55;
+  }
+  .pasos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
   }
-
-  h1 {
-    font-size: 3rem;
+  .pasos li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
   }
-
-  p {
-    color: #888;
+  .numero {
+    flex: 0 0 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #1d2733;
+    color: #f6ad55;
+    font-weight: 700;
   }
-
-  a {
-    padding: 0.75rem 1.5rem;
-    background: #ededed;
-    color: #0a0a0a;
-    border-radius: 6px;
-    text-decoration: none;
+  .rejilla {
+    display: grid;
+    gap: 1rem;
+  }
+  .modalidad {
+    border: 1px solid #1d2733;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #0d151e;
+  }
+  .foco {
+    color: #f6ad55;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .ejemplo {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .faq details {
+    border-bottom: 1px solid #1d2733;
+    padding: 0.75rem 0;
+  }
+  .faq summary {
+    cursor: pointer;
     font-weight: 600;
+    color: #e6eef8;
+  }
+  .faq summary:hover {
+    color: #f6ad55;
+  }
+  .faq p {
+    margin-top: 0.5rem;
+  }
+  .cierre {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2.5rem 0;
+    border-top: 1px solid #1d2733;
+  }
+  @media (min-width: 640px) {
+    .rejilla {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

@@ -167,7 +167,8 @@ coplero/
 │   │   ├── r/[codigo].astro            # tarjeta compartida (SSR edge)
 │   │   └── api/
 │   │       └── og/[codigo].png.ts      # imagen OG dinámica
-│   ├── componentes/                    # componentes .astro estáticos
+│   ├── landing/                        # datos de la landing (0 kB JS)
+│   ├── components/                     # componentes .astro estáticos
 │   └── styles/
 │
 └── public/

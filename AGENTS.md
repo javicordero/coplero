@@ -101,11 +101,14 @@ src/
 │   ├── textos/{fases,premios,epilogos}.ts
 │   ├── nombres.ts
 │   └── __tests__/integridad.test.ts
-├── juego/             # isla Svelte: pantallas y componentes
+├── juego/             # isla Svelte del bucle jugable
+├── panel/             # panel de contenido solo-dev (lógica, node)
+├── panel-ui/          # isla Svelte del panel (solo-dev)
+├── landing/           # datos de la landing (contenido.ts, ejemploTarjeta.ts)
 ├── ui/                # (fase 2) tokens
-├── layouts/           # Base.astro, Compartir.astro
-├── pages/             # index, como-jugar, jugar, r/[codigo], api/og/[codigo].png.ts
-├── componentes/       # .astro estáticos
+├── layouts/           # Layout.astro
+├── pages/             # index, jugar, r/[codigo], panel, api/og/[codigo].png.ts, api/panel/**
+├── components/        # componentes .astro estáticos (Footer.astro)
 └── styles/
 public/fonts/          # fuentes para la imagen OG
 scripts/simular.ts     # balance masivo
@@ -227,5 +230,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/009-content-admin/plan.md
+at specs/010-landing-page/plan.md
 <!-- SPECKIT END -->
