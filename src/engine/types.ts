@@ -23,16 +23,13 @@ export const ATRIBUTOS: readonly Atributo[] = [
 export type Momento = "verano" | "febrero"
 export type TipoDecision = "contenido" | "personaje"
 
-export type Categoria =
-  | "letra"
-  | "musica"
-  | "puestaEnEscena"
-  | "jurado"
-  | "dinero"
-  | "grupo"
-  | "prensa"
-  | "carrera"
-  | "concurso"
+/**
+ * El catálogo de categorías es cerrado y vive en el contenido
+ * (`src/content/categorias.ts`), pero el motor no puede importar de `content`
+ * (constitución, Principio I). Aquí es texto: la validación fuerte la hace el
+ * esquema Zod del contenido.
+ */
+export type Categoria = string
 
 export type Genero = "masculino" | "femenino" | "no_binario"
 export type Modalidad = "comparsista" | "chirigotero"

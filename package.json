@@ -14,7 +14,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "simular": "tsx scripts/simular.ts",
-    "contenido:informe": "tsx scripts/informe-contenido.ts"
+    "contenido:informe": "tsx scripts/informe-contenido.ts",
+    "panel:importar": "tsx scripts/panel-importar.ts",
+    "panel:volcar": "tsx scripts/panel-volcar.ts"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.6",

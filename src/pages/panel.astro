@@ -1,0 +1,22 @@
+---
+import { bloqueoFueraDeDesarrollo } from "../panel/guard"
+import Panel from "../panel-ui/Panel.svelte"
+
+export const prerender = false
+
+const bloqueo = bloqueoFueraDeDesarrollo()
+if (bloqueo) return bloqueo
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Panel · Coplero</title>
+  </head>
+  <body>
+    <Panel client:load />
+  </body>
+</html>

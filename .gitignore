@@ -30,6 +30,9 @@ pnpm-debug.log*
 .turbo/
 coverage/
 
+# panel local (solo-dev): las copias de seguridad no se versionan
+content-admin/data/backups/
+
 # test
 playwright-report/
 test-results/

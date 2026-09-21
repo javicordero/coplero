@@ -140,6 +140,8 @@ El banco está dividido en **dos bloques grandes por momento**, y dentro de cada
 
 > ✅ **Categorías ampliadas.** Además de las anteriores, el banco usa dos categorías de personaje: **Carrera** ("Carrera y grupo consagrado") y **Concurso** ("Enfado con el concurso"). Son categorías y situaciones a la vez, y pueden ser momentáneas (con sus condiciones de aparición).
 
+Las categorías son un **catálogo del juego** que vive en `src/content/categorias.ts` y se puede **añadir o eliminar desde el panel local** (`/panel` → «Categorías»); no se puede borrar una categoría en uso por alguna situación o condicional. Añadir una categoría **no** cambia reglas del motor.
+
 Cada opción lleva **título + subtítulo** y la **flag** que deja en el historial del personaje. Por defecto **no mueve atributos**; solo las **excepciones declaradas** (unas pocas en todo el banco) llevan efectos, y su intercambio se explica en el subtítulo.
 
 > 📚 Las situaciones están en dos páginas hermanas, una por momento:

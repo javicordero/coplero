@@ -227,5 +227,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/008-narrative-decisions/plan.md
+at specs/009-content-admin/plan.md
 <!-- SPECKIT END -->
