@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
   DIRECCION_JUEGO,
-  ETIQUETA_ANONIMO,
   etiquetaFase,
   etiquetaModalidad,
   etiquetaMomento,
@@ -42,8 +41,7 @@ describe("presentacion", () => {
     }
   })
 
-  it("define el nombre anónimo y la dirección del juego", () => {
-    expect(ETIQUETA_ANONIMO.length).toBeGreaterThan(0)
+  it("define la dirección del juego", () => {
     expect(DIRECCION_JUEGO.length).toBeGreaterThan(0)
   })
 

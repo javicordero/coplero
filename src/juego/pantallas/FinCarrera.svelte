@@ -13,14 +13,10 @@ import Tarjeta from "../Tarjeta.svelte"
 let {
   tarjeta,
   codigo,
-  nombreOculto,
-  onAlternarNombre,
   onReiniciar,
 }: {
   tarjeta: TarjetaFinal
   codigo: string | null
-  nombreOculto: boolean
-  onAlternarNombre: () => void
   onReiniciar: () => void
 } = $props()
 
@@ -70,18 +66,6 @@ async function alCopiarEnlace() {
 <section class="fin" data-testid="fin">
   <h2 class="titulo">Carrera finalizada</h2>
   <Tarjeta {tarjeta} />
-
-  <div class="privacidad">
-    <button
-      type="button"
-      class="toggle"
-      aria-pressed={nombreOculto}
-      onclick={onAlternarNombre}
-      data-testid="toggle-nombre"
-    >
-      {nombreOculto ? "Mostrar nombre" : "Ocultar nombre"}
-    </button>
-  </div>
 
   <div class="acciones" role="group" aria-label="Compartir la tarjeta">
     <button
@@ -144,20 +128,11 @@ async function alCopiarEnlace() {
     text-align: center;
   }
 
-  .privacidad {
-    display: flex;
-    justify-content: center;
-  }
-
   .acciones {
     display: flex;
     flex-wrap: wrap;
     gap: var(--esp-2);
     justify-content: center;
-  }
-
-  .toggle {
-    background: transparent;
   }
 
   .aviso {

@@ -90,8 +90,6 @@ $effect(() => {
     <FinCarrera
       tarjeta={juego.tarjeta}
       codigo={juego.codigo()}
-      nombreOculto={juego.nombreOculto}
-      onAlternarNombre={juego.alternarNombre}
       onReiniciar={juego.reiniciar}
     />
   {:else if juego.pantalla === "error" && juego.error}

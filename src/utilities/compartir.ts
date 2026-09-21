@@ -7,9 +7,8 @@ export function urlResultado(codigo: string, origen: string): string {
 }
 
 export function textoCompartir(tarjeta: TarjetaFinal, url: string): string {
-  const nombre = tarjeta.nombre ?? "Un coplero"
   const gancho = tarjeta.hitos[0]?.texto ?? tarjeta.fraseCierre
-  return `${nombre} · ${gancho} ${url}`
+  return `${tarjeta.nombre} · ${gancho} ${url}`
 }
 
 export async function compartirNativo(datos: {

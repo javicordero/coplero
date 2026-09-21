@@ -4,7 +4,6 @@ import type { TarjetaFinal } from "../engine/index"
 import ReglaCompas from "../components/ReglaCompas.svelte"
 import {
   DIRECCION_JUEGO,
-  ETIQUETA_ANONIMO,
   etiquetaFase,
   etiquetaModalidad,
   etiquetaPremio,
@@ -20,7 +19,6 @@ function puestoTexto(puesto: number): string {
   return `${puesto}.º`
 }
 
-let nombre = $derived(tarjeta.nombre ?? ETIQUETA_ANONIMO)
 let tienePremiOSCoac = $derived(tarjeta.primerosPremios.length > 0)
 let mejorPosicion = $derived(
   tarjeta.mejorPuesto !== null
@@ -31,7 +29,7 @@ let mejorPosicion = $derived(
 
 <section class="tarjeta" data-testid="tarjeta">
   <header class="identidad">
-    <h2 data-testid="tarjeta-nombre">{nombre}</h2>
+    <h2 data-testid="tarjeta-nombre">{tarjeta.nombre}</h2>
     <p class="subtitulo">
       {etiquetaModalidad(tarjeta.modalidadFinal)} ·
       {tituloVariante(tarjeta.varianteFinal)}

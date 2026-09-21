@@ -397,7 +397,7 @@ Con dos válvulas de escape para que haya películas:
 
 > 🔒 **El techo nunca se le muestra al jugador.** Ni durante la partida ni en la tarjeta final: si se enseña, se pierde la gracia y desaparece la duda de "¿hasta dónde podía haber llegado?", que es justo lo que hace rejugar.
 >
-> Lo que sí se muestra al terminar es una **tarjeta final** con el resumen narrativo de la carrera: nombre/apodo, modalidad y variante iniciales, evolución de modalidad y variante, años en activo y años sin concursar, mejor fase alcanzada, primeros premios y otros premios (estos últimos agrupados por tipo con su recuento, omitiendo los tipos no ganados), tres hitos narrativos (derivados de datos ya presentes en la partida) y una frase de cierre. La tarjeta se presenta como un póster, **sin valoración global ni número héroe**, con las acciones de compartir (nativo, copiar, descargar imagen y enlace) y opción de ocultar el nombre. El campo `destino` existe en el estado del juego, pero es interno y no se serializa en el código de partida compartible.
+> Lo que sí se muestra al terminar es una **tarjeta final** con el resumen narrativo de la carrera: nombre/apodo, modalidad y variante iniciales, evolución de modalidad y variante, años en activo y años sin concursar, mejor fase alcanzada, primeros premios y otros premios (estos últimos agrupados por tipo con su recuento, omitiendo los tipos no ganados), tres hitos narrativos (derivados de datos ya presentes en la partida) y una frase de cierre. La tarjeta se presenta como un póster, **sin valoración global ni número héroe**, con las acciones de compartir (nativo, copiar, descargar imagen y enlace). El campo `destino` existe en el estado del juego, pero es interno y no se serializa en el código de partida compartible.
 
 ---
 

@@ -16,7 +16,6 @@ import {
   type Paso,
   type Personaje,
   siguientePaso,
-  sinNombre,
   type TarjetaFinal,
   type VarianteId,
 } from "../engine/index"
@@ -66,7 +65,6 @@ export interface Juego {
   readonly personaje: Personaje | null
   readonly paso: Paso | null
   readonly tarjeta: TarjetaFinal | null
-  readonly nombreOculto: boolean
   readonly error: ErrorMotor | null
   readonly aviso: string | null
   readonly estadoGuardado: EstadoGuardado
@@ -80,7 +78,6 @@ export interface Juego {
   continuar(): void
   reiniciar(): void
   continuarPartida(): void
-  alternarNombre(): void
   codigo(): string | null
 }
 
@@ -95,8 +92,6 @@ export function crearJuego(
   let partida = $state<Partida | null>(null)
   let paso = $state<Paso | null>(null)
   let tarjeta = $state<TarjetaFinal | null>(null)
-  let tarjetaBase = $state<TarjetaFinal | null>(null)
-  let nombreOculto = $state(false)
   let error = $state<ErrorMotor | null>(null)
   const cargaInicial = cargar(almacen)
   let aviso = $state<string | null>(
@@ -125,8 +120,7 @@ export function crearJuego(
       return
     }
     if (siguiente.tipo === "fin") {
-      tarjetaBase = siguiente.tarjeta
-      tarjeta = nombreOculto ? sinNombre(siguiente.tarjeta) : siguiente.tarjeta
+      tarjeta = siguiente.tarjeta
       pantalla = "fin"
       return
     }
@@ -206,8 +200,6 @@ export function crearJuego(
     partida = null
     paso = null
     tarjeta = null
-    tarjetaBase = null
-    nombreOculto = false
     error = null
     aviso = null
     personaje = null
@@ -235,13 +227,6 @@ export function crearJuego(
     refrescarPaso()
   }
 
-  function alternarNombre(): void {
-    nombreOculto = !nombreOculto
-    if (tarjetaBase) {
-      tarjeta = nombreOculto ? sinNombre(tarjetaBase) : tarjetaBase
-    }
-  }
-
   function codigo(): string | null {
     return tarjeta ? codificar(tarjeta) : null
   }
@@ -261,9 +246,6 @@ export function crearJuego(
     },
     get tarjeta() {
       return tarjeta
-    },
-    get nombreOculto() {
-      return nombreOculto
     },
     get error() {
       return error
@@ -286,7 +268,6 @@ export function crearJuego(
     continuar,
     reiniciar,
     continuarPartida,
-    alternarNombre,
     codigo,
   }
 }

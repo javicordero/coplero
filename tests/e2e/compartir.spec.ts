@@ -25,15 +25,12 @@ async function jugarHastaFin(page: import("@playwright/test").Page) {
   await completarCarrera(page)
 }
 
-test("muestra la tarjeta y permite ocultar el nombre", async ({ page }) => {
+test("muestra la tarjeta con el nombre y los hitos", async ({ page }) => {
   test.setTimeout(60_000)
   await jugarHastaFin(page)
 
   await expect(page.getByTestId("tarjeta-nombre")).toHaveText("El Chato")
   await expect(page.getByTestId("tarjeta-hitos").locator("li")).toHaveCount(3)
-
-  await page.getByTestId("toggle-nombre").click()
-  await expect(page.getByTestId("tarjeta-nombre")).toHaveText("Anónimo")
 })
 
 test("el enlace reproduce la tarjeta y el código inválido es amable", async ({

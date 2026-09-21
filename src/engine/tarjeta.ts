@@ -287,8 +287,3 @@ export function construirTarjeta(
     fraseCierre,
   }
 }
-
-/** Copia la tarjeta con el nombre oculto (FR-027). */
-export function sinNombre(tarjeta: TarjetaFinal): TarjetaFinal {
-  return { ...tarjeta, nombre: null }
-}

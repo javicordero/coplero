@@ -264,7 +264,7 @@ describe("estado del juego", () => {
     ])
   })
 
-  it("oculta el nombre y genera un código compartible", () => {
+  it("genera un código compartible con el nombre", () => {
     const juego = nuevoJuego(almacenMemoria())
     jugarCarrera(juego)
     expect(juego.tarjeta?.nombre).toBe("El Chato")
@@ -275,17 +275,6 @@ describe("estado del juego", () => {
       const decodificado = decodificar(codigo)
       expect(decodificado.ok).toBe(true)
       if (decodificado.ok) expect(decodificado.valor.nombre).toBe("El Chato")
-    }
-
-    juego.alternarNombre()
-    expect(juego.nombreOculto).toBe(true)
-    expect(juego.tarjeta?.nombre).toBeNull()
-    const codigoAnonimo = juego.codigo()
-    expect(codigoAnonimo).not.toBe(codigo)
-    if (codigoAnonimo) {
-      const decodificado = decodificar(codigoAnonimo)
-      expect(decodificado.ok).toBe(true)
-      if (decodificado.ok) expect(decodificado.valor.nombre).toBeNull()
     }
   })
 })

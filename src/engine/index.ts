@@ -67,7 +67,7 @@ export {
   toPublica,
 } from "./selector"
 export { deserializar, serializar } from "./serializar"
-export { construirTarjeta, hashEstable, sinNombre } from "./tarjeta"
+export { construirTarjeta, hashEstable } from "./tarjeta"
 export {
   crearTrayectoria,
   registrarCambio,

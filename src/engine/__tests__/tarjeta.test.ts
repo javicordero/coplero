@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { construirTarjeta, sinNombre } from "../tarjeta"
+import { construirTarjeta } from "../tarjeta"
 import type { BancoContenido } from "../types"
 import { bancoPrueba, inputPrueba } from "./fixtures"
 import { chooserSimulado, jugarCarrera, primerOpcion } from "./helpers"
@@ -64,16 +64,6 @@ describe("tarjeta final", () => {
     }
     // Los primeros premios del COAC van separados de los otros premios.
     expect(Array.isArray(tarjeta.primerosPremios)).toBe(true)
-  })
-
-  it("sinNombre oculta el nombre sin tocar el resto", () => {
-    const fin = jugarCarrera(inputPrueba, bancoPrueba, chooserSimulado)
-    const tarjeta = construirTarjeta(fin, bancoPrueba)
-    const anonima = sinNombre(tarjeta)
-    expect(anonima.nombre).toBeNull()
-    expect(anonima.fraseCierre).toBe(tarjeta.fraseCierre)
-    expect(anonima.hitos).toEqual(tarjeta.hitos)
-    expect(JSON.stringify(anonima)).not.toContain(inputPrueba.personaje.nombre)
   })
 
   it("es determinista: misma partida ⇒ misma tarjeta", () => {

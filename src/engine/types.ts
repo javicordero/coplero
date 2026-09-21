@@ -245,7 +245,7 @@ export interface HitoTarjeta {
 
 /** Agregado de solo lectura con la historia visible de una carrera terminada. */
 export interface TarjetaFinal {
-  nombre: string | null
+  nombre: string
   modalidadInicial: Modalidad
   modalidadFinal: Modalidad
   varianteInicial: VarianteId

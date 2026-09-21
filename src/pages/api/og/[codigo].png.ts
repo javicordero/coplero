@@ -82,7 +82,7 @@ function fila(children: Nodo[], style: Estilo = {}): Nodo {
 
 function tarjetaElemento(tarjeta: TarjetaFinal, escala: number): Nodo {
   const esc = (valor: number) => Math.round(valor * escala)
-  const nombre = tarjeta.nombre ?? "Anónimo"
+  const nombre = tarjeta.nombre
   const premiosCoac =
     tarjeta.primerosPremios.length > 0
       ? `${tarjeta.primerosPremios.length} premio(s) del COAC`
