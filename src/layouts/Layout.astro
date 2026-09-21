@@ -1,6 +1,9 @@
 ---
 import Footer from "../components/Footer.astro"
 import Header from "../components/Header.astro"
+import "../ui/base.css"
+import "../ui/tokens.css"
+import { COLOR } from "../ui/tokens"
 
 interface OpenGraph {
   title: string
@@ -32,6 +35,16 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content={COLOR.fondo} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/anton-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
@@ -61,19 +74,6 @@ const {
 </html>
 
 <style is:global>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #0a0a0a;
-    color: #ededed;
-    min-height: 100vh;
-  }
-
   .sitio {
     min-height: 100vh;
     display: flex;
@@ -84,10 +84,5 @@ const {
     flex: 1;
     display: flex;
     flex-direction: column;
-  }
-
-  :focus-visible {
-    outline: 2px solid #f6ad55;
-    outline-offset: 2px;
   }
 </style>

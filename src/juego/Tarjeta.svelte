@@ -1,6 +1,7 @@
 <script lang="ts">
 import { VARIANTES } from "../content/index"
 import type { TarjetaFinal } from "../engine/index"
+import ReglaCompas from "../components/ReglaCompas.svelte"
 import {
   DIRECCION_JUEGO,
   ETIQUETA_ANONIMO,
@@ -109,6 +110,7 @@ let mejorPosicion = $derived(
     <p class="frase" data-testid="tarjeta-frase">{tarjeta.fraseCierre}</p>
   </section>
 
+  <ReglaCompas class="compas-pie" />
   <footer class="pie">
     <span>Juega tu carrera en</span>
     <strong>{DIRECCION_JUEGO}</strong>
@@ -119,11 +121,11 @@ let mejorPosicion = $derived(
   .tarjeta {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 1.25rem;
-    background: #111;
+    gap: var(--esp-4);
+    border: 1px solid var(--c-separador);
+    border-radius: var(--radio-md);
+    padding: var(--esp-5);
+    background: var(--c-superficie);
   }
 
   .identidad {
@@ -131,23 +133,23 @@ let mejorPosicion = $derived(
   }
 
   .identidad h2 {
-    font-size: 1.5rem;
+    font-size: var(--texto-2xl);
   }
 
   .subtitulo {
-    color: #f6ad55;
-    font-weight: 600;
+    color: var(--c-acento);
+    font-weight: var(--peso-fuerte);
   }
 
   .anios {
-    color: #a0aec0;
-    font-size: 0.9rem;
+    color: var(--c-texto-suave);
+    font-size: var(--texto-sm);
   }
 
   .destacados {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--esp-2);
   }
 
   .tile {
@@ -155,54 +157,56 @@ let mejorPosicion = $derived(
     min-width: 6rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 0.5rem;
+    gap: var(--esp-1);
+    border: 1px solid var(--c-separador);
+    border-radius: var(--radio-sm);
+    padding: var(--esp-2);
   }
 
   .etiqueta {
-    color: #a0aec0;
-    font-size: 0.7rem;
+    color: var(--c-texto-suave);
+    font-size: var(--texto-xs);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .valor {
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: var(--texto-lg);
+    font-weight: var(--peso-fuerte);
   }
 
   .otros {
     list-style: none;
-    font-size: 0.85rem;
+    font-size: var(--texto-sm);
   }
 
   .bloque h3 {
-    font-size: 0.8rem;
+    font-family: var(--fuente-texto);
+    font-size: var(--texto-sm);
+    font-weight: var(--peso-fuerte);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #a0aec0;
-    margin-bottom: 0.5rem;
+    color: var(--c-texto-suave);
+    margin-bottom: var(--esp-2);
   }
 
   .chips {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: var(--esp-1);
   }
 
   .chip {
-    border: 1px solid #444;
-    border-radius: 999px;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.85rem;
+    border: 1px solid var(--c-borde-control);
+    border-radius: var(--radio-pill);
+    padding: var(--esp-1) var(--esp-3);
+    font-size: var(--texto-sm);
   }
 
   .neutro {
-    color: #a0aec0;
-    font-size: 0.85rem;
+    color: var(--c-texto-suave);
+    font-size: var(--texto-sm);
   }
 
   .lista,
@@ -210,32 +214,35 @@ let mejorPosicion = $derived(
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    font-size: 0.9rem;
+    gap: var(--esp-1);
+    font-size: var(--texto-sm);
   }
 
   .hitos li::before {
     content: "· ";
-    color: #f6ad55;
+    color: var(--c-acento);
   }
 
   .frase {
-    margin-top: 0.5rem;
+    margin-top: var(--esp-2);
     font-style: italic;
-    color: #e2e8f0;
+    color: var(--c-texto);
+  }
+
+  .compas-pie {
+    max-width: 6rem;
   }
 
   .pie {
     display: flex;
     justify-content: space-between;
-    gap: 0.5rem;
-    border-top: 1px solid #333;
-    padding-top: 0.75rem;
-    font-size: 0.8rem;
-    color: #a0aec0;
+    gap: var(--esp-2);
+    padding-top: var(--esp-3);
+    font-size: var(--texto-xs);
+    color: var(--c-texto-suave);
   }
 
   .pie strong {
-    color: #f6ad55;
+    color: var(--c-acento);
   }
 </style>

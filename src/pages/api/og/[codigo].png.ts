@@ -9,23 +9,52 @@ import {
   etiquetaModalidad,
   etiquetaPremio,
 } from "../../../juego/presentacion"
+import {
+  COLOR,
+  FAMILIA_DISPLAY,
+  FAMILIA_TEXTO,
+  FUENTES_OG,
+} from "../../../ui/tokens"
 
 export const prerender = false
 
-const FORMATOS: Record<string, { width: number; height: number }> = {
-  og: { width: 1200, height: 630 },
-  "9x16": { width: 1080, height: 1920 },
-  "1x1": { width: 1080, height: 1080 },
+/**
+ * Formatos de la imagen OG (007). `escala` ajusta tipografía y espaciado para
+ * que ningún formato recorte contenido (FR-013, T033).
+ */
+const FORMATOS: Record<
+  string,
+  { width: number; height: number; escala: number }
+> = {
+  og: { width: 1200, height: 630, escala: 1 },
+  "9x16": { width: 1080, height: 1920, escala: 0.95 },
+  "1x1": { width: 1080, height: 1080, escala: 0.78 },
 }
 
-let fuenteCache: ArrayBuffer | null = null
+interface FuenteSatori {
+  name: string
+  data: ArrayBuffer
+  weight: 400 | 700
+  style: "normal"
+}
 
-async function cargarFuente(base: string): Promise<ArrayBuffer> {
-  if (!fuenteCache) {
-    const respuesta = await fetch(new URL("/fonts/Coplero.ttf", base))
-    fuenteCache = await respuesta.arrayBuffer()
+let fuentesCache: FuenteSatori[] | null = null
+
+async function cargarFuentes(base: string): Promise<FuenteSatori[]> {
+  if (!fuentesCache) {
+    fuentesCache = await Promise.all(
+      FUENTES_OG.map(async (fuente) => {
+        const respuesta = await fetch(new URL(`/fonts/${fuente.fichero}`, base))
+        return {
+          name: fuente.name,
+          data: await respuesta.arrayBuffer(),
+          weight: fuente.weight as 400 | 700,
+          style: "normal" as const,
+        }
+      }),
+    )
   }
-  return fuenteCache
+  return fuentesCache
 }
 
 function tituloVariante(id: string): string {
@@ -37,23 +66,22 @@ interface Nodo {
   props: { style?: Record<string, unknown>; children?: unknown }
 }
 
-function nodo(
-  type: string,
-  style: Record<string, unknown>,
-  children?: unknown,
-): Nodo {
+type Estilo = Record<string, unknown>
+
+function nodo(type: string, style: Estilo, children?: unknown): Nodo {
   return { type, props: { style: { display: "flex", ...style }, children } }
 }
 
-function texto(valor: string, style: Record<string, unknown>): Nodo {
+function texto(valor: string, style: Estilo): Nodo {
   return nodo("div", style, valor)
 }
 
-function fila(children: Nodo[], style: Record<string, unknown> = {}): Nodo {
+function fila(children: Nodo[], style: Estilo = {}): Nodo {
   return nodo("div", { flexDirection: "row", ...style }, children)
 }
 
-function tarjetaElemento(tarjeta: TarjetaFinal): Nodo {
+function tarjetaElemento(tarjeta: TarjetaFinal, escala: number): Nodo {
+  const esc = (valor: number) => Math.round(valor * escala)
   const nombre = tarjeta.nombre ?? "Anónimo"
   const premiosCoac =
     tarjeta.primerosPremios.length > 0
@@ -63,20 +91,32 @@ function tarjetaElemento(tarjeta: TarjetaFinal): Nodo {
     .map((p) => `${etiquetaPremio(p.tipo)}: ${p.veces}`)
     .join("  ·  ")
 
-  const tile = (etiqueta: string, valor: string) =>
+  const tile = (etiqueta: string, valor: string, conMargen = false) =>
     nodo(
       "div",
       {
+        fontFamily: FAMILIA_TEXTO,
         flexDirection: "column",
         flexGrow: 1,
-        padding: "16px 20px",
-        border: "1px solid #333",
-        borderRadius: 12,
-        marginRight: 12,
+        flexBasis: 0,
+        minWidth: 0,
+        padding: `${esc(16)}px ${esc(20)}px`,
+        border: `1px solid ${COLOR.separador}`,
+        borderRadius: esc(12),
+        marginRight: conMargen ? esc(12) : 0,
       },
       [
-        texto(etiqueta, { fontSize: 22, color: "#a0aec0" }),
-        texto(valor, { fontSize: 34, fontWeight: 700 }),
+        texto(etiqueta, {
+          fontFamily: FAMILIA_TEXTO,
+          fontSize: esc(22),
+          color: COLOR.textoSuave,
+        }),
+        texto(valor, {
+          fontFamily: FAMILIA_TEXTO,
+          fontSize: esc(34),
+          fontWeight: 700,
+          color: COLOR.texto,
+        }),
       ],
     )
 
@@ -87,54 +127,83 @@ function tarjetaElemento(tarjeta: TarjetaFinal): Nodo {
       height: "100%",
       flexDirection: "column",
       justifyContent: "space-between",
-      background: "#0a0a0a",
-      color: "#ededed",
-      padding: 56,
+      background: COLOR.fondo,
+      color: COLOR.texto,
+      padding: esc(56),
+      fontFamily: FAMILIA_TEXTO,
     },
     [
       nodo("div", { flexDirection: "column" }, [
-        texto(nombre, { fontSize: 64, fontWeight: 700 }),
+        texto(nombre, {
+          fontFamily: FAMILIA_DISPLAY,
+          fontSize: esc(68),
+          color: COLOR.texto,
+        }),
         texto(
           `${etiquetaModalidad(tarjeta.modalidadFinal)} · ${tituloVariante(tarjeta.varianteFinal)}`,
-          { fontSize: 32, color: "#f6ad55", marginTop: 8 },
+          {
+            fontFamily: FAMILIA_TEXTO,
+            fontSize: esc(32),
+            color: COLOR.acento,
+            marginTop: esc(8),
+          },
         ),
         texto(`${tarjeta.anosEnActivo} años en activo`, {
-          fontSize: 26,
-          color: "#a0aec0",
-          marginTop: 8,
-        }),
-      ]),
-      fila([
-        tile("Premios COAC", premiosCoac),
-        tile("Otros premios", otros || "—"),
-      ]),
-      nodo("div", { flexDirection: "column" }, [
-        ...tarjeta.hitos.map((hito) =>
-          texto(`· ${hito.texto}`, { fontSize: 28, marginBottom: 8 }),
-        ),
-        texto(tarjeta.fraseCierre, {
-          fontSize: 26,
-          fontStyle: "italic",
-          color: "#e2e8f0",
-          marginTop: 12,
+          fontFamily: FAMILIA_TEXTO,
+          fontSize: esc(26),
+          color: COLOR.textoSuave,
+          marginTop: esc(8),
         }),
       ]),
       fila(
         [
-          texto("Juega tu carrera en", { fontSize: 24, color: "#a0aec0" }),
-          texto(DIRECCION_JUEGO, { fontSize: 24, color: "#f6ad55" }),
+          tile("Premios COAC", premiosCoac, true),
+          tile("Otros premios", otros || "—"),
+        ],
+        { width: "100%" },
+      ),
+      nodo("div", { flexDirection: "column" }, [
+        ...tarjeta.hitos.map((hito) =>
+          texto(`· ${hito.texto}`, {
+            fontFamily: FAMILIA_TEXTO,
+            fontSize: esc(28),
+            color: COLOR.texto,
+            marginBottom: esc(8),
+          }),
+        ),
+        texto(tarjeta.fraseCierre, {
+          fontFamily: FAMILIA_TEXTO,
+          fontSize: esc(26),
+          fontStyle: "italic",
+          color: COLOR.textoSuave,
+          marginTop: esc(12),
+        }),
+      ]),
+      fila(
+        [
+          texto("Juega tu carrera en", {
+            fontFamily: FAMILIA_TEXTO,
+            fontSize: esc(24),
+            color: COLOR.textoSuave,
+          }),
+          texto(DIRECCION_JUEGO, {
+            fontFamily: FAMILIA_TEXTO,
+            fontSize: esc(24),
+            color: COLOR.acento,
+          }),
         ],
         {
           justifyContent: "space-between",
-          borderTop: "1px solid #333",
-          paddingTop: 20,
+          borderTop: `1px solid ${COLOR.separador}`,
+          paddingTop: esc(20),
         },
       ),
     ],
   )
 }
 
-function genericoElemento(mensaje: string): Nodo {
+function genericoElemento(mensaje: string, escala: number): Nodo {
+  const esc = (valor: number) => Math.round(valor * escala)
   return nodo(
     "div",
     {
@@ -143,17 +212,28 @@ function genericoElemento(mensaje: string): Nodo {
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      background: "#0a0a0a",
-      color: "#ededed",
-      padding: 56,
+      background: COLOR.fondo,
+      color: COLOR.texto,
+      padding: esc(56),
+      fontFamily: FAMILIA_TEXTO,
     },
     [
-      texto("Coplero", { fontSize: 72, fontWeight: 700 }),
-      texto(mensaje, { fontSize: 32, color: "#a0aec0", marginTop: 24 }),
+      texto("Coplero", {
+        fontFamily: FAMILIA_DISPLAY,
+        fontSize: esc(80),
+        color: COLOR.texto,
+      }),
+      texto(mensaje, {
+        fontFamily: FAMILIA_TEXTO,
+        fontSize: esc(32),
+        color: COLOR.textoSuave,
+        marginTop: esc(24),
+      }),
       texto(`Juega en ${DIRECCION_JUEGO}`, {
-        fontSize: 28,
-        color: "#f6ad55",
-        marginTop: 24,
+        fontFamily: FAMILIA_TEXTO,
+        fontSize: esc(28),
+        color: COLOR.acento,
+        marginTop: esc(24),
       }),
     ],
   )
@@ -164,16 +244,13 @@ async function renderPng(
   formato: { width: number; height: number },
   base: string,
 ) {
-  const fuente = await cargarFuente(base)
+  const fuentes = await cargarFuentes(base)
   const svg = await satori(
     elemento as unknown as Parameters<typeof satori>[0],
     {
       width: formato.width,
       height: formato.height,
-      fonts: [
-        { name: "Coplero", data: fuente, weight: 400, style: "normal" },
-        { name: "Coplero", data: fuente, weight: 700, style: "normal" },
-      ],
+      fonts: fuentes,
     },
   )
   const resvg = new Resvg(svg, {
@@ -188,8 +265,8 @@ export const GET: APIRoute = async ({ params, request }) => {
 
   const resultado = decodificar(params.codigo ?? "")
   const elemento = resultado.ok
-    ? tarjetaElemento(resultado.valor)
-    : genericoElemento("Esta tarjeta no está disponible")
+    ? tarjetaElemento(resultado.valor, formato.escala)
+    : genericoElemento("Esta tarjeta no está disponible", formato.escala)
 
   const png = await renderPng(elemento, formato, request.url)
   return new Response(new Uint8Array(png), {

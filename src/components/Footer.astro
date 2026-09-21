@@ -86,76 +86,103 @@ const REDES_AUTOR = REDES.filter((r) => ["linkedin", "github"].includes(r.id))
 
   <div class="wrap bottom">
     <p>© {ANIO} Coplero</p>
+    <p class="creditos">
+      Tipografías: <a
+        href="https://fonts.google.com/specimen/Anton"
+        target="_blank"
+        rel="noopener noreferrer">Anton</a
+      > y <a
+        href="https://fonts.google.com/specimen/Atkinson+Hyperlegible"
+        target="_blank"
+        rel="noopener noreferrer">Atkinson Hyperlegible</a
+      >, con licencia OFL.
+    </p>
   </div>
 </footer>
 
 <style>
   footer {
-    background: #071019;
-    color: #e6eef8;
-    padding: 1.5rem 0;
-    margin-top: 2rem;
+    background: var(--c-superficie);
+    color: var(--c-texto);
+    padding: var(--esp-5) 0;
+    margin-top: var(--esp-6);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--esp-3);
   }
   .wrap {
     width: 100%;
-    max-width: 680px;
+    max-width: var(--ancho-marco);
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 var(--esp-4);
   }
   h3 {
-    font-size: 0.95rem;
-    margin: 0 0 0.5rem;
+    font-family: var(--fuente-texto);
+    font-size: var(--texto-sm);
+    margin: 0 0 var(--esp-2);
   }
   .iconos {
     display: flex;
-    gap: 0.75rem;
+    gap: var(--esp-3);
     list-style: none;
     padding: 0;
     margin: 0;
   }
   .iconos a {
     display: inline-flex;
-    color: #98a2b3;
-    transition: color 0.2s ease, transform 0.2s ease;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--c-texto-suave);
+    transition: color var(--dur-2) var(--ease-sal),
+      transform var(--dur-2) var(--ease-sal);
   }
   .iconos a:hover {
-    color: #f6ad55;
+    color: var(--c-acento);
     transform: scale(1.15);
   }
   address {
     font-style: normal;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    font-size: 0.85rem;
-    color: #98a2b3;
+    gap: var(--esp-2);
+    font-size: var(--texto-sm);
+    color: var(--c-texto-suave);
   }
   .small {
     margin: 0;
   }
   .small a {
-    color: #f6ad55;
+    color: var(--c-acento);
   }
   .politics {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    font-size: 0.8rem;
+    gap: var(--esp-3);
+    font-size: var(--texto-xs);
   }
   .politics a {
-    color: #98a2b3;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--c-texto-suave);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color var(--dur-2) var(--ease-sal);
   }
   .politics a:hover {
-    color: #f6ad55;
+    color: var(--c-acento);
   }
   .bottom p {
     margin: 0;
-    font-size: 0.8rem;
-    color: #98a2b3;
+    font-size: var(--texto-xs);
+    color: var(--c-texto-suave);
+  }
+  .creditos a {
+    color: var(--c-texto-suave);
+    text-decoration: underline;
+  }
+  .creditos a:hover {
+    color: var(--c-acento);
   }
 </style>

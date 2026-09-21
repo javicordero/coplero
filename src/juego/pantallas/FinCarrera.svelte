@@ -84,7 +84,12 @@ async function alCopiarEnlace() {
   </div>
 
   <div class="acciones" role="group" aria-label="Compartir la tarjeta">
-    <button type="button" onclick={alCompartir} data-testid="compartir">
+    <button
+      type="button"
+      class="primario"
+      onclick={alCompartir}
+      data-testid="compartir"
+    >
       Compartir
     </button>
     <button type="button" onclick={alCopiar} data-testid="copiar-texto">
@@ -127,14 +132,15 @@ async function alCopiarEnlace() {
   .fin {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--esp-4);
   }
 
   .titulo {
-    font-size: 1.1rem;
+    font-family: var(--fuente-texto);
+    font-size: var(--texto-base);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #a0aec0;
+    color: var(--c-texto-suave);
     text-align: center;
   }
 
@@ -146,34 +152,22 @@ async function alCopiarEnlace() {
   .acciones {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--esp-2);
     justify-content: center;
-  }
-
-  button {
-    min-height: 44px;
-    padding: 0.6rem 0.9rem;
-    font-size: 0.95rem;
-    border-radius: 6px;
-    border: 1px solid #555;
-    background: #ededed;
-    color: #0a0a0a;
-    cursor: pointer;
   }
 
   .toggle {
     background: transparent;
-    color: #ededed;
   }
 
   .aviso {
     min-height: 1.2rem;
     text-align: center;
-    color: #a0aec0;
-    font-size: 0.85rem;
+    color: var(--c-texto-suave);
+    font-size: var(--texto-sm);
   }
 
   .reiniciar {
-    margin-top: 0.5rem;
+    margin-top: var(--esp-2);
   }
 </style>

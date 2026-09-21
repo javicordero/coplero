@@ -105,12 +105,29 @@ $effect(() => {
 <style>
   main {
     width: 100%;
-    max-width: 480px;
+    max-width: var(--ancho-bucle);
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: var(--esp-6) var(--esp-4);
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  /* Al cambiar de pantalla entra un nodo nuevo: eso dispara la animación.
+     Bajo prefers-reduced-motion la duración queda neutralizada en base.css. */
+  main > :global(*) {
+    animation: entrar var(--dur-3) var(--ease-sal) both;
+  }
+
+  @keyframes entrar {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>

@@ -59,72 +59,86 @@ import { REGLAS } from "../sitio/reglas"
 <style>
   .como-jugar {
     width: 100%;
-    max-width: 680px;
+    max-width: var(--ancho-marco);
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: var(--esp-6) var(--esp-4);
   }
   h1 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--esp-4);
   }
   h2 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+    font-size: var(--texto-2xl);
+    margin-bottom: var(--esp-4);
   }
   h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.25rem;
+    font-size: var(--texto-lg);
+    margin-bottom: var(--esp-1);
   }
   .bloque {
-    padding: 1.5rem 0;
-    border-top: 1px solid #1d2733;
+    padding: var(--esp-5) 0;
+    border-top: 1px solid var(--c-separador);
   }
   p {
-    color: #cdd6e0;
-    line-height: 1.6;
-    margin-bottom: 0.75rem;
+    color: var(--c-texto-suave);
+    line-height: var(--interlinea-holgada);
+    margin-bottom: var(--esp-3);
   }
   .rejilla {
     display: grid;
-    gap: 1rem;
+    gap: var(--esp-4);
   }
   .modalidad {
-    border: 1px solid #1d2733;
-    border-radius: 12px;
-    padding: 1rem;
-    background: #0d151e;
+    border: 1px solid var(--c-separador);
+    border-radius: var(--radio-md);
+    padding: var(--esp-4);
+    background: var(--c-superficie);
   }
   .foco {
-    color: #f6ad55;
+    color: var(--c-acento);
     margin: 0;
-    font-size: 0.9rem;
+    font-size: var(--texto-sm);
   }
   .faq details {
-    border-bottom: 1px solid #1d2733;
-    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--c-separador);
+    padding: var(--esp-3) 0;
   }
   .faq summary {
     cursor: pointer;
-    font-weight: 600;
-    color: #e6eef8;
+    font-weight: var(--peso-fuerte);
+    color: var(--c-texto);
+    display: flex;
+    align-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-2) 0;
+    min-height: 44px;
+  }
+  .faq summary::before {
+    content: "▸";
+    color: var(--c-acento);
+    transition: transform var(--dur-2) var(--ease-sal);
+  }
+  .faq details[open] summary::before {
+    transform: rotate(90deg);
   }
   .faq summary:hover {
-    color: #f6ad55;
+    color: var(--c-acento);
   }
   .faq p {
-    margin-top: 0.5rem;
+    margin-top: var(--esp-2);
   }
   .cta {
     display: inline-block;
-    margin-top: 1rem;
-    padding: 0.85rem 1.6rem;
-    background: #f6ad55;
-    color: #1a1206;
-    border-radius: 999px;
+    margin-top: var(--esp-4);
+    padding: var(--esp-3) var(--esp-5);
+    background: var(--c-acento);
+    color: var(--c-sobre-acento);
+    border-radius: var(--radio-pill);
     text-decoration: none;
-    font-weight: 700;
+    font-weight: var(--peso-fuerte);
+    transition: background-color var(--dur-1) var(--ease-sal);
   }
   .cta:hover {
-    background: #ffc477;
+    background: var(--c-acento-fuerte);
   }
   @media (min-width: 640px) {
     .rejilla {

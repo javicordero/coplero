@@ -154,8 +154,11 @@ coplero/
 │   │       ├── Cronologia.svelte
 │   │       └── TarjetaFinal.svelte
 │   │
-│   ├── ui/                         # (opcional, fase 2) tokens + componentes compartidos
-│   │   └── tokens.css              # colores, tipografías, espaciado
+│   ├── ui/                         # sistema de diseño (feature 012)
+│   │   ├── tokens.css              # colores, tipografía, espaciado, radios, movimiento
+│   │   ├── base.css                # reset, @font-face, tipografía base, controles, reduced-motion
+│   │   ├── tokens.ts               # espejo TS de la paleta (tests y endpoint OG)
+│   │   └── contraste.ts            # luminancia y ratio WCAG (funciones puras)
 │   │
 │   ├── layouts/
 │   │   ├── Base.astro
@@ -174,7 +177,9 @@ coplero/
 │   └── styles/
 │
 └── public/
-    ├── fonts/                       # fuentes para la imagen OG
+    ├── fonts/                       # Anton y Atkinson Hyperlegible (woff2 web + ttf para satori) + licencias OFL
+    ├── favicon.svg                  # marca (compás)
+    ├── apple-touch-icon.png
     └── og/estatica.png
 ```
 

@@ -44,7 +44,12 @@ function enviar(evento: SubmitEvent) {
       <p class="hint">Escribe un nombre o apodo.</p>
     {/if}
 
-    <button type="submit" disabled={!nombreValido} data-testid="crear">
+    <button
+      type="submit"
+      class="primario"
+      disabled={!nombreValido}
+      data-testid="crear"
+    >
       Continuar
     </button>
   </form>
@@ -54,48 +59,35 @@ function enviar(evento: SubmitEvent) {
   section {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--esp-3);
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--esp-2);
   }
 
   label {
-    font-size: 0.85rem;
-    color: #aaa;
+    font-size: var(--texto-sm);
+    color: var(--c-texto-suave);
   }
 
   input,
   select {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #444;
-    background: #1a1a1a;
-    color: #ededed;
+    padding: var(--esp-2);
+    border-radius: var(--radio-sm);
+    border: 1px solid var(--c-borde-control);
+    background: var(--c-superficie);
+    color: var(--c-texto);
   }
 
   .hint {
-    color: #f6ad55;
-    font-size: 0.85rem;
+    color: var(--c-acento);
+    font-size: var(--texto-sm);
   }
 
   button {
-    margin-top: 0.5rem;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background: #ededed;
-    color: #0a0a0a;
-    cursor: pointer;
-  }
-
-  button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    margin-top: var(--esp-2);
   }
 </style>

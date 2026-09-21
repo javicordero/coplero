@@ -1,0 +1,76 @@
+/**
+ * Tokens del sistema de diseño (012). Fuente canónica para el navegador.
+ * Los nombres son normativos: ver specs/012-visual-design/contracts/ui.md
+ * El espejo TypeScript vive en src/ui/tokens.ts (tests y endpoint OG).
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Color (E1) --- */
+  --c-fondo: #0a0a0a;
+  --c-superficie: #141414;
+  --c-superficie-alta: #1d1d1d;
+  --c-separador: #262b33;
+  --c-borde-control: #6b6b6b;
+  --c-texto: #ededed;
+  --c-texto-suave: #b3bdca;
+  --c-acento: #f6ad55;
+  --c-acento-fuerte: #ffc477;
+  --c-acento-2: #7fd1c1;
+  --c-sobre-acento: #1a1206;
+  --c-error: #fc8181;
+
+  /* --- Tipografía (E2) --- */
+  --fuente-reserva: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-display: "Anton", var(--fuente-reserva);
+  --fuente-texto: "Atkinson Hyperlegible", var(--fuente-reserva);
+
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.125rem;
+  --texto-xl: 1.375rem;
+  --texto-2xl: 1.75rem;
+  --texto-3xl: clamp(2.25rem, 10vw, 3.5rem);
+
+  --interlinea-apretada: 1.15;
+  --interlinea-normal: 1.5;
+  --interlinea-holgada: 1.65;
+
+  --medida: 65ch;
+
+  --peso-normal: 400;
+  --peso-fuerte: 700;
+
+  /* --- Espaciado, radios y sombras (E3) --- */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.5rem;
+  --esp-6: 2rem;
+  --esp-7: 3rem;
+  --esp-8: 4rem;
+
+  --radio-sm: 0.375rem;
+  --radio-md: 0.75rem;
+  --radio-lg: 1rem;
+  --radio-pill: 999px;
+
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sombra-2: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  --ancho-marco: 680px;
+  --ancho-bucle: 480px;
+
+  --foco-ancho: 2px;
+  --foco-offset: 2px;
+
+  /* --- Movimiento (E4) --- */
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 280ms;
+  --ease-sal: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-ent: cubic-bezier(0.4, 0, 0.8, 0.3);
+}

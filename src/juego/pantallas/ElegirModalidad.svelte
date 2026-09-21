@@ -30,29 +30,21 @@ let {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--esp-3);
   }
 
   button {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    align-items: flex-start;
+    gap: var(--esp-1);
     text-align: left;
-    padding: 0.75rem;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: #1a1a1a;
-    color: #ededed;
-    cursor: pointer;
-  }
-
-  button:hover {
-    border-color: #9ae6b4;
+    padding: var(--esp-3);
   }
 
   span {
-    font-size: 0.85rem;
-    color: #aaa;
+    font-size: var(--texto-sm);
+    color: var(--c-texto-suave);
   }
 </style>

@@ -85,7 +85,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Indicador de contexto | Año, momento y tipo siempre visibles en la decisión | 05 §1 |
 | Continuar partida | Acción principal de la home si hay partida guardada | 05 §1 |
 | Transiciones | 200-300 ms, no bloqueantes, saltables | 05 §1 |
-| Modo oscuro/claro | Detección de sistema + conmutador manual | 05 §1 |
+| Modo oscuro/claro | Detección de sistema + conmutador manual. **Aclarado (2026-09-21): v1 es solo tema oscuro**; el conmutador sigue en v1.1 (ver «Presentación») | 05 §1 |
 | Compartir v1 | PNG 9:16 y 1:1, Web Share API, OG dinámico, watermark, copia al portapapeles, código corto | 05 §2 |
 | Tarjeta final (2026-09-20) | Contrato `TarjetaFinal` generado por el motor + presentación: nombre/apodo, modalidad y variante iniciales, evolución de modalidad y variante, años en activo y sin concursar, mejor fase, primeros premios y otros, tres hitos (derivados de datos existentes) y frase de cierre. Nunca muestra datos ocultos. Alcance completo: código en URL + PNG 9:16/1:1 + OG + compartir nativo (T20; se implementa en la feature 007, que depende de la 006) | 01 §2, 02 §8 |
 | Tarjeta final · composición y código (2026-09-20) | Adaptación de la referencia externa (copero.com) como tarjeta-póster **sin número héroe**; fila de trayectoria (chips inicio → cambios → final) y datos destacados separados y nunca sumados (COAC · mejor posición cuando no hay premio · otros premios por tipo con recuento, omitiendo tipos no ganados). Código **autocontenido y sin `seed`** (`VERSION_CODIGO`), con `TarjetaFinal` ya derivada; rutas `/r/:codigo` y `/api/og/:codigo.png?t=og\|9x16\|1x1` on-demand; privacidad del nombre (`sinNombre`) y acciones de compartir. WCAG 2.2 AA | 01 §2, 02 §8/§10 |
@@ -100,6 +100,19 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Migración de dominio | Netlify añade dominio y SSL gratis; redirección desde `.netlify.app` | 06 |
 | Simulación masiva | Confirmada como herramienta imprescindible de balance | 05 §8 |
 | Preload | No aplica precargar decisiones (ya en memoria); sí fuentes/imágenes y reservar hueco de tarjeta | 05 §8 |
+
+## Presentación
+
+| Decisión | Detalle | Fuente |
+|---|---|---|
+| Sistema de diseño (2026-09-21) | Fuente única de tokens en `src/ui/` (`tokens.css` + `base.css` + espejo `tokens.ts`), importados una sola vez desde `Layout.astro`: heredan a Astro y a la isla **sin añadir JS**. Cero dependencias nuevas. Feature 012 | 02 §6 |
+| Tipografía de marca (2026-09-21) | **Anton** (display) + **Atkinson Hyperlegible** (texto), libres (OFL), autoalojadas y subseateadas (woff2 `latin`/`latin-ext`; TTF completas solo para `satori`), con `font-display: swap` y pila de reserva del sistema. Licencias en `public/fonts/`. Sustituyen a `system-ui`, que era todo lo que había | 02 §6 |
+| Paleta con rol único (2026-09-21) | **12 tokens** de color, cada uno con un único significado: marca/verano (`--c-acento`), febrero/selección (`--c-acento-2`), error, y neutros. Se colapsan 22 valores hex sueltos y se corrigen dos errores semánticos (el error se pintaba con el ámbar de marca; un mismo verde servía de indicador y de hover). El color **nunca** es el único canal: el momento y los avisos llevan texto | 012 `contracts/ui.md` |
+| Decorativo vs. componente de UI (2026-09-21) | `--c-separador` (`#262b33`) para filetes decorativos, **exento** del 3:1 de WCAG 1.4.11, y `--c-borde-control` (`#6b6b6b`, ≥3:1 en las tres superficies) para contornos de controles. Corrige el contrato inicial (daba 3:1 a un único borde) **sin bajar ningún umbral** | 012 `contracts/ui.md` |
+| Elemento firma · regla de compás (2026-09-21) | Un compás de 3/4 en SVG inline, decorativo (`aria-hidden`), presente en la cabecera, como separador de secciones en la portada y en el pie de la tarjeta. Sin fichero de imagen ni JS (`ReglaCompas.svelte`, que Astro sirve como HTML estático) | 012 `contracts/ui.md` §6 |
+| Estados y movimiento (2026-09-21) | Matriz de estados en `base.css` (reposo, hover, active, focus-visible, disabled, seleccionado) con objetivos táctiles ≥44 px; duraciones **120/200/280 ms**, dentro de los 200-300 ms de `05` §1, y `prefers-reduced-motion` que las neutraliza por completo | 05 §1, 012 |
+| Identidad en la imagen OG (2026-09-21) | El endpoint OG comparte paleta y tipografía con el sitio vía `src/ui/tokens.ts`, y escala los tres formatos para que ninguno recorte contenido. Se **retira** `public/fonts/Coplero.ttf`: era **DejaVu Sans** (la parencia que `satori` exige), no una tipografía de marca | 02 §10, 012 |
+| Modo oscuro único (2026-09-21) | **Aclaración**: v1 se sirve **solo en tema oscuro**. `docs/05` §1 describía "detección de sistema + conmutador" y §9 lo situaba en v1.1; se mantiene la misma hoja de ruta, pero v1 no implementa conmutador ni tema claro | 05 §1, §9 |
 
 ## Ver también
 

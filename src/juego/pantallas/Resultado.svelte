@@ -35,7 +35,12 @@ let {
       <p>Sin premios este año.</p>
     {/if}
   {/if}
-  <button type="button" onclick={onContinuar} data-testid="continuar-ano">
+  <button
+    type="button"
+    class="primario"
+    onclick={onContinuar}
+    data-testid="continuar-ano"
+  >
     Continuar
   </button>
 </section>
@@ -44,28 +49,21 @@ let {
   section {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--esp-3);
   }
 
   ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--esp-1);
   }
 
   li {
-    color: #9ae6b4;
+    color: var(--c-acento-2);
   }
 
   button {
-    margin-top: 0.5rem;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background: #ededed;
-    color: #0a0a0a;
-    cursor: pointer;
+    margin-top: var(--esp-2);
   }
 </style>

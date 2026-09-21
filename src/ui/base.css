@@ -1,0 +1,228 @@
+/**
+ * Base del sistema de diseño (012): fuentes, reset, tipografía y movimiento.
+ * Depende de tokens.css. Ver specs/012-visual-design/contracts/ui.md
+ */
+
+/* --- Fuentes autoalojadas (OFL) — ver public/fonts/LICENSE-*.txt --- */
+
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/anton-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/anton-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/atkinson-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/atkinson-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/atkinson-700-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/atkinson-700-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* --- Reset --- */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--c-fondo);
+  color: var(--c-texto);
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-base);
+  line-height: var(--interlinea-normal);
+}
+
+/* --- Base tipográfica --- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--fuente-display);
+  font-weight: var(--peso-normal);
+  line-height: var(--interlinea-apretada);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+h1 {
+  font-size: var(--texto-3xl);
+}
+
+h2 {
+  font-size: var(--texto-2xl);
+}
+
+h3 {
+  font-size: var(--texto-lg);
+}
+
+p {
+  max-width: var(--medida);
+  line-height: var(--interlinea-holgada);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+li {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--c-acento);
+  transition: color var(--dur-1) var(--ease-sal);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  min-height: 44px;
+}
+
+:focus-visible {
+  outline: var(--foco-ancho) solid var(--c-acento);
+  outline-offset: var(--foco-offset);
+}
+
+/* --- Controles (matriz de estados, E5) --- */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: 44px;
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid var(--c-borde-control);
+  border-radius: var(--radio-sm);
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  font-weight: var(--peso-fuerte);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-1) var(--ease-sal),
+    border-color var(--dur-1) var(--ease-sal),
+    color var(--dur-1) var(--ease-sal),
+    transform var(--dur-1) var(--ease-sal);
+}
+
+button:hover:not(:disabled) {
+  background: var(--c-superficie-alta);
+  border-color: var(--c-acento-2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Estado seleccionado: el control además cambia su texto (nunca solo el color) */
+button[aria-pressed="true"] {
+  border-color: var(--c-acento-2);
+  color: var(--c-acento-2);
+}
+
+/* Acción principal: acento de marca */
+button.primario {
+  background: var(--c-acento);
+  border-color: var(--c-acento);
+  color: var(--c-sobre-acento);
+}
+
+button.primario:hover:not(:disabled) {
+  background: var(--c-acento-fuerte);
+  border-color: var(--c-acento-fuerte);
+}
+
+/* --- Movimiento --- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: neutraliza transiciones de cualquier origen */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: neutraliza animaciones de cualquier origen */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: neutraliza transiciones de cualquier origen */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: neutraliza el scroll suave */
+    scroll-behavior: auto !important;
+  }
+}
