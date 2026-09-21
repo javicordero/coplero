@@ -68,6 +68,33 @@ export function formatearInforme(informe: InformeSimulacion): string {
   lineas.push("  Distribucion de ano pico:")
   lineas.push(...bloqueDistribucion(informe.anosPico))
 
+  lineas.push("", "-- Forma de la carrera --")
+  lineas.push(
+    `  Racha maxima de posicion:  media ${informe.forma.rachaMaximaMedia.toFixed(2)} | p95 ${informe.forma.rachaMaximaP95} | peor ${informe.forma.rachaMaximaPeor}`,
+  )
+  lineas.push(
+    `  Carreras con racha > ${informe.forma.umbralRacha}:  ${pct(informe.forma.carrerasConRachaLarga)}`,
+  )
+  if (informe.forma.cracksExcluidos > 0) {
+    lineas.push(
+      `  Cracks excluidos (legendarios por diseno): ${informe.forma.cracksExcluidos}`,
+    )
+  }
+  lineas.push(
+    `  Posiciones distintas:      media ${informe.forma.posicionesDistintasMedia.toFixed(2)}`,
+  )
+  lineas.push(
+    `  Carreras con arco:         ${pct(informe.forma.carrerasConArco)}`,
+  )
+  lineas.push("  Secuencias mas repetidas:")
+  for (const s of informe.forma.diversidad) {
+    lineas.push(`    ${pct(s.pct).padStart(6)}  ${s.secuencia}`)
+  }
+  lineas.push("  Dentro de cada techo, la secuencia mas repetida:")
+  for (const [techo, s] of Object.entries(informe.forma.diversidadPorTecho)) {
+    lineas.push(`    ${techo.padEnd(16)} ${pct(s.pct)}  ${s.secuencia}`)
+  }
+
   lineas.push("", "-- Situaciones --")
   lineas.push(
     `  Decisiones totales:        ${informe.situaciones.totalDecisiones}`,

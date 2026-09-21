@@ -369,17 +369,26 @@ Modificadores leves y legibles según la creación de personaje, para que esas p
 **Cada año**, la resolución del COAC:
 
 ```
-puntuacion = 0.40·letra + 0.30·musica + 0.20·puestaEnEscena
-           + 0.10·(cohesion·0.6 + popularidad·0.4)
-           + ruido(rng, ±volatilidad·15)
-           + bonoAnoPico
+puntuacion = aptitud(ano)          // curva de carrera, máximo en `anoPico` (013)
+           + aporteAtributos       // Σ(0.40·letra + 0.30·musica + 0.20·puestaEnEscena
+           //                        + 0.06·cohesion + 0.04·popularidad) − atributosIniciales,
+           //                        acotado a ±aporteAtributosMax
+           + carisma
+           + forma(ano)            // AR(1) derivado de la semilla: rachas con memoria (013)
+           + ruido(rng, ±volatilidad·multiplicadorRuido)
+           + bonoAnoPico           // solo en el año pico
 
-faseAlcanzada = clamp(faseSegunPuntuacion(puntuacion), suelo, techo)
+nivel = clamp(nivelSegunPuntuacion(puntuacion), suelo, techo)
+puesto = bandaDelNivel acotada por el mérito relativo a la propia carrera (013)
 ```
 
-El `clamp(..., suelo, techo)` aplica a la **resolución normal**. El **batacazo** puede atravesar el `suelo`: esa es su gracia narrativa. El número de decisiones por año es **parametrizable** (v1: 2; los modos rápido/lento llegarán más adelante).
+> 🌱 **La forma del arco (feature 013).** La puntuación ya no es una base constante: `aptitud` es una curva que arranca por debajo del potencial, toca su cima en `anoPico` y declina. La **amplitud del arco** (`curvaSubida`/`curvaDeclive`, 30) es la que decide si la carrera se queda pegada a su techo: con bandas de nivel de 3 puntos, un arco pequeño mantiene la puntuación dentro de la banda del techo durante años. La `forma` sustituye al ruido blanco como fuente principal de variación: es un AR(1) **derivado de la semilla**, así que no añade estado a `Partida` ni obliga a versionar el guardado. El **puesto** se calcula por mérito relativo (no contra umbrales fijos), que es lo que evita el extremo constante de la banda.
 
-> 🔓 **Las decisiones no mueven atributos por defecto (feature 008).** Los atributos parten de un valor estándar (`atributosIniciales`) y permanecen ahí salvo que una **excepción declarada** del contenido (`excepcion: true`, unas pocas) los mejore o empeore, siempre con una contrapartida visible y acotada por `[suelo, techo]`. Con los atributos en su valor estándar, la puntuación base es constante y el desenlace lo fijan el `destino` (techo/suelo), el ruido, el `bonoAnoPico` y el `carisma`: como manda el diseño, no existe una estrategia óptima. Los efectos se retiraron el 2026-09-20 (C15 cerrada) y los valores por defecto se recalibraron con el simulador.
+> 🔓 **Las decisiones no mueven atributos por defecto (feature 008).** Los atributos parten de un valor estándar (`atributosIniciales`) y permanecen ahí salvo que una **excepción declarada** del contenido (`excepcion: true`, unas pocas) los mejore o empeore, siempre con una contrapartida visible. Con los atributos en su valor estándar, el aporte es 0 y mandan la curva, la forma y el `destino`. Los efectos se retiraron el 2026-09-20 (C15 cerrada) y los valores por defecto se recalibraron con el simulador (013).
+
+> ⚠️ **Las excepciones se acumulan.** Un intercambio de ±1 aplicado decenas de veces a lo largo de 20 años desplaza la puntuación de forma permanente; sin tope, ese desplazamiento anula el arco y la carrera vuelve a ser plana. Por eso el aporte de atributos está acotado (`aporteAtributosMax`, 6 puntos). Los atributos en sí siguen moviéndose libres: el tope es solo sobre cuánto pueden empujar el resultado.
+
+El `clamp(..., suelo, techo)` aplica a la **resolución normal**. El **batacazo** puede atravesar el `suelo`: esa es su gracia narrativa. El número de decisiones por año es **parametrizable** (v1: 2; los modos rápido/lento llegarán más adelante).
 
 Con dos válvulas de escape para que haya películas:
 

@@ -62,6 +62,7 @@ export type ReglaEstadoImposible =
   | "trayectoriaIncoherente"
   | "varianteInvalida"
   | "tarjetaIncoherente"
+  | "carreraPlana"
 
 export interface HallazgoEstadoImposible {
   regla: ReglaEstadoImposible
@@ -86,6 +87,13 @@ export interface DecisionRegistrada {
   saltaCOAC: boolean
 }
 
+/** Un año resuelto de la carrera, en orden. Es lo que permite medir la forma (013, E5). */
+export interface PasoDeSecuencia {
+  ano: number
+  fase: FaseCOAC
+  puesto?: number
+}
+
 export interface RegistroCarrera {
   seed: string
   perfilId: string
@@ -101,6 +109,7 @@ export interface RegistroCarrera {
   premios: Premio[]
   atributosFinales: Atributos
   anoPico: number
+  secuencia: PasoDeSecuencia[]
   hallazgos: HallazgoEstadoImposible[]
   tarjeta?: TarjetaFinal
 }
@@ -131,6 +140,31 @@ export interface AtributoResumen {
   min: number
   max: number
   media: number
+}
+
+export interface SecuenciaFrecuente {
+  secuencia: string
+  n: number
+  pct: number
+}
+
+/** Métricas de forma de la carrera (013, E6). */
+export interface MetricasForma {
+  rachaMaximaMedia: number
+  rachaMaximaP95: number
+  rachaMaximaPeor: number
+  /** % de carreras cuya racha máxima supera `umbralRacha`. */
+  carrerasConRachaLarga: number
+  umbralRacha: number
+  /** Carreras "crack" (legendarias por diseño) excluidas de las métricas de forma. */
+  cracksExcluidos: number
+  posicionesDistintasMedia: number
+  /** % de carreras cuyo mejor tramo de 3 años llega después del primer tercio. */
+  carrerasConArco: number
+  /** Las secuencias de resultados más repetidas de todo el conjunto. */
+  diversidad: SecuenciaFrecuente[]
+  /** Dentro de cada techo, la secuencia más repetida. Compartir techo no es compartir carrera. */
+  diversidadPorTecho: Record<string, SecuenciaFrecuente>
 }
 
 export interface OpcionesSimulacion {
@@ -173,6 +207,7 @@ export interface InformeSimulacion {
   }
   duracionMedia: number
   anosPico: Distribucion
+  forma: MetricasForma
   situaciones: {
     totalDecisiones: number
     masFrecuentes: SituacionFrecuencia[]

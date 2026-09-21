@@ -1,6 +1,21 @@
+import { aptitud, baseCarrera, puntuacionObjetivo } from "./carrera"
+import { forma } from "./forma"
 import type { ParametrosMotor } from "./parametros"
 import type { Atributos, Destino, FaseCOAC, NivelCOAC } from "./types"
 import { FASES_COAC, NIVELES_COAC } from "./types"
+
+/**
+ * Banda de puestos de cada nivel, de mejor a peor (013, E4).
+ * Es la única fuente de verdad: la comparte la simulación.
+ */
+export const BANDA_PUESTO: Record<NivelCOAC, readonly [number, number]> = {
+  preliminares: [17, 50],
+  cuartos: [11, 16],
+  semifinales: [5, 10],
+  final: [4, 4],
+  podio: [1, 3],
+  primer_premio: [1, 1],
+}
 
 export function indiceFase(fase: FaseCOAC): number {
   return FASES_COAC.indexOf(fase)
@@ -39,37 +54,6 @@ function acotarEntreNiveles(
   return NIVELES_COAC[Math.max(s, Math.min(t, i))]
 }
 
-function entre(valor: number, lo: number, hi: number): number {
-  if (hi <= lo) return 1
-  return Math.max(0, Math.min(1, (valor - lo) / (hi - lo)))
-}
-
-/**
- * Puesto dentro del nivel alcanzado. Dentro del podio, la puntuación decide
- * entre el 1.º y el 3.º; el nivel `primer_premio` gana siempre.
- */
-function puestoDe(
-  nivel: NivelCOAC,
-  puntuacion: number,
-  params: ParametrosMotor,
-): number {
-  const u = params.umbralesNivel
-  switch (nivel) {
-    case "preliminares":
-      return 50 - Math.round(entre(puntuacion, 0, u.cuartos) * 33)
-    case "cuartos":
-      return 16 - Math.round(entre(puntuacion, u.cuartos, u.semifinales) * 5)
-    case "semifinales":
-      return 10 - Math.round(entre(puntuacion, u.semifinales, u.final) * 5)
-    case "podio":
-      return 3 - Math.round(entre(puntuacion, u.podio, u.primer_premio) * 2)
-    case "final":
-      return 4
-    default:
-      return 1
-  }
-}
-
 export interface ResolucionCoac {
   fase: FaseCOAC
   nivel: NivelCOAC
@@ -79,28 +63,66 @@ export interface ResolucionCoac {
 }
 
 /**
+ * Puesto dentro del nivel a partir del mérito del año (013, R4).
+ *
+ * Antes se derivaba de `entre(puntuacion, umbralBase, umbralTope)`, que se
+ * satura en 1 en cuanto el nivel queda recortado contra el techo: de ahí los
+ * veinte años en el puesto 17 o en el 5. Con el mérito referido a la propia
+ * carrera, el puesto cuenta el arco (abajo al principio, arriba en el pico)
+ * y deja de ser constante.
+ */
+function puestoPorMerito(nivel: NivelCOAC, merito: number): number {
+  const [mejor, peor] = BANDA_PUESTO[nivel]
+  const rango = peor - mejor
+  if (rango === 0) return mejor
+  return mejor + Math.round((1 - merito) * rango)
+}
+
+/**
  * Resuelve la fase, el nivel y el puesto de una temporada.
- * El batacazo puede atravesar el suelo; el milagro rompe el techo una sola vez por carrera.
+ *
+ * La puntuación combina la **curva de carrera** (el arco), la **forma**
+ * (memoria entre años), el ruido, el carisma y el bono del año pico.
+ * El batacazo puede atravesar el suelo; el milagro rompe el techo una sola
+ * vez por carrera.
  */
 export function resolverCoac(args: {
   atributos: Atributos
   destino: Destino
   anoActual: number
+  anoInicio: number
+  seed: string
   rng: () => number
   params: ParametrosMotor
   milagroUsado: boolean
 }): ResolucionCoac {
-  const { atributos, destino, anoActual, rng, params } = args
+  const { atributos, destino, anoActual, anoInicio, seed, rng, params } = args
   const w = params.pesosPuntuacion
-  let puntuacion =
+  const entradaCurva = { ano: anoActual, anoInicio, destino, params }
+
+  // Los atributos entran como desviación respecto al valor estándar: con todos
+  // los atributos en su valor inicial el aporte es 0 y manda la curva. El tope
+  // evita que la acumulación de las excepciones declaradas (pequeñas pero
+  // repetidas) desplace la carrera por encima de su techo para siempre.
+  const bruto =
     w.letra * atributos.letra +
     w.musica * atributos.musica +
     w.puestaEnEscena * atributos.puestaEnEscena +
     w.cohesion * atributos.cohesion +
-    w.popularidad * atributos.popularidad
-  puntuacion +=
+    w.popularidad * atributos.popularidad -
+    params.atributosIniciales
+  const topeAtributos = Math.abs(params.aporteAtributosMax)
+  const aporteAtributos = Math.max(
+    -topeAtributos,
+    Math.min(topeAtributos, bruto),
+  )
+
+  let puntuacion =
+    aptitud(entradaCurva) +
+    aporteAtributos +
+    destino.carisma +
+    forma({ ano: anoActual, anoInicio, seed, params }) +
     (rng() * 2 - 1) * destino.volatilidad * params.multiplicadorRuido
-  puntuacion += destino.carisma
   if (anoActual === destino.anoPico) puntuacion += params.bonoAnoPico
   puntuacion = Math.max(0, Math.min(100, puntuacion))
 
@@ -126,10 +148,19 @@ export function resolverCoac(args: {
     milagro = true
   }
 
+  // El mérito se mide contra el recorrido propio de la carrera, no contra
+  // umbrales fijos. El año pico puede llegar hasta la cima más el bono.
+  const piso = baseCarrera(entradaCurva)
+  const alto = puntuacionObjetivo(destino.techo, params) + params.bonoAnoPico
+  const merito =
+    alto === piso
+      ? 1
+      : Math.min(1, Math.max(0, (puntuacion - piso) / (alto - piso)))
+
   return {
     fase: nivelAFase(nivel),
     nivel,
-    puesto: puestoDe(nivel, puntuacion, params),
+    puesto: puestoPorMerito(nivel, merito),
     puntuacion,
     milagro,
   }

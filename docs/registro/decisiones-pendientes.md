@@ -34,6 +34,10 @@ Calibración final (`parametros.ts`, 10.000 carreras): pesos del techo `7/3/47/1
 
 ## A. Diferido explícitamente (se hará más adelante)
 
+### T22 · Valores de la curva de carrera (feature 013)
+
+Los parámetros de la 013 (`curvaSubida`/`curvaDeclive` 30, `curvaExponente` 2, `objetivoEnTecho` 1, `anchoObjetivo` 12, `memoriaForma` 0,3, `amplitudForma` 4, `aporteAtributosMax` 6) están **calibrados contra los objetivos medibles**: la distribución de `01` §7, las frecuencias de premios de `01` §3 y los objetivos de forma (racha ≤ 4 años en el 90 %, ≥ 6 posiciones distintas, arco en el 60 %). Lo que **no** está validado todavía es el **tacto**: si una carrera de 20 años se sigue haciendo larga, si la racha de 5 años en el 5 % de carreras molesta o si el declive final se percibe demasiado pronto. Se ajustará **solo con parámetros** (nunca tocando situaciones) después de jugar partidas reales.
+
 ### T2 · Flags del premio "Copla para Andalucía"
 
 `01` §3 usa "flags de temática andaluza o de tierra" que aún **no existen** en el banco. Se añadirán al banco en el futuro.

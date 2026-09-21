@@ -1,11 +1,19 @@
 import type { CatalogoVariante, FaseCOAC, Modalidad } from "../engine/index"
 import { ATRIBUTO_MAX, ATRIBUTO_MIN } from "../engine/index"
 import { mejorFaseDe } from "./comun"
+import { esCrack, rachaMaxima } from "./forma-carrera"
 import type {
   HallazgoEstadoImposible,
   RegistroCarrera,
   ReglaEstadoImposible,
 } from "./tipos"
+
+/**
+ * A partir de cuántos años seguidos con la misma posición la carrera es plana.
+ * Es la regresión que la feature 013 elimina: con el motor anterior toda una
+ * carrera de 20 años caía en la misma posición.
+ */
+export const UMBRAL_RACHA_PLANA = 8
 
 export const REGLAS_ESTADO_IMPOSIBLE: readonly ReglaEstadoImposible[] = [
   "premioSinConcurso",
@@ -24,6 +32,7 @@ export const REGLAS_ESTADO_IMPOSIBLE: readonly ReglaEstadoImposible[] = [
   "trayectoriaIncoherente",
   "varianteInvalida",
   "tarjetaIncoherente",
+  "carreraPlana",
 ] as const
 
 const BANDAS: Record<FaseCOAC, readonly [number, number]> = {
@@ -38,6 +47,7 @@ const MODALIDADES: readonly Modalidad[] = ["comparsista", "chirigotero"]
 export function auditarCarrera(
   registro: RegistroCarrera,
   catalogoVariantes?: readonly CatalogoVariante[],
+  umbralRachaPlana: number = UMBRAL_RACHA_PLANA,
 ): HallazgoEstadoImposible[] {
   const p = registro.partida
   const hallazgos: HallazgoEstadoImposible[] = []
@@ -48,6 +58,11 @@ export function auditarCarrera(
       perfilId: registro.perfilId,
       detalle,
     })
+  }
+
+  const racha = rachaMaxima(registro.secuencia)
+  if (!esCrack(registro) && racha > umbralRachaPlana) {
+    add("carreraPlana", `${racha} anos con la misma posicion`)
   }
 
   for (const premio of p.premios) {

@@ -1,13 +1,22 @@
-import type { Atributo, BancoContenido } from "../engine/index"
+import type { Atributo, BancoContenido, NivelCOAC } from "../engine/index"
 import { ATRIBUTOS, indiceFase } from "../engine/index"
+import {
+  claveSecuencia,
+  esCrack,
+  posicionesDistintas,
+  rachaMaxima,
+  tieneArco,
+} from "./forma-carrera"
 import type {
   AtributoResumen,
   Distribucion,
   ErrorAgregable,
   InformeSimulacion,
   MetricasAgregadas,
+  MetricasForma,
   MetricasPrincipales,
   RegistroCarrera,
+  SecuenciaFrecuente,
   SituacionFrecuencia,
 } from "./tipos"
 
@@ -187,14 +196,88 @@ function erroresAgregados(registros: RegistroCarrera[]): ErrorAgregable[] {
     .sort((a, b) => a.codigo.localeCompare(b.codigo))
 }
 
+function percentil(valores: number[], p: number): number {
+  if (valores.length === 0) return 0
+  const ordenados = [...valores].sort((a, b) => a - b)
+  const indice = Math.min(
+    ordenados.length - 1,
+    Math.max(0, Math.ceil((p / 100) * ordenados.length) - 1),
+  )
+  return ordenados[indice]
+}
+
+function secuenciasMasRepetidas(
+  registros: RegistroCarrera[],
+  limite: number,
+): SecuenciaFrecuente[] {
+  const conteo = new Map<string, number>()
+  for (const r of registros) {
+    const clave = claveSecuencia(r.secuencia)
+    conteo.set(clave, (conteo.get(clave) ?? 0) + 1)
+  }
+  return [...conteo.entries()]
+    .map(([secuencia, n]) => ({
+      secuencia,
+      n,
+      pct: porcentaje(n, registros.length),
+    }))
+    .sort((a, b) => b.n - a.n || a.secuencia.localeCompare(b.secuencia))
+    .slice(0, limite)
+}
+
+function metricasForma(
+  registros: RegistroCarrera[],
+  umbralRacha: number,
+): MetricasForma {
+  const conCarrera = registros.filter((r) => r.secuencia.length > 0)
+  // Los cracks (carreras legendarias por diseño) quedan fuera: repetir el
+  // primer puesto muchos años es su relato, no una carrera plana.
+  const ordinarias = conCarrera.filter((r) => !esCrack(r))
+  const rachas = ordinarias.map((r) => rachaMaxima(r.secuencia))
+  const porTecho = new Map<string, RegistroCarrera[]>()
+  for (const r of ordinarias) {
+    const techo: NivelCOAC = r.partida.destino.techo
+    const lista = porTecho.get(techo) ?? []
+    lista.push(r)
+    porTecho.set(techo, lista)
+  }
+  const diversidadPorTecho: Record<string, SecuenciaFrecuente> = {}
+  for (const [techo, grupo] of porTecho) {
+    const top = secuenciasMasRepetidas(grupo, 1)[0]
+    if (top) diversidadPorTecho[techo] = top
+  }
+  return {
+    rachaMaximaMedia: media(ordinarias, (r) => rachaMaxima(r.secuencia)),
+    rachaMaximaP95: percentil(rachas, 95),
+    rachaMaximaPeor: rachas.length === 0 ? 0 : Math.max(...rachas),
+    carrerasConRachaLarga: porcentaje(
+      rachas.filter((r) => r > umbralRacha).length,
+      rachas.length,
+    ),
+    umbralRacha,
+    cracksExcluidos: conCarrera.length - ordinarias.length,
+    posicionesDistintasMedia: media(ordinarias, (r) =>
+      posicionesDistintas(r.secuencia),
+    ),
+    carrerasConArco: porcentaje(
+      ordinarias.filter((r) => tieneArco(r.secuencia)).length,
+      ordinarias.length,
+    ),
+    diversidad: secuenciasMasRepetidas(ordinarias, 5),
+    diversidadPorTecho,
+  }
+}
+
 export function construirInforme(args: {
   registros: RegistroCarrera[]
   banco: BancoContenido
   seedBase: string
   perfiles: string[]
   configuraciones: string[]
+  umbralRacha?: number
 }): InformeSimulacion {
   const { registros, banco, seedBase, perfiles, configuraciones } = args
+  const umbralRacha = args.umbralRacha ?? 4
   const agregado = metricasAgregadas(registros)
   const errores = erroresAgregados(registros)
 
@@ -242,6 +325,7 @@ export function construirInforme(args: {
     },
     duracionMedia: agregado.duracionMedia,
     anosPico: distribucion(registros.map((r) => String(r.anoPico))),
+    forma: metricasForma(registros, umbralRacha),
     situaciones: frecuenciaSituaciones(registros, banco),
     condicionales: condicionales(registros, banco),
     atributos: resumenAtributos(registros),

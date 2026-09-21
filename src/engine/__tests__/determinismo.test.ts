@@ -48,4 +48,23 @@ describe("determinismo", () => {
       expect(valor).toBeLessThanOrEqual(100)
     }
   })
+
+  it("V-01 · la secuencia de resultados por año es reproducible", () => {
+    const primera = jugarCarrera(inputPrueba, bancoPrueba, primerOpcion)
+    const segunda = jugarCarrera(inputPrueba, bancoPrueba, primerOpcion)
+    expect(segunda.temporadas).toEqual(primera.temporadas)
+
+    // Y sobre muchas semillas: cada una da siempre la misma carrera.
+    for (let i = 0; i < 40; i++) {
+      const input = { ...inputPrueba, seed: `determinismo-${i}` }
+      const a = jugarCarrera(input, bancoPrueba, primerOpcion)
+      const b = jugarCarrera(input, bancoPrueba, primerOpcion)
+      expect(serializar(b)).toEqual(serializar(a))
+      expect(
+        b.temporadas.map((t) => `${t.ano}:${t.fase}:${t.puesto ?? "X"}`),
+      ).toEqual(
+        a.temporadas.map((t) => `${t.ano}:${t.fase}:${t.puesto ?? "X"}`),
+      )
+    }
+  })
 })

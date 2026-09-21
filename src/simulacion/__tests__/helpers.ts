@@ -76,6 +76,7 @@ export function registroFalso(
     premios: [],
     atributosFinales: partida.atributos,
     anoPico: partida.destino.anoPico,
+    secuencia: [],
     hallazgos: [],
     ...over,
   }

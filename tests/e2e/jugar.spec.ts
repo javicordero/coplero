@@ -61,6 +61,53 @@ test("completa una carrera de principio a fin", async ({ page }) => {
   await expect(page.getByTestId("fin")).toContainText("El Chato")
 })
 
+/** 013: una carrera no puede repetir la misma posición todo el tiempo. */
+test("los resultados de una carrera son variados", async ({ page }) => {
+  await page.goto("/jugar")
+
+  await page.getByTestId("empezar").click()
+  await page.getByLabel("Nombre o apodo").fill("El Chato")
+  await page.getByTestId("crear").click()
+  await page.locator('[data-testid="modalidad"] button').first().click()
+  await page.locator('[data-testid="variante"] button').first().click()
+
+  const puestos: number[] = []
+  let pasos = 0
+  while (pasos < 400) {
+    await page.waitForSelector(
+      '[data-pantalla="decision"], [data-pantalla="resultado"], [data-pantalla="fin"]',
+    )
+    const clavePrevia = await clavePantalla(page)
+    const pantalla = clavePrevia.split("|")[0]
+    if (pantalla === "fin") break
+
+    if (pantalla === "decision") {
+      await page.locator('[data-testid="decision"] button').first().click()
+    } else if (pantalla === "resultado") {
+      const texto = await page.getByTestId("resultado").innerText()
+      const coincidencia = /puesto (\d+)/.exec(texto)
+      if (coincidencia) puestos.push(Number(coincidencia[1]))
+      await page.getByTestId("continuar-ano").click()
+    }
+
+    await page.waitForFunction((previa) => {
+      const root = document.querySelector("[data-pantalla]")
+      if (!root) return false
+      const actual = [
+        root.getAttribute("data-pantalla"),
+        root.getAttribute("data-momento"),
+        root.getAttribute("data-ano"),
+      ].join("|")
+      return actual !== previa
+    }, clavePrevia)
+    pasos += 1
+  }
+
+  await expect(page.getByTestId("fin")).toBeVisible()
+  expect(puestos.length).toBeGreaterThanOrEqual(15)
+  expect(new Set(puestos).size).toBeGreaterThanOrEqual(3)
+})
+
 test("conserva la partida al recargar", async ({ page }) => {
   await page.goto("/jugar")
 

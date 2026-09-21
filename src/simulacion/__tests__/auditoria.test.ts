@@ -24,7 +24,8 @@ function decision(over: Partial<DecisionRegistrada> = {}): DecisionRegistrada {
 
 describe("auditarCarrera", () => {
   it("expone el catalogo completo de reglas", () => {
-    expect(REGLAS_ESTADO_IMPOSIBLE).toHaveLength(16)
+    expect(REGLAS_ESTADO_IMPOSIBLE).toHaveLength(17)
+    expect(REGLAS_ESTADO_IMPOSIBLE).toContain("carreraPlana")
   })
 
   it("no marca nada en una carrera coherente", () => {

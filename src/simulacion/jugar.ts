@@ -142,6 +142,11 @@ export function jugarCarrera(args: {
     premios: p.premios,
     atributosFinales: p.atributos,
     anoPico: p.destino.anoPico,
+    secuencia: p.temporadas.map((t) => ({
+      ano: t.ano,
+      fase: t.fase,
+      puesto: t.fueraDeConcurso ? undefined : t.puesto,
+    })),
     hallazgos: [],
     tarjeta: construirTarjeta(p, banco),
   }

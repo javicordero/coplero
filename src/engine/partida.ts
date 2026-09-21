@@ -199,6 +199,8 @@ export function elegir(
         atributos,
         destino: p.destino,
         anoActual: ano,
+        anoInicio: p.anoInicio,
+        seed: p.seed,
         rng,
         params,
         milagroUsado: p.milagroUsado,

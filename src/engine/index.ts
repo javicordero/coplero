@@ -5,6 +5,15 @@ export {
   clampAtributo,
 } from "./atributos"
 export {
+  aptitud,
+  type Banda,
+  bandaDe,
+  baseCarrera,
+  type EntradaAptitud,
+  puntuacionObjetivo,
+} from "./carrera"
+export {
+  BANDA_PUESTO,
   indiceFase,
   indiceNivel,
   nivelAFase,
@@ -27,6 +36,7 @@ export {
   requisitoCumplido,
 } from "./condicionales"
 export { generarDestino } from "./destino"
+export { forma } from "./forma"
 export {
   type DefinicionPremio,
   type ModificadoresCreacion,

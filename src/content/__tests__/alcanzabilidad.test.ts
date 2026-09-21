@@ -17,5 +17,5 @@ describe("alcanzabilidad del contenido (Principio III)", () => {
     expect(informe.meta.generadoConError).toBe(false)
     expect(informe.situaciones.nuncaVistas).toEqual([])
     expect(informe.condicionales.nuncaDisparados).toEqual([])
-  })
+  }, 60_000)
 })

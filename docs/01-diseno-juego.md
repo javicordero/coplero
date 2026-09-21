@@ -202,6 +202,18 @@ La mayoría de partidas deben seguir el arco **empezar humilde → ascender → 
 
 > 📌 Objetivos actualizados (2026-09-19): la final se fija en ~45% y los premios suben ligeramente para resultar más agradables al jugador (~27% gana al menos un primer premio). Esa distribución es la que valida el simulador masivo; si los números reales no cuadran, se ajustan los pesos del techo, los umbrales y el ruido, no las situaciones.
 
+### La forma del arco se construye, no se espera (2026-09-21)
+
+El arco **no salía solo**: con los atributos quietos y la puntuación recortada contra el techo, la carrera vivía entera en su techo (veinte años en el puesto 17 o en el 5). Desde la feature 013 la puntuación de cada año es una **curva de carrera** —empieza por debajo de su potencial, toca su cima en el año pico y declina—, más una **forma con memoria** que produce rachas cortas, y el puesto dentro del nivel se calcula por **mérito relativo** a la propia carrera (ya no se satura en el extremo de la banda). El año pico pasa a ser el mejor momento real de la carrera.
+
+Consecuencias que conviene recordar al calibrar:
+
+- La **amplitud del arco** importa más que el ruido. Con un arco pequeño (16 puntos) y bandas de 3, la puntuación se queda dentro de la banda del techo muchos años y la carrera vuelve a ser plana; con 30 el techo se toca pocos años.
+- Los **premios ajenos** se miden por aparición desde semifinales. Como el arco reduce los años en la parte alta, sus probabilidades se recalibraron para mantener las frecuencias de §3 (aguja 0,74; copla 1,98; candela 1,99 por carrera).
+- Las **excepciones de atributos** se acumulan al repetirse la misma situación. Su aporte a la puntuación está acotado, porque un desplazamiento permanente sin límite anula el arco.
+- El simulador informa de la **forma** (racha máxima, posiciones distintas, arco, diversidad de secuencias) además de los agregados. Un fallo como el descrito era invisible en los agregados y evidente en la secuencia.
+- Objetivos de forma: racha máxima ≤ 4 años en el 90 % de las carreras (nunca más de 8), ≥ 6 posiciones distintas de media y arco visible en el 60 % (no en el 100 %: los ascensos rápidos y los éxitos tempranos son parte del diseño).
+
 ---
 
 ## 8. Ampliación con situaciones reales del Carnaval de Cádiz
