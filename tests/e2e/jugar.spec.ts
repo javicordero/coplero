@@ -1,61 +1,19 @@
 import { expect, test } from "@playwright/test"
-
-async function clavePantalla(page: import("@playwright/test").Page) {
-  return page.locator("[data-pantalla]").evaluate((el) => {
-    const root = el as HTMLElement
-    return [
-      root.getAttribute("data-pantalla"),
-      root.getAttribute("data-momento"),
-      root.getAttribute("data-ano"),
-    ].join("|")
-  })
-}
+import {
+  avanzar,
+  clavePantalla,
+  completarCarrera,
+  crearPersonaje,
+  elegirModalidadYVariante,
+  esperarClave,
+  SELECTOR_PANTALLA,
+} from "./apoyo/juego"
 
 test("completa una carrera de principio a fin", async ({ page }) => {
   await page.goto("/jugar")
-
-  await page.getByTestId("empezar").click()
-  await page.getByLabel("Nombre o apodo").fill("El Chato")
-  await page.getByTestId("crear").click()
-
-  await page.locator('[data-testid="modalidad"] button').first().click()
-  await page.locator('[data-testid="variante"] button').first().click()
-
-  let pasos = 0
-  while (pasos < 400) {
-    await page.waitForSelector(
-      '[data-pantalla="decision"], [data-pantalla="resultado"], [data-pantalla="fin"]',
-    )
-    const clavePrevia = await page.locator("[data-pantalla]").evaluate((el) => {
-      const root = el as HTMLElement
-      return [
-        root.getAttribute("data-pantalla"),
-        root.getAttribute("data-momento"),
-        root.getAttribute("data-ano"),
-      ].join("|")
-    })
-    const pantalla = clavePrevia.split("|")[0]
-
-    if (pantalla === "fin") break
-
-    if (pantalla === "decision") {
-      await page.locator('[data-testid="decision"] button').first().click()
-    } else if (pantalla === "resultado") {
-      await page.getByTestId("continuar-ano").click()
-    }
-
-    await page.waitForFunction((previa) => {
-      const root = document.querySelector("[data-pantalla]")
-      if (!root) return false
-      const actual = [
-        root.getAttribute("data-pantalla"),
-        root.getAttribute("data-momento"),
-        root.getAttribute("data-ano"),
-      ].join("|")
-      return actual !== previa
-    }, clavePrevia)
-    pasos += 1
-  }
+  await crearPersonaje(page, "El Chato")
+  await elegirModalidadYVariante(page)
+  await completarCarrera(page)
 
   await expect(page.getByTestId("fin")).toBeVisible()
   await expect(page.getByTestId("fin")).toContainText("El Chato")
@@ -64,42 +22,23 @@ test("completa una carrera de principio a fin", async ({ page }) => {
 /** 013: una carrera no puede repetir la misma posición todo el tiempo. */
 test("los resultados de una carrera son variados", async ({ page }) => {
   await page.goto("/jugar")
-
-  await page.getByTestId("empezar").click()
-  await page.getByLabel("Nombre o apodo").fill("El Chato")
-  await page.getByTestId("crear").click()
-  await page.locator('[data-testid="modalidad"] button').first().click()
-  await page.locator('[data-testid="variante"] button').first().click()
+  await crearPersonaje(page, "El Chato")
+  await elegirModalidadYVariante(page)
 
   const puestos: number[] = []
   let pasos = 0
   while (pasos < 400) {
-    await page.waitForSelector(
-      '[data-pantalla="decision"], [data-pantalla="resultado"], [data-pantalla="fin"]',
-    )
+    await page.waitForSelector(SELECTOR_PANTALLA)
     const clavePrevia = await clavePantalla(page)
-    const pantalla = clavePrevia.split("|")[0]
-    if (pantalla === "fin") break
+    if (clavePrevia.split("|")[0] === "fin") break
 
-    if (pantalla === "decision") {
-      await page.locator('[data-testid="decision"] button').first().click()
-    } else if (pantalla === "resultado") {
+    if (clavePrevia.split("|")[0] === "resultado") {
       const texto = await page.getByTestId("resultado").innerText()
       const coincidencia = /puesto (\d+)/.exec(texto)
       if (coincidencia) puestos.push(Number(coincidencia[1]))
-      await page.getByTestId("continuar-ano").click()
     }
 
-    await page.waitForFunction((previa) => {
-      const root = document.querySelector("[data-pantalla]")
-      if (!root) return false
-      const actual = [
-        root.getAttribute("data-pantalla"),
-        root.getAttribute("data-momento"),
-        root.getAttribute("data-ano"),
-      ].join("|")
-      return actual !== previa
-    }, clavePrevia)
+    await avanzar(page, clavePrevia)
     pasos += 1
   }
 
@@ -110,27 +49,13 @@ test("los resultados de una carrera son variados", async ({ page }) => {
 
 test("conserva la partida al recargar", async ({ page }) => {
   await page.goto("/jugar")
+  await crearPersonaje(page, "El Chato")
+  await elegirModalidadYVariante(page)
 
-  await page.getByTestId("empezar").click()
-  await page.getByLabel("Nombre o apodo").fill("El Chato")
-  await page.getByTestId("crear").click()
-  await page.locator('[data-testid="modalidad"] button').first().click()
-  await page.locator('[data-testid="variante"] button').first().click()
-
-  await page.waitForSelector('[data-pantalla="decision"]')
+  await page.waitForSelector(SELECTOR_PANTALLA)
   const claveAntes = await clavePantalla(page)
 
-  await page.locator('[data-testid="decision"] button').first().click()
-  await page.waitForFunction((previa) => {
-    const root = document.querySelector("[data-pantalla]")
-    if (!root) return false
-    const actual = [
-      root.getAttribute("data-pantalla"),
-      root.getAttribute("data-momento"),
-      root.getAttribute("data-ano"),
-    ].join("|")
-    return actual !== previa
-  }, claveAntes)
+  await avanzar(page, claveAntes)
 
   const claveTrasDecision = await clavePantalla(page)
   const guardado = await page.evaluate(() =>
@@ -142,14 +67,5 @@ test("conserva la partida al recargar", async ({ page }) => {
   await expect(page.getByTestId("continuar")).toBeVisible()
   await page.getByTestId("continuar").click()
 
-  await page.waitForFunction((esperada) => {
-    const root = document.querySelector("[data-pantalla]")
-    if (!root) return false
-    const actual = [
-      root.getAttribute("data-pantalla"),
-      root.getAttribute("data-momento"),
-      root.getAttribute("data-ano"),
-    ].join("|")
-    return actual === esperada
-  }, claveTrasDecision)
+  await esperarClave(page, claveTrasDecision)
 })

@@ -9,6 +9,7 @@ let { indicador }: { indicador: Indicador } = $props()
   class="indicador"
   data-testid="indicador"
   data-momento={indicador.momento}
+  data-tipo={indicador.tipo}
 >
   Año {indicador.ano} · {etiquetaMomento(indicador.momento)}
   {#if indicador.tipo}· {etiquetaTipo(indicador.tipo)}{/if}

@@ -478,6 +478,7 @@ El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable q
 - **Determinismo:** misma seed y mismas elecciones producen la misma partida.
 - **Integridad de contenido:** ids únicos, toda flag referenciada en un requisito existe en alguna opción, toda situación tiene `momento`, ninguna situación es inalcanzable.
 - **Snapshot** de una partida completa de referencia.
+- **E2E-001 (camino feliz integrado):** `tests/e2e/carrera-completa.spec.ts` recorre en una sola ejecución los diez hitos jugables —entrar, crear personaje, modalidad, variante, decisiones, completar la carrera, tarjeta final, recargar y recuperar, enlace compartible y `/r/[codigo]`— y falla señalando el hito roto. Los helpers compartidos viven en `tests/e2e/apoyo/juego.ts`.
 
 ---
 
