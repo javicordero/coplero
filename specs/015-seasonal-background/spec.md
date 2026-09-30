@@ -71,7 +71,7 @@ El fondo estacional acompaña sin restar legibilidad ni velocidad: el texto sigu
 
 - **FR-001**: El fondo del bucle jugable MUST reflejar el `momento` vigente de la partida (`verano` o `febrero`), sin introducir lógica de juego.
 - **FR-002**: MUST existir un tratamiento visual para **verano** que evoque playa (arena), sol y claridad, y uno para **febrero** que evoque noche, luna y lluvia, claramente distinguibles entre sí. El **sol** (verano) y la **luna** (febrero) MUST ubicarse en la **esquina superior derecha**, no centrados.
-- **FR-003**: Los fondos y sus elementos (sol, luna, playa/arena, lluvia) MUST construirse con **CSS puro** (gradientes, tonos, formas y animaciones CSS), sin imágenes ilustrativas ni librerías, para no añadir peso.
+- **FR-003**: Los fondos y sus elementos (sol, luna, playa/arena, orilla, enseres, lluvia) MUST construirse con **CSS y SVG inline** (gradientes, formas vectoriales, tonos y animaciones), **sin imágenes raster o externas** ni librerías, para no añadir peso ni peticiones de red. El SVG MUST ser decorativo (`aria-hidden`) y tomar sus colores de tokens (`var(--c-verano-*)`).
 - **FR-004**: Los fondos MUST NOT degradar la legibilidad: todo el texto y los controles MUST mantener contraste AA sobre su fondo. En **verano** (tema claro) el texto MUST ser oscuro; en **febrero** (tema oscuro) el texto MUST ser claro.
 - **FR-005**: El fondo MUST NOT añadir dependencias ni librerías, y el peso añadido MUST ser despreciable para una apertura desde enlace en 4G.
 - **FR-006**: El cambio de fondo entre momentos MUST ser breve y MUST respetar la preferencia de **reducción de movimiento**.
@@ -106,7 +106,7 @@ El fondo estacional acompaña sin restar legibilidad ni velocidad: el texto sigu
 - **"Invierno" = febrero**: el usuario habla de "invierno", pero el dominio del juego usa `febrero` como momento de Carnaval; el fondo de invierno corresponde a `febrero`.
 - **Alcance**: el cambio afecta únicamente al fondo del bucle jugable (`/jugar`); las páginas estáticas quedan fuera.
 - **Rendimiento primero**: cualquier tratamiento visual debe respetar el principio de apertura rápida desde 4G (evitar imágenes grandes o librerías).
-- **Solo CSS, sin imágenes**: los fondos y sus elementos (playa/arena, sol, luna, lluvia, papel/líneas) se construyen con gradientes, formas y animaciones CSS; el estilo de resultado evoca un acta oficial (papel + tinta), sin imágenes.
+- **Solo CSS y SVG inline, sin imágenes**: los fondos y sus elementos (playa/arena, sol, luna, orilla, enseres, lluvia, papel/líneas) se construyen con gradientes, formas vectoriales y animaciones; el estilo de resultado evoca un acta oficial (papel + tinta), sin imágenes raster ni ficheros. Ver D7 (research).
 - **Estilo de resultado**: se implementa **acta/papel** (resultado oficial del COAC), claro y sobrio. El teatro/escenario (opción A) se descartó.
 - **Tema claro en verano**: verano introduce un tema claro puntual (texto oscuro) con su variante de tokens; febrero conserva el tema oscuro actual. Implica ampliar el sistema de tokens con una paleta clara para el verano.
 - **Contradicción con 012**: la feature 012 declaraba "fuera de alcance" las texturas de fondo; esta feature lo revisa expresamente a petición del usuario, limitándolo a un fondo estacional ligero.

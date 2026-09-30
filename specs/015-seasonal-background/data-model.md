@@ -30,6 +30,8 @@ interface TokenVerano {
 | `--c-verano-borde-control` | contorno de control | ≥ 3:1 sobre cielo/arena/superficies |
 | `--c-verano-acento-texto` | acento usado como texto (naranja oscuro) | ≥ 4.5:1 sobre cielo/arena |
 
+Además, la **escena de playa** (D7) usa tokens **decorativos** (sin umbral de contraste): `--c-verano-mar`, `--c-verano-mar-hondo`, `--c-verano-espuma`, `--c-verano-nube`, `--c-verano-arena-humeda`, `--c-verano-arena-sombra`, `--c-verano-concha` y la paleta festiva de la sombrilla (`--c-verano-rojo`, `--c-verano-naranja`, `--c-verano-amarillo`, `--c-verano-verde`, `--c-verano-turquesa`, `--c-verano-azul`, `--c-verano-rosa`, `--c-verano-coral`, `--c-verano-lila`, `--c-verano-metal`). Los elementos que caen bajo el texto (`--c-verano-cielo`, `--c-verano-arena`) deben cumplir AA con el texto oscuro (V-09), así que la escena mantiene el horizonte por debajo del bloque de decisión.
+
 ---
 
 ## E2 · Paleta de acta (resultado)
@@ -81,7 +83,7 @@ interface ElementoFondo {
 }
 ```
 
-- **Verano**: `linear-gradient` cielo→arena + `radial-gradient` del **sol** en la **esquina superior derecha**.
+- **Verano**: bandas `linear-gradient` cielo → mar (con línea de horizonte) + **escena de playa** `FondoVerano.svelte` en SVG inline: sol con rayos, nubes, gaviotas, oleaje, orilla ondulada, arena moteada, conchas y sombrilla. Decorativo y sin peticiones extra.
 - **Febrero**: gradiente nocturno + `radial-gradient` de la **luna** en la **esquina superior derecha** + **gotas de lluvia** (elementos finos de 1 px con gradiente `transparent → pálido`, escalonados y animados por un único `@keyframes`).
 - **Resultado**: papel claro (acta) con líneas de documento y membrete "COAC"; texto en tinta oscura.
 
@@ -109,7 +111,7 @@ No se modifica ni se añade lógica en `engine`/`content`.
 |---|---|
 | FR-001 fondo refleja `momento` | E5, E3 |
 | FR-002 playa/sol/claridad vs noche/luna/lluvia, sol y luna a la derecha | E1, E4 |
-| FR-003 CSS puro, sin imágenes | E4 |
+| FR-003 CSS + SVG inline, sin imágenes raster | E4 (D7) |
 | FR-004 contraste AA | E1, E3 |
 | FR-005 sin dependencias ni peso | E4 |
 | FR-006 cambio breve + reduced-motion | E4 (regla 2) |

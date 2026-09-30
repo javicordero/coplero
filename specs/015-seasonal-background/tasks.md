@@ -47,6 +47,7 @@
 - [X] T004 [US1] En `src/juego/Juego.svelte`, mover el `radial-gradient` del **sol** (verano) y de la **luna** (febrero) a la **esquina superior derecha** (`at 82% 10%` en vez del centro).
 - [X] T005 [US1] En `src/juego/Juego.svelte`, sustituir la lluvia actual por **gotas reales**: elementos finos (1 px) con gradiente `transparent → pálido`, escalonados (distintos `left`, `animation-delay` y `animation-duration`) y animados por **un único `@keyframes`** de caída con `transform`, sin JS ni imágenes.
 - [X] T006 [US1] En `src/juego/Juego.svelte`, añadir el estilo `main[data-pantalla="resultado"]` de **teatro/escenario**: escenario oscuro + foco de luz (cono) + telón (pliegues granate en los bordes), usando `var(--c-teatro-*)`.
+- [X] T012 [US1] Crear `src/juego/pantallas/FondoVerano.svelte` (escena de playa decorativa en **SVG inline**: sol con rayos, nubes, gaviotas, oleaje, orilla ondulada, arena moteada, conchas y sombrilla) y renderizarla en `Juego.svelte`; sustituir el gradiente cielo→arena por bandas cielo→mar con línea de horizonte; añadir los tokens `--c-verano-*` decorativos (paridad V-03, sin hex, V-04). Ver D7.
 
 **Checkpoint**: los tres estilos son visibles y distintos; la isla sigue sin lógica de juego.
 

@@ -10,12 +10,14 @@ Interfaz estable entre el fondo estacional y el resto del código. Extiende `012
 src/ui/tokens.css   → + paleta clara de verano (--c-verano-*), paleta de acta (--c-acta-*) y --c-acento-texto
 src/ui/tokens.ts    → + espejo TS (paridad V-03)
 src/juego/Juego.svelte → remapeo por momento, fondos, gotas de lluvia y estilo de resultado
+src/juego/pantallas/FondoVerano.svelte → escena de playa decorativa en SVG inline (015 D7)
 ```
 
 Reglas:
 
 - `tokens.css` y `tokens.ts` MUST declarar los mismos tokens con el mismo valor (V-03).
-- El remapeo y los elementos MUST vivir en `Juego.svelte` usando solo `var()`; sin hex literal (V-04).
+- El remapeo y los elementos MUST vivir en `Juego.svelte` y `FondoVerano.svelte` usando solo `var()`; sin hex literal (V-04).
+- `FondoVerano.svelte` MUST ser decorativo (`aria-hidden`), sin lógica de juego y sin dependencias.
 - `engine` y `content` MUST NOT importar de `src/ui/`.
 - Las páginas estáticas MUST NOT cargar el fondo ni JS (FR-007).
 
@@ -45,13 +47,15 @@ Reglas:
 
 | Estilo | Fondo | Elementos |
 |---|---|---|
-| Verano | gradiente cielo → arena | sol (esquina superior derecha), franja de arena inferior |
+| Verano | bandas CSS (cielo → mar con línea de horizonte) | escena SVG inline: sol con rayos (esquina superior derecha), nubes, gaviotas, oleaje, orilla ondulada, arena moteada, conchas y sombrilla |
 | Febrero | gradiente nocturno | luna (esquina superior derecha), gotas de lluvia animadas |
 | Resultado | papel claro (acta) | líneas de documento y membrete "COAC" |
 
 - Sol y luna MUST anclarse a la **esquina superior derecha** (`at 82% 10%`), no centrados.
+- La orilla (espuma/arena) MUST tener borde **ondulado irregular**, nunca una línea recta.
 
-**Prohibido**: imágenes, librerías, animaciones de layout, hex fuera de `src/ui/`.
+**Prohibido**: imágenes **raster o externas**, librerías, animaciones de layout, hex fuera de `src/ui/`.
+El **SVG inline decorativo** (formas vectoriales, `aria-hidden`, colores por tokens) queda **permitido** (015 D7).
 
 ## 4. Contrato de movimiento (lluvia)
 

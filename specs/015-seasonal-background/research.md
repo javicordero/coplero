@@ -41,6 +41,15 @@ Incógnitas resueltas. Sin dependencias nuevas. Se decidieron el mecanismo de te
 - **Decision**: el remapeo solo en `main[data-momento=…]`; `body` y estáticas intactos. En verano `color-scheme: light`; en febrero y resultado `dark`.
 - **Rationale**: FR-007 (estáticas intactas) y coherencia de tema.
 
+## D7 · Escena de playa en verano por SVG inline (revisa D "solo CSS, sin imágenes")
+
+- **Decision**: el verano deja de ser un `linear-gradient` cielo→arena y pasa a una **escena de playa** —cielo claro, sol con rayos, nubes, gaviotas, mar con oleaje, orilla ondulada, arena moteada, conchas y una sombrilla— construida con **CSS + SVG inline** (componente Svelte `src/juego/pantallas/FondoVerano.svelte`, decorativo, `aria-hidden`). Los colores salen de tokens `--c-verano-*` (sin hex fuera de `src/ui/`, V-04).
+- **Rationale**: reproduce el estilo vectorial de referencia a una fracción del peso de una imagen raster (≈4–8 KB de marcado frente a 30–70 KB de AVIF), es nítido en cualquier pantalla, se adapta a cualquier alto (bandas por porcentaje + formas ancladas) y no añade peticiones de red. Se matiza la restricción original "sin imágenes": lo vetado es la **imagen raster/externa**; el SVG inline decorativo (formas vectoriales, no información) queda admitido.
+- **Alternatives considered**:
+  - *Imagen de fondo AVIF/WebP*: más pesada, petición extra, recorte/bandas por relación de aspecto fija, y contradice FR-003/FR-005. Rechazada.
+  - *Solo gradientes CSS*: no permite nubes, gaviotas, conchas ni orilla ondulada con calidad. Rechazada.
+  - *SVG en fichero `public/`*: válido y cacheable, pero suma una petición por fondo; el inline comprime con el HTML y evita el request. Rechazado por margen.
+
 ## Resumen de incógnitas
 
 | Incógnita | Resolución |
@@ -51,3 +60,4 @@ Incógnitas resueltas. Sin dependencias nuevas. Se decidieron el mecanismo de te
 | ¿Tercer estilo del resultado? | Acta/papel (resultado oficial del COAC) por pantalla — D4 |
 | ¿Contraste? | Verano claro (texto oscuro), febrero oscuro (texto claro) y resultado-acta (tinta sobre papel), V-09 — D5 |
 | ¿Alcance? | Solo `main`; estáticas intactas — D6 |
+| ¿Cómo se dibuja la playa de verano? | SVG inline decorativo + bandas CSS por tokens; sin raster ni ficheros — D7 |
