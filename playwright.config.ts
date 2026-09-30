@@ -11,10 +11,9 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     port: 4321,
-    // Nunca se reutiliza un servidor ya levantado: cualquier otro proceso en el
-    // puerto (por ejemplo, el dev server de otro proyecto) hacía que la suite
-    // probara **otra web** y fallara o pasara por motivos que no eran suyos.
-    // Con esto, si el puerto está ocupado la ejecución falla y se ve el motivo.
-    reuseExistingServer: false,
+    // Se reutiliza el servidor ya levantado (por ejemplo el `npm run dev` local):
+    // así ejecutar los E2E no libera ni mata el puerto 4321. Si no hay servidor,
+    // Playwright arranca uno propio y lo apaga al terminar.
+    reuseExistingServer: true,
   },
 })
