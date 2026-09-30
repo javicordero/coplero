@@ -16,10 +16,31 @@
   --c-texto: #ededed;
   --c-texto-suave: #b3bdca;
   --c-acento: #f6ad55;
+  --c-acento-texto: #f6ad55;
   --c-acento-fuerte: #ffc477;
   --c-acento-2: #7fd1c1;
   --c-sobre-acento: #1a1206;
   --c-error: #fc8181;
+
+  /* --- Paleta de verano (tema claro) --- */
+  --c-verano-cielo: #cfe8ff;
+  --c-verano-arena: #f0d9a8;
+  --c-verano-sol: #ffd98a;
+  --c-verano-texto: #16222e;
+  --c-verano-texto-suave: #3c4d5e;
+  --c-verano-superficie: #ffffff;
+  --c-verano-superficie-alta: #eef4f9;
+  --c-verano-separador: #d5e2ee;
+  --c-verano-borde-control: #4a5b6b;
+  --c-verano-acento-texto: #7a3b00;
+
+  /* --- Paleta de acta (resultado) --- */
+  --c-acta-papel: #f4efe1;
+  --c-acta-papel-alta: #e7dfca;
+  --c-acta-tinta: #1e2226;
+  --c-acta-tinta-suave: #55606b;
+  --c-acta-linea: #cdc3a8;
+  --c-acta-sello: #8a1f2b;
 
   /* --- Tipografía (E2) --- */
   --fuente-reserva: system-ui, -apple-system, "Segoe UI", sans-serif;

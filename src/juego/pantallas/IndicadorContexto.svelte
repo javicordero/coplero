@@ -27,6 +27,6 @@ let { indicador }: { indicador: Indicador } = $props()
 
   /* El color acompaña al texto, nunca lo sustituye (FR-006) */
   .indicador[data-momento="verano"] {
-    color: var(--c-acento);
+    color: var(--c-acento-texto);
   }
 </style>

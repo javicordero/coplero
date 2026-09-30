@@ -138,7 +138,7 @@ li {
 }
 
 a {
-  color: var(--c-acento);
+  color: var(--c-acento-texto);
   transition: color var(--dur-1) var(--ease-sal);
 }
 
@@ -152,7 +152,7 @@ textarea {
 }
 
 :focus-visible {
-  outline: var(--foco-ancho) solid var(--c-acento);
+  outline: var(--foco-ancho) solid var(--c-acento-texto);
   outline-offset: var(--foco-offset);
 }
 

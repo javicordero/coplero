@@ -19,6 +19,33 @@ import Resultado from "./pantallas/Resultado.svelte"
 
 const juego = crearJuego(almacenNavegador())
 
+const GOTAS = [
+  { left: "3%", alto: "16px", retraso: "0s", duracion: "2.4s" },
+  { left: "8%", alto: "20px", retraso: "0.3s", duracion: "3.1s" },
+  { left: "13%", alto: "14px", retraso: "0.6s", duracion: "2.0s" },
+  { left: "18%", alto: "18px", retraso: "0.15s", duracion: "2.6s" },
+  { left: "23%", alto: "22px", retraso: "0.9s", duracion: "3.3s" },
+  { left: "28%", alto: "15px", retraso: "0.45s", duracion: "2.2s" },
+  { left: "33%", alto: "19px", retraso: "1.1s", duracion: "2.9s" },
+  { left: "38%", alto: "14px", retraso: "0.2s", duracion: "2.0s" },
+  { left: "43%", alto: "21px", retraso: "0.75s", duracion: "3.1s" },
+  { left: "48%", alto: "16px", retraso: "0.05s", duracion: "2.4s" },
+  { left: "53%", alto: "18px", retraso: "0.55s", duracion: "2.6s" },
+  { left: "58%", alto: "14px", retraso: "1.25s", duracion: "2.0s" },
+  { left: "63%", alto: "20px", retraso: "0.35s", duracion: "3.3s" },
+  { left: "68%", alto: "15px", retraso: "0.85s", duracion: "2.2s" },
+  { left: "73%", alto: "22px", retraso: "0.1s", duracion: "2.9s" },
+  { left: "78%", alto: "16px", retraso: "0.65s", duracion: "2.4s" },
+  { left: "83%", alto: "19px", retraso: "1.05s", duracion: "3.1s" },
+  { left: "88%", alto: "14px", retraso: "0.4s", duracion: "2.0s" },
+  { left: "93%", alto: "18px", retraso: "0.7s", duracion: "2.6s" },
+  { left: "5%", alto: "21px", retraso: "1.3s", duracion: "3.3s" },
+  { left: "45%", alto: "14px", retraso: "0.5s", duracion: "2.2s" },
+  { left: "70%", alto: "20px", retraso: "0.95s", duracion: "2.9s" },
+  { left: "25%", alto: "15px", retraso: "1.15s", duracion: "2.0s" },
+  { left: "90%", alto: "17px", retraso: "0.25s", duracion: "2.4s" },
+]
+
 let indicadorDecision = $derived.by(() => {
   if (!juego.partida || juego.paso?.tipo !== "decision") return null
   return {
@@ -32,6 +59,21 @@ function empezarDeCero() {
   juego.reiniciar()
   juego.empezar()
 }
+
+// El juego ocupa el alto del viewport menos la cabecera para que el pie
+// quede por debajo del pliegue: solo se ve al hacer scroll.
+$effect(() => {
+  const cabecera = document.querySelector<HTMLElement>(".site-header")
+  if (!cabecera) return
+  const ajustar = () =>
+    document.documentElement.style.setProperty(
+      "--alto-cabecera",
+      `${cabecera.offsetHeight}px`,
+    )
+  ajustar()
+  window.addEventListener("resize", ajustar)
+  return () => window.removeEventListener("resize", ajustar)
+})
 
 // La marca de la cabecera refleja el sexo del personaje (FR-006):
 // al montar con partida guardada y cada vez que cambia.
@@ -48,6 +90,15 @@ $effect(() => {
   data-momento={juego.partida?.momento ?? ""}
   data-ano={juego.partida?.anoActual ?? ""}
 >
+  {#if juego.partida?.momento === "febrero" && juego.pantalla !== "resultado"}
+    <span class="lluvia" aria-hidden="true">
+      {#each GOTAS as gota, i (i)}
+        <i
+          style="left:{gota.left};height:{gota.alto};animation-delay:{gota.retraso};animation-duration:{gota.duracion}"
+        ></i>
+      {/each}
+    </span>
+  {/if}
   {#if juego.pantalla === "intro"}
     <Intro
       estadoGuardado={juego.estadoGuardado}
@@ -107,9 +158,99 @@ $effect(() => {
     margin: 0 auto;
     padding: var(--esp-6) var(--esp-4);
     flex: 1;
+    min-height: calc(100dvh - var(--alto-cabecera, 0px));
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: var(--c-texto);
+  }
+
+  main[data-momento="verano"] {
+    color-scheme: light;
+    --c-texto: var(--c-verano-texto);
+    --c-texto-suave: var(--c-verano-texto-suave);
+    --c-superficie: var(--c-verano-superficie);
+    --c-superficie-alta: var(--c-verano-superficie-alta);
+    --c-separador: var(--c-verano-separador);
+    --c-borde-control: var(--c-verano-borde-control);
+    --c-acento-texto: var(--c-verano-acento-texto);
+    background-image:
+      radial-gradient(
+        circle at 82% 9%,
+        var(--c-verano-sol) 0 24px,
+        rgba(255, 217, 138, 0.35) 25px 40px,
+        rgba(255, 217, 138, 0) 41px
+      ),
+      linear-gradient(
+        180deg,
+        var(--c-verano-cielo) 0%,
+        var(--c-verano-cielo) 70%,
+        var(--c-verano-arena) 100%
+      );
+  }
+
+  main[data-momento="febrero"]:not([data-pantalla="resultado"]) {
+    position: relative;
+    isolation: isolate;
+    background-image:
+      radial-gradient(
+        circle at 82% 9%,
+        var(--c-texto) 0 24px,
+        rgba(237, 237, 237, 0.14) 25px 40px,
+        rgba(237, 237, 237, 0) 41px
+      ),
+      radial-gradient(
+        120% 55% at 50% 100%,
+        rgba(127, 209, 193, 0.1),
+        rgba(127, 209, 193, 0) 65%
+      );
+  }
+
+  main[data-pantalla="resultado"] {
+    color-scheme: light;
+    --c-texto: var(--c-acta-tinta);
+    --c-texto-suave: var(--c-acta-tinta-suave);
+    --c-superficie: var(--c-acta-papel-alta);
+    --c-superficie-alta: var(--c-acta-papel);
+    --c-separador: var(--c-acta-linea);
+    --c-borde-control: var(--c-acta-tinta-suave);
+    --c-acento-texto: var(--c-acta-sello);
+    --c-acento-2: var(--c-acta-sello);
+    background-color: var(--c-acta-papel);
+    background-image: repeating-linear-gradient(
+      180deg,
+      rgba(30, 34, 38, 0.05) 0 1px,
+      transparent 1px 26px
+    );
+  }
+
+  .lluvia {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .lluvia i {
+    position: absolute;
+    top: -24px;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      rgba(226, 235, 255, 0),
+      rgba(226, 235, 255, 0.55)
+    );
+    animation-name: gota;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  @keyframes gota {
+    to {
+      transform: translateY(110vh);
+    }
   }
 
   /* Al cambiar de pantalla entra un nodo nuevo: eso dispara la animación.

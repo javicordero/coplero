@@ -96,6 +96,70 @@ describe("V-01/V-02 contraste de la paleta", () => {
   })
 })
 
+/** V-09 — contraste de los fondos estacionales en ambos temas. */
+describe("V-09 contraste de fondos estacionales", () => {
+  const veranoFondos: Array<[string, string]> = [
+    ["cielo", COLOR.veranoCielo],
+    ["arena", COLOR.veranoArena],
+  ]
+
+  for (const [nombre, fondo] of veranoFondos) {
+    it(`verano: texto oscuro sobre ${nombre} cumple AA`, () => {
+      expect(ratio(COLOR.veranoTexto, fondo)).toBeGreaterThanOrEqual(AA_TEXTO)
+    })
+    it(`verano: texto suave sobre ${nombre} cumple AA`, () => {
+      expect(ratio(COLOR.veranoTextoSuave, fondo)).toBeGreaterThanOrEqual(
+        AA_TEXTO,
+      )
+    })
+  }
+
+  it("verano: borde de control cumple 3:1 sobre las superficies", () => {
+    for (const fondo of [
+      COLOR.veranoSuperficie,
+      COLOR.veranoCielo,
+      COLOR.veranoArena,
+    ]) {
+      expect(ratio(COLOR.veranoBordeControl, fondo)).toBeGreaterThanOrEqual(
+        AA_NO_TEXTO,
+      )
+    }
+  })
+
+  it("verano: acento de texto cumple AA sobre cielo y arena", () => {
+    for (const fondo of [COLOR.veranoCielo, COLOR.veranoArena]) {
+      expect(ratio(COLOR.veranoAcentoTexto, fondo)).toBeGreaterThanOrEqual(
+        AA_TEXTO,
+      )
+    }
+  })
+
+  it("febrero: texto claro sobre fondo cumple AA", () => {
+    expect(ratio(COLOR.texto, COLOR.fondo)).toBeGreaterThanOrEqual(AA_TEXTO)
+  })
+  it("febrero: texto suave sobre fondo cumple AA", () => {
+    expect(ratio(COLOR.textoSuave, COLOR.fondo)).toBeGreaterThanOrEqual(
+      AA_TEXTO,
+    )
+  })
+
+  it("resultado (acta): tinta sobre papel cumple AA", () => {
+    expect(ratio(COLOR.actaTinta, COLOR.actaPapel)).toBeGreaterThanOrEqual(
+      AA_TEXTO,
+    )
+  })
+  it("resultado (acta): tinta suave sobre papel cumple AA", () => {
+    expect(ratio(COLOR.actaTintaSuave, COLOR.actaPapel)).toBeGreaterThanOrEqual(
+      AA_TEXTO,
+    )
+  })
+  it("resultado (acta): sello sobre papel cumple AA", () => {
+    expect(ratio(COLOR.actaSello, COLOR.actaPapel)).toBeGreaterThanOrEqual(
+      AA_TEXTO,
+    )
+  })
+})
+
 /** V-03 — tokens.css y tokens.ts no pueden divergir. */
 describe("V-03 integridad CSS ↔ TS", () => {
   const enCss = new Map<string, string>()
