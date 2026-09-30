@@ -230,5 +230,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/015-seasonal-background/plan.md
+at specs/016-stable-decision-layout/plan.md
 <!-- SPECKIT END -->

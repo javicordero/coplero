@@ -74,7 +74,6 @@ export interface ModalidadInfo {
 export interface Indicador {
   ano: number
   momento: Momento
-  tipo?: TipoDecision
 }
 
 const ETIQUETA_MODALIDAD: Record<Modalidad, string> = {

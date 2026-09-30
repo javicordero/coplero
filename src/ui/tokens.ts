@@ -18,7 +18,7 @@ export const COLORES = {
   "--c-acento-2": "#7fd1c1",
   "--c-sobre-acento": "#1a1206",
   "--c-error": "#fc8181",
-  "--c-verano-cielo": "#cfe8ff",
+  "--c-verano-cielo": "#e2f1ff",
   "--c-verano-arena": "#f0d9a8",
   "--c-verano-sol": "#ffd98a",
   "--c-verano-texto": "#16222e",
@@ -27,7 +27,24 @@ export const COLORES = {
   "--c-verano-superficie-alta": "#eef4f9",
   "--c-verano-separador": "#d5e2ee",
   "--c-verano-borde-control": "#4a5b6b",
-  "--c-verano-acento-texto": "#7a3b00",
+  "--c-verano-acento-texto": "#6f3300",
+  "--c-verano-mar": "#4fb3e0",
+  "--c-verano-mar-hondo": "#1f7fb8",
+  "--c-verano-espuma": "#f7fbff",
+  "--c-verano-nube": "#ffffff",
+  "--c-verano-arena-humeda": "#e6c98f",
+  "--c-verano-arena-sombra": "#ddbe84",
+  "--c-verano-concha": "#fff1dc",
+  "--c-verano-rojo": "#e4574c",
+  "--c-verano-naranja": "#f08a3c",
+  "--c-verano-amarillo": "#f6c445",
+  "--c-verano-verde": "#7fc35b",
+  "--c-verano-turquesa": "#3fb8bf",
+  "--c-verano-azul": "#3f8fd6",
+  "--c-verano-rosa": "#ec6b9a",
+  "--c-verano-coral": "#f28f6a",
+  "--c-verano-lila": "#b79ad6",
+  "--c-verano-metal": "#cbd5db",
   "--c-acta-papel": "#f4efe1",
   "--c-acta-papel-alta": "#e7dfca",
   "--c-acta-tinta": "#1e2226",
@@ -76,6 +93,19 @@ export const ESPACIADO = {
   "--foco-offset": "2px",
 } as const
 
+/** Layout del bucle (016). Espejo TS de tokens.css (V-03). */
+export const LAYOUT_BUCLE = {
+  "--alto-titulo": "8rem",
+  "--alto-texto": "0rem",
+  "--alto-opcion": "6.25rem",
+  "--alto-opciones": "calc(3 * var(--alto-opcion) + 2 * var(--esp-3))",
+  "--alto-bloque-decision":
+    "calc(var(--alto-titulo) + var(--alto-texto) + var(--esp-4) + var(--alto-opciones))",
+  "--indicador-centro": "9%",
+  "--indicador-izquierda": "var(--esp-4)",
+  "--tamano-indicador": "1.25rem",
+} as const
+
 export const MOVIMIENTO = {
   "--dur-1": "120ms",
   "--dur-2": "200ms",
@@ -89,6 +119,7 @@ export const TOKENS: Record<string, string> = {
   ...TIPOGRAFIA,
   ...ESPACIADO,
   ...MOVIMIENTO,
+  ...LAYOUT_BUCLE,
 }
 
 /** Color con nombre, derivado de COLORES para que no haya dos fuentes de verdad. */

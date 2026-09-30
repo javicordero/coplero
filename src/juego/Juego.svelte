@@ -3,6 +3,7 @@ import { variantesDe } from "../content/index"
 import { crearJuego } from "./estado.svelte"
 import { almacenNavegador } from "./persistencia"
 import {
+  type Indicador,
   mensajeError,
   MODALIDADES_INFO,
   TITULO_CAMBIO_VARIANTE,
@@ -14,6 +15,8 @@ import ElegirModalidad from "./pantallas/ElegirModalidad.svelte"
 import ElegirVariante from "./pantallas/ElegirVariante.svelte"
 import ErrorPantalla from "./pantallas/Error.svelte"
 import FinCarrera from "./pantallas/FinCarrera.svelte"
+import FondoVerano from "./pantallas/FondoVerano.svelte"
+import IndicadorContexto from "./pantallas/IndicadorContexto.svelte"
 import Intro from "./pantallas/Intro.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
 
@@ -46,13 +49,17 @@ const GOTAS = [
   { left: "90%", alto: "17px", retraso: "0.25s", duracion: "2.4s" },
 ]
 
-let indicadorDecision = $derived.by(() => {
-  if (!juego.partida || juego.paso?.tipo !== "decision") return null
-  return {
-    ano: juego.partida.anoActual,
-    momento: juego.paso.momento,
-    tipo: juego.paso.situacion.tipo,
+// El indicador es un overlay del área de juego (016): se muestra en decisión
+// y en resultado, con año y momento, nunca con el tipo (FR-001, FR-006, FR-014).
+let indicadorActual = $derived.by<Indicador | null>(() => {
+  if (!juego.partida) return null
+  if (juego.pantalla === "decision" && juego.paso?.tipo === "decision") {
+    return { ano: juego.partida.anoActual, momento: juego.paso.momento }
   }
+  if (juego.pantalla === "resultado") {
+    return { ano: juego.partida.anoActual, momento: "febrero" }
+  }
+  return null
 })
 
 function empezarDeCero() {
@@ -99,6 +106,12 @@ $effect(() => {
       {/each}
     </span>
   {/if}
+  {#if juego.partida?.momento === "verano" && juego.pantalla !== "resultado"}
+    <FondoVerano />
+  {/if}
+  {#if indicadorActual}
+    <IndicadorContexto indicador={indicadorActual} />
+  {/if}
   {#if juego.pantalla === "intro"}
     <Intro
       estadoGuardado={juego.estadoGuardado}
@@ -125,15 +138,13 @@ $effect(() => {
       variantes={variantesDe(juego.paso.modalidad)}
       onElegir={juego.elegirVarianteCambio}
     />
-  {:else if juego.pantalla === "decision" && juego.paso?.tipo === "decision" && indicadorDecision}
+  {:else if juego.pantalla === "decision" && juego.paso?.tipo === "decision"}
     <Decision
-      indicador={indicadorDecision}
       situacion={juego.paso.situacion}
       onElegir={juego.elegirOpcion}
     />
   {:else if juego.pantalla === "resultado" && juego.paso?.tipo === "resultado" && juego.partida}
     <Resultado
-      indicador={{ ano: juego.partida.anoActual, momento: "febrero" }}
       temporada={juego.paso.temporada}
       onContinuar={juego.continuar}
     />
@@ -153,6 +164,7 @@ $effect(() => {
 
 <style>
   main {
+    position: relative;
     width: 100%;
     max-width: var(--ancho-bucle);
     margin: 0 auto;
@@ -174,19 +186,16 @@ $effect(() => {
     --c-separador: var(--c-verano-separador);
     --c-borde-control: var(--c-verano-borde-control);
     --c-acento-texto: var(--c-verano-acento-texto);
-    background-image:
-      radial-gradient(
-        circle at 82% 9%,
-        var(--c-verano-sol) 0 24px,
-        rgba(255, 217, 138, 0.35) 25px 40px,
-        rgba(255, 217, 138, 0) 41px
-      ),
-      linear-gradient(
-        180deg,
-        var(--c-verano-cielo) 0%,
-        var(--c-verano-cielo) 70%,
-        var(--c-verano-arena) 100%
-      );
+    isolation: isolate;
+    background-image: linear-gradient(
+      180deg,
+      var(--c-verano-cielo) 0%,
+      var(--c-verano-cielo) 55%,
+      var(--c-verano-mar-hondo) 55%,
+      var(--c-verano-mar-hondo) 56.5%,
+      var(--c-verano-mar) 56.5%,
+      var(--c-verano-mar) 100%
+    );
   }
 
   main[data-momento="febrero"]:not([data-pantalla="resultado"]) {

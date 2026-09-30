@@ -45,7 +45,8 @@ test("E2E-001: carrera completa de principio a fin", async ({ page }) => {
   })
 
   await test.step("5 · completar varias decisiones", async () => {
-    const tipos = new Set<string>()
+    // El indicador es un overlay del área de juego (016): ya no vive dentro de
+    // la sección y no expone el tipo. Solo se comprueba que está presente.
     let decisiones = 0
 
     while (decisiones < 4) {
@@ -54,10 +55,7 @@ test("E2E-001: carrera completa de principio a fin", async ({ page }) => {
       if (clave.split("|")[0] === "fin") break
 
       if (clave.split("|")[0] === "decision") {
-        const tipo = await page
-          .locator('[data-testid="decision"] [data-testid="indicador"]')
-          .getAttribute("data-tipo")
-        if (tipo) tipos.add(tipo)
+        await expect(page.getByTestId("indicador")).toBeVisible()
         decisiones += 1
       }
 
@@ -65,8 +63,6 @@ test("E2E-001: carrera completa de principio a fin", async ({ page }) => {
     }
 
     expect(decisiones).toBeGreaterThanOrEqual(4)
-    expect(tipos.has("contenido")).toBe(true)
-    expect(tipos.has("personaje")).toBe(true)
   })
 
   await test.step("8 · recargar y recuperar partida", async () => {
