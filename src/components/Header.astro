@@ -1,7 +1,7 @@
 ---
 // Cabecera del sitio (011). Estática: 0 kB de JS.
 // La marca lleva `data-marca`; en /jugar la isla la actualiza según el sexo del personaje.
-import ReglaCompas from "./ReglaCompas.svelte"
+// import ReglaCompas from "./ReglaCompas.svelte"
 ---
 
 <header class="site-header">
@@ -9,7 +9,7 @@ import ReglaCompas from "./ReglaCompas.svelte"
     <a class="marca" href="/">
       <span data-marca>Coplero</span>
     </a>
-    <ReglaCompas class="compas-marca" />
+    {/* <ReglaCompas class="compas-marca" /> */}
   </div>
 </header>
 
@@ -21,10 +21,10 @@ import ReglaCompas from "./ReglaCompas.svelte"
     width: 100%;
     max-width: var(--ancho-marco);
     margin: 0 auto;
-    padding: var(--esp-4);
+    padding: var(--esp-1);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--esp-1);
   }
   .marca {
@@ -33,12 +33,13 @@ import ReglaCompas from "./ReglaCompas.svelte"
     min-height: 44px;
     color: var(--c-acento);
     font-family: var(--fuente-display);
+    font-size: 1.4rem;
     font-weight: var(--peso-normal);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     text-decoration: none;
   }
-  .compas-marca {
-    max-width: 5rem;
+  .site-header .wrap .compas-marca {
+    max-width: 10rem;
   }
 </style>

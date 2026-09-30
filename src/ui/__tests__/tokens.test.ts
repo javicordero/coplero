@@ -187,10 +187,8 @@ describe("V-06 anchos de layout", () => {
     expect(TOKENS["--ancho-marco"]).toBe("680px")
   })
 
-  it("el bucle jugable se queda entre 420px y 480px", () => {
-    const bucle = Number.parseFloat(TOKENS["--ancho-bucle"].replace("px", ""))
-    expect(bucle).toBeGreaterThanOrEqual(420)
-    expect(bucle).toBeLessThanOrEqual(480)
+  it("el bucle jugable coincide siempre con el marco", () => {
+    expect(TOKENS["--ancho-bucle"]).toBe("var(--ancho-marco)")
   })
 })
 

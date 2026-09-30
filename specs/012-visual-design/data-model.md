@@ -95,14 +95,14 @@ interface FamiliaTipografica {
 | Espaciado | `--esp-1`…`--esp-8` | `0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4` rem |
 | Radios | `--radio-sm`, `--radio-md`, `--radio-lg`, `--radio-pill` | `0.375, 0.75, 1rem`, `999px` |
 | Sombras | `--sombra-1`, `--sombra-2` | dos niveles sobre negro |
-| Layout | `--ancho-marco`, `--ancho-bucle` | `680px`, `480px` |
+| Layout | `--ancho-marco`, `--ancho-bucle` | `680px` (el bucle es alias del marco) |
 | Foco | `--foco-ancho`, `--foco-offset` | `2px`, `2px` |
 
 **Reglas de validación**
 
 1. Espaciado y radios MUST salir de la escala; no se admiten valores sueltos fuera de `src/ui/` (mismo test anti-hardcode que los colores, extendido).
-2. `--ancho-marco` MUST ser 680 px y `--ancho-bucle` MUST estar entre 420 y 480 px (Principio IV).
-3. `--ancho-bucle` MUST ser menor o igual que `--ancho-marco`.
+2. `--ancho-marco` MUST ser 680 px en escritorio (100 % en móvil).
+3. `--ancho-bucle` MUST derivar de `--ancho-marco` (`var(--ancho-marco)`), de modo que marco y bucle coincidan siempre (Principio IV, revisado el 2026-09-30).
 
 ---
 

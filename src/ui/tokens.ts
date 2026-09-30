@@ -54,7 +54,7 @@ export const ESPACIADO = {
   "--sombra-1": "0 1px 2px rgba(0, 0, 0, 0.4)",
   "--sombra-2": "0 4px 16px rgba(0, 0, 0, 0.5)",
   "--ancho-marco": "680px",
-  "--ancho-bucle": "480px",
+  "--ancho-bucle": "var(--ancho-marco)",
   "--foco-ancho": "2px",
   "--foco-offset": "2px",
 } as const

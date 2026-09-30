@@ -21,7 +21,7 @@ Define qué demuestra que la fase está terminada. Los umbrales son normativos: 
 | V-03 | Integridad `tokens.css` ↔ `tokens.ts`: mismo conjunto de nombres y mismos valores | igualdad exacta | R1 |
 | V-04 | Anti-hardcode: ningún `#rrggbb` en `src/**` salvo `src/ui/**`, `src/panel-ui/**`, `src/engine/**`, `src/content/**` | 0 infracciones | FR-001 |
 | V-05 | Escala tipográfica monótona y `--texto-base` ≥ 1 rem | sin excepciones | FR-003 |
-| V-06 | `--ancho-marco` = 680 px y 420 ≤ `--ancho-bucle` ≤ 480 px | exacto | Principio IV |
+| V-06 | `--ancho-marco` = 680 px y `--ancho-bucle` = `var(--ancho-marco)` | exacto | Principio IV (revisado) |
 | V-07 | Duraciones ≤ 300 ms (`docs/05` §1) y existencia de la regla `prefers-reduced-motion` en `base.css` | sin excepciones | FR-010, SC-005 |
 | V-08 | Cada `@font-face` de `base.css` declara `font-display: swap` y su woff2 existe en `public/fonts/`; la pila de reserva es local | sin excepciones | FR-004 |
 

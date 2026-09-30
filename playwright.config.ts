@@ -11,6 +11,10 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     port: 4321,
-    reuseExistingServer: !process.env.CI,
+    // Nunca se reutiliza un servidor ya levantado: cualquier otro proceso en el
+    // puerto (por ejemplo, el dev server de otro proyecto) hacía que la suite
+    // probara **otra web** y fallara o pasara por motivos que no eran suyos.
+    // Con esto, si el puerto está ocupado la ejecución falla y se ve el motivo.
+    reuseExistingServer: false,
   },
 })

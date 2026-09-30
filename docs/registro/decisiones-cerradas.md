@@ -113,6 +113,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Estados y movimiento (2026-09-21) | Matriz de estados en `base.css` (reposo, hover, active, focus-visible, disabled, seleccionado) con objetivos táctiles ≥44 px; duraciones **120/200/280 ms**, dentro de los 200-300 ms de `05` §1, y `prefers-reduced-motion` que las neutraliza por completo | 05 §1, 012 |
 | Identidad en la imagen OG (2026-09-21) | El endpoint OG comparte paleta y tipografía con el sitio vía `src/ui/tokens.ts`, y escala los tres formatos para que ninguno recorte contenido. Se **retira** `public/fonts/Coplero.ttf`: era **DejaVu Sans** (la parencia que `satori` exige), no una tipografía de marca | 02 §10, 012 |
 | Modo oscuro único (2026-09-21) | **Aclaración**: v1 se sirve **solo en tema oscuro**. `docs/05` §1 describía "detección de sistema + conmutador" y §9 lo situaba en v1.1; se mantiene la misma hoja de ruta, pero v1 no implementa conmutador ni tema claro | 05 §1, §9 |
+| Marco y bucle unificados (2026-09-30) | El bucle jugable **coincide siempre con el marco**: `--ancho-marco` = **680 px** en escritorio (100 % en móvil) y `--ancho-bucle` = `var(--ancho-marco)`. Se abandona la columna propia de 420–480 px del bucle: esto **revisa el Principio IV** y supersede la cláusula de bucle del FR-017 de `specs/010` y `specs/011`. Además, en `/jugar` el juego ocupa `min-height: calc(100dvh - var(--alto-cabecera))`, medido en la isla, para que el pie quede bajo el pliegue hasta hacer scroll | 02 §6, 012 |
 
 ## Motor · forma de la carrera
 
