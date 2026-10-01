@@ -37,6 +37,7 @@ content-admin/data/backups/
 playwright-report/
 test-results/
 blob-report/
+.playwright-mcp/
 
 # IDE / OS
 .vscode/
