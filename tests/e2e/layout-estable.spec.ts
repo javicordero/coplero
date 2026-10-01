@@ -103,6 +103,10 @@ test("INV-1..INV-4 e INV-8 · decisión estable, centrada y sin tipo", async ({
   ]) {
     await page.setViewportSize(size)
     await page.goto("/jugar")
+    // El mismo contexto se reutiliza entre iteraciones: se limpia el guardado
+    // de la vuelta anterior y se recarga para arrancar en `crear-personaje`.
+    await page.evaluate(() => localStorage.clear())
+    await page.reload()
     await crearPersonaje(page, "Estable")
     await elegirModalidadYVariante(page)
     await page.waitForSelector(SELECTOR_PANTALLA)

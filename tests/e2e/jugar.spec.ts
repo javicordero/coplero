@@ -64,6 +64,7 @@ test("conserva la partida al recargar", async ({ page }) => {
   expect(guardado).not.toBeNull()
 
   await page.reload()
+  await expect(page.getByTestId("reanudar")).toBeVisible()
   await expect(page.getByTestId("continuar")).toBeVisible()
   await page.getByTestId("continuar").click()
 

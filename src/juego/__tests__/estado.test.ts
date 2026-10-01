@@ -103,6 +103,34 @@ function jugarCarrera(juego: ReturnType<typeof nuevoJuego>) {
 }
 
 describe("estado del juego", () => {
+  it("sin guardado arranca directamente en la creación de personaje", () => {
+    const juego = nuevoJuego(almacenMemoria())
+    expect(juego.estadoGuardado).toBe("ninguno")
+    expect(juego.pantalla).toBe("crear-personaje")
+  })
+
+  it("con una partida en curso arranca en la pantalla de reanudación", () => {
+    const almacen = almacenMemoria()
+    const juego = nuevoJuego(almacen)
+    iniciar(juego, "El Chato")
+
+    const otroJuego = nuevoJuego(almacen)
+    expect(otroJuego.estadoGuardado).toBe("en-curso")
+    expect(otroJuego.pantalla).toBe("reanudar")
+  })
+
+  it("«Nueva partida» no borra el guardado hasta crear la nueva partida", () => {
+    const almacen = almacenMemoria()
+    const juego = nuevoJuego(almacen)
+    iniciar(juego, "El Chato")
+    expect(almacen.getItem(CLAVE_GUARDADO)).not.toBeNull()
+
+    const otroJuego = nuevoJuego(almacen)
+    otroJuego.empezar()
+    expect(otroJuego.pantalla).toBe("crear-personaje")
+    expect(almacen.getItem(CLAVE_GUARDADO)).not.toBeNull()
+  })
+
   it("recorre la carrera completa hasta el fin", () => {
     const juego = nuevoJuego(almacenMemoria())
     jugarCarrera(juego)
@@ -155,21 +183,23 @@ describe("estado del juego", () => {
 
     const otroJuego = nuevoJuego(almacen)
     expect(otroJuego.estadoGuardado).toBe("en-curso")
+    expect(otroJuego.pantalla).toBe("reanudar")
     otroJuego.continuarPartida()
     expect(otroJuego.partida?.anoActual).toBe(anoTrasDecision)
     expect(otroJuego.paso?.tipo).toBe(pasoTrasDecision)
-    expect(otroJuego.pantalla).not.toBe("intro")
+    expect(otroJuego.pantalla).not.toBe("reanudar")
   })
 
-  it("reiniciar descarta el guardado y vuelve a la intro", () => {
+  it("reiniciar descarta el guardado y vuelve a crear personaje", () => {
     const almacen = almacenMemoria()
     const juego = nuevoJuego(almacen)
     jugarCarrera(juego)
     juego.reiniciar()
-    expect(juego.pantalla).toBe("intro")
+    expect(juego.pantalla).toBe("crear-personaje")
     expect(juego.partida).toBeNull()
     expect(juego.estadoGuardado).toBe("ninguno")
     expect(nuevoJuego(almacen).estadoGuardado).toBe("ninguno")
+    expect(nuevoJuego(almacen).pantalla).toBe("crear-personaje")
   })
 
   it("crear una partida nueva reemplaza el guardado anterior", () => {
@@ -186,7 +216,7 @@ describe("estado del juego", () => {
     expect(restaurado.partida?.personaje.nombre).toBe("Dos")
   })
 
-  it("una carrera terminada se marca como terminada y muestra el resumen", () => {
+  it("una carrera terminada no se reanuda y arranca directo", () => {
     const almacen = almacenMemoria()
     const juego = nuevoJuego(almacen)
     jugarCarrera(juego)
@@ -194,12 +224,14 @@ describe("estado del juego", () => {
 
     const restaurado = nuevoJuego(almacen)
     expect(restaurado.estadoGuardado).toBe("terminada")
+    expect(restaurado.pantalla).toBe("crear-personaje")
+    // La capacidad interna de restaurar el resumen se conserva.
     restaurado.continuarPartida()
     expect(restaurado.pantalla).toBe("fin")
     expect(restaurado.tarjeta?.nombre).toBe("El Chato")
   })
 
-  it("descarta un guardado inservible con un aviso puntual", () => {
+  it("descarta un guardado inservible en silencio", () => {
     const almacen = almacenMemoria()
     almacen.setItem(
       CLAVE_GUARDADO,
@@ -207,18 +239,18 @@ describe("estado del juego", () => {
     )
 
     const juego = nuevoJuego(almacen)
-    expect(juego.aviso).not.toBeNull()
     expect(juego.estadoGuardado).toBe("ninguno")
+    expect(juego.pantalla).toBe("crear-personaje")
 
     const otro = nuevoJuego(almacen)
-    expect(otro.aviso).toBeNull()
     expect(otro.estadoGuardado).toBe("ninguno")
+    expect(otro.pantalla).toBe("crear-personaje")
   })
 
-  it("sin almacenamiento se juega sin aviso", () => {
+  it("sin almacenamiento arranca directo y no falla", () => {
     const juego = nuevoJuego(almacenQueLanza())
-    expect(juego.aviso).toBeNull()
     expect(juego.estadoGuardado).toBe("ninguno")
+    expect(juego.pantalla).toBe("crear-personaje")
     iniciar(juego, "Sin guardar")
     expect(juego.pantalla).toBe("decision")
     expect(juego.error).toBeNull()

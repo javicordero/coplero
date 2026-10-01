@@ -71,9 +71,12 @@ test("la cabecera del flujo previo cae en la misma posición y con el mismo esti
   ]) {
     await page.setViewportSize(size)
     await page.goto("/jugar")
+    // El mismo contexto se reutiliza entre iteraciones: se limpia el guardado
+    // de la vuelta anterior y se recarga para arrancar en `crear-personaje`.
+    await page.evaluate(() => localStorage.clear())
+    await page.reload()
     await esperarFuentes(page)
 
-    await page.getByTestId("empezar").click()
     const crear = await medirCabecera(page, "crear-personaje")
 
     await page.getByLabel("Nombre o apodo").fill("Estable")
@@ -121,7 +124,6 @@ test("el flujo previo no desborda en horizontal a 320 px", async ({ page }) => {
         document.documentElement.clientWidth,
     )
 
-  await page.getByTestId("empezar").click()
   await expect(page.getByTestId("crear-personaje")).toBeVisible()
   expect(await desborde()).toBeLessThanOrEqual(0)
 
@@ -140,7 +142,6 @@ test("no hay textura de puntos en ninguna pantalla", async ({ page }) => {
     await expect(page.locator("body")).not.toHaveClass(/textura-puntos/)
   }
 
-  await page.getByTestId("empezar").click()
   await expect(page.getByTestId("crear-personaje")).toBeVisible()
   await expect(page.locator("body")).not.toHaveClass(/textura-puntos/)
 
@@ -177,7 +178,6 @@ test("el header es negro, sticky y no altera la altura de cabecera", async ({
   // del flujo, así que los `100dvh - cabecera` no cambian).
   await page.goto("/jugar")
   await esperarFuentes(page)
-  await page.getByTestId("empezar").click()
   await page.waitForTimeout(150)
 
   const altoVar = await page.evaluate(() =>

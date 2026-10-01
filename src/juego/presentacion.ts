@@ -123,10 +123,6 @@ export const SUBTITULO_VARIANTE = "Elige tu estilo"
 /** Dirección del juego para la marca de agua de la tarjeta y las imágenes. */
 export const DIRECCION_JUEGO = "coplero.app"
 
-/** Aviso puntual cuando un guardado no se pudo restaurar (FR-008). */
-export const AVISO_GUARDADO_DESCARTADO =
-  "La partida guardada ya no se ha podido recuperar con esta versión. Puedes empezar una carrera nueva."
-
 export function mensajeError(error: ErrorMotor): string {
   switch (error.codigo) {
     case "VERSION_INCOMPATIBLE":

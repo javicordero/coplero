@@ -39,9 +39,10 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Adapter de deploy | `@astrojs/netlify` configurado (estático + función SSR on-demand); `netlify.toml` sin catch-all | 02 §11 |
 | Seguridad de dependencias | `overrides` para `sharp@^0.35.4`, `fflate@^0.8.3` y `@netlify/functions-dev@^2.0.7`; `npm audit` = 0 vulnerabilidades | 02 §11 |
 | Persistencia | `localStorage` con **doble versión de esquema** (sobre en `web` + `Partida` en `engine`); guardar en cada elección y al crear la partida | 02 §10 |
-| Guardado no restaurable (2026-09-20) | Versión distinta, JSON inválido, tipos inesperados o deserialización fallida ⇒ se **elimina** y se muestra un **aviso puntual** (una sola vez) ofreciendo empezar de cero; **sin migración** en v1 | 02 §10 |
-| Almacenamiento no disponible (2026-09-20) | Almacén **no-op** si no hay `localStorage` o falla (cuota/permiso): se juega igual, **sin aviso**, y no aparece "Continuar" después | 02 §10 |
-| Partida terminada (2026-09-20) | La pantalla inicial distingue **en curso** ("Continuar") de **terminada** ("Ver resultado" + "Empezar de cero"); el guardado se conserva al acabar | 02 §10 |
+| Guardado no restaurable (2026-09-20 · actualizado 2026-10-01, feature 018) | Versión distinta, JSON inválido, tipos inesperados o deserialización fallida ⇒ se **elimina**; el descarte es **silencioso** (se retiró el aviso puntual) y el juego arranca directo en la creación de personaje; **sin migración** en v1 | 02 §10 |
+| Almacenamiento no disponible (2026-09-20 · actualizado 2026-10-01, feature 018) | Almacén **no-op** si no hay `localStorage` o falla (cuota/permiso): se juega igual, **sin aviso**, y el juego arranca directo en la creación de personaje | 02 §10 |
+| Partida terminada (2026-09-20 · actualizado 2026-10-01, feature 018) | Una carrera **terminada** guardada **no se reanuda**: al volver se arranca directo en la creación de personaje; la tarjeta final solo queda accesible por su enlace compartido. Solo una partida **en curso** ofrece reanudar | 02 §10 |
+| Entrada directa al juego (2026-10-01, feature 018) | Al entrar a `/jugar`: sin partida recuperable ⇒ arranca directo en la creación de personaje; con partida **en curso** ⇒ pantalla de reanudación («Continuar» + «Nueva partida»). «Nueva partida» **conserva** el guardado hasta crear la nueva. La portada sigue estática y sin opción de continuar | 018 |
 | Varias pestañas (2026-09-20) | Sin sincronización: gana la última pestaña que guarde; no se detecta conflicto | 02 §10 |
 | Saneamiento y moderación | Definidos: normalización + límites, escape `< > & " '`, lista de bloqueo, validación cliente + servidor/OG | 05 §7 |
 | Simulación | `scripts/simular.ts`, 10.000 partidas; `tsx` **instalado** | 02 §11 |

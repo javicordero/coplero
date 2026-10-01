@@ -27,10 +27,10 @@ import {
   type EstadoGuardado,
   guardar,
 } from "./persistencia"
-import { AVISO_GUARDADO_DESCARTADO, normalizarNombre } from "./presentacion"
+import { normalizarNombre } from "./presentacion"
 
 export type Pantalla =
-  | "intro"
+  | "reanudar"
   | "crear-personaje"
   | "modalidad"
   | "variante"
@@ -66,7 +66,6 @@ export interface Juego {
   readonly paso: Paso | null
   readonly tarjeta: TarjetaFinal | null
   readonly error: ErrorMotor | null
-  readonly aviso: string | null
   readonly estadoGuardado: EstadoGuardado
   readonly modalidad: Modalidad | null
   /** Género elegido en el formulario, antes de crear la partida (marca viva). */
@@ -91,18 +90,20 @@ export function crearJuego(
   const generarSeed = opciones.generarSeed ?? seedPorDefecto
   const banco = opciones.banco ?? bancoReal
 
-  let pantalla = $state<Pantalla>("intro")
+  const cargaInicial = cargar(almacen)
+  // Solo una partida en curso da lugar a la pantalla de reanudación; sin
+  // guardado, descartado o terminado, el juego empieza directo en la creación.
+  const estadoInicial: EstadoGuardado = calcularEstadoGuardado(
+    cargaInicial.partida,
+  )
+  let estadoGuardado = $state<EstadoGuardado>(estadoInicial)
+  let pantalla = $state<Pantalla>(
+    estadoInicial === "en-curso" ? "reanudar" : "crear-personaje",
+  )
   let partida = $state<Partida | null>(null)
   let paso = $state<Paso | null>(null)
   let tarjeta = $state<TarjetaFinal | null>(null)
   let error = $state<ErrorMotor | null>(null)
-  const cargaInicial = cargar(almacen)
-  let aviso = $state<string | null>(
-    cargaInicial.descartado ? AVISO_GUARDADO_DESCARTADO : null,
-  )
-  let estadoGuardado = $state<EstadoGuardado>(
-    calcularEstadoGuardado(cargaInicial.partida),
-  )
   let personaje = $state<Personaje | null>(null)
   let modalidad = $state<Modalidad | null>(null)
   let seed = $state<string>("")
@@ -137,7 +138,6 @@ export function crearJuego(
 
   function empezar(): void {
     error = null
-    aviso = null
     generoBorrador = null
     pantalla = "crear-personaje"
   }
@@ -205,12 +205,11 @@ export function crearJuego(
 
   function reiniciar(): void {
     borrar(almacen)
-    pantalla = "intro"
+    pantalla = "crear-personaje"
     partida = null
     paso = null
     tarjeta = null
     error = null
-    aviso = null
     personaje = null
     modalidad = null
     seed = ""
@@ -220,20 +219,13 @@ export function crearJuego(
 
   function continuarPartida(): void {
     const resultado = cargar(almacen)
-    if (resultado.descartado) {
-      aviso = AVISO_GUARDADO_DESCARTADO
+    if (resultado.descartado || !resultado.partida) {
       estadoGuardado = "ninguno"
-      pantalla = "intro"
-      return
-    }
-    if (!resultado.partida) {
-      estadoGuardado = "ninguno"
-      pantalla = "intro"
+      pantalla = "crear-personaje"
       return
     }
     partida = resultado.partida
     error = null
-    aviso = null
     refrescarPaso()
   }
 
@@ -259,9 +251,6 @@ export function crearJuego(
     },
     get error() {
       return error
-    },
-    get aviso() {
-      return aviso
     },
     get estadoGuardado() {
       return estadoGuardado

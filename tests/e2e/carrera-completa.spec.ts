@@ -26,7 +26,7 @@ test("E2E-001: carrera completa de principio a fin", async ({ page }) => {
 
   await test.step("1 · entrar en /jugar", async () => {
     await page.goto("/jugar")
-    await expect(page.getByTestId("intro")).toBeVisible()
+    await expect(page.getByTestId("crear-personaje")).toBeVisible()
   })
 
   await test.step("2 · crear personaje", async () => {
@@ -70,6 +70,7 @@ test("E2E-001: carrera completa de principio a fin", async ({ page }) => {
     const claveAntes = await clavePantalla(page)
 
     await page.reload()
+    await expect(page.getByTestId("reanudar")).toBeVisible()
     await expect(page.getByTestId("continuar")).toBeVisible()
     await page.getByTestId("continuar").click()
 

@@ -19,7 +19,7 @@ import FinCarrera from "./pantallas/FinCarrera.svelte"
 import FondoFebrero from "./pantallas/FondoFebrero.svelte"
 import FondoVerano from "./pantallas/FondoVerano.svelte"
 import IndicadorContexto from "./pantallas/IndicadorContexto.svelte"
-import Intro from "./pantallas/Intro.svelte"
+import Reanudar from "./pantallas/Reanudar.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
 
 const juego = crearJuego(almacenNavegador())
@@ -74,11 +74,6 @@ $effect(() => {
   if (juego.pantalla) window.scrollTo(0, 0)
 })
 
-function empezarDeCero() {
-  juego.reiniciar()
-  juego.empezar()
-}
-
 // El juego ocupa el alto del viewport menos la cabecera para que el pie
 // quede por debajo del pliegue: solo se ve al hacer scroll.
 $effect(() => {
@@ -130,13 +125,10 @@ $effect(() => {
   {#if indicadorActual}
     <IndicadorContexto indicador={indicadorActual} />
   {/if}
-  {#if juego.pantalla === "intro"}
-    <Intro
-      estadoGuardado={juego.estadoGuardado}
-      aviso={juego.aviso}
-      onEmpezar={empezarDeCero}
+  {#if juego.pantalla === "reanudar"}
+    <Reanudar
       onContinuar={juego.continuarPartida}
-      onVerResultado={juego.continuarPartida}
+      onNuevaPartida={juego.empezar}
     />
   {:else if juego.pantalla === "crear-personaje"}
     <CrearPersonaje

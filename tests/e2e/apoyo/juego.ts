@@ -31,7 +31,6 @@ export async function crearPersonaje(
   page: Page,
   nombre: string,
 ): Promise<void> {
-  await page.getByTestId("empezar").click()
   await page.getByLabel("Nombre o apodo").fill(nombre)
   await page.getByTestId("crear").click()
 }

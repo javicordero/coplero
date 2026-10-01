@@ -24,6 +24,10 @@ No se resuelve en silencio. Queda **pendiente del primer deploy** para confirmar
 
 `docs/03` pide `tema_social` **dos años seguidos** para el condicional "El público espera otra vez tu registro social", pero la clarificación Q2 de CONTENT-001 marca todas las situaciones con `unicaVez: true`: la situación que concede la flag (`v_letra_tema`) no se repite en años consecutivos, así que `flagRepetida` con `consecutivos: true` sería **inalcanzable**. **Decisión confirmada por diseño:** modelar el requisito como `flagRepetida` `veces: 2` **sin** exigir consecutivos ("el tema ha vuelto"), que sí es alcanzable. La regla de repetición queda: una situación **no** sale dos años seguidos, pero puede volver más tarde (reciclado); las flags se acumulan aunque no en años consecutivos.
 
+### Derogación del aviso de guardado descartado (feature 005 → feature 018) ✅ Resuelta (2026-10-01)
+
+La feature **005** decidió mostrar un **aviso puntual** cuando un guardado no se podía restaurar. La feature **018** deroga ese aviso: con la **entrada directa** (sin pantalla de inicio obligatoria) el descarte pasa a ser **silencioso** y el juego arranca directo en la creación de personaje. Se retiró `AVISO_GUARDADO_DESCARTADO` de `src/juego/presentacion.ts`. Actualizado `decisiones-cerradas.md`.
+
 ### C15 · "Las decisiones no afectan al resultado" frente al modelo de atributos ✅ Resuelta (2026-09-20)
 
 Diseño: las decisiones **no afectan al resultado**; lo fijan el `destino` oculto y el azar. Los **atributos parten de un valor estándar** y solo cambian por **excepciones declaradas** (unas pocas, con intercambio visible). Implementado en la feature **008**: se añadió `Opcion.excepcion` (regla Zod `efectos` ⇔ `excepcion`), se retiraron **los 80 `efectos`** del banco (quedan 4 opciones excepción en 2 situaciones) y se **recalibró** solo con parámetros, **sin tocar `coac.ts` ni las situaciones**.
