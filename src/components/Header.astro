@@ -35,6 +35,11 @@
     display: inline-flex;
     align-items: center;
     min-height: 2rem;
+    /* Objetivo táctil ≥ 44 px (WCAG 2.5.8): el padding amplía el área
+       clicable y el margen negativo lo compensa para no agrandar la
+       cabecera. */
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
     color: var(--c-acento);
     font-family: var(--fuente-display);
     font-size: 1.5rem;

@@ -23,6 +23,9 @@ async function jugarHastaFin(page: import("@playwright/test").Page) {
   await crearPersonaje(page, "El Chato")
   await elegirModalidadYVariante(page)
   await completarCarrera(page)
+  // La entrada de pantalla anima 280 ms; se espera para medir/analizar en
+  // reposo (si no, axe calcula contraste sobre elementos con opacity < 1).
+  await page.waitForTimeout(400)
 }
 
 test("muestra la tarjeta con el nombre y los hitos", async ({ page }) => {

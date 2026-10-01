@@ -95,6 +95,8 @@ test("D · una carrera terminada arranca directo, sin reanudar", async ({
 test("las pantallas de arranque pasan WCAG 2.2 AA", async ({ page }) => {
   await page.goto("/jugar")
   await expect(page.getByTestId("crear-personaje")).toBeVisible()
+  // La entrada de pantalla anima 280 ms; se espera para analizar en reposo.
+  await page.waitForTimeout(400)
   expect(await violacionesGraves(page)).toEqual([])
 
   await crearPersonaje(page, "El Chato")
@@ -103,5 +105,6 @@ test("las pantallas de arranque pasan WCAG 2.2 AA", async ({ page }) => {
 
   await page.reload()
   await expect(page.getByTestId("reanudar")).toBeVisible()
+  await page.waitForTimeout(400)
   expect(await violacionesGraves(page)).toEqual([])
 })
