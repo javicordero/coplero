@@ -114,6 +114,12 @@ export const MODALIDADES_INFO: ModalidadInfo[] = [
 /** Enunciado del paso de cambio de variante tras cambiar de modalidad. */
 export const TITULO_CAMBIO_VARIANTE = "Tu nueva forma de trabajar"
 
+/** Subtítulo de la pantalla de selección de modalidad (017). */
+export const SUBTITULO_MODALIDAD = "Purpurina o plumero"
+
+/** Subtítulo de la pantalla de selección de variante (017). */
+export const SUBTITULO_VARIANTE = "Elige tu estilo"
+
 /** Dirección del juego para la marca de agua de la tarjeta y las imágenes. */
 export const DIRECCION_JUEGO = "coplero.app"
 

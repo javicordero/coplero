@@ -10,9 +10,10 @@ let {
   onGenero?: (genero: DatosCreacion["genero"]) => void
 } = $props()
 
-let nombre = $state("")
-let edad = $state<number | null>(null)
-let localidad = $state("")
+// Valores por defecto para agilizar el desarrollo (quitar antes de publicar).
+let nombre = $state("El Chato")
+let edad = $state<number | null>(30)
+let localidad = $state("Cádiz")
 let genero = $state<DatosCreacion["genero"]>("masculino")
 
 let nombreValido = $derived(normalizarNombre(nombre).length > 0)
@@ -29,144 +30,73 @@ function enviar(evento: SubmitEvent) {
 }
 </script>
 
-<section data-testid="crear-personaje">
-  <h2>Crea tu personaje</h2>
+<section class="pantalla" data-testid="crear-personaje">
+  <div class="pantalla__cabecera">
+    <h2>Crea tu personaje</h2>
+    <p>Inicia tu carrera como autor de carnaval</p>
+  </div>
 
-  <p>Inicia tu carrera como autor de carnaval</p>
+  <div class="pantalla__cuerpo">
+    <form onsubmit={enviar}>
+      <label for="nombre">Nombre o apodo</label>
+      <input
+        id="nombre"
+        bind:value={nombre}
+        maxlength="24"
+        autocomplete="off"
+        placeholder="¿Cómo te conocerán?"
+        required
+      />
 
-  <form onsubmit={enviar}>
-    <label for="nombre">Nombre o apodo</label>
-    <input
-      id="nombre"
-      bind:value={nombre}
-      maxlength="24"
-      autocomplete="off"
-      placeholder="¿Cómo te conocerán?"
-      required
-    />
+      <label for="edad">Edad</label>
+      <input
+        id="edad"
+        type="number"
+        bind:value={edad}
+        min="18"
+        max="65"
+        placeholder="30"
+      />
 
-    <label for="edad">Edad</label>
-    <input
-      id="edad"
-      type="number"
-      bind:value={edad}
-      min="18"
-      max="65"
-      placeholder="30"
-    />
+      <label for="localidad">Localidad</label>
+      <input
+        id="localidad"
+        bind:value={localidad}
+        autocomplete="off"
+        placeholder="Cádiz"
+      />
 
-    <label for="localidad">Localidad</label>
-    <input
-      id="localidad"
-      bind:value={localidad}
-      autocomplete="off"
-      placeholder="Cádiz"
-    />
+      <fieldset class="genero">
+        <legend>Género</legend>
+        <div class="opciones" data-testid="genero">
+          {#each GENEROS_INFO as opcion (opcion.id)}
+            <input
+              type="radio"
+              name="genero"
+              id={`genero-${opcion.id}`}
+              value={opcion.id}
+              bind:group={genero}
+            />
+            <label class="tarjeta" for={`genero-${opcion.id}`}
+              >{opcion.titulo}</label
+            >
+          {/each}
+        </div>
+      </fieldset>
 
-    <fieldset class="genero">
-      <legend>Género</legend>
-      <div class="opciones" data-testid="genero">
-        {#each GENEROS_INFO as opcion (opcion.id)}
-          <input
-            type="radio"
-            name="genero"
-            id={`genero-${opcion.id}`}
-            value={opcion.id}
-            bind:group={genero}
-          />
-          <label for={`genero-${opcion.id}`}>{opcion.titulo}</label>
-        {/each}
-      </div>
-    </fieldset>
-
-    <button
-      type="submit"
-      class="primario"
-      disabled={!nombreValido}
-      data-testid="crear"
-    >
-      Continuar
-    </button>
-  </form>
+      <button
+        type="submit"
+        class="primario"
+        disabled={!nombreValido}
+        data-testid="crear"
+      >
+        Continuar
+      </button>
+    </form>
+  </div>
 </section>
 
 <style>
-  /* Fondo y decoración de pantalla: se pintan sobre `main` mientras esta
-     pantalla está montada, para no tocar el resto del sitio. */
-  /* La pantalla manda sobre `main`: lo fija a la altura máxima que queremos
-     (viewport menos cabecera) y neutraliza su `flex: 1`, para que nunca crezca
-     por debajo de la cabecera. El pie sigue quedando bajo el pliegue. */
-  :global(main[data-testid="juego"][data-pantalla="crear-personaje"]) {
-    background: var(--c-fondo);
-    height: calc(100dvh - var(--alto-cabecera, 0px));
-    min-height: 0;
-    flex: 0 0 auto;
-  }
-
-  :global(main[data-pantalla="crear-personaje"])::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.045;
-    background-image: radial-gradient(
-      circle at 20% 20%,
-      var(--c-texto-fuerte) 0 1px,
-      transparent 1px
-    );
-    background-size: 5px 5px;
-  }
-
-  section {
-    width: min(calc(100% - 48px), var(--ancho-marco));
-    /* Llena el alto que le deja `main` (ya acotado arriba). */
-    height: 100%;
-    overflow: hidden;
-
-    margin: 0 auto;
-    /* El relleno inferior es mayor que el superior para subir un poco el
-       contenido dentro del hueco disponible. */
-    padding: 0 0 var(--esp-4);
-
-    position: relative;
-    z-index: 1;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-content: safe center;
-
-    font-family: var(--fuente-texto);
-  }
-
-  section h2 {
-    margin: 0;
-
-    text-align: center;
-
-    color: var(--c-texto-fuerte);
-
-    font-family: var(--fuente-display);
-    font-size: clamp(2rem, 6.5vw, 3rem);
-    line-height: 0.9;
-
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-
-    text-shadow: 3px 3px 0 var(--c-superficie);
-  }
-
-  section > p {
-    margin: var(--esp-4) 0;
-
-    color: var(--c-texto-suave);
-
-    font-size: var(--texto-lg);
-    line-height: var(--interlinea-normal);
-
-    text-align: center;
-  }
-
   section form {
     display: flex;
     flex-direction: column;
@@ -180,7 +110,7 @@ function enviar(evento: SubmitEvent) {
     box-shadow: var(--sombra-2);
   }
 
-  section label,
+  section form > label,
   section legend {
     display: block;
 
@@ -283,30 +213,12 @@ function enviar(evento: SubmitEvent) {
 
     padding: var(--esp-2);
 
-    color: var(--c-texto-suave);
-    background: var(--c-superficie);
-
-    border: 1px solid var(--c-borde-control);
-    border-radius: var(--radio-sm);
-
-    cursor: pointer;
-
     font-size: var(--texto-xs);
     font-weight: var(--peso-fuerte);
 
     letter-spacing: 0.04em;
     text-align: center;
     text-transform: uppercase;
-
-    transition:
-      color var(--dur-2) var(--ease-sal),
-      border-color var(--dur-2) var(--ease-sal),
-      background-color var(--dur-2) var(--ease-sal);
-  }
-
-  .opciones label:hover {
-    color: var(--c-texto);
-    border-color: var(--c-acento);
   }
 
   .opciones input[type="radio"]:checked + label {
@@ -348,27 +260,7 @@ function enviar(evento: SubmitEvent) {
     border-color: color-mix(in srgb, var(--c-acento) 88%, var(--c-texto-fuerte));
   }
 
-  /* En pantallas bajas no se puede mantener todo dentro del viewport sin
-     perder contenido: se permite desplazar en vertical. */
-  @media (max-height: 719px) {
-    :global(main[data-testid="juego"][data-pantalla="crear-personaje"]) {
-      height: auto;
-      min-height: calc(100dvh - var(--alto-cabecera, 0px));
-      flex: 1;
-    }
-
-    section {
-      height: auto;
-      min-height: calc(100dvh - var(--alto-cabecera, 0px) - 2 * var(--esp-6));
-      overflow: visible;
-    }
-  }
-
   @media (max-width: 600px) {
-    section {
-      width: 100%;
-    }
-
     section form {
       padding: var(--esp-4);
     }

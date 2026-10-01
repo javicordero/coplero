@@ -6,6 +6,7 @@ import {
   type Indicador,
   mensajeError,
   MODALIDADES_INFO,
+  SUBTITULO_VARIANTE,
   TITULO_CAMBIO_VARIANTE,
   tituloDelJuego,
 } from "./presentacion"
@@ -22,6 +23,10 @@ import Intro from "./pantallas/Intro.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
 
 const juego = crearJuego(almacenNavegador())
+
+// Pantallas del flujo previo a partida: comparten el marco de pantalla
+// (altura del área de juego y cabecera de posición fija).
+const PANTALLAS_PREVIAS = new Set(["crear-personaje", "modalidad", "variante"])
 
 const GOTAS = [
   { left: "3%", alto: "16px", retraso: "0s", duracion: "2.4s" },
@@ -107,6 +112,7 @@ $effect(() => {
   data-pantalla={juego.pantalla}
   data-momento={juego.partida?.momento ?? ""}
   data-ano={juego.partida?.anoActual ?? ""}
+  data-prepartida={PANTALLAS_PREVIAS.has(juego.pantalla) ? "" : undefined}
 >
   {#if juego.partida?.momento === "febrero" && juego.pantalla !== "resultado"}
     <FondoFebrero />
@@ -145,6 +151,7 @@ $effect(() => {
   {:else if juego.pantalla === "variante"}
     <ElegirVariante
       variantes={variantesDe(juego.modalidad ?? "comparsista")}
+      subtitulo={SUBTITULO_VARIANTE}
       onElegir={juego.elegirVariante}
     />
   {:else if juego.pantalla === "cambio-variante" && juego.paso?.tipo === "variante"}
@@ -185,11 +192,26 @@ $effect(() => {
     margin: 0 auto;
     padding: var(--esp-6) var(--esp-4);
     flex: 1;
-    min-height: calc(100dvh - var(--alto-cabecera, 0px));
+    /* `svh` (viewport pequeño estable) en vez de `dvh`: en móvil, `dvh` crece
+       al ocultarse la barra del navegador al scrollear y hacía saltar la altura
+       del área de juego. `100vh` queda como reserva para navegadores antiguos. */
+    min-height: calc(100vh - var(--alto-cabecera, 0px));
+    min-height: calc(100svh - var(--alto-cabecera, 0px));
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: var(--c-texto);
+  }
+
+  /* Flujo previo a partida (017): el área de juego se fija a "viewport menos
+     cabecera" y se ancla arriba (sin el centrado de `main`, que desplazaría la
+     cabecera según el contenido). */
+  main[data-prepartida] {
+    height: calc(100vh - var(--alto-cabecera, 0px));
+    height: calc(100svh - var(--alto-cabecera, 0px));
+    min-height: 0;
+    flex: 0 0 auto;
+    justify-content: flex-start;
   }
 
   main[data-momento="verano"] {
@@ -288,6 +310,87 @@ $effect(() => {
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  /* En pantallas bajas se permite scroll en vez de recortar. */
+  @media (max-height: 719px) {
+    main[data-prepartida] {
+      height: auto;
+      min-height: calc(100vh - var(--alto-cabecera, 0px));
+      min-height: calc(100svh - var(--alto-cabecera, 0px));
+      flex: 1;
+    }
+  }
+
+  /* --- Marco de pantalla del flujo previo a partida (017) --- */
+  :global(.pantalla) {
+    width: min(calc(100% - 48px), var(--ancho-marco));
+    height: 100%;
+    margin: 0 auto;
+    padding: var(--esp-5) 0 var(--esp-4);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-family: var(--fuente-texto);
+  }
+
+  /* Cabecera de altura natural: su parte superior queda fija (por el padding
+     superior del marco). */
+  :global(.pantalla__cabecera) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* El cuerpo va justo debajo de la cabecera con un gap fijo; el espacio
+     sobrante queda al final. */
+  :global(.pantalla__cuerpo) {
+    margin-top: var(--esp-5);
+  }
+
+  :global(.pantalla__cabecera h2) {
+    margin: 0;
+    text-align: center;
+    color: var(--c-texto-fuerte);
+    font-family: var(--fuente-display);
+    font-size: clamp(2rem, 6.5vw, 3rem);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 var(--c-superficie);
+  }
+
+  :global(.pantalla__cabecera p) {
+    margin: var(--esp-4) 0 0;
+    color: var(--c-texto-suave);
+    font-size: var(--texto-lg);
+    line-height: var(--interlinea-normal);
+    text-align: center;
+  }
+
+  /* Lenguaje visual común de las tarjetas de opción (género, modalidad, variante). */
+  :global(.tarjeta) {
+    color: var(--c-texto-suave);
+    background: var(--c-superficie);
+    border: 1px solid var(--c-borde-control);
+    border-radius: var(--radio-sm);
+    cursor: pointer;
+    transition:
+      color var(--dur-2) var(--ease-sal),
+      border-color var(--dur-2) var(--ease-sal),
+      background-color var(--dur-2) var(--ease-sal);
+  }
+
+  :global(.pantalla .tarjeta:hover) {
+    color: var(--c-texto);
+    background: var(--c-superficie-alta);
+    border-color: var(--c-acento);
+  }
+
+  @media (max-width: 600px) {
+    :global(.pantalla) {
+      width: 100%;
     }
   }
 </style>
