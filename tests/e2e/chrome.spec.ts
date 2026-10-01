@@ -43,8 +43,10 @@ test("la marca cambia con el sexo del personaje", async ({ page }) => {
   await page.getByTestId("empezar").click()
   await page.getByLabel("Nombre o apodo").fill("La Chata")
   await page.locator('label[for="genero-femenino"]').click()
-  await page.getByTestId("crear").click()
 
+  await expect(page.locator("[data-marca]")).toHaveText("Coplera")
+
+  await page.getByTestId("crear").click()
   await expect(page.locator("[data-marca]")).toHaveText("Coplera")
 })
 

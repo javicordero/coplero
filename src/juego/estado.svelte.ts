@@ -69,7 +69,10 @@ export interface Juego {
   readonly aviso: string | null
   readonly estadoGuardado: EstadoGuardado
   readonly modalidad: Modalidad | null
+  /** Género elegido en el formulario, antes de crear la partida (marca viva). */
+  readonly generoBorrador: Genero | null
   empezar(): void
+  seleccionarGenero(genero: Genero): void
   crearPersonaje(datos: DatosCreacion): void
   elegirModalidad(modalidad: Modalidad): void
   elegirVariante(variante: VarianteId): void
@@ -103,6 +106,7 @@ export function crearJuego(
   let personaje = $state<Personaje | null>(null)
   let modalidad = $state<Modalidad | null>(null)
   let seed = $state<string>("")
+  let generoBorrador = $state<Genero | null>(null)
 
   function persistir(): void {
     if (!partida) return
@@ -134,7 +138,12 @@ export function crearJuego(
   function empezar(): void {
     error = null
     aviso = null
+    generoBorrador = null
     pantalla = "crear-personaje"
+  }
+
+  function seleccionarGenero(genero: Genero): void {
+    generoBorrador = genero
   }
 
   function crearPersonaje(datos: DatosCreacion): void {
@@ -205,6 +214,7 @@ export function crearJuego(
     personaje = null
     modalidad = null
     seed = ""
+    generoBorrador = null
     estadoGuardado = "ninguno"
   }
 
@@ -259,7 +269,11 @@ export function crearJuego(
     get modalidad() {
       return modalidad
     },
+    get generoBorrador() {
+      return generoBorrador
+    },
     empezar,
+    seleccionarGenero,
     crearPersonaje,
     elegirModalidad,
     elegirVariante,

@@ -125,6 +125,21 @@ describe("estado del juego", () => {
     expect(juego.estadoGuardado).toBe("en-curso")
   })
 
+  it("registra el género elegido en el formulario y lo limpia al reiniciar", () => {
+    const juego = nuevoJuego(almacenMemoria())
+    expect(juego.generoBorrador).toBeNull()
+
+    juego.empezar()
+    juego.seleccionarGenero("femenino")
+    expect(juego.generoBorrador).toBe("femenino")
+
+    juego.crearPersonaje({ ...datos("La Chata"), genero: "femenino" })
+    expect(juego.personaje?.genero).toBe("femenino")
+
+    juego.reiniciar()
+    expect(juego.generoBorrador).toBeNull()
+  })
+
   it("continúa una partida guardada en el mismo punto", () => {
     const almacen = almacenMemoria()
     const juego = nuevoJuego(almacen)

@@ -82,10 +82,13 @@ $effect(() => {
   return () => window.removeEventListener("resize", ajustar)
 })
 
-// La marca de la cabecera refleja el sexo del personaje (FR-006):
-// al montar con partida guardada y cada vez que cambia.
+// La marca de la cabecera refleja el sexo del personaje (FR-006): al montar
+// con partida guardada, en cuanto se elige en el formulario y cada vez que cambia.
 $effect(() => {
-  const genero = juego.personaje?.genero ?? juego.partida?.personaje.genero
+  const genero =
+    juego.personaje?.genero ??
+    (juego.pantalla === "crear-personaje" ? juego.generoBorrador : null) ??
+    juego.partida?.personaje.genero
   const marca = document.querySelector<HTMLElement>("[data-marca]")
   if (marca) marca.textContent = genero ? tituloDelJuego(genero) : "Coplero"
 })
@@ -121,7 +124,10 @@ $effect(() => {
       onVerResultado={juego.continuarPartida}
     />
   {:else if juego.pantalla === "crear-personaje"}
-    <CrearPersonaje onCrear={juego.crearPersonaje} />
+    <CrearPersonaje
+      onCrear={juego.crearPersonaje}
+      onGenero={juego.seleccionarGenero}
+    />
   {:else if juego.pantalla === "modalidad"}
     <ElegirModalidad
       modalidades={MODALIDADES_INFO}

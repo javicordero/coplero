@@ -2,7 +2,13 @@
 import type { DatosCreacion } from "../estado.svelte"
 import { GENEROS_INFO, normalizarNombre, tituloDelJuego } from "../presentacion"
 
-let { onCrear }: { onCrear: (datos: DatosCreacion) => void } = $props()
+let {
+  onCrear,
+  onGenero,
+}: {
+  onCrear: (datos: DatosCreacion) => void
+  onGenero?: (genero: DatosCreacion["genero"]) => void
+} = $props()
 
 let nombre = $state("")
 let edad = $state(30)
@@ -11,6 +17,11 @@ let genero = $state<DatosCreacion["genero"]>("masculino")
 
 let nombreValido = $derived(normalizarNombre(nombre).length > 0)
 let titulo = $derived(tituloDelJuego(genero))
+
+// La marca de la cabecera debe reflejar el sexo en cuanto se elige (FR-006).
+$effect(() => {
+  onGenero?.(genero)
+})
 
 function enviar(evento: SubmitEvent) {
   evento.preventDefault()
