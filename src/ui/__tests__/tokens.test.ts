@@ -184,6 +184,13 @@ describe("V-03 integridad CSS ↔ TS", () => {
 /** V-04 — la deuda de colores sueltos no puede volver. */
 describe("V-04 sin colores literales fuera del sistema", () => {
   const EXCLUIDOS = ["ui", "panel-ui", "engine", "content"]
+  // Escenas estacionales ilustradas (015 D7/D8): son dibujos con multitud de
+  // matices propios de la ilustración. Se tratan como una superficie aparte
+  // (igual que `panel-ui`) y su color no forma parte del sistema de tokens.
+  const EXCLUIDOS_FICHERO = [
+    "juego/pantallas/FondoVerano.svelte",
+    "juego/pantallas/FondoFebrero.svelte",
+  ]
   const EXTENSIONES = [".astro", ".svelte", ".css", ".ts", ".mjs", ".js"]
   const HEX = /#[0-9a-fA-F]{3,8}\b/g
 
@@ -203,6 +210,7 @@ describe("V-04 sin colores literales fuera del sistema", () => {
       const relativa = relative(RUTA_SRC, ruta).replace(/\\/g, "/")
       const carpeta = relativa.split("/")[0]
       if (EXCLUIDOS.includes(carpeta)) continue
+      if (EXCLUIDOS_FICHERO.includes(relativa)) continue
       if (!EXTENSIONES.some((ext) => ruta.endsWith(ext))) continue
 
       readFileSync(ruta, "utf8")

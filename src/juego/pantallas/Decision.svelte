@@ -58,6 +58,7 @@ let {
   /* Máximo 4 líneas de título; a 320 px el texto más largo mide 117,7 px. */
   .titulo h2 {
     font-size: 1.6rem;
+    color: var(--c-texto-fuerte);
   }
 
   .texto {
@@ -107,6 +108,8 @@ let {
     padding-bottom: 2px;
     display: flex;
     align-items: flex-end;
+    /* Más claro que el texto normal, sin llegar al blanco puro. */
+    color: color-mix(in srgb, var(--c-texto) 55%, var(--c-texto-fuerte));
   }
 
   span {
@@ -116,6 +119,7 @@ let {
     height: calc(2 * 1rem * 1.15);
     display: flex;
     align-items: flex-start;
-    color: var(--c-texto-suave);
+    /* Se aclara hacia el blanco para ganar contraste con la escena de fondo. */
+    color: color-mix(in srgb, var(--c-texto-suave) 60%, var(--c-texto));
   }
 </style>

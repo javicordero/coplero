@@ -15,6 +15,7 @@ import ElegirModalidad from "./pantallas/ElegirModalidad.svelte"
 import ElegirVariante from "./pantallas/ElegirVariante.svelte"
 import ErrorPantalla from "./pantallas/Error.svelte"
 import FinCarrera from "./pantallas/FinCarrera.svelte"
+import FondoFebrero from "./pantallas/FondoFebrero.svelte"
 import FondoVerano from "./pantallas/FondoVerano.svelte"
 import IndicadorContexto from "./pantallas/IndicadorContexto.svelte"
 import Intro from "./pantallas/Intro.svelte"
@@ -101,6 +102,7 @@ $effect(() => {
   data-ano={juego.partida?.anoActual ?? ""}
 >
   {#if juego.partida?.momento === "febrero" && juego.pantalla !== "resultado"}
+    <FondoFebrero />
     <span class="lluvia" aria-hidden="true">
       {#each GOTAS as gota, i (i)}
         <i
@@ -186,6 +188,7 @@ $effect(() => {
   main[data-momento="verano"] {
     color-scheme: light;
     --c-texto: var(--c-verano-texto);
+    --c-texto-fuerte: var(--c-verano-texto);
     --c-texto-suave: var(--c-verano-texto-suave);
     --c-superficie: var(--c-verano-superficie);
     --c-superficie-alta: var(--c-verano-superficie-alta);
@@ -207,23 +210,17 @@ $effect(() => {
   main[data-momento="febrero"]:not([data-pantalla="resultado"]) {
     position: relative;
     isolation: isolate;
-    background-image:
-      radial-gradient(
-        circle at 82% 9%,
-        var(--c-texto) 0 24px,
-        rgba(237, 237, 237, 0.14) 25px 40px,
-        rgba(237, 237, 237, 0) 41px
-      ),
-      radial-gradient(
-        120% 55% at 50% 100%,
-        rgba(127, 209, 193, 0.1),
-        rgba(127, 209, 193, 0) 65%
-      );
+    background-image: radial-gradient(
+      120% 55% at 50% 100%,
+      rgba(127, 209, 193, 0.1),
+      rgba(127, 209, 193, 0) 65%
+    );
   }
 
   main[data-pantalla="resultado"] {
     color-scheme: light;
     --c-texto: var(--c-acta-tinta);
+    --c-texto-fuerte: var(--c-acta-tinta);
     --c-texto-suave: var(--c-acta-tinta-suave);
     --c-superficie: var(--c-acta-papel-alta);
     --c-superficie-alta: var(--c-acta-papel);

@@ -11,13 +11,14 @@ src/ui/tokens.css   → + paleta clara de verano (--c-verano-*), paleta de acta 
 src/ui/tokens.ts    → + espejo TS (paridad V-03)
 src/juego/Juego.svelte → remapeo por momento, fondos, gotas de lluvia y estilo de resultado
 src/juego/pantallas/FondoVerano.svelte → escena de playa decorativa en SVG inline (015 D7)
+src/juego/pantallas/FondoFebrero.svelte → escena de carnaval decorativa en SVG inline (015 D8)
 ```
 
 Reglas:
 
 - `tokens.css` y `tokens.ts` MUST declarar los mismos tokens con el mismo valor (V-03).
-- El remapeo y los elementos MUST vivir en `Juego.svelte` y `FondoVerano.svelte` usando solo `var()`; sin hex literal (V-04).
-- `FondoVerano.svelte` MUST ser decorativo (`aria-hidden`), sin lógica de juego y sin dependencias.
+- El remapeo y los elementos MUST vivir en `Juego.svelte`, `FondoVerano.svelte` y `FondoFebrero.svelte` usando solo `var()`; sin hex literal (V-04).
+- Los componentes de fondo MUST ser decorativos (`aria-hidden`), sin lógica de juego y sin dependencias.
 - `engine` y `content` MUST NOT importar de `src/ui/`.
 - Las páginas estáticas MUST NOT cargar el fondo ni JS (FR-007).
 
@@ -48,14 +49,16 @@ Reglas:
 | Estilo | Fondo | Elementos |
 |---|---|---|
 | Verano | bandas CSS (cielo → mar con línea de horizonte) | escena SVG inline: sol con rayos (esquina superior derecha), nubes, gaviotas, oleaje, orilla ondulada, arena moteada, conchas y sombrilla |
-| Febrero | gradiente nocturno | luna (esquina superior derecha), gotas de lluvia animadas |
+| Febrero | noche oscura + resplandor turquesa inferior | escena SVG inline: luna (círculo, esquina superior derecha), estrellas, nubes nocturnas oscuras, serpentinas, antifaces, plumeros (volando y tirados), Teatro Falla iluminado y camino en perspectiva; gotas de lluvia animadas |
 | Resultado | papel claro (acta) | líneas de documento y membrete "COAC" |
 
-- Sol y luna MUST anclarse a la **esquina superior derecha** (`at 82% 10%`), no centrados.
+- Sol y luna MUST anclarse a la **esquina superior derecha** y ser un **círculo simple** (sin halo), no centrados.
 - La orilla (espuma/arena) MUST tener borde **ondulado irregular**, nunca una línea recta.
+- Las nubes de **febrero** MUST ser de tono **oscuro** para no restar contraste al texto claro (AA).
 
 **Prohibido**: imágenes **raster o externas**, librerías, animaciones de layout, hex fuera de `src/ui/`.
 El **SVG inline decorativo** (formas vectoriales, `aria-hidden`, colores por tokens) queda **permitido** (015 D7).
+**Excepción de color**: `src/juego/pantallas/FondoVerano.svelte` y `FondoFebrero.svelte` son superficies de **ilustración** y quedan **excluidas del test V-04** (igual que `panel-ui`), por su multitud de matices propios del dibujo; el resto de componentes MUST seguir usando tokens.
 
 ## 4. Contrato de movimiento (lluvia)
 

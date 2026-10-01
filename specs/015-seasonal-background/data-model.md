@@ -30,7 +30,9 @@ interface TokenVerano {
 | `--c-verano-borde-control` | contorno de control | ≥ 3:1 sobre cielo/arena/superficies |
 | `--c-verano-acento-texto` | acento usado como texto (naranja oscuro) | ≥ 4.5:1 sobre cielo/arena |
 
-Además, la **escena de playa** (D7) usa tokens **decorativos** (sin umbral de contraste): `--c-verano-mar`, `--c-verano-mar-hondo`, `--c-verano-espuma`, `--c-verano-nube`, `--c-verano-arena-humeda`, `--c-verano-arena-sombra`, `--c-verano-concha` y la paleta festiva de la sombrilla (`--c-verano-rojo`, `--c-verano-naranja`, `--c-verano-amarillo`, `--c-verano-verde`, `--c-verano-turquesa`, `--c-verano-azul`, `--c-verano-rosa`, `--c-verano-coral`, `--c-verano-lila`, `--c-verano-metal`). Los elementos que caen bajo el texto (`--c-verano-cielo`, `--c-verano-arena`) deben cumplir AA con el texto oscuro (V-09), así que la escena mantiene el horizonte por debajo del bloque de decisión.
+Además, las **escenas** (D7/D8) usan tokens **decorativos** (sin umbral de contraste): `--c-verano-mar`, `--c-verano-mar-hondo`, `--c-verano-espuma`, `--c-verano-nube`, `--c-verano-arena-humeda`, `--c-verano-arena-sombra`, `--c-verano-concha` y la paleta festiva (`--c-verano-rojo/naranja/amarillo/verde/turquesa/azul/rosa/coral/lila/metal`). En invierno: `--c-invierno-luna`, `--c-invierno-nube`, la paleta `--c-carnaval-oro/magenta/turquesa/rojo/azul/verde/violeta/naranja` y los tonos del Falla (`--c-falla-piedra`, `--c-falla-luz`, `--c-falla-sombra`, `--c-falla-camino`). Los elementos que caen bajo el texto (`--c-verano-cielo`, `--c-verano-arena` en claro; el negro de `--c-fondo` en oscuro) deben cumplir AA con su texto (V-09), por lo que la escena mantiene los elementos claros por debajo del bloque de decisión y, en febrero, las nubes son oscuras.
+
+> **Ilustración con paleta propia**: `FondoVerano.svelte` y `FondoFebrero.svelte` se tratan como **superficie de ilustración** (excluida de V-04, como `panel-ui`): pueden declarar matices propios del dibujo sin pasar por el sistema de tokens. El resto de componentes MUST usar tokens.
 
 ---
 
@@ -84,7 +86,7 @@ interface ElementoFondo {
 ```
 
 - **Verano**: bandas `linear-gradient` cielo → mar (con línea de horizonte) + **escena de playa** `FondoVerano.svelte` en SVG inline: sol con rayos, nubes, gaviotas, oleaje, orilla ondulada, arena moteada, conchas y sombrilla. Decorativo y sin peticiones extra.
-- **Febrero**: gradiente nocturno + `radial-gradient` de la **luna** en la **esquina superior derecha** + **gotas de lluvia** (elementos finos de 1 px con gradiente `transparent → pálido`, escalonados y animados por un único `@keyframes`).
+- **Febrero**: noche oscura + resplandor turquesa inferior + **escena de carnaval** `FondoFebrero.svelte` en SVG inline: luna (círculo, esquina superior derecha), estrellas, nubes nocturnas oscuras, serpentinas, antifaces, plumeros (volando y tirados), Teatro Falla iluminado y camino en perspectiva; **gotas de lluvia** (elementos finos de 1 px con gradiente `transparent → pálido`, escalonados y animados por un único `@keyframes`). Decorativo y sin peticiones extra.
 - **Resultado**: papel claro (acta) con líneas de documento y membrete "COAC"; texto en tinta oscura.
 
 **Reglas de validación**
@@ -92,7 +94,7 @@ interface ElementoFondo {
 1. Elementos MUST ser decorativos (sin `aria-*`, sin información; si desaparecen, la pantalla se entiende igual).
 2. La lluvia MUST desactivarse con `prefers-reduced-motion` (FR-011) y MUST usar `transform` (promovida a compositor), no propiedades de layout.
 3. Los elementos MUST degradarse sin scroll ni bandas a 320 px.
-4. Sol y luna MUST anclarse a la **esquina superior derecha**.
+4. Sol y luna MUST anclarse a la **esquina superior derecha** y ser círculos simples (sin halo).
 
 ---
 

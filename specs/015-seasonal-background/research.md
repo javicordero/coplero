@@ -50,6 +50,12 @@ Incógnitas resueltas. Sin dependencias nuevas. Se decidieron el mecanismo de te
   - *Solo gradientes CSS*: no permite nubes, gaviotas, conchas ni orilla ondulada con calidad. Rechazada.
   - *SVG en fichero `public/`*: válido y cacheable, pero suma una petición por fondo; el inline comprime con el HTML y evita el request. Rechazado por margen.
 
+## D8 · Escena de invierno/carnaval por SVG inline (paralela a D7)
+
+- **Decision**: febrero deja de ser solo luna + lluvia y pasa a una **escena de carnaval**: luna como **círculo simple** (sin halo, simétrica al sol), estrellas, nubes nocturnas en tono oscuro, y elementos de carnaval (serpentinas, antifaces con palito y plumeros) **volando y tirados**, más el **Teatro Falla iluminado** al pie con un **camino en perspectiva** hacia sus puertas. Se construye con CSS + SVG inline (componente `src/juego/pantallas/FondoFebrero.svelte`, `aria-hidden`), colores por tokens `--c-invierno-*`, `--c-carnaval-*` y `--c-falla-*`.
+- **Rationale**: mismo argumento que D7 (peso, nitidez, adaptación al alto, sin peticiones). Las **nubes van en tono oscuro** (`--c-invierno-nube`) para no restar contraste al texto claro del título (AA), a diferencia del verano, donde el texto es oscuro y las nubes blancas no restan. La deriva de serpentinas/antifaces usa `transform` y se neutraliza con `prefers-reduced-motion` (herencia de `base.css`).
+- **Alternatives considered**: nubes blancas (rompen AA del texto claro: descartada); Falla en silueta oscura (menos reconocible que la fachada cálida iluminada); quitar la lluvia (se conserva, es ambiente de febrero).
+
 ## Resumen de incógnitas
 
 | Incógnita | Resolución |
@@ -61,3 +67,4 @@ Incógnitas resueltas. Sin dependencias nuevas. Se decidieron el mecanismo de te
 | ¿Contraste? | Verano claro (texto oscuro), febrero oscuro (texto claro) y resultado-acta (tinta sobre papel), V-09 — D5 |
 | ¿Alcance? | Solo `main`; estáticas intactas — D6 |
 | ¿Cómo se dibuja la playa de verano? | SVG inline decorativo + bandas CSS por tokens; sin raster ni ficheros — D7 |
+| ¿Cómo se dibuja el carnaval de invierno? | SVG inline (luna sin halo, nubes oscuras, serpentinas, antifaces, plumeros, Falla + camino) — D8 |
