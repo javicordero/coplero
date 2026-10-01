@@ -60,6 +60,21 @@ let {
     text-align: center;
   }
 
+  section > button {
+    width: 100%;
+  }
+
+  /* Sin hover de color en el intro: se mantiene el estado de reposo. */
+  section > button:hover:not(:disabled) {
+    background: var(--c-superficie);
+    border-color: var(--c-borde-control);
+  }
+
+  section > button.primario:hover:not(:disabled) {
+    background: var(--c-acento);
+    border-color: var(--c-acento);
+  }
+
   .aviso {
     color: var(--c-acento);
     font-size: var(--texto-sm);
