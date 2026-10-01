@@ -91,6 +91,12 @@ let {
     gap: var(--esp-1);
     text-align: left;
     padding: var(--esp-2) var(--esp-3);
+    /* Fondo semitransparente: deja entrever la escena de fondo. */
+    background: color-mix(in srgb, var(--c-superficie) 96%, transparent);
+  }
+
+  .opciones button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--c-superficie-alta) 98%, transparent);
   }
 
   strong {
