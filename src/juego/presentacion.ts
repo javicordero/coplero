@@ -65,6 +65,18 @@ export function normalizarNombre(valor: string): string {
   return valor.trim().replace(/\s+/g, " ").slice(0, 24)
 }
 
+export interface GeneroInfo {
+  id: Genero
+  titulo: string
+}
+
+/** Géneros disponibles para crear el personaje. */
+export const GENEROS_INFO: GeneroInfo[] = [
+  { id: "masculino", titulo: "Masculino" },
+  { id: "femenino", titulo: "Femenino" },
+  { id: "no_binario", titulo: "No binario" },
+]
+
 export interface ModalidadInfo {
   id: Modalidad
   titulo: string
