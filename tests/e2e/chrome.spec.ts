@@ -39,15 +39,18 @@ test("la cabecera y el pie aparecen en todas las páginas", async ({ page }) => 
 test("la marca cambia con el sexo del personaje", async ({ page }) => {
   await page.goto("/jugar")
   await expect(page.locator("[data-marca]")).toHaveText("Coplero")
+  await expect(page).toHaveTitle("Coplero")
 
   await page.getByTestId("empezar").click()
   await page.getByLabel("Nombre o apodo").fill("La Chata")
   await page.locator('label[for="genero-femenino"]').click()
 
   await expect(page.locator("[data-marca]")).toHaveText("Coplera")
+  await expect(page).toHaveTitle("Coplera")
 
   await page.getByTestId("crear").click()
   await expect(page.locator("[data-marca]")).toHaveText("Coplera")
+  await expect(page).toHaveTitle("Coplera")
 })
 
 test("la portada y el juego comparten fondo, cabecera y pie", async ({

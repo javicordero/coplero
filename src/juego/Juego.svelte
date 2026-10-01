@@ -92,6 +92,7 @@ $effect(() => {
     juego.partida?.personaje.genero
   const marca = document.querySelector<HTMLElement>("[data-marca]")
   if (marca) marca.textContent = genero ? tituloDelJuego(genero) : "Coplero"
+  document.title = genero ? tituloDelJuego(genero) : "Coplero"
 })
 </script>
 
