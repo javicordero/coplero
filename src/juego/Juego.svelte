@@ -63,6 +63,12 @@ let indicadorActual = $derived.by<Indicador | null>(() => {
   return null
 })
 
+// Cada pantalla empieza arriba: evita heredar el scroll de la anterior (p. ej.
+// al pulsar «Continuar» en un formulario más alto que el viewport).
+$effect(() => {
+  if (juego.pantalla) window.scrollTo(0, 0)
+})
+
 function empezarDeCero() {
   juego.reiniciar()
   juego.empezar()
