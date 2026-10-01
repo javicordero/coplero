@@ -30,10 +30,12 @@
   --c-verano-texto: #16222e;
   --c-verano-texto-suave: #3c4d5e;
   --c-verano-superficie: #ffffff;
-  --c-verano-superficie-alta: #eef4f9;
+  --c-verano-superficie-alta: #fffaf1;
   --c-verano-separador: #d5e2ee;
   --c-verano-borde-control: #4a5b6b;
   --c-verano-acento-texto: #6f3300;
+  /* Naranja vivo para contornos de hover (016 D…): ≥ 3:1 sobre blanco/crema. */
+  --c-verano-acento-borde: #c45a10;
   /* Escena de playa (015 D7): colores decorativos, sin umbral de contraste. */
   --c-verano-mar: #4fb3e0;
   --c-verano-mar-hondo: #1f7fb8;

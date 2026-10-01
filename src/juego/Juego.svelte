@@ -196,6 +196,8 @@ $effect(() => {
     --c-separador: var(--c-verano-separador);
     --c-borde-control: var(--c-verano-borde-control);
     --c-acento-texto: var(--c-verano-acento-texto);
+    /* El borde del hover se vuelve naranja vivo, a tono con el sol (016). */
+    --c-acento-2: var(--c-verano-acento-borde);
     isolation: isolate;
     background-image: linear-gradient(
       180deg,

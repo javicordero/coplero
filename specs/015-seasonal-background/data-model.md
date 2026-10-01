@@ -25,10 +25,11 @@ interface TokenVerano {
 | `--c-verano-texto` | texto principal (oscuro) | ≥ 4.5:1 sobre cielo y arena |
 | `--c-verano-texto-suave` | texto secundario (oscuro) | ≥ 4.5:1 sobre cielo y arena |
 | `--c-verano-superficie` | tarjetas/opciones | `--c-verano-texto` ≥ 4.5:1 |
-| `--c-verano-superficie-alta` | hover/elevación | `--c-verano-texto` ≥ 4.5:1 |
+| `--c-verano-superficie-alta` | hover/elevación (crema cálida de sol) | `--c-verano-texto` ≥ 4.5:1 |
 | `--c-verano-separador` | filete decorativo | exento (WCAG 1.4.11) |
 | `--c-verano-borde-control` | contorno de control | ≥ 3:1 sobre cielo/arena/superficies |
 | `--c-verano-acento-texto` | acento usado como texto (naranja oscuro) | ≥ 4.5:1 sobre cielo/arena |
+| `--c-verano-acento-borde` | contorno de hover (naranja vivo) | ≥ 3:1 sobre superficies claras |
 
 Además, las **escenas** (D7/D8) usan tokens **decorativos** (sin umbral de contraste): `--c-verano-mar`, `--c-verano-mar-hondo`, `--c-verano-espuma`, `--c-verano-nube`, `--c-verano-arena-humeda`, `--c-verano-arena-sombra`, `--c-verano-concha` y la paleta festiva (`--c-verano-rojo/naranja/amarillo/verde/turquesa/azul/rosa/coral/lila/metal`). En invierno: `--c-invierno-luna`, `--c-invierno-nube`, la paleta `--c-carnaval-oro/magenta/turquesa/rojo/azul/verde/violeta/naranja` y los tonos del Falla (`--c-falla-piedra`, `--c-falla-luz`, `--c-falla-sombra`, `--c-falla-camino`). Los elementos que caen bajo el texto (`--c-verano-cielo`, `--c-verano-arena` en claro; el negro de `--c-fondo` en oscuro) deben cumplir AA con su texto (V-09), por lo que la escena mantiene los elementos claros por debajo del bloque de decisión y, en febrero, las nubes son oscuras.
 
