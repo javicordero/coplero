@@ -46,7 +46,7 @@ let {
               {:else if variante.id === "nueva_escuela"}
                 <IconoNuevaEscuela />
               {:else}
-                {/* Pendiente de icono definitivo (de momento, guitarra). */}
+                <!-- Pendiente de icono definitivo (de momento, guitarra). -->
                 <IconoGuitarra />
               {/if}
             {/if}
