@@ -8,6 +8,8 @@ export interface Variante {
   modalidad: Modalidad
   titulo: string
   subtitulo: string
+  /** El subtítulo es una cita: se muestra en cursiva. */
+  cita?: boolean
 }
 
 export const VARIANTES: Variante[] = [
@@ -18,6 +20,14 @@ export const VARIANTES: Variante[] = [
     subtitulo: "Más clásico que un tenor con bigote.",
   },
   {
+    id: "evolucion_con_raices",
+    modalidad: "comparsista",
+    titulo: "Evolución con raíces",
+    subtitulo:
+      "Amigo veterano, no pienses que mi copla va contra tu legado por nuestro descaro y solo es una moda",
+    cita: true,
+  },
+  {
     id: "nueva_escuela",
     modalidad: "comparsista",
     titulo: "Nueva escuela",
@@ -25,28 +35,26 @@ export const VARIANTES: Variante[] = [
       "Buscas innovar tanto en la modalidad como en el carnaval, buscando nuevas formas.",
   },
   {
-    id: "evolucion_con_raices",
-    modalidad: "comparsista",
-    titulo: "Evolución con raíces",
-    subtitulo: "Buscando el progreso, respetando la esencia.",
-  },
-  {
-    id: "lolosedismo",
-    modalidad: "chirigotero",
-    titulo: "Lolosedismo",
-    subtitulo: "Te gusta el humor visual.",
-  },
-  {
     id: "clasico_chirigotero",
     modalidad: "chirigotero",
     titulo: "Clásico",
-    subtitulo: "3x4 de pellizco.",
+    subtitulo: "Vuelve ya el 3x4, el 3x4 bueno",
+    cita: true,
   },
   {
     id: "interpretar_personaje",
     modalidad: "chirigotero",
     titulo: "Interpretar el personaje",
-    subtitulo: "Busca todo el tiempo el humor, sin salirse del personaje.",
+    subtitulo:
+      "Aquí, de toda la vida, se han cantao pasodobles pa que vibre el coliseo, aquí no deberían permitirse pasodobles de cachondeo",
+    cita: true,
+  },
+  {
+    id: "lolosedismo",
+    modalidad: "chirigotero",
+    titulo: "Lolosedismo",
+    subtitulo:
+      "Te gusta formar el taco tirando de humor visual y haciendo todo tipo de performances sobre las tablas",
   },
 ]
 

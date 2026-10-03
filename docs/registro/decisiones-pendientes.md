@@ -94,6 +94,7 @@ El endpoint `/api/og/[codigo].png` (OG-001, feature 007) usa `satori` + `@resvg/
 - [ ] Calibrar el techo y la volatilidad contra la distribución objetivo.
 - [ ] Añadir las flags de temática andaluza/tierra para Copla para Andalucía (T2).
 - [x] Conectar `scripts/simular.ts` al banco real de `content` y retirar el banco de pruebas (T17).
+- [ ] Cambiar por iconos definitivos los que aún usan la **guitarra**: las variantes de **chirigota** («Clásico», «Interpretar el personaje», «Lolosedismo») y confirmar si la guitarra es la definitiva en la **modalidad Comparsa**.
 
 ## D. Backlog de producto / infraestructura
 

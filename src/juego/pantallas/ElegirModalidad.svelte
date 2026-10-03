@@ -1,6 +1,8 @@
 <script lang="ts">
 import type { Modalidad } from "../../engine/index"
 import { type ModalidadInfo, SUBTITULO_MODALIDAD } from "../presentacion"
+import IconoCaja from "./IconoCaja.svelte"
+import IconoGuitarra from "./IconoGuitarra.svelte"
 
 let {
   modalidades,
@@ -22,12 +24,19 @@ let {
       {#each modalidades as modalidad (modalidad.id)}
         <li>
           <button
-            class="tarjeta"
+            class="tarjeta tarjeta--icono"
             type="button"
             onclick={() => onElegir(modalidad.id)}
           >
+            {#if modalidad.id === "comparsista"}
+              <IconoGuitarra />
+            {:else}
+              <IconoCaja />
+            {/if}
             <strong>{modalidad.titulo}</strong>
-            <span>{modalidad.subtitulo}</span>
+            <span class="tarjeta__subtitulo tarjeta__subtitulo--cita"
+              >“{modalidad.subtitulo}”</span
+            >
           </button>
         </li>
       {/each}
@@ -55,15 +64,5 @@ let {
     padding: var(--esp-3) var(--esp-4);
 
     text-align: left;
-  }
-
-  strong {
-    font-size: var(--texto-lg);
-    color: var(--c-texto-fuerte);
-  }
-
-  span {
-    font-size: var(--texto-sm);
-    color: var(--c-texto-suave);
   }
 </style>

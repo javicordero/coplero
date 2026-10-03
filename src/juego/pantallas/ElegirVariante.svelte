@@ -1,16 +1,22 @@
 <script lang="ts">
 import type { Variante } from "../../content/index"
+import IconoBigote from "./IconoBigote.svelte"
+import IconoGuitarra from "./IconoGuitarra.svelte"
+import IconoNuevaEscuela from "./IconoNuevaEscuela.svelte"
+import IconoRaices from "./IconoRaices.svelte"
 
 let {
   variantes,
   onElegir,
-  titulo = "Elige variante",
+  titulo = "Elige tu estilo",
   subtitulo,
+  iconos = false,
 }: {
   variantes: Variante[]
   onElegir: (variante: string) => void
   titulo?: string
   subtitulo?: string
+  iconos?: boolean
 } = $props()
 </script>
 
@@ -28,11 +34,30 @@ let {
         <li>
           <button
             class="tarjeta"
+            class:tarjeta--icono={iconos}
             type="button"
             onclick={() => onElegir(variante.id)}
           >
+            {#if iconos}
+              {#if variante.id === "clasico_comparsista"}
+                <IconoBigote />
+              {:else if variante.id === "evolucion_con_raices"}
+                <IconoRaices />
+              {:else if variante.id === "nueva_escuela"}
+                <IconoNuevaEscuela />
+              {:else}
+                {/* Pendiente de icono definitivo (de momento, guitarra). */}
+                <IconoGuitarra />
+              {/if}
+            {/if}
             <strong>{variante.titulo}</strong>
-            <span>{variante.subtitulo}</span>
+            <span
+              class="tarjeta__subtitulo"
+              class:tarjeta__subtitulo--cita={variante.cita}
+              >{variante.cita
+                ? `“${variante.subtitulo}”`
+                : variante.subtitulo}</span
+            >
           </button>
         </li>
       {/each}
@@ -60,15 +85,5 @@ let {
     padding: var(--esp-3) var(--esp-4);
 
     text-align: left;
-  }
-
-  strong {
-    font-size: var(--texto-lg);
-    color: var(--c-texto-fuerte);
-  }
-
-  span {
-    font-size: var(--texto-sm);
-    color: var(--c-texto-suave);
   }
 </style>

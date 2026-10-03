@@ -29,23 +29,23 @@ Es el primer paso de la partida. El jugador define:
 
 ## 2. Modalidades y variantes
 
-Tras crear el personaje se elige **una de las 2 modalidades** jugables. Cada modalidad tiene **3 variantes**, y cada variante tiene su **título** y **subtítulo**.
+Tras crear el personaje se elige **una de las 2 modalidades** jugables. Cada modalidad tiene **3 variantes**, y cada variante tiene su **título** y **subtítulo**. Los subtítulos que son **citas** se muestran en cursiva y entre comillas “ ”.
 
 ### 🎺 Comparsista
 
-| Variante | Subtítulo |
-| --- | --- |
-| **Clásico** | Más clásico que un tenor con bigote. |
-| **Nueva escuela** | Buscas innovar tanto en la modalidad como en el carnaval, buscando nuevas formas. |
-| **Evolución con raíces** | Buscando el progreso, respetando la esencia. |
+| Variante | Subtítulo | ¿Cita? |
+| --- | --- | --- |
+| **Clásico** | Más clásico que un tenor con bigote. | — |
+| **Evolución con raíces** | Amigo veterano, no pienses que mi copla va contra tu legado por nuestro descaro y solo es una moda | Sí |
+| **Nueva escuela** | Buscas innovar tanto en la modalidad como en el carnaval, buscando nuevas formas. | — |
 
 ### 🤡 Chirigotero
 
-| Variante | Subtítulo |
-| --- | --- |
-| **Lolosedismo** | Te gusta el humor visual. |
-| **Clásico** | 3x4 de pellizco. |
-| **Interpretar el personaje** | Busca todo el tiempo el humor, sin salirse del personaje. |
+| Variante | Subtítulo | ¿Cita? |
+| --- | --- | --- |
+| **Clásico** | Vuelve ya el 3x4, el 3x4 bueno | Sí |
+| **Interpretar el personaje** | Aquí, de toda la vida, se han cantao pasodobles pa que vibre el coliseo, aquí no deberían permitirse pasodobles de cachondeo | Sí |
+| **Lolosedismo** | Te gusta formar el taco tirando de humor visual y haciendo todo tipo de performances sobre las tablas | — |
 
 ### Decisiones comunes y decisiones exclusivas
 

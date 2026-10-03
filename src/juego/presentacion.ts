@@ -101,12 +101,12 @@ export function etiquetaModalidad(modalidad: Modalidad): string {
 export const MODALIDADES_INFO: ModalidadInfo[] = [
   {
     id: "comparsista",
-    titulo: "Comparsista",
-    subtitulo: "Letra seria, música cuidada y puesta en escena.",
+    titulo: "Comparsa",
+    subtitulo: "¡Pasión, decía Paco Alba, la comparsa es pasión!",
   },
   {
     id: "chirigotero",
-    titulo: "Chirigotero",
+    titulo: "Chirigota",
     subtitulo: "Humor, tipo y crítica desde la calle.",
   },
 ]

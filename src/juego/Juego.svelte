@@ -144,6 +144,7 @@ $effect(() => {
     <ElegirVariante
       variantes={variantesDe(juego.modalidad ?? "comparsista")}
       subtitulo={SUBTITULO_VARIANTE}
+      iconos={true}
       onElegir={juego.elegirVariante}
     />
   {:else if juego.pantalla === "cambio-variante" && juego.paso?.tipo === "variante"}
@@ -363,6 +364,8 @@ $effect(() => {
 
   /* Lenguaje visual común de las tarjetas de opción (género, modalidad, variante). */
   :global(.tarjeta) {
+    position: relative;
+
     color: var(--c-texto-suave);
     background: var(--c-superficie);
     border: 1px solid var(--c-borde-control);
@@ -378,6 +381,69 @@ $effect(() => {
     color: var(--c-texto);
     background: var(--c-superficie-alta);
     border-color: var(--c-acento);
+  }
+
+  /* Contenido común de las tarjetas de opción (modalidad y variante). */
+  :global(.tarjeta strong) {
+    font-size: 1.25rem;
+    color: var(--c-texto-fuerte);
+  }
+
+  :global(.tarjeta__subtitulo) {
+    font-size: var(--texto-sm);
+    color: var(--c-texto-suave);
+
+    text-wrap: balance;
+  }
+
+  /* En modalidad los subtítulos son citas: van en cursiva. */
+  :global(.tarjeta__subtitulo--cita) {
+    font-style: italic;
+  }
+
+  /* Con icono: el texto reserva su hueco para no quedar debajo. */
+  :global(.tarjeta--icono strong),
+  :global(.tarjeta--icono .tarjeta__subtitulo) {
+    padding-right: 2.75rem;
+  }
+
+  :global(.tarjeta__icono) {
+    position: absolute;
+    top: var(--esp-3);
+    right: var(--esp-4);
+
+    width: 1.25rem;
+    height: 1.25rem;
+
+    color: var(--c-texto-suave);
+
+    pointer-events: none;
+  }
+
+  /* La guitarra es de línea fina: algo más grande para que se vea. */
+  :global(.tarjeta__icono--guitarra) {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  :global(.tarjeta__icono--caja) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  :global(.tarjeta__icono--bigote) {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  :global(.tarjeta__icono--raices) {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  :global(.tarjeta__icono--nueva-escuela) {
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   @media (max-width: 600px) {

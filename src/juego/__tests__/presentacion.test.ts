@@ -33,12 +33,20 @@ describe("presentacion", () => {
     expect(normalizarNombre("   ")).toBe("")
   })
 
-  it("ofrece las dos modalidades con título y subtítulo", () => {
+  it("ofrece las dos modalidades con el nombre de la modalidad y la cita", () => {
     expect(MODALIDADES_INFO).toHaveLength(2)
-    for (const modalidad of MODALIDADES_INFO) {
-      expect(modalidad.titulo.length).toBeGreaterThan(0)
-      expect(modalidad.subtitulo.length).toBeGreaterThan(0)
-    }
+    expect(MODALIDADES_INFO.map((m) => m.titulo)).toEqual([
+      "Comparsa",
+      "Chirigota",
+    ])
+
+    const comparsa = MODALIDADES_INFO.find((m) => m.id === "comparsista")
+    expect(comparsa?.subtitulo).toBe(
+      "¡Pasión, decía Paco Alba, la comparsa es pasión!",
+    )
+
+    const chirigota = MODALIDADES_INFO.find((m) => m.id === "chirigotero")
+    expect(chirigota?.subtitulo).toBe("Humor, tipo y crítica desde la calle.")
   })
 
   it("define la dirección del juego", () => {
