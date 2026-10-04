@@ -43,7 +43,7 @@ export const PASOS: PasoComoFunciona[] = [
     numero: 3,
     titulo: "Decide cada año",
     texto:
-      "Cada año toma una decisión en verano y otra en febrero: letra, música, grupo, contratos, dinero...",
+      "Cada año toma una decisión en verano y otra en febrero: letra, música, grupo, contratos, tipo, dinero...",
   },
   {
     numero: 4,
@@ -128,6 +128,39 @@ export const REDES: EnlaceSocial[] = [
   },
   { id: "github", nombre: "GitHub", url: "https://github.com/javicordero" },
 ]
+
+export interface EnlaceDonacion {
+  url: string
+  etiqueta: string
+}
+
+export interface OpcionSugerencia {
+  valor: "situacion" | "opcion" | "otro"
+  etiqueta: string
+}
+
+export interface ConfigSugerencias {
+  endpoint: string
+  maxLongitud: number
+  tipoOpciones: OpcionSugerencia[]
+}
+
+/** Enlace de donación: cuenta reutilizada de acordesgaditanos (docs/05 §5). */
+export const DONACION: EnlaceDonacion = {
+  url: "https://www.buymeacoffee.com/AcordesGaditanos?utm_source=coplero",
+  etiqueta: "Apoyar Coplero",
+}
+
+/** Formulario de sugerencias: servicio externo, sin backend. */
+export const SUGERENCIAS: ConfigSugerencias = {
+  endpoint: "https://formspree.io/f/mdeanyjr",
+  maxLongitud: 500,
+  tipoOpciones: [
+    { valor: "situacion", etiqueta: "Una situación" },
+    { valor: "opcion", etiqueta: "Una opción" },
+    { valor: "otro", etiqueta: "Otro" },
+  ],
+}
 
 export const AUTOR = "Javier Cordero Toscano"
 

@@ -3,7 +3,7 @@ import { DIRECCION_JUEGO, urlImagenOg } from "../juego/presentacion"
 import Tarjeta from "../juego/Tarjeta.svelte"
 import { CODIGO_EJEMPLO, EJEMPLO_TARJETA } from "../landing/ejemploTarjeta"
 import Layout from "../layouts/Layout.astro"
-import { ACORDES_GADITANOS, PASOS } from "../sitio/contenido"
+import { ACORDES_GADITANOS, DONACION, PASOS } from "../sitio/contenido"
 
 const URL_SITIO = `https://${DIRECCION_JUEGO}`
 const titulo = "Coplero — juego narrativo del Carnaval de Cádiz"
@@ -35,8 +35,8 @@ const descripcion =
           >
         </p>
         <p class="claim">
-          Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
-          Cada partida es una historia distinta.
+          Crea tu personaje, elige modalidad y construye tu historia. Cada
+          partida es única.
         </p>
         <a class="cta" href="/jugar">Empezar a jugar</a>
       </div>
@@ -76,6 +76,21 @@ const descripcion =
         <Tarjeta tarjeta={EJEMPLO_TARJETA} />
       </div>
       <a class="cta" href="/jugar">Empezar a jugar</a>
+      <a
+        class="boton-donacion apoyo"
+        href={DONACION.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          class="boton-donacion__icono"
+          src="/iconos/buy-me-a-coffee.svg"
+          alt=""
+          width="20"
+          height="28"
+        />
+        <span>{DONACION.etiqueta}</span>
+      </a>
     </section>
   </main>
 </Layout>
@@ -235,6 +250,12 @@ const descripcion =
 
   .cta:hover {
     background: var(--c-acento-fuerte);
+  }
+
+  /* El botón de donación (FR-016) usa el estilo global `.boton-donacion`;
+     aquí solo se ajusta el espacio del bloque. */
+  .apoyo {
+    margin-top: var(--esp-3);
   }
 
   /* Cada bloque se centra en el marco; sin cortes ni filetes. */

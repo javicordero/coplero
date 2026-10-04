@@ -8,6 +8,7 @@ const leer = (relativo: string) => readFileSync(join(RAIZ, relativo), "utf8")
 const FUENTES_ESTATICAS = [
   "src/pages/index.astro",
   "src/pages/como-jugar.astro",
+  "src/pages/colaborar.astro",
   "src/pages/politicas/politica-de-privacidad.astro",
   "src/pages/politicas/politica-de-cookies.astro",
   "src/components/Header.astro",
@@ -17,6 +18,7 @@ const FUENTES_ESTATICAS = [
 const HTML_CONSTRUIDO = [
   "dist/index.html",
   "dist/como-jugar/index.html",
+  "dist/colaborar/index.html",
   "dist/politicas/politica-de-privacidad/index.html",
   "dist/politicas/politica-de-cookies/index.html",
 ]

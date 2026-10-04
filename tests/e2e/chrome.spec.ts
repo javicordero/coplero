@@ -5,6 +5,7 @@ const RUTAS = [
   "/",
   "/jugar",
   "/como-jugar",
+  "/colaborar",
   "/politicas/politica-de-privacidad",
   "/politicas/politica-de-cookies",
   "/r/codigo-invalido",

@@ -1,0 +1,344 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { DONACION, SUGERENCIAS } from "../sitio/contenido"
+---
+
+<Layout
+  title="Colaborar · Coplero"
+  description="Apoya Coplero con una donación voluntaria o propón una situación u opción para el juego."
+>
+  <main>
+    <section class="apertura">
+      <div class="apertura__contenido">
+        <p class="eyebrow">Apoya el proyecto</p>
+        <h1>Colaborar</h1>
+        <p class="claim">
+          Dos formas de echar una mano: apoyar el proyecto o proponer
+          situaciones y opciones para el juego.
+        </p>
+      </div>
+    </section>
+
+    <section id="apoyo" class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Apoyar el proyecto</h2>
+      <p>
+        Si te ha gustado, puedes apoyar el proyecto con el siguiente botón.
+        Funciona para apoyar tanto Coplero como <a
+          href="https://acordesgaditanos.com/"
+          target="_blank"
+          rel="noopener noreferrer">Acordes Gaditanos</a
+        >.
+      </p>
+      <a
+        class="boton-donacion"
+        href={DONACION.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          class="boton-donacion__icono"
+          src="/iconos/buy-me-a-coffee.svg"
+          alt=""
+          width="20"
+          height="28"
+        />
+        <span>{DONACION.etiqueta}</span>
+      </a>
+    </section>
+
+    <section id="sugerencias" class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Sugerir una situación u opción</h2>
+      <p>
+        Si se te ha ocurrido alguna situación que podríamos añadir, coméntala
+        abajo y la añadiremos al juego.
+      </p>
+
+      <form class="formulario" action={SUGERENCIAS.endpoint} method="POST">
+        <input
+          type="hidden"
+          name="_subject"
+          value="Coplero — Nueva sugerencia"
+        />
+        <input type="hidden" name="origen" value="coplero" />
+
+        <label class="campo" for="tipo">
+          <span class="campo__etiqueta">¿Qué propones?</span>
+          <select id="tipo" name="tipo" required>
+            {
+              SUGERENCIAS.tipoOpciones.map((opcion) => (
+                <option value={opcion.valor}>{opcion.etiqueta}</option>
+              ))
+            }
+          </select>
+        </label>
+
+        <label class="campo" for="mensaje">
+          <span class="campo__etiqueta">Tu sugerencia</span>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="5"
+            required
+            maxlength={SUGERENCIAS.maxLongitud}
+            placeholder="Describe la situación o la opción…"></textarea>
+        </label>
+
+        <label class="campo" for="email">
+          <span class="campo__etiqueta"
+            >Tu email (opcional, por si queremos contestarte)</span
+          >
+          <input id="email" name="email" type="email" autocomplete="email" />
+        </label>
+
+        <input
+          class="trampa"
+          type="text"
+          name="_gotcha"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+
+        <button type="submit" class="enviar">Enviar sugerencia</button>
+      </form>
+    </section>
+
+    <section id="jugar" class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>¿Todavía no has jugado?</h2>
+      <p>Crea tu personaje y construye tu historia.</p>
+      <a class="cta" href="/jugar">Empezar a jugar</a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* Mismo lenguaje que la portada: `main` a todo el ancho y cada bloque
+     centrado en el marco; sin filetes de corte. */
+  main {
+    width: 100%;
+    padding: 0 0 var(--esp-6);
+  }
+
+  /* Apertura con el fondo nocturno de la portada (sin ocupar la pantalla). */
+  .apertura {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+      radial-gradient(
+        circle at 80% 12%,
+        color-mix(in srgb, var(--c-invierno-luna) 12%, transparent),
+        transparent 26%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--c-invierno-nube) 60%, var(--c-fondo)) 0%,
+        var(--c-invierno-nube) 50%,
+        color-mix(in srgb, var(--c-carnaval-violeta) 25%, var(--c-invierno-nube))
+          80%,
+        var(--c-fondo) 100%
+      );
+  }
+
+  .apertura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--c-fondo) 55%, transparent) 0%,
+        transparent 65%
+      ),
+      linear-gradient(180deg, transparent 86%, var(--c-fondo) 100%);
+  }
+
+  .apertura__contenido {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: var(--ancho-marco);
+    margin: 0 auto;
+    padding: var(--esp-7) var(--esp-4);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--esp-3);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: var(--fuente-display);
+    font-size: min(18vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    text-shadow: 0 2px 18px
+      color-mix(in srgb, var(--c-fondo) 70%, transparent);
+  }
+
+  .claim {
+    font-size: var(--texto-lg);
+    color: var(--c-texto);
+    max-width: 34ch;
+    margin: 0;
+  }
+
+  /* Bloques: centrados en el marco, con aire y sin filetes. */
+  .bloque {
+    max-width: var(--ancho-marco);
+    margin: 0 auto;
+    padding: var(--esp-6) var(--esp-4);
+  }
+
+  /* Ornamento tipográfico decorativo que sustituye al compás (como en la portada). */
+  .separador {
+    display: block;
+    margin-bottom: var(--esp-3);
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-lg);
+    letter-spacing: 0.3em;
+    line-height: 1;
+  }
+
+  .separador::before {
+    content: "///";
+  }
+
+  h2 {
+    font-family: var(--fuente-display);
+    font-size: var(--texto-2xl);
+    line-height: var(--interlinea-apretada);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    text-shadow: 2px 2px 0 var(--c-superficie);
+    margin-bottom: var(--esp-4);
+  }
+
+  h3 {
+    font-size: var(--texto-xl);
+  }
+
+  p {
+    color: var(--c-texto-suave);
+    line-height: var(--interlinea-holgada);
+    margin-bottom: var(--esp-3);
+  }
+
+  .bloque p {
+    font-size: var(--texto-lg);
+    line-height: var(--interlinea-normal);
+  }
+
+  .bloque p a {
+    text-decoration: none;
+  }
+
+  /* CTA como en la portada: a todo el ancho. */
+  .cta {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: var(--esp-3) var(--esp-5);
+    background: var(--c-acento);
+    color: var(--c-sobre-acento);
+    border-radius: var(--radio-pill);
+    text-decoration: none;
+    font-size: var(--texto-lg);
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: none;
+    transition: background-color var(--dur-1) var(--ease-sal);
+  }
+
+  .cta:hover {
+    background: var(--c-acento-fuerte);
+  }
+
+  /* Formulario */
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-4);
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-1);
+  }
+
+  .campo__etiqueta {
+    color: var(--c-texto);
+    font-size: var(--texto-sm);
+  }
+
+  .campo select,
+  .campo textarea,
+  .campo input {
+    width: 100%;
+    min-height: 44px;
+    padding: var(--esp-2) var(--esp-3);
+    background: var(--c-superficie-alta);
+    color: var(--c-texto);
+    border: 1px solid var(--c-borde-control);
+    border-radius: var(--radio-sm);
+    font-family: var(--fuente-texto);
+    font-size: var(--texto-base);
+  }
+
+  .campo textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+
+  .trampa {
+    display: none;
+  }
+
+  .enviar {
+    width: 100%;
+    min-height: 3rem;
+    padding: var(--esp-3) var(--esp-5);
+    background: var(--c-acento);
+    color: var(--c-sobre-acento);
+    border: none;
+    border-radius: var(--radio-pill);
+    font-family: var(--fuente-texto);
+    font-size: var(--texto-lg);
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-sal);
+  }
+
+  .enviar:hover {
+    background: var(--c-acento-fuerte);
+  }
+</style>

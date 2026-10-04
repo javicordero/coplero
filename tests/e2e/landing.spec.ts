@@ -14,6 +14,7 @@ const ENLACES_PIE = [
 const RUTAS_INTERNAS = [
   "/",
   "/jugar",
+  "/colaborar",
   "/politicas/politica-de-privacidad",
   "/politicas/politica-de-cookies",
 ]
@@ -123,4 +124,26 @@ test("el pie muestra redes, autor y acordesgaditanos", async ({ page }) => {
 test("la landing pasa WCAG 2.2 AA", async ({ page }) => {
   await page.goto("/")
   expect(await violacionesGraves(page)).toEqual([])
+})
+
+test("la portada ofrece el botón de donación y el pie enlaza a colaborar", async ({
+  page,
+}) => {
+  await page.goto("/")
+
+  const ejemplo = page.locator("#ejemplo")
+  const boton = ejemplo.locator('a[href^="https://www.buymeacoffee.com/"]')
+  await expect(boton).toHaveCount(1)
+  await expect(boton).toHaveAttribute("target", "_blank")
+  await expect(boton).toHaveAttribute("rel", "noopener noreferrer")
+
+  // El botón va después del CTA final del bloque del ejemplo.
+  const cta = ejemplo.locator('a[href="/jugar"]').last()
+  const cajaCta = await cta.boundingBox()
+  const cajaBoton = await boton.boundingBox()
+  expect(cajaBoton?.y ?? 0).toBeGreaterThan(cajaCta?.y ?? 0)
+
+  await expect(
+    page.locator('footer[role="contentinfo"] a[href="/colaborar"]'),
+  ).toHaveCount(1)
 })

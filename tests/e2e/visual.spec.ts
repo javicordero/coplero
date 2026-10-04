@@ -4,6 +4,7 @@ import { expect, test } from "@playwright/test"
 const ESTATICAS = [
   "/",
   "/como-jugar",
+  "/colaborar",
   "/politicas/politica-de-privacidad",
   "/politicas/politica-de-cookies",
   "/r/codigo-invalido",

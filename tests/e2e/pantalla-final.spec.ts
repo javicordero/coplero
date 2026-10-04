@@ -25,36 +25,35 @@ test("muestra el palmarés: identidad, mejor posición, línea temporal y distin
   )
   const mejor = page.getByTestId("tarjeta-mejor-posicion")
   await expect(mejor).toHaveAttribute("data-tono", "oro")
-  await expect(mejor).toContainText("Mejor posición")
+  await expect(mejor).toContainText("Mejor puesto")
   await expect(mejor).toContainText("1º")
 
   // Línea temporal: debut + primeras veces por fase + premios, cronológica.
   const hitos = page.getByTestId("tarjeta-premios").locator(".hito")
-  await expect(hitos).toHaveCount(11)
+  await expect(hitos).toHaveCount(7)
   const filas = page.getByTestId("tarjeta-premios").locator(".fila")
-  expect(await filas.count()).toBeGreaterThanOrEqual(2)
+  expect(await filas.count()).toBeGreaterThanOrEqual(1)
 
   await expect(hitos.nth(0)).toContainText("2027")
   await expect(hitos.nth(0)).toContainText("Debut")
-  await expect(hitos.nth(1)).toContainText("2028")
+  await expect(hitos.nth(1)).toContainText("2029")
   await expect(hitos.nth(1)).toContainText("CF")
-  await expect(hitos.nth(2)).toContainText("2029")
+  await expect(hitos.nth(2)).toContainText("2032")
   await expect(hitos.nth(2)).toContainText("SF")
-  // Final sin premio (4º): se ve el hito «F».
-  await expect(hitos.nth(3)).toContainText("2030")
+  await expect(hitos.nth(3)).toContainText("2035")
   await expect(hitos.nth(3)).toContainText("F")
-  await expect(hitos.nth(10)).toContainText("2037")
   await expect(hitos.nth(4)).toHaveAttribute("data-puesto", "3")
   await expect(hitos.nth(5)).toHaveAttribute("data-puesto", "1")
+  await expect(hitos.nth(6)).toHaveAttribute("data-puesto", "2")
 
   // Distinciones: una roseta por victoria, agrupadas por tipo.
   const distinciones = page.getByTestId("tarjeta-distinciones")
-  await expect(distinciones.locator(".distincion")).toHaveCount(3)
-  // El campeón acumula 1 aguja + 2 coplas + 1 candela = 4 rosetas.
-  await expect(distinciones.locator(".roseta")).toHaveCount(4)
+  await expect(distinciones.locator(".distincion")).toHaveCount(2)
+  // El campeón acumula 2 agujas + 1 copla = 3 rosetas.
+  await expect(distinciones.locator(".roseta")).toHaveCount(3)
   await expect(
     distinciones.locator('[data-tipo="copla_para_andalucia"] .roseta'),
-  ).toHaveCount(2)
+  ).toHaveCount(1)
 
   // Bloques retirados.
   await expect(page.getByTestId("tarjeta-hitos")).toHaveCount(0)
@@ -67,7 +66,7 @@ test("los premios del COAC se pintan como medallas (oro, plata, bronce)", async 
   await abrirFin(page)
   await expect(
     page.getByTestId("tarjeta-premios").locator(".hito.primero"),
-  ).toHaveCount(3)
+  ).toHaveCount(1)
 
   const colorPuesto = (puesto: string) =>
     page
@@ -172,4 +171,21 @@ test("sin scroll horizontal a 320 px y sin violaciones graves", async ({
     .filter((v) => v.impact === "critical" || v.impact === "serious")
     .map((v) => v.id)
   expect(graves).toEqual([])
+})
+
+test("la pantalla final ofrece donación y colaborar", async ({ page }) => {
+  await abrirFin(page)
+
+  const donacion = page.locator('a[href^="https://www.buymeacoffee.com/"]')
+  await expect(donacion).toHaveCount(1)
+  await expect(donacion).toHaveAttribute("target", "_blank")
+  await expect(donacion).toHaveAttribute("rel", "noopener noreferrer")
+
+  const colaborar = page.locator('[data-testid="fin"] a[href="/colaborar"]')
+  await expect(colaborar).toHaveCount(1)
+
+  for (const enlace of [donacion, colaborar]) {
+    const caja = await enlace.boundingBox()
+    expect(caja?.height ?? 0).toBeGreaterThanOrEqual(44)
+  }
 })

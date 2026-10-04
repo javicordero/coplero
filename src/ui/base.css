@@ -210,6 +210,40 @@ button.primario:hover:not(:disabled) {
   border-color: var(--c-acento-fuerte);
 }
 
+/* --- Botón de apoyo/donación (023) ---
+   Aspecto especial (acento secundario) e idéntico en toda la web: portada,
+   /colaborar y pantalla final. El contraste texto/fondo ya lo cubre V-01. */
+.boton-donacion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  width: 100%;
+  min-height: 44px;
+  padding: var(--esp-3) var(--esp-5);
+  background: var(--c-acento-2);
+  color: var(--c-sobre-acento);
+  border: none;
+  border-radius: var(--radio-pill);
+  text-decoration: none;
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: box-shadow var(--dur-2) var(--ease-sal);
+}
+
+.boton-donacion:hover {
+  box-shadow: var(--sombra-2);
+}
+
+.boton-donacion__icono {
+  flex: 0 0 auto;
+  width: auto;
+  height: 20px;
+}
+
 /* --- Movimiento --- */
 
 @media (prefers-reduced-motion: reduce) {
