@@ -2,6 +2,7 @@
 import { variantesDe } from "../content/index"
 import { crearJuego } from "./estado.svelte"
 import { almacenNavegador } from "./persistencia"
+import { arranqueFinDesdeUrl } from "./dev/fixturesFin"
 import {
   type Indicador,
   mensajeError,
@@ -22,7 +23,21 @@ import IndicadorContexto from "./pantallas/IndicadorContexto.svelte"
 import Reanudar from "./pantallas/Reanudar.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
 
-const juego = crearJuego(almacenNavegador())
+// Solo en desarrollo: `/jugar?dev=fin` abre directamente la pantalla final con
+// una tarjeta de ejemplo (ver `dev/fixturesFin.ts`). En producción `arranque`
+// es `null` y la rama se elimina del bundle.
+const arranque =
+  import.meta.env.DEV && typeof window !== "undefined"
+    ? arranqueFinDesdeUrl(window.location.search)
+    : null
+
+const juego = crearJuego(almacenNavegador(), {
+  tarjetaInicial: arranque?.tarjeta,
+})
+
+// Momento para el fondo: en el arranque dev manda el de la URL; el resto del
+// tiempo, el de la partida.
+let momento = $derived(arranque?.momento ?? juego.partida?.momento ?? null)
 
 // Pantallas del flujo previo a partida: comparten el marco de pantalla
 // (altura del área de juego y cabecera de posición fija).
@@ -105,11 +120,11 @@ $effect(() => {
 <main
   data-testid="juego"
   data-pantalla={juego.pantalla}
-  data-momento={juego.partida?.momento ?? ""}
+  data-momento={juego.pantalla === "fin" ? "" : (momento ?? "")}
   data-ano={juego.partida?.anoActual ?? ""}
   data-prepartida={PANTALLAS_PREVIAS.has(juego.pantalla) ? "" : undefined}
 >
-  {#if juego.partida?.momento === "febrero" && juego.pantalla !== "resultado"}
+  {#if momento === "febrero" && juego.pantalla !== "resultado" && juego.pantalla !== "fin"}
     <FondoFebrero />
     <span class="lluvia" aria-hidden="true">
       {#each GOTAS as gota, i (i)}
@@ -119,7 +134,7 @@ $effect(() => {
       {/each}
     </span>
   {/if}
-  {#if juego.partida?.momento === "verano" && juego.pantalla !== "resultado"}
+  {#if momento === "verano" && juego.pantalla !== "resultado" && juego.pantalla !== "fin"}
     <FondoVerano />
   {/if}
   {#if indicadorActual}
@@ -258,6 +273,18 @@ $effect(() => {
       rgba(30, 34, 38, 0.05) 0 1px,
       transparent 1px 26px
     );
+  }
+
+  /* La pantalla final se ancla arriba; el padding superior lo hereda del global. */
+  main[data-pantalla="fin"] {
+    justify-content: flex-start;
+  }
+
+  /* En móviles muy estrechos (< 375px), menos aire arriba. */
+  @media (max-width: 374px) {
+    main[data-pantalla="fin"] {
+      padding-top: var(--esp-3);
+    }
   }
 
   .lluvia {

@@ -78,6 +78,10 @@ export async function completarCarrera(page: Page): Promise<void> {
 }
 
 export async function enlaceCompartido(page: Page): Promise<string> {
-  await page.getByTestId("copiar-enlace").click()
-  return page.evaluate(() => navigator.clipboard.readText())
+  const codigo = await page.getByTestId("fin").getAttribute("data-codigo")
+  if (!codigo) throw new Error("La pantalla final no expone data-codigo")
+  return page.evaluate(
+    (valor) => new URL(`/r/${valor}`, window.location.origin).href,
+    codigo,
+  )
 }

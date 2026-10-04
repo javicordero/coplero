@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { type BancoContenido, decodificar } from "../../engine/index"
+import { tarjetaFinDev } from "../dev/fixturesFin"
 import { crearJuego } from "../estado.svelte"
 import { type Almacen, CLAVE_GUARDADO } from "../persistencia"
 
@@ -322,6 +323,22 @@ describe("estado del juego", () => {
       const decodificado = decodificar(codigo)
       expect(decodificado.ok).toBe(true)
       if (decodificado.ok) expect(decodificado.valor.nombre).toBe("El Chato")
+    }
+  })
+
+  it("arranca directo en la pantalla final con una tarjeta inyectada (dev)", () => {
+    const tarjeta = tarjetaFinDev("podio")
+    const juego = crearJuego(almacenMemoria(), { tarjetaInicial: tarjeta })
+    expect(juego.pantalla).toBe("fin")
+    expect(juego.tarjeta).toEqual(tarjeta)
+
+    const codigo = juego.codigo()
+    expect(codigo).toBeTruthy()
+    if (codigo) {
+      const decodificado = decodificar(codigo)
+      expect(decodificado.ok).toBe(true)
+      if (decodificado.ok)
+        expect(decodificado.valor.nombre).toBe(tarjeta.nombre)
     }
   })
 })

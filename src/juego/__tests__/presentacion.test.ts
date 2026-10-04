@@ -1,15 +1,20 @@
 import { describe, expect, it } from "vitest"
 import {
   DIRECCION_JUEGO,
+  enFilas,
+  etiquetaEstilo,
   etiquetaFase,
   etiquetaModalidad,
   etiquetaMomento,
   etiquetaPremio,
   etiquetaTipo,
+  FRASE_CIERRE,
   MODALIDADES_INFO,
   mensajeError,
   normalizarNombre,
+  textoPuesto,
   tituloDelJuego,
+  trayectoria,
 } from "../presentacion"
 
 describe("presentacion", () => {
@@ -51,6 +56,82 @@ describe("presentacion", () => {
 
   it("define la dirección del juego", () => {
     expect(DIRECCION_JUEGO.length).toBeGreaterThan(0)
+  })
+
+  it("traduce el estilo (variante) a su título", () => {
+    expect(etiquetaEstilo("evolucion_con_raices")).toBe("Evolución con raíces")
+    expect(etiquetaEstilo("lolosedismo")).toBe("Lolosedismo")
+    expect(etiquetaEstilo("desconocida")).toBe("desconocida")
+  })
+
+  it("numera el puesto del COAC", () => {
+    expect(textoPuesto(1)).toBe("1º")
+    expect(textoPuesto(3)).toBe("3º")
+  })
+
+  it("reparte una lista en filas", () => {
+    expect(enFilas([1, 2, 3, 4, 5], 4)).toEqual([[1, 2, 3, 4], [5]])
+    expect(enFilas([1, 2], 4)).toEqual([[1, 2]])
+    expect(enFilas([], 4)).toEqual([])
+  })
+
+  it("compone la trayectoria con premios e hitos, agrupando por año", () => {
+    const premios = [
+      { ano: 2030, puesto: 2, tipo: "podio" as const },
+      { ano: 2032, puesto: 1, tipo: "primer_premio" as const },
+    ]
+    const hitos = [
+      { ano: 2027, fase: "preliminares" as const, debut: true },
+      { ano: 2028, fase: "cuartos" as const, debut: false },
+      { ano: 2029, fase: "semifinales" as const, debut: false },
+      { ano: 2030, fase: "final" as const, debut: false },
+    ]
+    expect(trayectoria(premios, hitos)).toEqual([
+      {
+        ano: 2027,
+        puesto: null,
+        hito: "Debut",
+        fase: "preliminares",
+        tono: "preliminares",
+      },
+      {
+        ano: 2028,
+        puesto: null,
+        hito: "CF",
+        fase: "cuartos",
+        tono: "cuartos",
+      },
+      {
+        ano: 2029,
+        puesto: null,
+        hito: "SF",
+        fase: "semifinales",
+        tono: "semifinales",
+      },
+      { ano: 2030, puesto: 2, hito: null, fase: null, tono: "plata" },
+      { ano: 2032, puesto: 1, hito: null, fase: null, tono: "oro" },
+    ])
+  })
+
+  it("si el debut coincide con una fase, prevalece la fase", () => {
+    const hitos = [
+      { ano: 2027, fase: "preliminares" as const, debut: true },
+      { ano: 2027, fase: "semifinales" as const, debut: false },
+    ]
+    expect(trayectoria([], hitos)).toEqual([
+      {
+        ano: 2027,
+        puesto: null,
+        hito: "SF",
+        fase: "semifinales",
+        tono: "semifinales",
+      },
+    ])
+  })
+
+  it("define una frase de cierre que no afirma victoria", () => {
+    expect(FRASE_CIERRE.length).toBeGreaterThan(0)
+    expect(FRASE_CIERRE.toLowerCase()).not.toContain("gan")
   })
 
   it("compone un mensaje legible para cada error del motor", () => {

@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" width="480" height="560">
+  <defs>
+    <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fd06a"/>
+      <stop offset="0.55" stop-color="#5aa33a"/>
+      <stop offset="1" stop-color="#8fd06a"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <style>
+    .petalos > g:nth-child(even) > path:first-of-type { fill: #ffffff; }
+  </style>
+  <g class="badge" filter="url(#shadow)">
+
+    <g class="ribbons" transform="translate(0,250)">
+      <path d="M185 0 L238 35 L218 275 L157 225 Z" fill="url(#fabric)"/>
+      <path d="M238 35 L294 0 L323 225 L267 275 Z" fill="url(#fabric)"/>
+      <path d="M157 225 L187 201 L218 275 L185 320 Z" fill="#3f7d24"/>
+      <path d="M267 275 L294 201 L323 225 L300 320 Z" fill="#356b1e"/>
+    </g>
+    <circle cx="240" cy="240" r="164" fill="url(#fabric)"/>
+    <circle cx="240" cy="240" r="152" fill="none" stroke="#3f7d24" stroke-width="4" opacity=".45"/>
+
+    <g class="petalos">
+    <g transform="translate(240,240) rotate(0.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(22.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(45.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(67.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(90.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(112.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(135.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(157.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(180.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(202.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(225.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(247.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(270.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(292.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(315.0)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(337.5)">
+      <path d="M-18.5 -158.0 
+               Q 0 -183.0 18.5 -158.0
+               L 15.5 -104.0
+               Q 0 -111.0 -15.5 -104.0 Z"
+            fill="url(#fabric)" stroke="#3f7d24" stroke-width="2"/>
+      <path d="M 0 -154.0 L 0 -104.0" stroke="#d7f0c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    </g>
+    <circle cx="240" cy="240" r="112" fill="#f8fbff"/>
+
+    <g class="icon" transform="translate(240 240) scale(5) translate(-12 -12)">
+      <rect x="2" y="5" width="20" height="14" fill="#ffffff" stroke="#2f6b1c" stroke-width="1.2"/>
+      <rect x="2" y="5" width="20" height="4.6" fill="#4f9e2f"/>
+      <rect x="2" y="14.4" width="20" height="4.6" fill="#4f9e2f"/>
+    </g>
+  </g>
+</svg>

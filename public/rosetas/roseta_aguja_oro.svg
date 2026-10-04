@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" width="480" height="560">
+  <defs>
+    <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7d968"/>
+      <stop offset="0.55" stop-color="#c99a1e"/>
+      <stop offset="1" stop-color="#f7d968"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <g class="badge" filter="url(#shadow)">
+
+    <g class="ribbons" transform="translate(0,250)">
+      <path d="M185 0 L238 35 L218 275 L157 225 Z" fill="url(#fabric)"/>
+      <path d="M238 35 L294 0 L323 225 L267 275 Z" fill="url(#fabric)"/>
+      <path d="M157 225 L187 201 L218 275 L185 320 Z" fill="#a97a12"/>
+      <path d="M267 275 L294 201 L323 225 L300 320 Z" fill="#8a6a12"/>
+    </g>
+    <circle cx="240" cy="240" r="182" fill="url(#fabric)"/>
+    <circle cx="240" cy="240" r="170" fill="none" stroke="#8a6a12" stroke-width="4" opacity=".45"/>
+
+    <g transform="translate(240,240) rotate(0.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(15.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(30.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(45.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(60.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(75.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(90.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(105.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(120.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(135.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(150.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(165.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(180.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(195.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(210.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(225.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(240.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(255.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(270.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(285.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(300.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(315.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(330.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <g transform="translate(240,240) rotate(345.0)">
+      <path d="M-13.5 -176.0 
+               Q 0 -209.0 13.5 -176.0
+               L 10.5 -108.0
+               Q 0 -115.0 -10.5 -108.0 Z"
+            fill="url(#fabric)" stroke="#8a6a12" stroke-width="2"/>
+      <path d="M 0 -172.0 L 0 -108.0" stroke="#fff2c4" stroke-opacity=".28" stroke-width="3"/>
+    </g>
+    <circle cx="240" cy="240" r="123" fill="#a97a12" opacity=".95"/>
+    <circle cx="240" cy="240" r="116" fill="#f8fbff" stroke="#e8d59a" stroke-width="4"/>
+
+    <g class="icon" transform="translate(240 240) scale(5) translate(-12 -12)" fill="none" stroke="#b8860b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M11.4 3h1.2l0.4 17-1 2.5-1-2.5z"/>
+      <ellipse cx="12" cy="5.4" rx="0.7" ry="1.2"/>
+    </g>
+  </g>
+</svg>

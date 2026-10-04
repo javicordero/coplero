@@ -25,16 +25,6 @@ export async function compartirNativo(datos: {
   }
 }
 
-export async function copiarTexto(texto: string): Promise<boolean> {
-  if (typeof navigator === "undefined" || !navigator.clipboard) return false
-  try {
-    await navigator.clipboard.writeText(texto)
-    return true
-  } catch {
-    return false
-  }
-}
-
 export async function descargarImagen(
   imagenUrl: string,
   nombreArchivo: string,

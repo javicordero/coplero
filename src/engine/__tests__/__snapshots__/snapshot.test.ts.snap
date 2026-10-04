@@ -26,6 +26,13 @@ exports[`snapshot de partida de referencia > mantiene estable una carrera de ref
       "tipo": "mejor_resultado",
     },
   ],
+  "hitosProgreso": [
+    {
+      "ano": 1,
+      "debut": true,
+      "fase": "preliminares",
+    },
+  ],
   "mejorFase": "preliminares",
   "mejorPuesto": 17,
   "modalidadFinal": "comparsista",

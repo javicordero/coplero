@@ -51,6 +51,11 @@ export interface OpcionesJuego {
   generarSeed?: () => string
   /** Banco inyectable para tests; por defecto, el banco real de `content`. */
   banco?: BancoContenido
+  /**
+   * SOLO DEV: arranca la isla directamente en la pantalla final con esta
+   * tarjeta, sin recorrer la carrera. Ver `src/juego/dev/fixturesFin.ts`.
+   */
+  tarjetaInicial?: TarjetaFinal
 }
 
 function seedPorDefecto(): string {
@@ -98,11 +103,15 @@ export function crearJuego(
   )
   let estadoGuardado = $state<EstadoGuardado>(estadoInicial)
   let pantalla = $state<Pantalla>(
-    estadoInicial === "en-curso" ? "reanudar" : "crear-personaje",
+    opciones.tarjetaInicial
+      ? "fin"
+      : estadoInicial === "en-curso"
+        ? "reanudar"
+        : "crear-personaje",
   )
   let partida = $state<Partida | null>(null)
   let paso = $state<Paso | null>(null)
-  let tarjeta = $state<TarjetaFinal | null>(null)
+  let tarjeta = $state<TarjetaFinal | null>(opciones.tarjetaInicial ?? null)
   let error = $state<ErrorMotor | null>(null)
   let personaje = $state<Personaje | null>(null)
   let modalidad = $state<Modalidad | null>(null)

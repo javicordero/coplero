@@ -1,14 +1,18 @@
 // Textos de presentación. Funciones puras: traducen valores del motor a etiquetas.
 // No contienen lógica de juego.
 
+import { VARIANTES } from "../content/index"
 import type { Modalidad } from "../content/modalidades"
 import type {
   ErrorMotor,
   FaseCOAC,
   Genero,
+  HitoProgreso,
+  LogroCOAC,
   Momento,
   PremioTipo,
   TipoDecision,
+  VarianteId,
 } from "../engine/index"
 
 const TITULOS_POR_GENERO: Record<Genero, string> = {
@@ -122,6 +126,105 @@ export const SUBTITULO_VARIANTE = "Elige tu estilo"
 
 /** Dirección del juego para la marca de agua de la tarjeta y las imágenes. */
 export const DIRECCION_JUEGO = "coplero.app"
+
+/** Título del estilo (variante) para la tarjeta final. */
+export function etiquetaEstilo(id: VarianteId): string {
+  return VARIANTES.find((variante) => variante.id === id)?.titulo ?? id
+}
+
+/** Texto del puesto del COAC («1º», «2º», «3º»). */
+export function textoPuesto(puesto: number): string {
+  return `${puesto}º`
+}
+
+/** Reparte una lista en filas de `columnas` elementos. */
+export function enFilas<T>(items: T[], columnas: number): T[][] {
+  const filas: T[][] = []
+  for (let i = 0; i < items.length; i += columnas) {
+    filas.push(items.slice(i, i + columnas))
+  }
+  return filas
+}
+
+/** Etiqueta corta de un hito de progresión (`null` = sin hito). */
+const ETIQUETA_HITO: Record<FaseCOAC, string | null> = {
+  preliminares: null,
+  cuartos: "CF",
+  semifinales: "SF",
+  final: "F",
+}
+
+/** Tono de un evento: medalla (1º/2º/3º) o color de fase. */
+export type TonoTrayectoria = "oro" | "plata" | "bronce" | FaseCOAC
+
+/** Un año de la línea temporal con sus eventos (premio y/o hito). */
+export interface EventoTrayectoria {
+  ano: number
+  /** Puesto del COAC (1-3) si ese año hubo premio. */
+  puesto: number | null
+  /** Hito de progresión del año (Debut/CF/SF/F). */
+  hito: string | null
+  /** Fase del hito. */
+  fase: FaseCOAC | null
+  /** Tono para pintar etiqueta y nodo. */
+  tono: TonoTrayectoria
+}
+
+/** Tono de un evento: medalla si hubo premio; si no, el color de su fase. */
+function tonoDeEvento(evento: EventoTrayectoria): TonoTrayectoria {
+  if (evento.puesto === 1) return "oro"
+  if (evento.puesto === 2) return "plata"
+  if (evento.puesto === 3) return "bronce"
+  return evento.fase ?? "preliminares"
+}
+
+/**
+ * Línea temporal: premios del COAC + hitos de progresión, agrupados por año
+ * y en orden cronológico. En un año con premio, el premio prevalece.
+ */
+export function trayectoria(
+  premios: LogroCOAC[],
+  hitos: HitoProgreso[],
+): EventoTrayectoria[] {
+  const porAno = new Map<number, EventoTrayectoria>()
+  const evento = (ano: number): EventoTrayectoria => {
+    let actual = porAno.get(ano)
+    if (!actual) {
+      actual = {
+        ano,
+        puesto: null,
+        hito: null,
+        fase: null,
+        tono: "preliminares",
+      }
+      porAno.set(ano, actual)
+    }
+    return actual
+  }
+
+  for (const hito of hitos) {
+    const etiqueta = hito.debut ? "Debut" : ETIQUETA_HITO[hito.fase]
+    if (!etiqueta) continue
+    const actual = evento(hito.ano)
+    actual.hito = etiqueta
+    actual.fase = hito.fase
+  }
+  for (const premio of premios) evento(premio.ano).puesto = premio.puesto
+
+  for (const actual of porAno.values()) {
+    // El premio del COAC prevalece: un año con premio no lleva hito.
+    if (actual.puesto !== null) {
+      actual.hito = null
+      actual.fase = null
+    }
+    actual.tono = tonoDeEvento(actual)
+  }
+
+  return [...porAno.values()].sort((a, b) => a.ano - b.ano)
+}
+
+/** Frase de cierre por defecto de la pantalla final. */
+export const FRASE_CIERRE = "La copla termina. La historia queda."
 
 export function mensajeError(error: ErrorMotor): string {
   switch (error.codigo) {

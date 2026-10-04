@@ -28,12 +28,31 @@ async function jugarHastaFin(page: import("@playwright/test").Page) {
   await page.waitForTimeout(400)
 }
 
-test("muestra la tarjeta con el nombre y los hitos", async ({ page }) => {
+test("muestra la información esencial y las acciones acordadas", async ({
+  page,
+}) => {
   test.setTimeout(60_000)
   await jugarHastaFin(page)
 
   await expect(page.getByTestId("tarjeta-nombre")).toHaveText("El Chato")
-  await expect(page.getByTestId("tarjeta-hitos").locator("li")).toHaveCount(3)
+  await expect(page.getByTestId("tarjeta-modalidad")).toBeVisible()
+  await expect(page.getByTestId("tarjeta-estilo")).toBeVisible()
+  await expect(page.getByTestId("tarjeta-mejor-posicion")).toBeVisible()
+
+  // Contenido retirado.
+  await expect(page.getByTestId("tarjeta-hitos")).toHaveCount(0)
+  await expect(page.getByTestId("tarjeta-frase")).toHaveCount(0)
+  await expect(page.getByTestId("tarjeta-trayectoria")).toHaveCount(0)
+
+  // Acciones conservadas.
+  await expect(page.getByTestId("compartir")).toBeVisible()
+  await expect(page.getByTestId("descargar-9x16")).toBeVisible()
+  await expect(page.getByTestId("reiniciar")).toBeVisible()
+
+  // Acciones retiradas.
+  await expect(page.getByTestId("copiar-texto")).toHaveCount(0)
+  await expect(page.getByTestId("descargar-1x1")).toHaveCount(0)
+  await expect(page.getByTestId("copiar-enlace")).toHaveCount(0)
 })
 
 test("el enlace reproduce la tarjeta y el código inválido es amable", async ({

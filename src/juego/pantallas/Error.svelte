@@ -12,7 +12,7 @@ let { mensaje, onReiniciar }: { mensaje: string; onReiniciar: () => void } =
     onclick={onReiniciar}
     data-testid="reiniciar-error"
   >
-    Empezar de nuevo
+    Jugar de nuevo
   </button>
 </section>
 

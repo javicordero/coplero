@@ -229,6 +229,14 @@ export interface LogroCOAC {
   tipo: "primer_premio" | "podio"
 }
 
+/** Hito de progresión de la carrera: debut o primera vez en una fase. */
+export interface HitoProgreso {
+  ano: number
+  fase: FaseCOAC
+  /** Es la primera temporada de la carrera. */
+  debut: boolean
+}
+
 /** Premio ajeno agrupado por tipo, con su recuento y años. */
 export interface PremioResumen {
   tipo: PremioTipo
@@ -257,6 +265,8 @@ export interface TarjetaFinal {
   mejorFase: FaseCOAC
   mejorPuesto: number | null
   primerosPremios: LogroCOAC[]
+  /** Progresión en el COAC: debut y primera vez en cada fase (récord). */
+  hitosProgreso: HitoProgreso[]
   otrosPremios: PremioResumen[]
   hitos: HitoTarjeta[]
   fraseCierre: string

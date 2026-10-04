@@ -2,7 +2,6 @@
 import type { TarjetaFinal } from "../../engine/index"
 import {
   compartirNativo,
-  copiarTexto,
   descargarImagen,
   textoCompartir,
   urlResultado,
@@ -42,97 +41,83 @@ async function alCompartir() {
     : "Tu navegador no permite compartir directamente; copia el enlace."
 }
 
-async function alCopiar() {
-  if (!codigo) return
-  const ok = await copiarTexto(textoCompartir(tarjeta, enlace))
-  avisoAccion = ok ? "Texto copiado." : "No se pudo copiar."
-}
-
-async function alDescargar(formato: "9x16" | "1x1") {
+async function alDescargar() {
   if (!codigo) return
   const ok = await descargarImagen(
-    `${origen()}/api/og/${codigo}.png?t=${formato}`,
-    `coplero-${formato}.png`,
+    `${origen()}/api/og/${codigo}.png?t=9x16`,
+    "coplero-9x16.png",
   )
   avisoAccion = ok ? "Imagen descargada." : "No se pudo descargar la imagen."
 }
-
-async function alCopiarEnlace() {
-  const ok = await copiarTexto(enlace)
-  avisoAccion = ok ? "Enlace copiado." : "No se pudo copiar."
-}
 </script>
 
-<section class="fin" data-testid="fin">
-  <h2 class="titulo">Carrera finalizada</h2>
+<section class="fin" data-testid="fin" data-codigo={codigo ?? ""}>
+  <p class="antetitulo">Carrera finalizada</p>
   <Tarjeta {tarjeta} />
 
-  <div class="acciones" role="group" aria-label="Compartir la tarjeta">
+  <div class="pie">
+    <div class="acciones" role="group" aria-label="Compartir la tarjeta">
+      <button
+        type="button"
+        class="primario"
+        onclick={alCompartir}
+        data-testid="compartir"
+      >
+        Compartir
+      </button>
+      <button type="button" onclick={alDescargar} data-testid="descargar-9x16">
+        Imagen 9:16
+      </button>
+    </div>
+
     <button
       type="button"
-      class="primario"
-      onclick={alCompartir}
-      data-testid="compartir"
+      class="reiniciar"
+      onclick={onReiniciar}
+      data-testid="reiniciar"
     >
-      Compartir
-    </button>
-    <button type="button" onclick={alCopiar} data-testid="copiar-texto">
-      Copiar texto
-    </button>
-    <button
-      type="button"
-      onclick={() => alDescargar("9x16")}
-      data-testid="descargar-9x16"
-    >
-      Imagen 9:16
-    </button>
-    <button
-      type="button"
-      onclick={() => alDescargar("1x1")}
-      data-testid="descargar-1x1"
-    >
-      Imagen 1:1
-    </button>
-    <button type="button" onclick={alCopiarEnlace} data-testid="copiar-enlace">
-      Copiar enlace
+      Jugar de nuevo
     </button>
   </div>
 
   <p class="aviso" aria-live="polite" data-testid="aviso-accion">
     {avisoAccion ?? ""}
   </p>
-
-  <button
-    type="button"
-    class="reiniciar"
-    onclick={onReiniciar}
-    data-testid="reiniciar"
-  >
-    Empezar de nuevo
-  </button>
 </section>
 
 <style>
   .fin {
     display: flex;
     flex-direction: column;
-    gap: var(--esp-4);
+    gap: var(--esp-2);
   }
 
-  .titulo {
-    font-family: var(--fuente-texto);
-    font-size: var(--texto-base);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--c-texto-suave);
+  /* Antetítulo fuera de la tarjeta: subtítulo atenuado, no titular. */
+  .antetitulo {
+    margin: 0;
+
     text-align: center;
+    color: var(--c-texto-suave);
+
+    font-size: var(--texto-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+
+  .pie {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-2);
   }
 
   .acciones {
     display: flex;
-    flex-wrap: wrap;
     gap: var(--esp-2);
-    justify-content: center;
+  }
+
+  .acciones button {
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .aviso {
@@ -142,7 +127,10 @@ async function alCopiarEnlace() {
     font-size: var(--texto-sm);
   }
 
-  .reiniciar {
-    margin-top: var(--esp-2);
+  /* Móviles muy estrechos (< 375px): botones algo más compactos. */
+  @media (max-width: 374px) {
+    .fin button {
+      padding: var(--esp-2) var(--esp-3);
+    }
   }
 </style>

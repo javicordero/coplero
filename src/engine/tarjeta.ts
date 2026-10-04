@@ -6,6 +6,7 @@ import type {
   BancoContenido,
   BucketFrase,
   FaseCOAC,
+  HitoProgreso,
   HitoTarjeta,
   LogroCOAC,
   Partida,
@@ -97,6 +98,26 @@ function elegirTexto(
   if (!plantillas || plantillas.length === 0) return ""
   const indice = hashEstable(clave) % plantillas.length
   return sustituir(plantillas[indice], valores)
+}
+
+/** Progresión: debut (primera temporada) y primera vez en cada fase (récord). */
+function hitosProgresoDe(p: Partida): HitoProgreso[] {
+  const temporadas = [...p.temporadas].sort((a, b) => a.ano - b.ano)
+  const primera = temporadas[0]
+  if (!primera) return []
+
+  const hitos: HitoProgreso[] = [
+    { ano: primera.ano, fase: primera.fase, debut: true },
+  ]
+  let maxFase: FaseCOAC = "preliminares"
+  for (const temporada of temporadas) {
+    if (temporada.fueraDeConcurso) continue
+    if (indiceFase(temporada.fase) > indiceFase(maxFase)) {
+      hitos.push({ ano: temporada.ano, fase: temporada.fase, debut: false })
+      maxFase = temporada.fase
+    }
+  }
+  return hitos
 }
 
 function agruparPremios(p: Partida): PremioResumen[] {
@@ -282,6 +303,7 @@ export function construirTarjeta(
     mejorFase,
     mejorPuesto,
     primerosPremios,
+    hitosProgreso: hitosProgresoDe(p),
     otrosPremios,
     hitos,
     fraseCierre,

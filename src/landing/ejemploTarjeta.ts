@@ -23,6 +23,12 @@ export const EJEMPLO_TARJETA: TarjetaFinal = {
   mejorFase: "final",
   mejorPuesto: 2,
   primerosPremios: [{ ano: 2033, puesto: 2, tipo: "podio" }],
+  hitosProgreso: [
+    { ano: 2029, fase: "preliminares", debut: true },
+    { ano: 2031, fase: "cuartos", debut: false },
+    { ano: 2032, fase: "semifinales", debut: false },
+    { ano: 2033, fase: "final", debut: false },
+  ],
   otrosPremios: [{ tipo: "aguja_de_oro", veces: 1, anos: [2032] }],
   hitos: [
     { tipo: "debut", ano: 2029, texto: "Debutaste en 2029" },

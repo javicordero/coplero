@@ -37,6 +37,7 @@ export interface TarjetaFinal {
   mejorFase: FaseCOAC
   mejorPuesto: number | null
   primerosPremios: LogroCOAC[]
+  hitosProgreso: HitoProgreso[]  // debut y primera vez en cada fase
   otrosPremios: PremioResumen[]
   hitos: HitoTarjeta[]          // exactamente 3
   fraseCierre: string
