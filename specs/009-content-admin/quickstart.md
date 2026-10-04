@@ -31,7 +31,7 @@ npm run dev
 Abre `http://localhost:4321/panel`.
 
 **Esperado** (SC-001):
-- Tablas **separadas por categoría**, cada una con su **recuento** en el encabezado.
+- Tablas **separadas por momento**, cada una con su **recuento** en el encabezado.
 - Cada fila muestra la **situación + opción 1 y 2**; al abrirla, **todos** los campos.
 - La suma de recuentos es igual al total de situaciones.
 
@@ -115,7 +115,7 @@ Validado en local con el banco real de **27 situaciones**:
 | Paso | Resultado |
 |---|---|
 | 1 · Importar | `Importadas 27 situaciones`; `content-admin/data/situaciones.json` creado (`version: 1`, 27) |
-| 2 · Panel | 9 tablas por categoría con recuentos que **suman 27** y situación + opción 1 y 2 en cada fila |
+| 2 · Panel | 2 tablas por momento (verano/febrero) con recuentos que **suman 27** y situación + opción 1 y 2 en cada fila |
 | 3 · CRUD | Alta válida → 28 y la fila aparece; formulario vacío → **8 errores legibles** y 422 **sin escribir**; borrado con confirmación → 27 |
 | 4 · Volcar | genera `7/11/3/6` por fichero; **dos ejecuciones seguidas → mismo `git diff`** (idempotente) |
 | 5 · Juego | `npm run check` verde (**46 ficheros, 232 tests**); `contenido:informe` → **27 situaciones, 87 opciones, 6 excepciones, 0 flags sin declarar, 0 inalcanzables** |

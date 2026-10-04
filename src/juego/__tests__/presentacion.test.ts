@@ -9,7 +9,6 @@ import {
   etiquetaModalidad,
   etiquetaMomento,
   etiquetaPremio,
-  etiquetaTipo,
   FRASE_CIERRE,
   MODALIDADES_INFO,
   mensajeError,
@@ -28,11 +27,10 @@ describe("presentacion", () => {
     expect(tituloDelJuego("no_binario")).toBe("Coplere")
   })
 
-  it("traduce momento, tipo, fase, modalidad y premio", () => {
+  it("traduce momento, fase, modalidad y premio", () => {
     expect(etiquetaMomento("verano")).toBe("Verano")
     expect(etiquetaMomento("febrero")).toBe("Febrero")
     expect(etiquetaMomento("resultado")).toBe("Resultado")
-    expect(etiquetaTipo("contenido")).toBe("Contenido")
     expect(etiquetaFase("semifinales")).toBe("Semifinales")
     expect(etiquetaModalidad("chirigotero")).toBe("Chirigotero")
     expect(etiquetaPremio("aguja_de_oro")).toBe("Aguja de oro")
@@ -193,7 +191,6 @@ describe("presentacion", () => {
       mensajeError({
         codigo: "CONTENIDO_INSUFICIENTE",
         momento: "febrero",
-        tipo: "personaje",
       }),
     ).toContain("Febrero")
   })

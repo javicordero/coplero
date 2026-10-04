@@ -41,7 +41,7 @@ La **clave de pantalla** es la concatenación `pantalla|momento|ano`.
 | 2 | `[data-testid="crear-personaje"]`, `[data-testid="crear"]`, `getByLabel("Nombre o apodo")` | crear personaje valida el nombre y avanza |
 | 3 | `[data-testid="modalidad"] button` | hay al menos una modalidad |
 | 4 | `[data-testid="variante"] button` | hay al menos una variante |
-| 5 | `[data-testid="decision"] button`, `[data-testid="indicador"][data-tipo]` | cada decisión expone opciones y su tipo |
+| 5 | `[data-testid="decision"] button`, `[data-testid="indicador"]` | cada decisión expone opciones y su momento |
 | 6 | `[data-pantalla]`, `[data-testid="continuar-ano"]` | el bucle siempre progresa a un estado nuevo |
 | 7 | `[data-testid="fin"]`, `[data-testid="tarjeta"]`, `[data-testid="tarjeta-nombre"]` | el fin del bucle renderiza la tarjeta con el nombre |
 | 8 | `[data-testid="continuar"]` tras recargar | con partida en curso, la intro ofrece continuar |
@@ -50,9 +50,7 @@ La **clave de pantalla** es la concatenación `pantalla|momento|ano`.
 
 ### Anclaje nuevo
 
-- `IndicadorContexto.svelte` MUST exponer `data-tipo` con el valor de la decisión
-  (`contenido | personaje`) cuando está presente. Es el único añadido requerido por la prueba; no
-  cambia el texto ni el comportamiento visible.
+- *(Retirado el 2026-10-04.)* El atributo `data-tipo` del indicador se eliminó junto con el `tipo`. El indicador expone el momento; no cambia el texto ni el comportamiento visible.
 
 ## 4 · Forma del enlace
 

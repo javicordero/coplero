@@ -12,7 +12,6 @@ function decision(over: Partial<DecisionRegistrada> = {}): DecisionRegistrada {
   return {
     ano: 1,
     momento: "verano",
-    tipo: "contenido",
     situacionId: "s",
     opcionId: "o",
     flags: [],
@@ -157,8 +156,8 @@ describe("auditarCarrera", () => {
   it("detecta composicion anual incorrecta", () => {
     const r = registroFalso({
       decisiones: [
-        decision({ tipo: "contenido" }),
-        decision({ tipo: "contenido" }),
+        decision({ momento: "verano" }),
+        decision({ momento: "verano" }),
       ],
     })
     expect(reglas(r)).toContain("composicionAnualIncorrecta")

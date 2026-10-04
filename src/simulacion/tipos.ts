@@ -12,7 +12,6 @@ import type {
   Premio,
   Situacion,
   TarjetaFinal,
-  TipoDecision,
   VarianteId,
 } from "../engine/index"
 
@@ -79,7 +78,6 @@ export interface ErrorAgregable {
 export interface DecisionRegistrada {
   ano: number
   momento: Momento
-  tipo: TipoDecision
   situacionId: string
   opcionId: string
   flags: string[]

@@ -11,7 +11,6 @@ import type {
   LogroCOAC,
   Momento,
   PremioTipo,
-  TipoDecision,
   VarianteId,
 } from "../engine/index"
 
@@ -25,11 +24,6 @@ const MOMENTOS: Record<Momento | "resultado", string> = {
   verano: "Verano",
   febrero: "Febrero",
   resultado: "Resultado",
-}
-
-const TIPOS: Record<TipoDecision, string> = {
-  contenido: "Contenido",
-  personaje: "Personaje",
 }
 
 const FASES: Record<FaseCOAC, string> = {
@@ -66,10 +60,6 @@ export function anoDelMomento(
   momento: Momento | "resultado",
 ): number {
   return momento === "verano" ? ano - 1 : ano
-}
-
-export function etiquetaTipo(tipo: TipoDecision): string {
-  return TIPOS[tipo]
 }
 
 export function etiquetaFase(fase: FaseCOAC): string {
@@ -293,6 +283,6 @@ export function mensajeError(error: ErrorMotor): string {
     case "VARIANTE_INVALIDA":
       return "Esa variante ya no está disponible."
     case "CONTENIDO_INSUFICIENTE":
-      return `No hay contenido disponible para ${etiquetaMomento(error.momento)} / ${etiquetaTipo(error.tipo)}.`
+      return `No hay contenido disponible para ${etiquetaMomento(error.momento)}.`
   }
 }

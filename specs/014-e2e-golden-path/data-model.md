@@ -44,9 +44,8 @@ Identifica de forma única el punto observable del bucle jugable.
 
 Subconjunto derivado de la pantalla de decisión, para FR-005.
 
-- **`tipo`**: `contenido | personaje`, leído del nuevo `[data-tipo]` del indicador de contexto.
-- **Regla**: a lo largo del hito 5–6 la prueba MUST haber observado **al menos un** `contenido` y
-  **al menos un** `personaje`. El motor garantiza una de cada por año; la prueba lo evidencia.
+- **`momento`**: `verano | febrero`, leído de `[data-testid="indicador"]`.
+- **Regla**: a lo largo del hito 5–6 la prueba MUST haber observado decisiones de ambos momentos. El motor garantiza una de cada por año; la prueba lo evidencia. *(El antiguo `[data-tipo]` se retiró el 2026-10-04.)*
 
 ### PartidaGuardada
 

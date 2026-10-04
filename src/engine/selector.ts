@@ -5,23 +5,7 @@ import type {
   Partida,
   Situacion,
   SituacionPublica,
-  TipoDecision,
 } from "./types"
-
-/**
- * Asignación determinista del tipo de decisión por año (D5): un año tiene una
- * decisión de contenido y una de personaje; el motor decide el orden.
- */
-export function tiposDelAno(p: Partida): [TipoDecision, TipoDecision] {
-  const rng = rngPara(p.seed, "tipos", p.anoActual)
-  const primero: TipoDecision = rng() < 0.5 ? "contenido" : "personaje"
-  return [primero, primero === "contenido" ? "personaje" : "contenido"]
-}
-
-export function tipoActual(p: Partida): TipoDecision {
-  const tipos = tiposDelAno(p)
-  return tipos[Math.min(p.decisionesTomadasAno, tipos.length - 1)]
-}
 
 function esVista(p: Partida, id: string): boolean {
   return p.vistas.includes(id)
@@ -31,8 +15,8 @@ function noVistaPermitida(s: Situacion, p: Partida): boolean {
   return s.unicaVez === false || !esVista(p, s.id)
 }
 
-function cumpleEstricto(s: Situacion, p: Partida, tipo: TipoDecision): boolean {
-  if (s.momento !== p.momento || s.tipo !== tipo) return false
+function cumpleEstricto(s: Situacion, p: Partida): boolean {
+  if (s.momento !== p.momento) return false
   if (s.modalidades && !s.modalidades.includes(p.modalidad)) return false
   if (s.variantes && !s.variantes.includes(p.variante)) return false
   if (s.minAno !== undefined && p.anoActual - p.anoInicio + 1 < s.minAno)
@@ -49,20 +33,18 @@ function elegirDe(candidatas: Situacion[], p: Partida): Situacion {
 }
 
 /**
- * Selecciona la situación del momento y tipo actuales.
+ * Selecciona la situación del momento actual.
  * Degradación en cadena (FR-018): estricto → relajar filtros → reciclar.
- * Devuelve `null` solo si el banco no tiene ninguna situación para momento/tipo.
+ * Devuelve `null` solo si el banco no tiene ninguna situación para el momento.
  */
 export function seleccionarSituacion(
   p: Partida,
   banco: BancoContenido,
 ): Situacion | null {
-  const tipo = tipoActual(p)
   const condicionales = (banco.condicionales ?? [])
     .filter(
       (c) =>
         c.momento === p.momento &&
-        c.tipo === tipo &&
         (!c.modalidades || c.modalidades.includes(p.modalidad)) &&
         (!c.variantes || c.variantes.includes(p.variante)) &&
         (c.minAno === undefined || p.anoActual - p.anoInicio + 1 >= c.minAno) &&
@@ -77,17 +59,15 @@ export function seleccionarSituacion(
     if (rng() < c.probabilidad) return c
   }
 
-  const estricto = banco.situaciones.filter((s) => cumpleEstricto(s, p, tipo))
+  const estricto = banco.situaciones.filter((s) => cumpleEstricto(s, p))
   if (estricto.length > 0) return elegirDe(estricto, p)
 
   const relajado = banco.situaciones.filter(
-    (s) => s.momento === p.momento && s.tipo === tipo && noVistaPermitida(s, p),
+    (s) => s.momento === p.momento && noVistaPermitida(s, p),
   )
   if (relajado.length > 0) return elegirDe(relajado, p)
 
-  const reciclado = banco.situaciones.filter(
-    (s) => s.momento === p.momento && s.tipo === tipo,
-  )
+  const reciclado = banco.situaciones.filter((s) => s.momento === p.momento)
   if (reciclado.length > 0) {
     // Reutiliza las vistas hace más tiempo (ignora unicaVez).
     reciclado.sort(
@@ -103,8 +83,6 @@ export function toPublica(s: Situacion): SituacionPublica {
   return {
     id: s.id,
     momento: s.momento,
-    tipo: s.tipo,
-    categoria: s.categoria,
     titulo: s.titulo,
     texto: s.texto,
     opciones: s.opciones.map((o) => ({

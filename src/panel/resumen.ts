@@ -1,21 +1,19 @@
-// Agrupado por categoría para el panel (009). Módulo PURO (sin node:fs y sin Zod
+// Agrupado por momento para el panel (009). Módulo PURO (sin node:fs y sin Zod
 // en runtime): la isla puede importarlo. Ver specs/009-content-admin/data-model.md.
 
-import { CATEGORIAS, type Categoria } from "../content/modalidades"
+import { MOMENTOS, type Momento } from "../content/modalidades"
 import type { Situacion } from "../content/schema"
 
-export interface GrupoCategoria {
-  categoria: Categoria
+export interface GrupoMomento {
+  momento: Momento
   situaciones: Situacion[]
   total: number
 }
 
-/** Devuelve un grupo por cada categoría (aunque esté vacía), con su recuento. */
-export function agruparPorCategoria(
-  situaciones: Situacion[],
-): GrupoCategoria[] {
-  return CATEGORIAS.map((categoria) => {
-    const delGrupo = situaciones.filter((s) => s.categoria === categoria)
-    return { categoria, situaciones: delGrupo, total: delGrupo.length }
+/** Devuelve un grupo por cada momento (aunque esté vacío), con su recuento. */
+export function agruparPorMomento(situaciones: Situacion[]): GrupoMomento[] {
+  return MOMENTOS.map((momento) => {
+    const delGrupo = situaciones.filter((s) => s.momento === momento)
+    return { momento, situaciones: delGrupo, total: delGrupo.length }
   })
 }

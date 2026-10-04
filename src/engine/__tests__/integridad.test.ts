@@ -13,10 +13,9 @@ describe("integridad del banco de fixtures", () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it("toda situación declara momento y tipo", () => {
+  it("toda situación declara un momento válido", () => {
     for (const s of todas()) {
       expect(["verano", "febrero"]).toContain(s.momento)
-      expect(["contenido", "personaje"]).toContain(s.tipo)
     }
   })
 
@@ -43,18 +42,13 @@ describe("integridad del banco de fixtures", () => {
     }
   })
 
-  it("hay cobertura para cada momento y tipo (sin filtros restrictivos)", () => {
+  it("hay cobertura para cada momento (sin filtros restrictivos)", () => {
     for (const momento of ["verano", "febrero"] as const) {
-      for (const tipo of ["contenido", "personaje"] as const) {
-        const candidatas = bancoPrueba.situaciones.filter(
-          (s: Situacion) =>
-            s.momento === momento &&
-            s.tipo === tipo &&
-            !s.modalidades &&
-            !s.variantes,
-        )
-        expect(candidatas.length).toBeGreaterThan(0)
-      }
+      const candidatas = bancoPrueba.situaciones.filter(
+        (s: Situacion) =>
+          s.momento === momento && !s.modalidades && !s.variantes,
+      )
+      expect(candidatas.length).toBeGreaterThan(0)
     }
   })
 })

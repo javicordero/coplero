@@ -1,9 +1,7 @@
 import { condicionalesFebrero } from "./condicionales/febrero"
 import { condicionalesVerano } from "./condicionales/verano"
-import { situacionesFebreroContenido } from "./decisiones/febrero/contenido"
-import { situacionesFebreroPersonaje } from "./decisiones/febrero/personaje"
-import { situacionesVeranoContenido } from "./decisiones/verano/contenido"
-import { situacionesVeranoPersonaje } from "./decisiones/verano/personaje"
+import { situacionesFebrero } from "./decisiones/febrero"
+import { situacionesVerano } from "./decisiones/verano"
 import {
   type BancoContenido,
   BancoContenidoSchema,
@@ -21,7 +19,6 @@ export * from "./modalidades"
 export type {
   Atributo,
   BancoContenido,
-  Categoria,
   Condicional,
   FaseCOAC,
   Modalidad,
@@ -29,7 +26,6 @@ export type {
   Opcion,
   Requisito,
   Situacion,
-  TipoDecision,
 } from "./schema"
 export * from "./variantes"
 export {
@@ -43,12 +39,7 @@ export {
 
 /** Datos crudos del banco, sin validar. */
 export const bancoContenidoBruto: unknown = {
-  situaciones: [
-    ...situacionesVeranoContenido,
-    ...situacionesVeranoPersonaje,
-    ...situacionesFebreroContenido,
-    ...situacionesFebreroPersonaje,
-  ],
+  situaciones: [...situacionesVerano, ...situacionesFebrero],
   condicionales: [...condicionalesVerano, ...condicionalesFebrero],
   variantes: VARIANTES.map((v) => ({ id: v.id, modalidad: v.modalidad })),
   textosTarjeta: TEXTOS_TARJETA,

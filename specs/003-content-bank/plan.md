@@ -26,7 +26,7 @@ Convertir el banco de situaciones descrito en `docs/03-banco-verano.md` y `docs/
 
 **Constraints**: `content` MUST NOT importar de `engine` ni de `web`; ids únicos; flags referenciadas existentes; sin situaciones inventadas; sin nombres reales.
 
-**Scale/Scope**: 27 situaciones base documentadas (18 verano + 9 febrero), 11 condicionales (7 verano + 4 febrero) y 1 situación de 3 opciones. El banco crecerá a 60-80; el diseño debe soportarlo sin cambios de motor.
+**Scale/Scope**: 27 situaciones base documentadas (18 verano + 9 febrero), 11 condicionales (7 verano + 4 febrero) y 1 situación de 3 opciones. El banco crecerá a 60-80; el diseño debe soportarlo sin cambios de motor. Desde 2026-10-04 no hay `tipo` ni `categoria`.
 
 ## Constitution Check
 
@@ -36,7 +36,7 @@ Convertir el banco de situaciones descrito en `docs/03-banco-verano.md` y `docs/
 |---|---|---|
 | I. Motor independiente y determinista | ✅ PASS | El feature no toca el motor ni introduce azar/tiempo. El motor sigue sin importar `content`. |
 | II. Contenido como datos, no código | ✅ PASS | Objetos declarativos validados con Zod; `momento` obligatorio; flags que no se borran; `saltaCOAC` en las opciones que no concursan; sin nombres reales. |
-| III. Verificación determinista y balance | ✅ PASS | Tests de integridad (ids, momento/tipo/categoría, flags, cobertura) + simulación sobre el banco real. Los valores de efecto se copian de la doc; recalibrar es T13 y queda fuera. |
+| III. Verificación determinista y balance | ✅ PASS | Tests de integridad (ids, momento, flags, cobertura) + simulación sobre el banco real. Los valores de efecto se copian de la doc; recalibrar es T13 y queda fuera. |
 | IV. Rendimiento y mobile-first | ✅ PASS (N/A) | No hay UI en este feature; no añade JS al jugador. |
 | V. Simplicidad y proyecto único | ✅ PASS | Sin capas nuevas ni paquetes; el contenido vive en `src/content` y su forma se verifica con un test de compatibilidad estructural. |
 
@@ -98,7 +98,7 @@ scripts/
 package.json                         # Nuevo script de informe de contenido
 ```
 
-**Structure Decision**: Proyecto único existente. El contenido se organiza por momento, tipo y categoría en ficheros `.ts` bajo `src/content/`, se ensambla y valida en `src/content/index.ts`, y se expone como `bancoContenido: BancoContenido`. El motor no cambia: `web` y `scripts/` serán quienes importen `content` y lo inyecten. Se separa `schema.ts`/`modalidades.ts` de los datos para que añadir situaciones no toque el esquema ni el motor.
+**Structure Decision**: Proyecto único existente. El contenido se organiza por **momento** en ficheros `.ts` bajo `src/content/`, se ensambla y valida en `src/content/index.ts`, y se expone como `bancoContenido: BancoContenido`. El motor no cambia: `web` y `scripts/` serán quienes importen `content` y lo inyecten. Se separa `schema.ts`/`modalidades.ts` de los datos para que añadir situaciones no toque el esquema ni el motor.
 
 ## Complexity Tracking
 

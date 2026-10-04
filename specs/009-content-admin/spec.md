@@ -21,31 +21,31 @@
 
 ### Session 2026-09-21
 
-- Q: ¿Dónde se crean las categorías de las situaciones? (FR-014, FR-023) → A: opción **B2**: el panel las gestiona en una pantalla «Categorías» escribiendo `src/content/categorias.ts` (fuente única del catálogo). No se pueden borrar categorías **en uso**; el renombrado queda fuera de alcance. El tipo `Categoria` del motor se relaja a `string` porque el motor no puede importar de `content`.
+- Q: ¿Dónde se crean las categorías de las situaciones? → A: *(Obsoleto desde 2026-10-04.)* Se eligió B2 (pantalla «Categorías»), pero las categorías se retiraron después junto con el `tipo`.
 
 ## User Scenarios & Testing *(mandatory)*
 
-### User Story 1 - Ver el banco de situaciones por categorías (Priority: P1)
+### User Story 1 - Ver el banco de situaciones por momento (Priority: P1)
 
-El diseñador abre el panel en su máquina y ve todas las situaciones del juego organizadas en tablas separadas por categoría, cada tabla con un encabezado que indica cuántas situaciones contiene, y cada fila mostrando la situación junto con sus opciones. Puede abrir cualquiera para verla entera. Sirve para hacerse una idea del banco de un vistazo y detectar huecos.
+El diseñador abre el panel en su máquina y ve todas las situaciones del juego organizadas en tablas separadas por momento (verano y febrero), cada tabla con un encabezado que indica cuántas situaciones contiene, y cada fila mostrando la situación junto con sus opciones. Puede abrir cualquiera para verla entera. Sirve para hacerse una idea del banco de un vistazo y detectar huecos.
 
 **Why this priority**: sin una vista fiable del banco no se puede crear ni editar con criterio. Es la base del panel y lo primero que aporta valor.
 
-**Independent Test**: abrir el panel con el banco actual cargado y comprobar que aparecen todas las situaciones, agrupadas por categoría, con recuentos correctos y con la situación y sus opciones visibles en cada fila.
+**Independent Test**: abrir el panel con el banco actual cargado y comprobar que aparecen todas las situaciones, agrupadas por momento, con recuentos correctos y con la situación y sus opciones visibles en cada fila.
 
 **Acceptance Scenarios**:
 
-1. **Given** el banco actual, **When** se abre el panel, **Then** se muestran tablas separadas por categoría.
-2. **Given** una categoría con N situaciones, **When** se muestra su tabla, **Then** el encabezado indica N y la tabla contiene exactamente N filas.
+1. **Given** el banco actual, **When** se abre el panel, **Then** se muestran tablas separadas por momento.
+2. **Given** un momento con N situaciones, **When** se muestra su tabla, **Then** el encabezado indica N y la tabla contiene exactamente N filas.
 3. **Given** una situación con al menos dos opciones, **When** se muestra su fila, **Then** se ven la situación y las opciones (al menos la 1 y la 2).
 4. **Given** una situación, **When** se abre, **Then** se ven todos sus campos.
-5. **Given** dos categorías, **When** se comparan sus recuentos, **Then** la suma de recuentos coincide con el total de situaciones del banco.
+5. **Given** dos momentos, **When** se comparan sus recuentos, **Then** la suma de recuentos coincide con el total de situaciones del banco.
 
 ---
 
 ### User Story 2 - Crear, editar y eliminar situaciones (Priority: P1)
 
-El diseñador crea una situación nueva rellenando un formulario con todos los campos del modelo (momento, tipo, categoría, título, texto, modalidades, variantes, año mínimo, si es única, peso y opciones con sus flags y, solo si son excepciones declaradas, sus efectos), o edita una existente, o la elimina. Al guardar, si algo no cumple las reglas del juego, se lo dice de forma legible y no lo guarda a medias.
+El diseñador crea una situación nueva rellenando un formulario con todos los campos del modelo (momento, título, texto, modalidades, variantes, año mínimo, si es única, peso y opciones con sus flags y, solo si son excepciones declaradas, sus efectos), o edita una existente, o la elimina. Al guardar, si algo no cumple las reglas del juego, se lo dice de forma legible y no lo guarda a medias.
 
 **Why this priority**: es el núcleo de la herramienta: sin alta/edición/borrado no hay panel. Va a la par de la vista (P1).
 
@@ -55,7 +55,7 @@ El diseñador crea una situación nueva rellenando un formulario con todos los c
 
 1. **Given** el formulario en blanco, **When** se rellenan todos los campos obligatorios y se guarda, **Then** la situación aparece en su tabla y queda persistida en local.
 2. **Given** una situación existente, **When** se edita un campo y se guarda, **Then** el cambio se refleja en la tabla y persiste.
-3. **Given** una situación existente, **When** se elimina y se confirma, **Then** desaparece de la tabla y del almacén local, y el recuento de su categoría baja en uno.
+3. **Given** una situación existente, **When** se elimina y se confirma, **Then** desaparece de la tabla y del almacén local, y el recuento de su momento baja en uno.
 4. **Given** un formulario con datos inválidos (campos vacíos, menos de dos opciones, ids de opción duplicados), **When** se intenta guardar, **Then** se rechaza con un mensaje legible y no se corrompe el almacén.
 5. **Given** una situación con filtro de modalidad (o sin él, aplicable a ambas), **When** se guarda, **Then** el filtro queda reflejado tal cual.
 6. **Given** una situación con varias opciones, **When** se guarda, **Then** se conservan todas las opciones con sus campos.
@@ -94,7 +94,7 @@ Cuando el diseñador da el banco por bueno en el panel, ejecuta un proceso que l
 - **Caracteres especiales en textos** (tildes, comillas, `{}`): se guardan y se vuelcan sin romper nada.
 - **Situación común (sin filtros) para cada momento/tipo**: al volcar hay que preservar la regla de que exista al menos una por momento/tipo.
 - **Panel en producción**: no debe ser accesible fuera de local.
-- **Eliminar una categoría en uso**: se rechaza con un mensaje legible (por una situación o un condicional), igual que la flag huérfana.
+- **Eliminar una categoría en uso**: *ya no aplica* (las categorías se retiraron el 2026-10-04).
 
 ## Requirements *(mandatory)*
 
@@ -108,22 +108,22 @@ Cuando el diseñador da el banco por bueno en el panel, ejecuta un proceso que l
 
 **Consulta**
 
-- **FR-004**: El panel MUST mostrar las situaciones en tablas separadas por categoría.
+- **FR-004**: El panel MUST mostrar las situaciones en tablas separadas por momento.
 - **FR-005**: Cada tabla MUST indicar en su encabezado cuántas situaciones contiene.
 - **FR-006**: Cada fila MUST mostrar la situación y sus opciones (al menos la opción 1 y la 2).
 - **FR-007**: El panel MUST permitir abrir una situación para ver todos sus campos.
 
 **Edición**
 
-- **FR-008**: El panel MUST permitir crear una situación con todos los campos del modelo: `momento`, `tipo`, `categoria`, `titulo`, `texto`, `modalidades` (opcional), `variantes` (opcional), `minAno` (opcional), `unicaVez` (opcional), `peso` (opcional) y una lista de opciones.
+- **FR-008**: El panel MUST permitir crear una situación con todos los campos del modelo: `momento`, `titulo`, `texto`, `modalidades` (opcional), `variantes` (opcional), `minAno` (opcional), `unicaVez` (opcional), `peso` (opcional) y una lista de opciones.
 - **FR-009**: Cada opción MUST permitir `titulo`, `subtitulo`, `flags`, `consume`, `peso`, `saltaCOAC`, `cambiaModalidad` y `cambiaVariante` y, **solo** para las excepciones declaradas, `excepcion: true` con sus `efectos` por atributo.
 - **FR-010**: El panel MUST permitir editar cualquier situación existente conservando todos sus campos.
 - **FR-011**: El panel MUST permitir eliminar una situación, con confirmación previa.
 - **FR-012**: El panel MUST validar con las **mismas reglas del juego** antes de guardar y MUST mostrar los errores de forma legible, sin escribir datos inválidos.
 - **FR-013**: Cuando una situación no aplica a una sola modalidad, el formulario MUST permitir dejarla sin filtro (común a ambas) o marcarla para una o varias modalidades.
-- **FR-014**: El panel MUST trabajar con los catálogos cerrados del juego (momentos, tipos, atributos, modalidades, fases) sin inventar valores nuevos. Las **categorías** se gestionan como describe FR-023.
+- **FR-014**: El panel MUST trabajar con los catálogos cerrados del juego (momentos, atributos, modalidades, fases) sin inventar valores nuevos.
 - **FR-015**: Al representar una decisión, el panel MUST distinguir las opciones que **no afectan al resultado** (caso por defecto, sin campos de efecto) de las **excepciones declaradas** que sí mueven atributos (`excepcion: true`, con sus efectos y una contrapartida visible en el subtítulo). El modelo es el de la feature 008; el panel MUST NOT inventar otro.
-- **FR-023**: El panel MUST permitir **añadir y eliminar categorías** de situación desde una pantalla propia. El catálogo vive en `src/content/categorias.ts` (generado, fuente única) y el formulario MUST ofrecer esos mismos valores. MUST rechazar eliminar una categoría **en uso** por alguna situación o condicional, y MUST NOT dejar el catálogo vacío. El **renombrado** de categorías queda fuera de alcance.
+- **FR-023**: *(Retirada el 2026-10-04.)* Las categorías de situación se eliminaron junto con el campo `categoria`; la pantalla «Categorías» y el catálogo `src/content/categorias.ts` ya no existen.
 
 **Volcado al juego**
 
@@ -140,18 +140,18 @@ Cuando el diseñador da el banco por bueno en el panel, ejecuta un proceso que l
 
 ### Key Entities *(include if data involved)*
 
-- **Situación**: decisión del banco (momento, tipo, categoría, título, texto, filtros opcionales y una o más opciones).
+- **Situación**: decisión del banco (momento, título, texto, filtros opcionales y una o más opciones).
 - **Opción**: rama de una situación (título, subtítulo, flags, consumos, peso y efectos internos de trayectoria). Por defecto **no mueve atributos**; solo las **excepciones declaradas** llevan efectos sobre atributos.
 - **Almacén local**: fichero de datos en disco, editable desde el panel, que actúa como base de datos local.
 - **Volcado**: proceso que convierte el almacén local en el contenido que consume el juego, validado con las reglas del juego.
 - **Decisión que no afecta al resultado**: opción cuyo valor es narrativo y no cambia los atributos; es el comportamiento **por defecto**. Su opuesta es la **excepción declarada** (`excepcion: true`).
-- **Catálogos cerrados**: momentos, tipos, categorías, atributos, modalidades y fases; no se inventan valores fuera de ellos.
+- **Catálogos cerrados**: momentos, atributos, modalidades y fases; no se inventan valores fuera de ellos.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001**: El 100% de las situaciones del banco actual aparecen en el panel, agrupadas por categoría y con recuentos que coinciden con la realidad.
+- **SC-001**: El 100% de las situaciones del banco actual aparecen en el panel, agrupadas por momento y con recuentos que coinciden con la realidad.
 - **SC-002**: Se puede crear una situación desde cero en el panel y verla en el juego ejecutando el volcado, sin editar ningún fichero a mano.
 - **SC-003**: El 100% de los intentos de guardar contenido inválido se rechazan con un mensaje legible y no corrompen el almacén.
 - **SC-004**: Un almacén con errores nunca produce contenido del juego roto: el volcado falla de forma legible en el 100% de los casos.
@@ -160,7 +160,7 @@ Cuando el diseñador da el banco por bueno en el panel, ejecuta un proceso que l
 - **SC-007**: El panel no es accesible en producción en el 100% de los casos.
 - **SC-008**: El ciclo completo (crear → volcar → ver en el juego) se realiza en menos de 2 minutos.
 - **SC-009**: El banco actual se importa al almacén con **un solo comando** y el 100% de las situaciones existentes queda disponible en el panel.
-- **SC-010**: Se puede añadir una categoría desde el panel y aparece en el formulario de situación **sin tocar código**; intentar eliminar una categoría en uso se rechaza en el 100% de los casos.
+- **SC-010**: *(Retirada el 2026-10-04.)* Añadir/eliminar categorías desde el panel ya no aplica.
 
 ## Assumptions
 
@@ -170,7 +170,7 @@ Cuando el diseñador da el banco por bueno en el panel, ejecuta un proceso que l
 - **Recomendación sobre la infraestructura local**: se evaluó `json-server` y se descarta como opción principal por añadir un segundo proceso y una dependencia genérica. **Decidido (2026-09-20)**: una ruta local dentro del propio proyecto que lee/escribe el fichero de datos, reutilizando el esquema del juego, servida **solo en desarrollo** (404 en producción) y con el almacén JSON versionado. El detalle se cerrará en el plan.
 - **Solo en desarrollo**: el panel se sirve únicamente en el entorno local y no se construye en el despliegue.
 - **Alcance de esta primera versión: situaciones**. Los condicionales comparten forma con las situaciones y quedan como extensión posterior (registrar si se posponen).
-- **El panel no inventa catálogos**: momentos, tipos, categorías, atributos, modalidades y fases son cerrados.
+- **El panel no inventa catálogos**: momentos, atributos, modalidades y fases son cerrados.
 - **Coherencia con el motor**: el volcado no cambia reglas del motor; solo produce datos conformes al esquema vigente.
 - **Los ficheros del juego se siguen validando en build** con Zod, como hoy.
-- **Categorías**: siguen siendo el catálogo del juego, pero gestionable desde el panel; `src/content/categorias.ts` es su fuente única y el tipo `Categoria` del motor es `string` (el motor no puede importar de `content`; la validación fuerte la hace el Zod del contenido).
+- **Categorías**: retiradas el 2026-10-04 junto con el `tipo`; el panel agrupa las situaciones por momento.

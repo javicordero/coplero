@@ -4,8 +4,6 @@
 
 ---
 
-## 🎨 Tipo contenido
-
 ### 🎤 Repertorio sobre el escenario
 
 | Situación | Opción 1 | Opción 2 | Flags |
@@ -17,8 +15,6 @@
 > ⚠️ La primera situación usa `modalidades: ["chirigotero"]`. Falta su equivalente de comparsa (cierre del popurrí: apoteosis coral vs. cierre a capela).
 
 ---
-
-## 🧍 Tipo personaje
 
 ### ⚖️ Jurado y concurso
 

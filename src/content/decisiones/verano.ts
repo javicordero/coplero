@@ -1,12 +1,32 @@
 // GENERADO por `npm run panel:volcar` — no editar a mano.
-import type { Situacion } from "../../schema"
+import type { Situacion } from "../schema"
 
-export const situacionesVeranoPersonaje: Situacion[] = [
+export const situacionesVerano: Situacion[] = [
+  {
+    id: "v_arreglo",
+    momento: "verano",
+    titulo:
+      "Te ofrecen un arreglo musical firmado por un músico de fuera del carnaval",
+    texto: "",
+    opciones: [
+      {
+        id: "aceptar",
+        titulo: "Aceptar el arreglo",
+        subtitulo: "Sonar distinto a todos",
+        flags: ["musico_externo"],
+      },
+      {
+        id: "casa",
+        titulo: "Hacerlo en casa",
+        subtitulo: "Aquí sabemos lo que hacemos",
+        flags: ["musica_casera"],
+      },
+    ],
+    unicaVez: true,
+  },
   {
     id: "v_enfado_coac",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "concurso",
     titulo:
       "Te enfadas con el COAC por unos resultados que consideras injustos",
     texto: "",
@@ -38,8 +58,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_fichaje",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Te ofrecen fichar por otra agrupación más grande",
     texto: "",
     opciones: [
@@ -61,8 +79,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_filtracion",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Alguien graba un ensayo y lo sube a redes antes de tiempo",
     texto: "",
     opciones: [
@@ -84,8 +100,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_grupo_consagrado",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "carrera",
     titulo:
       "Llevas muchos años con tu grupo de amigos y un grupo consagrado y puntero te ofrece ser su autor",
     texto: "",
@@ -108,8 +122,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_historico",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Un componente histórico quiere dejar el grupo",
     texto: "",
     opciones: [
@@ -129,10 +141,50 @@ export const situacionesVeranoPersonaje: Situacion[] = [
     unicaVez: true,
   },
   {
+    id: "v_letra_duro",
+    momento: "verano",
+    titulo: "Un pasodoble ha quedado muy duro con un político local",
+    texto: "",
+    opciones: [
+      {
+        id: "suavizar",
+        titulo: "Suavizarlo",
+        subtitulo: "Menos ruido, menos problemas",
+        flags: ["pasodoble_suave"],
+      },
+      {
+        id: "mantener",
+        titulo: "Mantenerlo tal cual",
+        subtitulo: "Que se note quién lo canta",
+        flags: ["pasodoble_duro"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
+    id: "v_letra_tema",
+    momento: "verano",
+    titulo: "Toca elegir tema para el repertorio",
+    texto: "",
+    opciones: [
+      {
+        id: "social",
+        titulo: "A lo social",
+        subtitulo: "Criticar lo que pasa en la calle",
+        flags: ["tema_social"],
+      },
+      {
+        id: "personal",
+        titulo: "A lo personal",
+        subtitulo: "Hablar de tu barrio, tu gente, tu vida",
+        flags: ["tema_personal"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
     id: "v_local",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "dinero",
     titulo: "El local de ensayo sube el alquiler",
     texto: "",
     opciones: [
@@ -154,8 +206,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_patrocinador",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "dinero",
     titulo: "Un patrocinador ofrece dinero a cambio de suavizar la crítica",
     texto: "",
     opciones: [
@@ -177,8 +227,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_plantilla",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Hay que cerrar la plantilla del año",
     texto: "",
     opciones: [
@@ -210,10 +258,29 @@ export const situacionesVeranoPersonaje: Situacion[] = [
     unicaVez: true,
   },
   {
+    id: "v_popurri_cierre",
+    momento: "verano",
+    titulo: "El popurrí necesita un cierre",
+    texto: "",
+    opciones: [
+      {
+        id: "coral",
+        titulo: "Cierre coral potente",
+        subtitulo: "Buscando la ovación del Falla",
+        flags: ["cierre_coral"],
+      },
+      {
+        id: "intimo",
+        titulo: "Cierre íntimo",
+        subtitulo: "Apostando por la emoción",
+        flags: ["cierre_intimo"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
     id: "v_protagonismo",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Un componente se ha hecho más conocido que tú dentro del grupo",
     texto: "",
     opciones: [
@@ -246,8 +313,6 @@ export const situacionesVeranoPersonaje: Situacion[] = [
   {
     id: "v_ritmo",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "El carnaval te está comiendo la vida de casa",
     texto: "",
     opciones: [
@@ -267,10 +332,72 @@ export const situacionesVeranoPersonaje: Situacion[] = [
     unicaVez: true,
   },
   {
+    id: "v_ruptura_grupo",
+    momento: "verano",
+    titulo: "Te separas de tu grupo tras varios años y toca escribir",
+    texto: "",
+    opciones: [
+      {
+        id: "emotivo",
+        titulo: "Pasodoble emotivo",
+        subtitulo: "Buscando emocionar",
+        flags: ["ruptura_elegante"],
+      },
+      {
+        id: "cañi",
+        titulo: "Cuplé con carga de Cádiz",
+        subtitulo: "Llamándoles de todo",
+        flags: ["ruptura_a_saco"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
+    id: "v_tipo",
+    momento: "verano",
+    titulo: "El tipo no acaba de convencer al grupo a un mes del concurso",
+    texto: "",
+    opciones: [
+      {
+        id: "cambiarlo",
+        titulo: "Cambiarlo entero",
+        subtitulo: "Aún hay tiempo",
+        flags: ["tipo_cambiado"],
+      },
+      {
+        id: "conservarlo",
+        titulo: "Sacarlo como está",
+        subtitulo: "Ya está pagado",
+        flags: ["tipo_conservado"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
+    id: "v_tono",
+    momento: "verano",
+    titulo:
+      "Un componente pide bajar el tono del pasodoble para poder cantarlo",
+    texto: "",
+    opciones: [
+      {
+        id: "bajarlo",
+        titulo: "Bajarlo",
+        subtitulo: "Que suene limpio",
+        flags: ["tono_comodo"],
+      },
+      {
+        id: "dejarlo",
+        titulo: "Dejarlo arriba",
+        subtitulo: "Ahí está el vello de punta",
+        flags: ["tono_exigente"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
     id: "v_vestuario",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "dinero",
     titulo: "Hay que decidir el presupuesto de vestuario",
     texto: "",
     opciones: [

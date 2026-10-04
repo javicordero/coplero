@@ -18,8 +18,6 @@ const base = (): Almacen => ({
 const nueva = (id: string, overrides: Partial<Situacion> = {}): Situacion => ({
   id,
   momento: "verano",
-  tipo: "personaje",
-  categoria: "dinero",
   titulo: `Título ${id}`,
   texto: "",
   opciones: [
@@ -39,19 +37,18 @@ describe("generador del volcado", () => {
     expect(ordenar(recuperadas)).toEqual(ordenar(almacen.situaciones))
   })
 
-  it("cada situación cae en el fichero de su momento y tipo", () => {
+  it("cada situación cae en el fichero de su momento", () => {
     const grupos = agrupar(base().situaciones)
     for (const fichero of FICHEROS) {
       for (const situacion of grupos[fichero.clave] ?? []) {
         expect(situacion.momento).toBe(fichero.momento)
-        expect(situacion.tipo).toBe(fichero.tipo)
       }
     }
   })
 
   it("serializar es determinista y ordena por id (SC-006)", () => {
-    const fichero = FICHEROS.find((f) => f.clave === "verano/personaje")
-    if (!fichero) throw new Error("sin fichero de verano/personaje")
+    const fichero = FICHEROS.find((f) => f.clave === "verano")
+    if (!fichero) throw new Error("sin fichero de verano")
     const situaciones = [nueva("zeta"), nueva("alfa")]
     const primera = serializar(
       fichero,
@@ -75,18 +72,15 @@ describe("generador del volcado", () => {
 
   it("un banco inválido no genera contenido (SC-004)", () => {
     const almacen = base()
-    // Eliminamos la única situación común de un momento/tipo para romper una regla cruzada.
-    const comunes = almacen.situaciones.filter(
-      (s) => s.momento === "verano" && s.tipo === "contenido",
-    )
+    // Sin ninguna situación de verano se rompe la cobertura común del momento.
     const almacenRoto: Almacen = {
       ...almacen,
-      situaciones: almacen.situaciones.filter((s) => s !== comunes[0]),
+      situaciones: almacen.situaciones.filter((s) => s.momento !== "verano"),
     }
     expect(() => volcar(almacenRoto)).toThrow(ErrorVolcado)
   })
 
-  it("el volcado válido incluye los cuatro ficheros", () => {
+  it("el volcado válido incluye los dos ficheros", () => {
     const resultado = volcar(base())
     expect(resultado.ficheros.map((f) => f.fichero.clave)).toEqual(
       FICHEROS.map((f) => f.clave),

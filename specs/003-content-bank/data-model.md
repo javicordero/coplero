@@ -7,12 +7,10 @@ Entidades y reglas del banco. Los nombres de campos coinciden con `src/engine/ty
 | Enum | Valores |
 |---|---|
 | `Momento` | `verano`, `febrero` |
-| `TipoDecision` | `contenido`, `personaje` |
-| `Categoria` | `letra`, `musica`, `puestaEnEscena`, `jurado`, `dinero`, `grupo`, `prensa`, `carrera`, `concurso` |
 | `Atributo` | `letra`, `musica`, `puestaEnEscena`, `popularidad`, `cohesion`, `dinero` |
 | `Modalidad` | `comparsista`, `chirigotero` |
 
-`variantes` es un filtro opcional de ids libres; el banco documentado no lo usa (D5).
+`tipo` (contenido/personaje) y `categoria` se **retiraron** el 2026-10-04. `variantes` es un filtro opcional de ids libres; el banco documentado no lo usa (D5).
 
 ## Entidad: `Opcion`
 
@@ -32,8 +30,6 @@ Entidades y reglas del banco. Los nombres de campos coinciden con `src/engine/ty
 |---|---|---|
 | `id` | `string` | Único en todo el banco; prefijo `v_`/`f_` (D9). |
 | `momento` | `Momento` | **Obligatorio**. |
-| `tipo` | `TipoDecision` | **Obligatorio**. |
-| `categoria` | `Categoria` | **Obligatoria**. |
 | `titulo` | `string` | Nombre documentado (D4). |
 | `texto` | `string` | Vacío (D4). |
 | `opciones` | `Opcion[]` | `>= 2`; ids únicos dentro de la situación. |
@@ -67,12 +63,12 @@ Estado en partida, no en el banco: `{ ano, veces, consumida, anosConsecutivos }`
 ## Validación (Zod, build time)
 
 1. `id` único entre todas las situaciones **y** condicionales.
-2. `momento`, `tipo` y `categoria` presentes y dentro del enum.
+2. `momento` presente y dentro del enum.
 3. `opciones.length >= 2`; cada opción con `titulo` y `subtitulo` no vacíos.
 4. `efectos` solo con atributos válidos.
 5. Toda flag referenciada por un `requiere` existe en algún `opciones[].flags`.
 6. `modalidades`/`variantes` solo con valores válidos.
-7. Cobertura: al menos una situación común (sin filtros) por cada par `momento × tipo`.
+7. Cobertura: al menos una situación común (sin filtros) por momento.
 8. El banco validado es asignable a `BancoContenido` (compatibilidad estructural).
 
 ## Ciclo de vida de una flag
@@ -81,12 +77,10 @@ Estado en partida, no en el banco: `{ ano, veces, consumida, anosConsecutivos }`
 
 ## Inventario importado (esperado)
 
-| Momento | Tipo | Situaciones | Condicionales |
-|---|---|---|---|
-| Verano | contenido | 7 | — |
-| Verano | personaje | 11 (una de 3 opciones) | 7 |
-| Febrero | contenido | 3 (una solo `chirigotero`) | — |
-| Febrero | personaje | 6 | 4 |
-| **Total** | | **27 base + 11 condicionales** | |
+| Momento | Situaciones | Condicionales |
+|---|---|---|
+| Verano | 18 (una de 3 opciones) | 7 |
+| Febrero | 9 (una solo `chirigotero`) | 4 |
+| **Total** | **27 base + 11 condicionales** | |
 
 *(Los eventos especiales de `docs/04` quedan fuera: T5, no son decisiones.)*

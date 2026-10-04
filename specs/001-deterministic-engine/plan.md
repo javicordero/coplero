@@ -57,7 +57,7 @@ partida por defecto de 20 años (provisional) con 2 decisiones por año.
 | G2 | **I. Reproducibilidad**: misma seed + decisiones → misma partida | PASS | Test de determinismo (FR-004, SC-001) |
 | G3 | **I. Estado serializable**: sin clases, con `version` | PASS | Test de round-trip serializar/deserializar (FR-003, SC-002) |
 | G4 | **II. Contenido como datos**: banco inyectado; engine no importa content | PASS | Firma de API con `banco` por parámetro + test con banco de prueba (FR-022) |
-| G5 | **II. Momento y tipo**: separación verano/febrero y contenido/personaje | PASS | Tests de selección por momento/tipo (FR-005, FR-006) |
+| G5 | **II. Momento**: separación verano/febrero | PASS | Tests de selección por momento (FR-005, FR-006) |
 | G6 | **II. Flags persistentes**: no se borran; ventana de disparo | PASS | Tests de flags consumidas y ventanas expiradas (FR-009) |
 | G7 | **III. Verificación**: tests deterministas, integridad de contenido, snapshot, simulación | PASS | Suites en `src/engine/__tests__/` (integridad sobre fixtures); la integridad del banco real llegará con la feature de content (FR de testing, SC-004) |
 | G8 | **IV. Rendimiento**: motor ligero y sin dependencias de plataforma | PASS | Sin deps de runtime; presupuesto SC-004 (D11) |
@@ -95,7 +95,7 @@ src/
 │   ├── seed.ts                 # PRNG sembrado + hash de semilla (existente, se amplía)
 │   ├── partida.ts              # crearPartida, siguientePaso, elegir, resumen (reducer puro)
 │   ├── destino.ts              # generación del techo oculto
-│   ├── selector.ts             # elección de situación (momento × tipo, filtros)
+│   ├── selector.ts             # elección de situación (por momento, con filtros)
 │   ├── condicionales.ts        # requisitos, ventanas, probabilidades
 │   ├── atributos.ts            # aplicación de efectos y clamps
 │   ├── coac.ts                 # resolución de fase y puesto

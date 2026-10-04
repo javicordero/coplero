@@ -20,8 +20,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_letra_tema",
       momento: "verano",
-      tipo: "contenido",
-      categoria: "letra",
       titulo: "Tema del repertorio",
       texto: "Hay que decidir el tema del año.",
       opciones: [
@@ -44,8 +42,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_letra_duro",
       momento: "verano",
-      tipo: "contenido",
-      categoria: "letra",
       titulo: "Pasodoble duro",
       texto: "El pasodoble ha quedado muy duro.",
       opciones: [
@@ -68,8 +64,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_musica_tipo",
       momento: "verano",
-      tipo: "contenido",
-      categoria: "musica",
       titulo: "El tipo no convence",
       texto: "El tipo no acaba de convencer.",
       opciones: [
@@ -92,8 +86,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_vestuario",
       momento: "verano",
-      tipo: "personaje",
-      categoria: "dinero",
       titulo: "Presupuesto de vestuario",
       texto: "Hay que decidir el presupuesto.",
       opciones: [
@@ -116,8 +108,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_patrocinador",
       momento: "verano",
-      tipo: "personaje",
-      categoria: "dinero",
       titulo: "Oferta de patrocinador",
       texto: "Un patrocinador ofrece dinero.",
       opciones: [
@@ -140,8 +130,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "v_grupo_historico",
       momento: "verano",
-      tipo: "personaje",
-      categoria: "grupo",
       titulo: "Componente histórico",
       texto: "Un componente histórico quiere irse.",
       opciones: [
@@ -164,8 +152,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "f_cierre",
       momento: "febrero",
-      tipo: "contenido",
-      categoria: "letra",
       titulo: "Cierre del popurrí",
       texto: "Hay que cerrar el popurrí.",
       opciones: [
@@ -188,8 +174,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "f_ensenar",
       momento: "febrero",
-      tipo: "contenido",
-      categoria: "musica",
       titulo: "Primera sesión",
       texto: "Te toca actuar en la primera sesión.",
       opciones: [
@@ -212,8 +196,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "f_jurado",
       momento: "febrero",
-      tipo: "personaje",
-      categoria: "jurado",
       titulo: "El jurado te trata injustamente",
       texto: "Sientes que el jurado es injusto.",
       opciones: [
@@ -236,8 +218,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "f_prensa",
       momento: "febrero",
-      tipo: "personaje",
-      categoria: "prensa",
       titulo: "Entrevista en la radio",
       texto: "Una radio local te pide entrevista.",
       opciones: [
@@ -262,8 +242,6 @@ export const bancoPrueba: BancoContenido = {
     {
       id: "c_patrocinador_rival",
       momento: "verano",
-      tipo: "personaje",
-      categoria: "dinero",
       titulo: "El patrocinador aparece con tu rival",
       texto: "El patrocinador que rechazaste aparece con tu rival.",
       requiere: { tipo: "flag", flag: "rechazo_patrocinio" },

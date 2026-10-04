@@ -2,11 +2,9 @@
 
 > ☀️ Todas las situaciones de esta página llevan `momento: verano`. Ocurren en el verano y otoño previos al carnaval: se escribe, se ensaya, se ficha, se paga. Nada de jurado, grada del Falla ni prensa de concurso: eso vive en Febrero.
 
-Cada año de carrera saca **una decisión de contenido y una de personaje**. Las tablas de abajo son el pool base de verano; las condicionales del final solo entran en la baraja si su flag está activa.
+Cada año de carrera saca **una situación de verano y una de febrero**. Las tablas de abajo son el pool base de verano; las condicionales del final solo entran en la baraja si su flag está activa.
 
 ---
-
-## 🎨 Tipo contenido
 
 ### 🖊️ Letra
 
@@ -27,8 +25,6 @@ Cada año de carrera saca **una decisión de contenido y una de personaje**. Las
 
 ---
 
-## 🧍 Tipo personaje
-
 ### 💰 Dinero y recursos
 
 | Situación | Opción 1 | Opción 2 | Flags |
@@ -48,13 +44,13 @@ Cada año de carrera saca **una decisión de contenido y una de personaje**. Las
 | Un componente se ha hecho más conocido que tú dentro del grupo | **Darle galones** · Si tira, que tire de todos — Popularidad +2, Cohesión +1, Letra -1 | **Marcar quién firma aquí** · El grupo tiene un autor — Letra +1, Cohesión -2 | `reparto_protagonismo` / `autoridad_marcada` |
 | Alguien graba un ensayo y lo sube a redes antes de tiempo | **Aprovechar el ruido** · Publicidad gratis — Popularidad +2, Cohesión -1 | **Cerrar el ensayo a cal y canto** · Aquí no entra nadie — Cohesión +1, Popularidad -1 | `filtracion_aprovechada` / `ensayo_cerrado` |
 
-### 🎖️ Carrera y grupo consagrado *(categoría: `carrera`)*
+### 🎖️ Carrera y grupo consagrado
 
 | Situación | Opción 1 | Opción 2 | Flags |
 | --- | --- | --- | --- |
 | Llevas muchos años con tu grupo de amigos y un grupo consagrado y puntero te ofrece ser su autor | **Fiel a la peña** · Con estos empecé y con estos sigo — Cohesión +2, Popularidad -1 | **Firmar por el grupo consagrado** · Jugar en la élite — Popularidad +2, Letra +1, Cohesión -2 | `rechace_grupo_consagrado` / `autor_grupo_consagrado` |
 
-### ⚖️ Enfado con el concurso *(categoría: `concurso`)*
+### ⚖️ Enfado con el concurso
 
 **Situación (3 opciones):** te enfadas con el COAC por unos resultados que consideras injustos y hay que decidir el año que viene.
 

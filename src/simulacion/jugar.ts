@@ -111,7 +111,6 @@ export function jugarCarrera(args: {
       decisiones.push({
         ano: p.anoActual,
         momento: p.momento,
-        tipo: situacion.tipo,
         situacionId: situacion.id,
         opcionId: opcion.id,
         flags: opcion.flags ?? [],

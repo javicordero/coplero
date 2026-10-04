@@ -25,18 +25,6 @@ describe("casos negativos de integridad", () => {
     expect(() => parsearBanco(b)).toThrow(/momento/)
   })
 
-  it("rechaza una situación sin tipo", () => {
-    const b = clon()
-    Reflect.deleteProperty(b.situaciones[0], "tipo")
-    expect(() => parsearBanco(b)).toThrow(/tipo/)
-  })
-
-  it("rechaza una situación sin categoría", () => {
-    const b = clon()
-    Reflect.deleteProperty(b.situaciones[0], "categoria")
-    expect(() => parsearBanco(b)).toThrow(/categoria/)
-  })
-
   it("rechaza una flag referenciada que no declara ninguna opción", () => {
     const b = clon()
     const inexistente: Requisito = { tipo: "flag", flag: "flag_inexistente" }
@@ -62,11 +50,9 @@ describe("casos negativos de integridad", () => {
     expect(() => parsearBanco(b)).toThrow(/id duplicado/)
   })
 
-  it("rechaza un banco sin cobertura común para un momento y tipo", () => {
+  it("rechaza un banco sin cobertura común para un momento", () => {
     const b = clon()
-    b.situaciones = b.situaciones.filter(
-      (s) => !(s.momento === "verano" && s.tipo === "contenido"),
-    )
+    b.situaciones = b.situaciones.filter((s) => s.momento !== "verano")
     expect(() => parsearBanco(b)).toThrow(/no hay ninguna situación común/)
   })
 })

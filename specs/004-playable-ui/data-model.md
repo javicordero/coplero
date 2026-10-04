@@ -86,7 +86,7 @@ Reglas:
 | `CrearPersonaje` | Título dinámico por género; campos nombre, edad, localidad, género. |
 | `ElegirModalidad` | Modalidades con título y subtítulo. |
 | `ElegirVariante` | Variantes de la modalidad, con título y subtítulo. |
-| `Decision` | Indicador (año, momento, tipo), enunciado, opciones (título, subtítulo). |
+| `Decision` | Indicador (año, momento), enunciado, opciones (título, subtítulo). |
 | `Resultado` | Indicador, fase alcanzada, puesto, premios del año. |
 | `FinCarrera` | Nombre, modalidad, variante, años en activo, mejor fase, premios. |
 | `Error` | Mensaje legible y acción de reinicio. |

@@ -84,7 +84,7 @@ coplero/
 │   │   ├── seed.ts                 # PRNG con semilla (mulberry32 / xoshiro)
 │   │   ├── partida.ts              # máquina de estados: reducer puro
 │   │   ├── destino.ts              # cálculo del techo oculto
-│   │   ├── selector.ts             # elección de situación (momento × tipo)
+│   │   ├── selector.ts             # elección de situación (por momento)
 │   │   ├── condicionales.ts        # flags, ventanas, probabilidades
 │   │   ├── atributos.ts            # aplicación de efectos, clamps
 │   │   ├── coac.ts                 # resolución de fases
@@ -101,15 +101,11 @@ coplero/
 │   ├── content/                    # ⭐ el banco, como datos
 │   │   ├── index.ts                # ensambla + valida (bancoContenido)
 │   │   ├── schema.ts               # Zod: valida TODO en build time
-│   │   ├── modalidades.ts          # catálogos cerrados (momento, tipo, categoría…)
+│   │   ├── modalidades.ts          # catálogos cerrados (momento, modalidad, variante…)
 │   │   ├── informe.ts              # recuentos, flags y alcanzabilidad estática
 │   │   ├── decisiones/
-│   │   │   ├── verano/
-│   │   │   │   ├── contenido.ts    # letra, música, puesta en escena
-│   │   │   │   └── personaje.ts    # dinero, grupo, carrera, concurso
-│   │   │   └── febrero/
-│   │   │       ├── contenido.ts
-│   │   │       └── personaje.ts    # jurado, prensa, público
+│   │   │   ├── verano.ts           # pool de verano (preparación)
+│   │   │   └── febrero.ts          # pool de febrero (concurso)
 │   │   ├── condicionales/
 │   │   │   ├── verano.ts
 │   │   │   └── febrero.ts
@@ -199,11 +195,6 @@ export type Atributos = Record<Atributo, number>; // 0..100, con clamp
 
 // src/engine/types.ts
 export type Momento = 'verano' | 'febrero';
-export type TipoDecision = 'contenido' | 'personaje';
-export type Categoria =
-  | 'letra' | 'musica' | 'puestaEnEscena'
-  | 'jurado' | 'dinero' | 'grupo' | 'prensa'
-  | 'carrera' | 'concurso';
 
 export interface Opcion {
   id: string;
@@ -219,8 +210,6 @@ export interface Opcion {
 export interface Situacion {
   id: string;
   momento: Momento;          // ← el campo que faltaba en el diseño
-  tipo: TipoDecision;
-  categoria: Categoria;
   titulo: string;
   texto: string;
   opciones: [Opcion, Opcion] | [Opcion, Opcion, Opcion];
@@ -405,22 +394,21 @@ Con dos válvulas de escape para que haya películas:
 
 ```
 Para (año, momento):
-  1. tipoRequerido = contenido si aún no salió contenido este año, si no personaje
-  2. Candidatas condicionales:
+  1. Candidatas condicionales:
        - requisito cumplido sobre flags/atributos
        - dentro de ventana (anoActual - anoFlag <= ventanaAnos)
-       - momento == momento actual, tipo == tipoRequerido
+       - momento == momento actual
        - no vista antes (si unicaVez)
      → tirar dado por probabilidad, ordenar por prioridad. Si alguna pasa → esa.
-  3. Si no: pool base filtrado por momento + tipo + modalidad/variante
-     + minAno + requiereFase + no vista
-  4. Ponderar: peso base × penalización por categoría repetida el año anterior
-  5. Elegir con rng. Si el pool se vacía → reciclar las menos recientes, ignorando `unicaVez` como último recurso.
+  2. Si no: pool base filtrado por momento + modalidad/variante
+     + minAno + no vista
+  3. Ponderar: peso base
+  4. Elegir con rng. Si el pool se vacía → reciclar las menos recientes, ignorando `unicaVez` como último recurso.
 ```
 
-Dos detalles que evitan bugs feos más tarde:
+Detalles que evitan bugs feos más tarde:
 
-- **Penalización por categoría repetida:** sin esto el jugador se come tres años seguidos de "dinero" y el juego parece roto.
+- **Sin tipos ni categorías (2026-10-04):** cada momento es un único pool; se retiró el reparto por tipo (contenido / personaje) y el catálogo de categorías. Ver `docs/01` §5.
 - **Fallback de pool vacío:** con carreras de muchos años a 2 decisiones por año hacen falta **60-80 situaciones mínimo** (30-40 por momento).
 
 > 🚨 El banco crece cada temporada; el volumen de contenido es **el verdadero cuello de botella del proyecto, no el framework**.
@@ -471,7 +459,7 @@ Un solo comando, sin copiar bundles a mano, con hashing y cache-busting automát
 
 El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable que juega carreras, agrega métricas y audita estados imposibles) y `scripts/simular.ts` (CLI delgada). Lanza N carreras automáticas con perfiles y configuraciones variados e imprime la distribución de fases, premios, duración, años de pico, el ranking de situaciones, los condicionales que nunca se disparan, los atributos mínimos/máximos/medios y cualquier estado imposible detectado; puede volcar el mismo informe a JSON. Desde CONTENT-001 la CLI consume el **banco real** de `src/content` (deuda T17 cerrada). El banco se inyecta en el módulo de simulación, que no conoce de dónde procede. Además, `scripts/informe-contenido.ts` (`npm run contenido:informe`) resume recuentos, flags declaradas/referenciadas y situaciones inalcanzables, combinando análisis estático y 10.000 carreras. Sin esto, el balance es a ciegas.
 
-**Panel local de situaciones (feature 009).** El banco de situaciones se edita con un panel **solo de desarrollo** en `/panel` (ruta on-demand con guard `import.meta.env.DEV`: fuera de desarrollo responde **404**, aunque el build la compile). El almacén `content-admin/data/situaciones.json` es la **fuente de verdad** y está versionado; las copias van a `content-admin/data/backups/` (ignoradas en git). `npm run panel:importar` vuelca el contenido actual (`src/content/decisiones/**`) al JSON y `npm run panel:volcar` lo regenera de forma **determinista y sin pérdida**; desde entonces los `.ts` de `decisiones/` son **generados** y no se editan a mano. Tanto el panel como los scripts **reutilizan los esquemas Zod** de `src/content/schema.ts` (nada de reglas duplicadas) y el volcado valida el **banco completo** antes de escribir. La lógica de servidor vive en `src/panel/` (usa `node:fs`, nunca se importa desde el cliente) y la isla Svelte en `src/panel-ui/`. El panel incluye además una pantalla **«Categorías»** para añadir y eliminar categorías de situación (FR-023): el catálogo vive en `src/content/categorias.ts` y no se puede borrar una categoría en uso. Ver `specs/009-content-admin/`.
+**Panel local de situaciones (feature 009).** El banco de situaciones se edita con un panel **solo de desarrollo** en `/panel` (ruta on-demand con guard `import.meta.env.DEV`: fuera de desarrollo responde **404**, aunque el build la compile). El almacén `content-admin/data/situaciones.json` es la **fuente de verdad** y está versionado; las copias van a `content-admin/data/backups/` (ignoradas en git). `npm run panel:importar` vuelca el contenido actual (`src/content/decisiones/**`) al JSON y `npm run panel:volcar` lo regenera de forma **determinista y sin pérdida**; desde entonces los `.ts` de `decisiones/` son **generados** y no se editan a mano. Tanto el panel como los scripts **reutilizan los esquemas Zod** de `src/content/schema.ts` (nada de reglas duplicadas) y el volcado valida el **banco completo** antes de escribir. La lógica de servidor vive en `src/panel/` (usa `node:fs`, nunca se importa desde el cliente) y la isla Svelte en `src/panel-ui/`. Ver `specs/009-content-admin/`.
 
 **Tests que sí importan:**
 

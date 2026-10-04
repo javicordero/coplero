@@ -38,8 +38,6 @@ describe("informe de contenido", () => {
         {
           id: "x",
           momento: "verano",
-          tipo: "contenido",
-          categoria: "letra",
           titulo: "x",
           texto: "",
           modalidades: [],

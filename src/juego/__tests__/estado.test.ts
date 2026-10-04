@@ -15,21 +15,17 @@ function bancoConCambio(): BancoContenido {
       cambiaModalidad: "chirigotero" as const,
     },
   ]
-  const verano = (id: string, tipo: "contenido" | "personaje") => ({
+  const verano = (id: string) => ({
     id,
     momento: "verano" as const,
-    tipo,
-    categoria: "carrera" as const,
     titulo: "Salto",
     texto: "",
     modalidades: ["comparsista" as const],
     opciones,
   })
-  const febrero = (id: string, tipo: "contenido" | "personaje") => ({
+  const febrero = (id: string) => ({
     id,
     momento: "febrero" as const,
-    tipo,
-    categoria: "concurso" as const,
     titulo: "Concurso",
     texto: "",
     opciones: [
@@ -38,12 +34,7 @@ function bancoConCambio(): BancoContenido {
     ],
   })
   return {
-    situaciones: [
-      verano("v_c", "contenido"),
-      verano("v_p", "personaje"),
-      febrero("f_c", "contenido"),
-      febrero("f_p", "personaje"),
-    ],
+    situaciones: [verano("v_c"), verano("v_p"), febrero("f_c"), febrero("f_p")],
     variantes: [
       { id: "c_a", modalidad: "comparsista" },
       { id: "ch_a", modalidad: "chirigotero" },

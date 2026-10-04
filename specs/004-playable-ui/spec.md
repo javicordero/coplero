@@ -36,15 +36,15 @@ Un jugador abre `/jugar`, ve una introducción, crea su personaje, elige modalid
 
 ### User Story 2 - Entender el contexto y decidir sin ambigüedad (Priority: P2)
 
-En cada decisión el jugador ve el año, el momento (verano/febrero) y el tipo (contenido/personaje), el enunciado de la situación y las opciones con su título y subtítulo; tras decidir, ve el resultado de la temporada de forma legible.
+En cada decisión el jugador ve el año y el momento (verano/febrero), el enunciado de la situación y las opciones con su título y subtítulo; tras decidir, ve el resultado de la temporada de forma legible.
 
 **Why this priority**: sin contexto ni resultados claros el juego no se entiende, aunque sea técnicamente jugable.
 
-**Independent Test**: recorrer varias decisiones comprobando que el indicador de contexto cambia con el año/momento/tipo y que el resultado de temporada muestra fase, puesto y premios.
+**Independent Test**: recorrer varias decisiones comprobando que el indicador de contexto cambia con el año/momento y que el resultado de temporada muestra fase, puesto y premios.
 
 **Acceptance Scenarios**:
 
-1. **Given** cualquier decisión, **When** se muestra, **Then** aparece año, momento y tipo, la situación y sus opciones con título y subtítulo.
+1. **Given** cualquier decisión, **When** se muestra, **Then** aparece año y momento, la situación y sus opciones con título y subtítulo.
 2. **Given** una decisión elegida, **When** termina el año, **Then** se muestra el resultado de temporada (fase alcanzada, puesto y premios si los hay).
 3. **Given** una situación sin texto de cuerpo (banco actual), **When** se muestra, **Then** la pantalla no queda rota ni vacía.
 
@@ -72,7 +72,7 @@ El jugador puede cerrar la pestaña y al volver a `/jugar` continuar la partida 
 - **Nombre con caracteres especiales o marcado**: se muestra siempre como texto plano (nunca HTML crudo).
 - **Recarga a mitad de una decisión**: se retoma en la misma decisión sin aplicarla dos veces.
 - **Guardado incompatible tras un despliegue**: se descarta sin romper la página.
-- **Sin contenido para un momento/tipo**: no debe ocurrir con el banco actual, pero la UI no puede quedarse en blanco; muestra un estado de error legible.
+- **Sin contenido para un momento**: no debe ocurrir con el banco actual, pero la UI no puede quedarse en blanco; muestra un estado de error legible.
 - **Carrera ya terminada**: volver a `/jugar` ofrece empezar de nuevo.
 - **Pantalla estrecha (móvil)**: el contenido se mantiene legible y accionable.
 
@@ -87,7 +87,7 @@ El jugador puede cerrar la pestaña y al volver a `/jugar` continuar la partida 
 - **FR-005**: La elección de variante MUST ofrecer las tres variantes de la modalidad elegida, con su título y subtítulo.
 - **FR-006**: Cada decisión MUST mostrar el enunciado de la situación y sus opciones con título y subtítulo, y MUST permitir elegir exactamente una opción.
 - **FR-007**: La UI MUST NOT contener lógica de juego: MUST limitarse a presentar el estado del motor y enviarle las acciones del jugador.
-- **FR-008**: Durante toda la carrera MUST mostrarse un indicador de contexto con año, momento (verano/febrero) y tipo (contenido/personaje).
+- **FR-008**: Durante toda la carrera MUST mostrarse un indicador de contexto con año y momento (verano/febrero).
 - **FR-009**: Tras cada año MUST mostrarse el resultado de la temporada con la fase alcanzada, el puesto y los premios obtenidos si los hay.
 - **FR-010**: La carrera MUST terminar en una pantalla de fin con un resumen: nombre, modalidad, variante, años en activo, mejor fase alcanzada y premios.
 - **FR-011**: La partida MUST ser determinista: una misma semilla con las mismas decisiones MUST producir el mismo resultado, y la semilla MUST generarse una sola vez por partida.
@@ -114,7 +114,7 @@ El jugador puede cerrar la pestaña y al volver a `/jugar` continuar la partida 
 ### Measurable Outcomes
 
 - **SC-001**: Un jugador completa una carrera entera desde la intro hasta la pantalla de fin sin encontrar pantallas vacías ni bloqueos.
-- **SC-002**: El 100% de las pantallas de decisión muestran el indicador de contexto (año, momento, tipo) y al menos dos opciones con título y subtítulo.
+- **SC-002**: El 100% de las pantallas de decisión muestran el indicador de contexto (año, momento) y al menos dos opciones con título y subtítulo.
 - **SC-003**: Alguna de las pantallas tras cada año muestra el resultado de la temporada con fase, puesto y premios cuando correspondan.
 - **SC-004**: Tras recargar la página a mitad de una carrera, el jugador retoma exactamente en el punto donde estaba.
 - **SC-005**: La landing y el resto de páginas no interactivas siguen sirviéndose sin JavaScript.

@@ -57,7 +57,7 @@ Proyecto único: `src/`, `scripts/`, `docs/` en la raíz del repositorio.
 
 ### Implementation for User Story 1
 
-- [X] T008 [P] [US1] Importar las 7 situaciones de contenido de verano (`docs/03` §Letra y Música) en `src/content/decisiones/verano/contenido.ts`, con `unicaVez: true`, `texto: ""`, categorías según research D6 y sin nombres reales
+- [X] T008 [P] [US1] Importar las 7 situaciones de contenido de verano (`docs/03` §Letra y Música) en `src/content/decisiones/verano/`, con `unicaVez: true`, `texto: ""` y sin nombres reales
 - [X] T009 [P] [US1] Importar las 11 situaciones de personaje de verano (`docs/03` §§Dinero, Grupo, Carrera y Concurso) en `src/content/decisiones/verano/personaje.ts`, con `unicaVez: true`, `texto: ""`, sin nombres reales, incluida la de 3 opciones "Enfado con el COAC" con `saltaCOAC: true` en "Pa la calle" y "Gira por España"
 - [X] T010 [P] [US1] Importar las 3 situaciones de contenido de febrero (`docs/04` §Repertorio) en `src/content/decisiones/febrero/contenido.ts`, con `unicaVez: true`, `texto: ""`, sin nombres reales y `modalidades: ["chirigotero"]` en el cierre del popurrí
 - [X] T011 [P] [US1] Importar las 6 situaciones de personaje de febrero (`docs/04` §§Jurado, Prensa) en `src/content/decisiones/febrero/personaje.ts`, con `unicaVez: true`, `texto: ""`, sin nombres reales y `saltaCOAC: true` en "No ir al COAC el año que viene" (`year_sabatico`)
@@ -78,8 +78,8 @@ Proyecto único: `src/`, `scripts/`, `docs/` en la raíz del repositorio.
 
 ### Tests for User Story 2
 
-- [X] T016 [P] [US2] Test de integridad sobre el banco real en `src/content/__tests__/integridad.test.ts`: ids únicos, `momento`/`tipo`/`categoria` válidos, `>=2` opciones con título y subtítulo, flags referenciadas existentes, modalidades válidas, cobertura por `momento × tipo`, `saltaCOAC` donde la doc lo indica, recuento exacto 18/9/11, ninguna opción usa `consume` (FR-006) y revisión de ausencia de nombres reales (FR-016) (SC-002, SC-004)
-- [X] T017 [P] [US2] Test de casos negativos con cobertura de **todas** las reglas de integridad en `src/content/__tests__/integridad-negativos.test.ts`: id duplicado, falta de `momento`/`tipo`/`categoria`, flag huérfana, modalidad/variante no permitida, menos de 2 opciones, cobertura de momento×tipo ausente, `saltaCOAC` ausente en opción que no concursa y recuento de contenido erróneo (SC-004)
+- [X] T016 [P] [US2] Test de integridad sobre el banco real en `src/content/__tests__/integridad.test.ts`: ids únicos, `momento` válido, `>=2` opciones con título y subtítulo, flags referenciadas existentes, modalidades válidas, cobertura por momento, `saltaCOAC` donde la doc lo indica, recuento exacto 18/9/11, ninguna opción usa `consume` (FR-006) y revisión de ausencia de nombres reales (FR-016) (SC-002, SC-004)
+- [X] T017 [P] [US2] Test de casos negativos con cobertura de **todas** las reglas de integridad en `src/content/__tests__/integridad-negativos.test.ts`: id duplicado, falta de `momento`, flag huérfana, modalidad/variante no permitida, menos de 2 opciones, cobertura de momento ausente, `saltaCOAC` ausente en opción que no concursa y recuento de contenido erróneo (SC-004)
 - [X] T018 [P] [US2] Test de alcanzabilidad (Principio III) en `src/content/__tests__/alcanzabilidad.test.ts`: ninguna situación ni condicional es inalcanzable; combinar análisis estático de filtros y las "nunca vistas" de una simulación de 10.000 carreras con el banco real
 - [X] T019 [P] [US2] Test de frontera de imports (FR-013, SC-006) en `src/content/__tests__/imports.test.ts`: leer los `.ts` de `src/content` y comprobar que ningún fichero importa de `engine` ni de `web`
 

@@ -18,7 +18,7 @@ npm run panel:volcar -- --check   # solo valida y comprueba que no habría cambi
 | `volcar(almacen)` | `{ ficheros: Record<Fichero, string>, banco: BancoContenido }` | Valida el **banco completo** (almacén + condicionales/variantes/textos vigentes) y devuelve el contenido a escribir, sin tocar disco. Lanza `ErrorVolcado` con `{ ruta, mensaje }[]` si no valida. |
 | `escribirVolcado(resultado)` | `void` | Escribe los 4 ficheros en `src/content/decisiones/**`. |
 
-`Fichero` = `"verano/contenido" | "verano/personaje" | "febrero/contenido" | "febrero/personaje"`.
+`Fichero` = `"verano" | "febrero"`.
 
 ## Garantías
 

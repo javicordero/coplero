@@ -5,49 +5,39 @@ import {
   elegirVarianteDeCambio,
   siguientePaso,
 } from "../partida"
-import { seleccionarSituacion, tipoActual, tiposDelAno } from "../selector"
+import { seleccionarSituacion } from "../selector"
 import type { BancoContenido } from "../types"
 import { bancoPrueba, inputPrueba } from "./fixtures"
 
 describe("selector", () => {
-  it("asigna una decisión de contenido y una de personaje por año", () => {
-    const p = crearPartida(inputPrueba, bancoPrueba)
-    const [primero, segundo] = tiposDelAno(p)
-    expect(primero).not.toEqual(segundo)
-    expect(new Set([primero, segundo])).toEqual(
-      new Set(["contenido", "personaje"]),
-    )
-  })
-
   it("el momento nunca se cruza: en verano no salen situaciones de febrero", () => {
     const p = crearPartida(inputPrueba, bancoPrueba)
     const s = seleccionarSituacion(p, bancoPrueba)
     expect(s).not.toBeNull()
     expect(s?.momento).toBe("verano")
-    expect(s?.tipo).toBe(tipoActual(p))
   })
 
-  it("respeta el filtro de modalidad", () => {
+  it("el filtro de modalidad manda mientras haya alternativa común", () => {
+    const base = bancoPrueba.situaciones[0]
     const banco: BancoContenido = {
       situaciones: [
+        { ...base, id: "comun" },
         {
-          ...bancoPrueba.situaciones[0],
+          ...base,
           id: "solo_chirigotero",
           modalidades: ["chirigotero"],
         },
       ],
     }
-    const p = crearPartida(inputPrueba, banco) // modalidad comparsista
-    expect(seleccionarSituacion(p, banco)).toBeNull()
+    for (let i = 0; i < 50; i++) {
+      const p = crearPartida({ ...inputPrueba, seed: `modalidad-${i}` }, banco) // modalidad comparsista
+      expect(seleccionarSituacion(p, banco)?.id).toBe("comun")
+    }
   })
 
   it("degrada y recicla cuando el pool se agota", () => {
-    const referencia = crearPartida(inputPrueba, bancoPrueba)
-    const tipo = tipoActual(referencia)
-    const base = bancoPrueba.situaciones.find(
-      (s) => s.momento === "verano" && s.tipo === tipo,
-    )
-    if (!base) throw new Error("fixtures sin situación para el tipo del año")
+    const base = bancoPrueba.situaciones.find((s) => s.momento === "verano")
+    if (!base) throw new Error("fixtures sin situación de verano")
     const banco: BancoContenido = { situaciones: [base] }
     const p = crearPartida(inputPrueba, banco)
     const s1 = seleccionarSituacion(p, banco)
@@ -73,28 +63,18 @@ describe("selector", () => {
         {
           ...base,
           id: "cambio_c",
-          tipo: "contenido",
-          modalidades: ["comparsista"],
-          opciones: opcionesCambio,
-        },
-        {
-          ...base,
-          id: "cambio_p",
-          tipo: "personaje",
           modalidades: ["comparsista"],
           opciones: opcionesCambio,
         },
         {
           ...base,
           id: "chiri_c",
-          tipo: "contenido",
           momento: "febrero",
           modalidades: ["chirigotero"],
         },
         {
           ...base,
           id: "chiri_p",
-          tipo: "personaje",
           momento: "febrero",
           modalidades: ["chirigotero"],
         },
@@ -135,18 +115,22 @@ describe("selector", () => {
     expect(frecuente).toBeGreaterThan(raro)
   })
 
-  it("respeta el filtro de variantes", () => {
+  it("el filtro de variantes manda mientras haya alternativa", () => {
+    const base = bancoPrueba.situaciones[0]
     const banco: BancoContenido = {
       situaciones: [
+        { ...base, id: "comun" },
         {
-          ...bancoPrueba.situaciones[0],
+          ...base,
           id: "solo_nueva",
           variantes: ["nueva_escuela"],
         },
       ],
     }
-    const p = crearPartida(inputPrueba, banco) // variante "clasico"
-    expect(seleccionarSituacion(p, banco)).toBeNull()
+    for (let i = 0; i < 50; i++) {
+      const p = crearPartida({ ...inputPrueba, seed: `variante-${i}` }, banco) // variante "clasico"
+      expect(seleccionarSituacion(p, banco)?.id).toBe("comun")
+    }
   })
 
   it("el flujo alterna verano y febrero", () => {

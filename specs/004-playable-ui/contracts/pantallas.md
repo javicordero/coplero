@@ -28,11 +28,11 @@ Cada pantalla es un componente presentacional: recibe props y emite acciones por
 | `FinCarrera.svelte` | `resumen: ResumenCarrera` | `onReiniciar()` |
 | `Error.svelte` | `mensaje: string` | `onReiniciar()` |
 
-`Indicador` = `{ ano: number; momento: Momento; tipo: TipoDecision }`.
+`Indicador` = `{ ano: number; momento: Momento | "resultado" }`.
 
 ## Reglas de presentación
 
-1. Toda pantalla de decisión y de resultado muestra el **indicador de contexto** (año, momento, tipo).
+1. Toda pantalla de decisión y de resultado muestra el **indicador de contexto** (año, momento).
 2. Las opciones se muestran con **título y subtítulo**; el enunciado de la situación puede tener `texto` vacío (banco actual) y la pantalla no debe romperse.
 3. El texto del jugador (nombre) se muestra como texto plano; nunca `{@html}`.
 4. No hay carga entre pantallas: el banco viene en el bundle.

@@ -64,7 +64,6 @@ export function borrar(almacen: Almacen): void
 ```ts
 export function tituloDelJuego(genero: Genero): string          // Coplero / Coplera / Coplere
 export function etiquetaMomento(momento: Momento): string        // Verano / Febrero
-export function etiquetaTipo(tipo: TipoDecision): string         // Contenido / Personaje
 export function etiquetaFase(fase: FaseCOAC): string             // Preliminares / Cuartos / Semifinales / Final
 export function etiquetaPremio(tipo: PremioTipo): string
 export function normalizarNombre(valor: string): string          // trim + colapsar + máx. 24

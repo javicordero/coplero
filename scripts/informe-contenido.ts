@@ -74,11 +74,6 @@ const lineas = [
       .map((e) => `${e.situacionId}/${e.opcionId}`)
       .join(", ") || "ninguna"
   }`,
-  `  por categoria: ${
-    Object.entries(estatico.excepcionesPorCategoria)
-      .map(([c, n]) => `${c}: ${n}`)
-      .join(", ") || "ninguna"
-  }`,
   "",
   `Flags declaradas (${estatico.flagsDeclaradas.length}): ${estatico.flagsDeclaradas.join(", ")}`,
   `Flags referenciadas (${estatico.flagsReferenciadas.length}): ${estatico.flagsReferenciadas.join(", ")}`,

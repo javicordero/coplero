@@ -21,7 +21,11 @@ Fuentes de verdad aplicables: `docs/01-diseno-juego.md`, `docs/02-arquitectura-t
 - Q: ¿Cómo obtiene el engine el banco de situaciones, dado que no puede importar de `content`? → A: Se inyecta como parámetro; el `engine` no importa de `content`.
 - Q: ¿Cómo se determina el `puesto` de cada temporada y su papel? → A: Puesto global por banda de fase (final 1-4; semifinalistas no finalistas 5-10; eliminados en cuartos 11-16; eliminados en preliminares desde el 17), con posición exacta dentro de la banda derivada de la puntuación; el puesto forma parte de la progresión.
 - Q: ¿Cómo se comporta el motor ante una versión de esquema distinta? → A: Devuelve un error explícito de versión incompatible; el consumidor decide migrar o descartar.
-- Q: ¿Qué hace el motor si no hay ninguna situación válida? → A: Degradación en cadena B→D: primero relaja los filtros opcionales; si sigue sin haber candidata, reutiliza la vista más reciente. El momento y el tipo nunca se relajan.
+- Q: ¿Qué hace el motor si no hay ninguna situación válida? → A: Degradación en cadena B→D: primero relaja los filtros opcionales; si sigue sin haber candidata, reutiliza la vista más reciente. El momento nunca se relaja.
+
+### Revisión 2026-10-04
+
+- Se retira el **tipo** (`contenido`/`personaje`): el motor selecciona una situación por **momento** (`verano`/`febrero`) del pool completo, sin reparto por tipo. Ver `docs/01` §5. `TipoDecision` desaparece del modelo; `CONTENIDO_INSUFICIENTE` deja de llevar `tipo`.
 - Q: ¿Cuándo se resuelve el COAC y qué significa `requiereFase`? → A: La decisión no depende de la fase; el resultado de la temporada se determina con el estado previo a la decisión de febrero y esa decisión no altera el resultado; el resultado se revela después de la decisión.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -46,15 +50,15 @@ Un consumidor crea una partida a partir de una semilla y de los datos de persona
 
 ### User Story 2 - Ciclo estacional, decisiones, efectos y flags (Priority: P1)
 
-El motor avanza por verano y febrero, ofrece en cada año una decisión de contenido y una de personaje, filtra las situaciones por momento, tipo, modalidad, variante y condiciones, aplica los efectos sobre los atributos, deja flags y permite consumirlas sin borrarlas.
+El motor avanza por verano y febrero, ofrece en cada año una decisión de verano y una de febrero, filtra las situaciones por momento, modalidad, variante y condiciones, aplica los efectos sobre los atributos, deja flags y permite consumirlas sin borrarlas.
 
 **Why this priority**: Es el bucle jugable real; sin él no existe partida.
 
-**Independent Test**: Avanzar una partida por varios años eligiendo opciones y verificar que se respetan la separación verano/febrero, el reparto contenido/personaje, el filtrado por modalidad/variante y la evolución de atributos y flags.
+**Independent Test**: Avanzar una partida por varios años eligiendo opciones y verificar que se respetan la separación verano/febrero, el filtrado por modalidad/variante y la evolución de atributos y flags.
 
 **Acceptance Scenarios**:
 
-1. **Given** un año en curso, **When** el motor presenta decisiones, **Then** ofrece exactamente una decisión de contenido y una de personaje, nunca dos del mismo tipo.
+1. **Given** un año en curso, **When** el motor presenta decisiones, **Then** ofrece exactamente una decisión de verano y una de febrero.
 2. **Given** el momento actual, **When** se selecciona la situación, **Then** nunca aparece una situación de verano en febrero ni viceversa.
 3. **Given** una situación con opciones, **When** se elige una opción, **Then** se aplican sus efectos sobre los atributos dentro del rango permitido y se dejan sus flags asociadas.
 4. **Given** una flag ya consumida por una condicional, **When** se consulta el historial y las condicionales futuras, **Then** la flag sigue en el historial pero ya no dispara condicionales.
@@ -111,7 +115,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 
 ### Edge Cases
 
-- El banco de situaciones aplicables se agota para un momento/tipo: el motor relaja primero los filtros opcionales y, si aún no hay candidata, reutiliza las vistas menos recientes ignorando la marca de "solo una vez"; el momento y el tipo nunca se relajan.
+- El banco de situaciones aplicables se agota para un momento: el motor relaja primero los filtros opcionales y, si aún no hay candidata, reutiliza las vistas menos recientes ignorando la marca de "solo una vez"; el momento nunca se relaja.
 - Temporada marcada como "no concursa": no hay resolución de COAC ni premios y queda registrada como fuera de concurso.
 - Una flag necesaria para una condicional existe pero su ventana ya expiró.
 - El milagro ya se ha consumido: el techo deja de poder romperse.
@@ -119,7 +123,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - La carrera termina al cierre del año en que se alcanzan los años de carrera (tras la resolución del COAC); no existe retirada a mitad de año.
 - Datos de partida con una versión de esquema distinta a la esperada: el motor devuelve un error explícito de versión incompatible.
 - Se elige un identificador de opción que no pertenece a la situación presentada: el motor devuelve un error explícito y no modifica el estado.
-- No existe ninguna situación válida para la combinación de momento, tipo, modalidad y variante del personaje.
+- No existe ninguna situación válida para la combinación de momento, modalidad y variante del personaje.
 
 ## Requirements *(mandatory)*
 
@@ -130,7 +134,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - **FR-003**: El estado de partida MUST ser serializable y deserializable sin pérdida, incluyendo una versión de esquema. Si la versión del estado no coincide con la esperada, el motor MUST devolver un error explícito de versión incompatible y MUST NOT continuar; migrar o descartar es responsabilidad del consumidor. La serialización completa del estado incluye el destino oculto (artefacto interno de la partida); el código de partida compartible, que excluye el destino, queda fuera de esta feature.
 - **FR-004**: Una misma semilla combinada con las mismas decisiones MUST producir exactamente el mismo estado final. El determinismo MUST ser independiente del proceso, del sistema operativo y del momento de ejecución: el resultado solo puede depender de la semilla, del input de creación, de las decisiones y de la versión del banco de contenido.
 - **FR-005**: El motor MUST avanzar por el ciclo estacional verano → febrero, año a año, hasta la retirada. El orden dentro de cada año MUST ser: decisión de verano → decisión de febrero → resolución del COAC de la temporada.
-- **FR-006**: En cada año el motor MUST seleccionar una situación de contenido y una de personaje, filtradas por momento, tipo, modalidad, variante, año mínimo y no vistas. El filtro de fase queda fuera del alcance de esta feature: las decisiones no dependen de la fase. El filtro `variantes` se evalúa contra la variante actual del personaje; dado que en esta feature la variante no cambia, las situaciones cuyo filtro de variantes no incluya la variante inicial solo pueden aparecer mediante la degradación de FR-018. La validación de integridad MUST considerar esas reglas de degradación para decidir si una situación es realmente inalcanzable.
+- **FR-006**: En cada año el motor MUST seleccionar una situación de verano y una de febrero, filtradas por momento, modalidad, variante, año mínimo y no vistas. El filtro de fase queda fuera del alcance de esta feature: las decisiones no dependen de la fase. El filtro `variantes` se evalúa contra la variante actual del personaje; dado que en esta feature la variante no cambia, las situaciones cuyo filtro de variantes no incluya la variante inicial solo pueden aparecer mediante la degradación de FR-018. La validación de integridad MUST considerar esas reglas de degradación para decidir si una situación es realmente inalcanzable.
 - **FR-007**: El motor MUST evaluar requisitos de condicionales mediante un árbol lógico que admita: flag presente, flag repetida un número de veces (con opción de exigir años consecutivos), fase ya alcanzada dentro de la misma partida, combinaciones "todas/alguna/ninguna" y umbrales de atributo.
 - **FR-008**: El motor MUST aplicar los efectos de la opción elegida sobre los atributos, acotándolos al rango permitido.
 - **FR-009**: El motor MUST registrar las flags que deja cada opción y MUST marcarlas como consumidas cuando corresponda, sin borrarlas del historial; MUST dejar de disparar condicionales cuando la ventana de la flag expire.
@@ -140,9 +144,9 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - **FR-013**: El motor MUST construir un **resumen mínimo** de carrera con, al menos, años en activo, mejor fase alcanzada y premios obtenidos. El resumen narrativo extendido (tres hitos, evolución de variante, frase de cierre) queda fuera del alcance de esta feature (pospuesto por clarificación Q3-C).
 - **FR-014**: El `engine` MUST NOT depender de interfaz, DOM ni framework, y MUST NOT usar fuentes implícitas de azar o tiempo (`Math.random`, `Date.now`).
 - **FR-015**: El motor MUST ser determinista y sin efectos secundarios: aplicar una decisión sobre un estado MUST devolver un estado nuevo sin mutar el anterior.
-- **FR-016**: El número de decisiones por año MUST ser parametrizable, aunque el valor por defecto acordado sea dos (una de contenido y una de personaje). En ENGINE-001 el valor efectivo es 2; otros valores (modos rápido/lento) quedan fuera de alcance.
-- **FR-017**: El motor MUST soportar opciones que implican no concursar ese año, marcando la temporada como fuera de concurso y saltando la resolución del COAC. La opción `saltaCOAC` consume la decisión del momento en que aparece y el reparto anual (una de contenido + una de personaje) se mantiene.
-- **FR-018**: El motor MUST distinguir entre situaciones base y condicionales. Cuando no haya candidatas que cumplan todos los filtros, MUST degradar en cadena: primero relajar los filtros opcionales (modalidad, variante y año mínimo), y solo si aun así no hay ninguna, reutilizar las situaciones vistas menos recientes ignorando la marca de "solo una vez". El momento y el tipo nunca se relajan.
+- **FR-016**: El número de decisiones por año MUST ser parametrizable, aunque el valor por defecto acordado sea dos (una de verano y una de febrero). En ENGINE-001 el valor efectivo es 2; otros valores (modos rápido/lento) quedan fuera de alcance.
+- **FR-017**: El motor MUST soportar opciones que implican no concursar ese año, marcando la temporada como fuera de concurso y saltando la resolución del COAC. La opción `saltaCOAC` consume la decisión del momento en que aparece y el reparto anual (una de verano + una de febrero) se mantiene.
+- **FR-018**: El motor MUST distinguir entre situaciones base y condicionales. Cuando no haya candidatas que cumplan todos los filtros, MUST degradar en cadena: primero relajar los filtros opcionales (modalidad, variante y año mínimo), y solo si aun así no hay ninguna, reutilizar las situaciones vistas menos recientes ignorando la marca de "solo una vez". El momento nunca se relaja.
 - **FR-019**: El motor MUST registrar la modalidad y la variante del personaje en el estado. El mecanismo de cambio de variante queda **fuera del alcance** de esta feature (pospuesto a una feature posterior, clarificación Q3-C); no se implementan disparadores de cambio.
 - **FR-020**: El número de años de carrera MUST ser parametrizable; el valor por defecto provisional es 20 años / 40 decisiones (2 por año), pendiente de cierre definitivo en la calibración.
 - **FR-021**: El motor MUST resolver la fase y los premios con **parámetros numéricos configurables** (umbrales de puntuación por fase, bono de año pico, volatilidad, carisma, afinidades de premios y modificadores de creación). Los valores por defecto serán provisionales y se calibrarán con el simulador masivo.
@@ -158,7 +162,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - **Partida (estado de juego)**: estado completo y serializable de una carrera; incluye semilla, personaje, modalidad, variante, momento y año en curso, fase del bucle, atributos, flags, situaciones vistas, historial, temporadas, premios y destino oculto. El banco de situaciones no forma parte de este estado: se inyecta al invocar el motor.
 - **Personaje**: nombre/apodo, edad, localidad y género; determina el título dinámico y modificadores de creación.
 - **Destino**: conjunto oculto que define techo, suelo, año pico, años de carrera, volatilidad y carisma.
-- **Situación**: decisión del banco, con momento, tipo, categoría, título, texto, opciones y filtros de aparición (modalidad, variante, año mínimo).
+- **Situación**: decisión del banco, con momento, título, texto, opciones y filtros de aparición (modalidad, variante, año mínimo).
 - **Condicional**: situación que además exige un requisito lógico, una ventana de años y una probabilidad.
 - **Banco de contenido**: conjunto de situaciones y condicionales inyectado al motor; no forma parte del estado serializable.
 - **Opción**: alternativa de una situación con título, subtítulo, efectos, flags que deja, flags que consume y marca de no concurso.
@@ -178,7 +182,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - **SC-003**: Una carrera completa puede recorrerse de principio a fin en un proceso Node sin interfaz ni navegador.
 - **SC-004**: Un lote de 10.000 carreras completas se ejecuta sin errores en menos de 30 s (umbral provisional) en la máquina de desarrollo del proyecto (Node 22+).
 - **SC-005**: Añadir una situación al banco no requiere modificar el motor.
-- **SC-006**: Ninguna decisión del jugador puede producir un estado incoherente (atributos fuera de rango, dos decisiones del mismo tipo en un año, o situación de un momento en el momento equivocado).
+- **SC-006**: Ninguna decisión del jugador puede producir un estado incoherente (atributos fuera de rango, dos decisiones del mismo momento en un año, o situación de un momento en el momento equivocado).
 
 ## Assumptions
 
@@ -187,7 +191,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - La calibración numérica del juego está diferida (T13); se resuelve implementando parámetros configurables provisionales.
 - **Reparto de participantes clarificado**: final 4, semifinales 10, cuartos 16 y preliminares todas; coincide con `docs/01-diseno-juego.md`.
 - El resultado de una temporada se calcula con el estado previo a la decisión de febrero; esa decisión no altera el resultado de la temporada y se revela después (Q5). Las decisiones no dependen de la fase.
-- El motor garantiza una decisión de contenido y una de personaje por año; el reparto concreto entre verano y febrero lo decide el motor de forma determinista al inicio del año, entre las combinaciones que tengan candidatas (ver research D5). Regla adoptada como definitiva para ENGINE-001.
+- El motor garantiza una decisión de verano y una de febrero por año; esas ranuras son fijas (ver research D5). Regla adoptada como definitiva para ENGINE-001.
 - La calibración fina de umbrales y premios es provisional: en esta feature prima que el mecanismo funcione con los valores por defecto; el ajuste se hará con el simulador en una fase posterior.
 - El snapshot de referencia captura el estado serializado completo (incluido el destino) de una carrera con semilla y decisiones fijas; el banco se inyecta y no se captura (ver research D13).
 - Las definiciones de afinidad de premios se inyectan como parámetros; las flags temáticas concretas (por ejemplo, para Coplas por Andalucía) se añadirán al banco en una fase posterior.

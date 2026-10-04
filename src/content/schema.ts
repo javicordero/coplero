@@ -5,16 +5,12 @@ import { z } from "zod"
 import {
   ATRIBUTOS,
   type Atributo,
-  CATEGORIAS,
-  type Categoria,
   FASES_COAC,
   type FaseCOAC,
   MODALIDADES,
   MOMENTOS,
   type Modalidad,
   type Momento,
-  TIPOS_DECISION,
-  type TipoDecision,
 } from "./modalidades"
 
 export interface Opcion {
@@ -49,8 +45,6 @@ export type Requisito =
 export interface Situacion {
   id: string
   momento: Momento
-  tipo: TipoDecision
-  categoria: Categoria
   titulo: string
   texto: string
   opciones: Opcion[]
@@ -189,8 +183,6 @@ export const RequisitoSchema: z.ZodType<Requisito> = z.lazy(() =>
 const SituacionBase = z.strictObject({
   id: z.string().min(1),
   momento: z.enum(MOMENTOS),
-  tipo: z.enum(TIPOS_DECISION),
-  categoria: z.enum(CATEGORIAS),
   titulo: z.string().min(1),
   texto: z.string(),
   opciones: z.array(OpcionSchema).min(2),
@@ -369,23 +361,20 @@ export const BancoContenidoSchema: z.ZodType<BancoContenido> = z
     }
 
     for (const momento of MOMENTOS) {
-      for (const tipo of TIPOS_DECISION) {
-        const comunes = banco.situaciones.filter(
-          (s) =>
-            s.momento === momento &&
-            s.tipo === tipo &&
-            !s.modalidades?.length &&
-            !s.variantes?.length,
-        )
-        if (comunes.length === 0) {
-          ctx.addIssue({
-            code: "custom",
-            path: ["situaciones"],
-            message: `no hay ninguna situación común (sin filtros) para ${momento}/${tipo}`,
-          })
-        }
+      const comunes = banco.situaciones.filter(
+        (s) =>
+          s.momento === momento &&
+          !s.modalidades?.length &&
+          !s.variantes?.length,
+      )
+      if (comunes.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["situaciones"],
+          message: `no hay ninguna situación común (sin filtros) para ${momento}`,
+        })
       }
     }
   })
 
-export type { Atributo, Categoria, FaseCOAC, Modalidad, Momento, TipoDecision }
+export type { Atributo, FaseCOAC, Modalidad, Momento }

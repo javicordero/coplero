@@ -11,8 +11,7 @@ personaje, elija modalidad y variante, complete varias decisiones, recorra la ca
 tarjeta final, recargue y recupere la partida, genere el enlace compartible y lo abra en `/r/[codigo]`.
 Hoy los diez hitos existen **repartidos** entre `tests/e2e/jugar.spec.ts` y
 `tests/e2e/compartir.spec.ts`, pero ninguna prueba encadena el viaje completo. La prueba usa los
-anclajes observables que ya existen (`[data-pantalla]`, `data-testid`), añade **un solo atributo**
-(`data-tipo`) para distinguir decisiones de contenido y de personaje, y extrae a un módulo de apoyo
+anclajes observables que ya existen (`[data-pantalla]`, `data-testid`) y extrae a un módulo de apoyo
 los helpers hoy duplicados para que los tres specs compartan una única definición de "cómo se juega".
 No se toca `engine` ni `content`.
 
@@ -53,9 +52,8 @@ E2E existentes; esperas por estado observable, nunca fijas; `npm run check` MUST
 
 **Resultado**: sin violaciones. No se requiere **Complexity Tracking**.
 
-*Re-check post-diseño (Phase 1)*: se mantiene. Los únicos cambios fuera de `tests/` son un atributo
-`data-tipo` en `IndicadorContexto.svelte` (anclaje de observación, coherente con los `data-*` ya
-existentes) y, si el plan lo necesita, ningún otro. No hay acoplamiento nuevo entre capas.
+*Re-check post-diseño (Phase 1)*: se mantiene. Los únicos cambios fuera de `tests/` eran un atributo
+`data-tipo` en `IndicadorContexto.svelte`; **retirado el 2026-10-04** al eliminarse el tipo. No hay acoplamiento nuevo entre capas.
 
 ## Project Structure
 
@@ -85,16 +83,15 @@ tests/e2e/
 └── compartir.spec.ts          # MODIFICADO — usa los helpers de apoyo (sin perder cobertura)
 
 src/juego/pantallas/
-└── IndicadorContexto.svelte   # MODIFICADO — añade `data-tipo` (anclaje mínimo para FR-005)
+└── IndicadorContexto.svelte   # (data-tipo retirado el 2026-10-04)
 ```
 
 **Structure Decision**: proyecto único. La prueba vive en `tests/e2e/`, junto a las existentes. Los
 helpers que hoy están duplicados (bucle de hasta 400 pasos, creación de personaje, clave de pantalla)
 se extraen a `tests/e2e/apoyo/juego.ts` para que la nueva prueba no sea una tercera copia y para que
 la suite tenga **una sola** definición de "cómo se juega"; es la única abstracción que se introduce.
-`playwright.config.ts` no cambia (el `webServer` y el `testDir` ya sirven). El único cambio en `src/`
-es un atributo `data-tipo` en el indicador de contexto, porque es el único hito (contenido vs.
-personaje) que hoy no tiene anclaje estable sin leer el texto visible.
+`playwright.config.ts` no cambia (el `webServer` y el `testDir` ya sirven). No hay cambios en `src/`
+(el `data-tipo` previsto se retiró el 2026-10-04 al eliminarse el tipo).
 
 ## Complexity Tracking
 

@@ -127,22 +127,15 @@ Es decir, si el carnaval es el de 2027, la primera decisión ocurre en verano de
 
 > ⚠️ **Separación por momento del año.** Las decisiones de verano y las de febrero son conjuntos distintos. Una situación de verano (elección del tema del repertorio, presupuesto de vestuario, un componente que deja el grupo) no puede salir en febrero, y viceversa: una situación sobre el jurado, la reacción del público en el Falla o la prensa durante el concurso no tiene sentido en julio.
 >
-> El campo `momento: verano | febrero` es obligatorio en toda situación y condicional, y el motor filtra por él. Dentro de cada momento se mantiene la separación por tipo (contenido / personaje).
+> El campo `momento: verano | febrero` es obligatorio en toda situación y condicional, y el motor filtra por él. No hay tipos (contenido / personaje): cada momento es un único pool.
 
 ---
 
 ## 5. Banco de decisiones
 
-El banco está dividido en **dos bloques grandes por momento**, y dentro de cada uno por categorías. Cada año sale **una de contenido + una de personaje** (nunca dos del mismo tipo).
+El banco está dividido en **dos bloques grandes por momento** (`verano` y `febrero`). Cada año sale **una situación de verano y una de febrero**; el motor elige cada una del pool completo de su momento.
 
-| Tipo | Categorías | Ámbito |
-| --- | --- | --- |
-| 🎨 Contenido | Letra · Música · Puesta en escena | Letra, Música, Puesta en escena |
-| 🧍 Personaje | Jurado · Dinero · Grupo · Prensa · Carrera · Concurso | Popularidad, Cohesión, Dinero |
-
-> ✅ **Categorías ampliadas.** Además de las anteriores, el banco usa dos categorías de personaje: **Carrera** ("Carrera y grupo consagrado") y **Concurso** ("Enfado con el concurso"). Son categorías y situaciones a la vez, y pueden ser momentáneas (con sus condiciones de aparición).
-
-Las categorías son un **catálogo del juego** que vive en `src/content/categorias.ts` y se puede **añadir o eliminar desde el panel local** (`/panel` → «Categorías»); no se puede borrar una categoría en uso por alguna situación o condicional. Añadir una categoría **no** cambia reglas del motor.
+Las situaciones **no se clasifican** ni por tipo (contenido / personaje) ni por categoría: no aportaban mecánica (solo agrupaban el banco) y se retiraron. Lo que sí filtra la selección es la modalidad, la variante, el año mínimo y el hecho de no haber salido ya.
 
 Cada opción lleva **título + subtítulo** y la **flag** que deja en el historial del personaje. Por defecto **no mueve atributos**; solo las **excepciones declaradas** (unas pocas en todo el banco) llevan efectos, y su intercambio se explica en el subtítulo.
 
@@ -162,7 +155,7 @@ Cada opción deja una **flag** en el historial del personaje. Una situación con
 - **Requisito:** una o varias flags activas en el historial. No tiene que ser la decisión inmediatamente anterior.
 - **Ventana:** número de años durante los que la situación puede aparecer desde que se activó la flag. Si pasa la ventana, se cierra.
 - **Probabilidad:** si la flag está activa y estamos dentro de la ventana, se tira dado cada año. Si no sale, puede volver a tirarse el año siguiente mientras dure la ventana.
-- Una condicional **ocupa una de las 2 decisiones del año**, la de su tipo y su momento.
+- Una condicional **ocupa la decisión del año**, la de su momento.
 - Una condicional puede **consumir** la flag (aparece una sola vez) o dejarla activa si es de rasgo permanente. **Consumir no borra la flag del historial**: la marca como consumida y desactiva su capacidad de disparar; sigue disponible para la tarjeta final y los logros.
 - Las condicionales también dejan flags: se pueden encadenar cadenas de 2-3 situaciones.
 
@@ -222,7 +215,7 @@ Consecuencias que conviene recordar al calibrar:
 
 Se quiere ampliar el banco inspirándose en episodios reales de la historia del Carnaval de Cádiz y del COAC — polémicas de letras, decisiones del jurado, sponsors, cambios de modalidad, rupturas de grupos históricos — convertidos en situaciones genéricas, **sin usar nombres reales de personas o agrupaciones**, para no atribuir hechos concretos a alguien identificable.
 
-Cada situación nueva se archiva directamente en la página de su momento y con su tipo y categoría, de modo que el motor pueda filtrar sin trabajo extra.
+Cada situación nueva se archiva directamente en la página de su momento, de modo que el motor pueda filtrar sin trabajo extra.
 
 ---
 
@@ -239,6 +232,6 @@ Cada situación nueva se archiva directamente en la página de su momento y con 
 - [x] Decidir si el banco se filtra por modalidad/variante → sí, con los campos `modalidades` y `variantes` opcionales.
 - [x] Decidir si las flags caducan → no caducan; caduca su ventana de disparo.
 - [x] Decidir si la duración es fija → sí, un número fijo de años, **todavía por determinar** (referencia provisional: 20 años / 40 decisiones).
-- [x] Categorías del banco → contenido (Letra, Música, Puesta en escena) y personaje (Jurado, Dinero, Grupo, Prensa, Carrera, Concurso).
+- [x] Retirar tipos y categorías del banco (2026-10-04) → las situaciones se filtran solo por momento; se eliminan `tipo` (contenido / personaje) y `categoria` (01 §5).
 - [x] Condiciones para optar a los premios ajenos al COAC → definidas en la sección 3.
 - [x] Definir cómo se calcula el techo de carrera → ver 2. Arquitectura técnica, sección 8.

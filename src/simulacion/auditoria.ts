@@ -182,14 +182,6 @@ export function auditarCarrera(
     porAno.set(d.ano, lista)
   }
   for (const [ano, ds] of porAno) {
-    const contenido = ds.filter((d) => d.tipo === "contenido").length
-    const personaje = ds.filter((d) => d.tipo === "personaje").length
-    if (contenido > 1 || personaje > 1) {
-      add(
-        "composicionAnualIncorrecta",
-        `ano ${ano}: contenido=${contenido} personaje=${personaje}`,
-      )
-    }
     if (ds.length === 2) {
       const verano = ds.filter((d) => d.momento === "verano").length
       const febrero = ds.filter((d) => d.momento === "febrero").length

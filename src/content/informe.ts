@@ -1,19 +1,12 @@
 // Cálculos estáticos del informe de integridad del banco de contenido.
 // Sin lógica de juego: solo recuentos y análisis de los datos.
 
-import {
-  type Categoria,
-  MODALIDADES,
-  MOMENTOS,
-  type Momento,
-  type TipoDecision,
-} from "./modalidades"
+import { MODALIDADES, MOMENTOS, type Momento } from "./modalidades"
 import { type BancoContenido, flagsDeRequisito } from "./schema"
 
 export interface ExcepcionContenido {
   situacionId: string
   opcionId: string
-  categoria: Categoria
   momento: Momento
 }
 
@@ -23,7 +16,6 @@ export interface InformeContenido {
   totalCondicionales: number
   totalOpciones: number
   excepciones: ExcepcionContenido[]
-  excepcionesPorCategoria: Partial<Record<Categoria, number>>
   flagsDeclaradas: string[]
   flagsReferenciadas: string[]
   flagsSinDeclarar: string[]
@@ -56,23 +48,12 @@ export function excepciones(banco: BancoContenido): ExcepcionContenido[] {
         lista.push({
           situacionId: s.id,
           opcionId: opcion.id,
-          categoria: s.categoria,
           momento: s.momento,
         })
       }
     }
   }
   return lista
-}
-
-export function excepcionesPorCategoria(
-  banco: BancoContenido,
-): Partial<Record<Categoria, number>> {
-  const conteo: Partial<Record<Categoria, number>> = {}
-  for (const e of excepciones(banco)) {
-    conteo[e.categoria] = (conteo[e.categoria] ?? 0) + 1
-  }
-  return conteo
 }
 
 export function flagsDeclaradas(banco: BancoContenido): string[] {
@@ -117,17 +98,13 @@ export function situacionesInalcanzablesEstaticas(
   return resultado.sort()
 }
 
-/** Cobertura estática por momento y tipo (situaciones comunes, sin filtros). */
-export function cobertura(
-  banco: BancoContenido,
-): Record<Momento, Record<TipoDecision, number>> {
-  const mapa = {} as Record<Momento, Record<TipoDecision, number>>
-  for (const momento of MOMENTOS) {
-    mapa[momento] = { contenido: 0, personaje: 0 }
-  }
+/** Cobertura estática por momento (situaciones comunes, sin filtros). */
+export function cobertura(banco: BancoContenido): Record<Momento, number> {
+  const mapa = {} as Record<Momento, number>
+  for (const momento of MOMENTOS) mapa[momento] = 0
   for (const s of banco.situaciones) {
     if (s.modalidades?.length || s.variantes?.length) continue
-    mapa[s.momento][s.tipo] += 1
+    mapa[s.momento] += 1
   }
   return mapa
 }
@@ -141,7 +118,6 @@ export function construirInformeContenido(
     totalCondicionales: (banco.condicionales ?? []).length,
     totalOpciones: totalOpciones(banco),
     excepciones: excepciones(banco),
-    excepcionesPorCategoria: excepcionesPorCategoria(banco),
     flagsDeclaradas: flagsDeclaradas(banco),
     flagsReferenciadas: flagsReferenciadas(banco),
     flagsSinDeclarar: flagsSinDeclarar(banco),

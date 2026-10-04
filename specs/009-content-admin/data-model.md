@@ -29,9 +29,7 @@ Fichero `content-admin/data/situaciones.json`. Forma raíz:
 | Campo | Tipo | Obligatorio | Notas |
 |---|---|---|---|
 | `id` | string | sí | Único. Inmutable al editar. |
-| `momento` | `"verano" \| "febrero"` | sí | Determina a qué fichero se vuelca (con `tipo`). |
-| `tipo` | `"contenido" \| "personaje"` | sí | Determina a qué fichero se vuelca (con `momento`). |
-| `categoria` | `Categoria` | sí | `letra`·`musica`·`puestaEnEscena`·`jurado`·`dinero`·`grupo`·`prensa`·`carrera`·`concurso`. Solo etiqueta y agrupación del panel. |
+| `momento` | `"verano" \| "febrero"` | sí | Determina a qué fichero se vuelca. |
 | `titulo` | string | sí | no vacío |
 | `texto` | string | sí | Puede ser `""`. |
 | `opciones` | `Opcion[]` | sí | **Mínimo 2**, ids únicos dentro de la situación. |
@@ -59,7 +57,7 @@ Fichero `content-admin/data/situaciones.json`. Forma raíz:
 
 ## Catálogos cerrados (solo lectura en el panel)
 
-`MOMENTOS`, `TIPOS_DECISION`, `CATEGORIAS`, `ATRIBUTOS`, `MODALIDADES`, `FASES_COAC`
+`MOMENTOS`, `ATRIBUTOS`, `MODALIDADES`, `FASES_COAC`
 (`src/content/modalidades.ts`) y `VARIANTES` (`src/content/variantes.ts`). El panel los consume para
 construir desplegables; **nunca** inventa valores (FR-014).
 
@@ -73,7 +71,7 @@ contenido actual solo para la validación cruzada del banco completo.
 
 | Fichero | Exportación | `momento` | `tipo` |
 |---|---|---|---|
-| `src/content/decisiones/verano/contenido.ts` | `situacionesVeranoContenido` | verano | contenido |
+| `src/content/decisiones/verano.ts` | `situacionesVerano` | verano |
 | `src/content/decisiones/verano/personaje.ts` | `situacionesVeranoPersonaje` | verano | personaje |
 | `src/content/decisiones/febrero/contenido.ts` | `situacionesFebreroContenido` | febrero | contenido |
 | `src/content/decisiones/febrero/personaje.ts` | `situacionesFebreroPersonaje` | febrero | personaje |

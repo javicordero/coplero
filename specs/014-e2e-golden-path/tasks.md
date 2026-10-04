@@ -37,7 +37,9 @@ Proyecto único Astro: `src/`, `tests/` en la raíz. Ver `plan.md` §Project Str
 
 **⚠️ CRITICAL**: ninguna historia puede cerrarse hasta que esto esté hecho.
 
-- [x] T002 [P] Añadir `data-tipo={indicador.tipo}` al párrafo del indicador en `src/juego/pantallas/IndicadorContexto.svelte`, para distinguir decisiones de `contenido`/`personaje` sin leer el texto (FR-005)
+- [x] T002 [P] *(Retirado el 2026-10-04.)* `data-tipo` ya no aplica al eliminarse el tipo.
+
+- [x] T006 [US1] Añadir en `tests/e2e/carrera-completa.spec.ts` los `test.step` 5–6: resolver el bucle con `avanzar` sin asumir el orden de pantallas (`decision`, `resultado`, `cambio-variante`) hasta `fin`
 - [x] T003 [P] Refactorizar `tests/e2e/jugar.spec.ts` para usar los helpers de `tests/e2e/apoyo/juego.ts` (misma cobertura, sin duplicar el bucle de hasta 400 pasos)
 - [x] T004 [P] Refactorizar `tests/e2e/compartir.spec.ts` para usar los helpers de `tests/e2e/apoyo/juego.ts` (misma cobertura, incluido `jugarHastaFin`)
 

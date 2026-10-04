@@ -21,15 +21,6 @@ export const ATRIBUTOS: readonly Atributo[] = [
 ] as const
 
 export type Momento = "verano" | "febrero"
-export type TipoDecision = "contenido" | "personaje"
-
-/**
- * El catálogo de categorías es cerrado y vive en el contenido
- * (`src/content/categorias.ts`), pero el motor no puede importar de `content`
- * (constitución, Principio I). Aquí es texto: la validación fuerte la hace el
- * esquema Zod del contenido.
- */
-export type Categoria = string
 
 export type Genero = "masculino" | "femenino" | "no_binario"
 export type Modalidad = "comparsista" | "chirigotero"
@@ -88,8 +79,6 @@ export interface Opcion {
 export interface Situacion {
   id: string
   momento: Momento
-  tipo: TipoDecision
-  categoria: Categoria
   titulo: string
   texto: string
   opciones: Opcion[]
@@ -330,8 +319,6 @@ export interface OpcionPublica {
 export interface SituacionPublica {
   id: string
   momento: Momento
-  tipo: TipoDecision
-  categoria: Categoria
   titulo: string
   texto: string
   opciones: OpcionPublica[]
@@ -352,7 +339,7 @@ export type ErrorMotor =
     }
   | { codigo: "OPCION_INVALIDA"; opcionId: string }
   | { codigo: "VARIANTE_INVALIDA"; varianteId: VarianteId }
-  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento; tipo: TipoDecision }
+  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento }
 
 export type Resultado<T, E> = { ok: true; valor: T } | { ok: false; error: E }
 

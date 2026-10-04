@@ -103,7 +103,7 @@ describe("flujo de partida", () => {
     expect(aplicarEfectos(base, { letra: -200 }).letra).toBe(0)
   })
 
-  it("CONTENIDO_INSUFICIENTE cuando no hay situación para el momento/tipo", () => {
+  it("CONTENIDO_INSUFICIENTE cuando no hay situación para el momento", () => {
     const vacio: BancoContenido = { situaciones: [] }
     const p = crearPartida(inputPrueba, vacio)
     const paso = siguientePaso(p, vacio)

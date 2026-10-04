@@ -27,7 +27,7 @@ Abrir `http://localhost:4321/jugar` y comprobar el flujo completo:
 2. **Crear personaje** → el título cambia según el género (Coplero/Coplera/Coplere); no deja continuar con el nombre vacío; recorta y limita a 24 caracteres.
 3. **Modalidad** → dos opciones con título y subtítulo.
 4. **Variante** → tres opciones de la modalidad, con título y subtítulo.
-5. **Decisiones** → cada año muestra el indicador (año, momento, tipo) y opciones con título y subtítulo.
+5. **Decisiones** → cada año muestra el indicador (año, momento) y opciones con título y subtítulo.
 6. **Resultado** → tras febrero, fase, puesto y premios del año.
 7. Repetir decisiones hasta el **Fin de carrera** → resumen (nombre, modalidad, variante, años, mejor fase, premios).
 

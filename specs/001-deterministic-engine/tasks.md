@@ -42,7 +42,7 @@ description: "Task list for ENGINE-001 — Motor determinista de Coplero"
 
 **⚠️ CRITICAL**: Ninguna historia puede empezar hasta completar esta fase.
 
-- [X] T004 Extender los tipos del dominio en `src/engine/types.ts` (Atributo(s), Momento, TipoDecision, Categoria, Opcion, Situacion, Condicional, Requisito, Personaje, Destino, Flag, Temporada, Premio, EventoHistorial, Partida, FasePartida, Paso, BancoContenido, Resultado, ErrorMotor, ResumenCarrera)
+- [X] T004 Extender los tipos del dominio en `src/engine/types.ts` (Atributo(s), Momento, Opcion, Situacion, Condicional, Requisito, Personaje, Destino, Flag, Temporada, Premio, EventoHistorial, Partida, FasePartida, Paso, BancoContenido, Resultado, ErrorMotor, ResumenCarrera). `TipoDecision` y `Categoria` se retiraron el 2026-10-04.
 - [X] T005 Implementar el PRNG contextual en `src/engine/seed.ts` (mulberry32 + `rngPara(seed, contexto)`)
 - [X] T006 [P] Implementar parámetros configurables con valores provisionales en `src/engine/parametros.ts`
 - [X] T007 [P] Implementar aplicación de efectos y clamp de atributos en `src/engine/atributos.ts`
@@ -81,13 +81,13 @@ description: "Task list for ENGINE-001 — Motor determinista de Coplero"
 
 ### Tests for User Story 2
 
-- [X] T014 [P] [US2] Test del selector (filtros, asignación de tipo D5, `variantes` inalcanzables, degradación B→D, coherencia de estado) en `src/engine/__tests__/selector.test.ts`
+- [X] T014 [P] [US2] Test del selector (filtros, `variantes` inalcanzables, degradación B→D, coherencia de estado) en `src/engine/__tests__/selector.test.ts`
 - [X] T015 [P] [US2] Test de requisitos, ventanas y consumo de flags en `src/engine/__tests__/condicionales.test.ts`
 - [X] T016 [P] [US2] Test del flujo de partida (`siguientePaso`/`elegir`, `saltaCOAC`, coherencia SC-006) en `src/engine/__tests__/partida.test.ts`
 
 ### Implementation for User Story 2
 
-- [X] T017 [US2] Implementar selección de situaciones en `src/engine/selector.ts` (filtros, tipo por año, `variantes` contra la variante actual, degradación B→D, `unicaVez`)
+- [X] T017 [US2] Implementar selección de situaciones en `src/engine/selector.ts` (filtros por momento, `variantes` contra la variante actual, degradación B→D, `unicaVez`)
 - [X] T018 [US2] Implementar evaluación de `Requisito`, ventanas y consumo de flags en `src/engine/condicionales.ts`
 - [X] T019 [US2] Implementar `siguientePaso` y `elegir` en `src/engine/partida.ts` (efectos, flags, `saltaCOAC`, contador determinista)
 
@@ -158,7 +158,7 @@ description: "Task list for ENGINE-001 — Motor determinista de Coplero"
 
 **Purpose**: Integridad, snapshot y consistencia documental.
 
-- [X] T031 [P] Test de integridad del banco de fixtures (ids únicos, flags referenciadas, momento/tipo, situaciones alcanzables) en `src/engine/__tests__/integridad.test.ts` (la integridad del banco real llegará con la feature de content)
+- [X] T031 [P] Test de integridad del banco de fixtures (ids únicos, flags referenciadas, momento, situaciones alcanzables) en `src/engine/__tests__/integridad.test.ts` (la integridad del banco real llegará con la feature de content)
 - [X] T032 [P] Snapshot de una partida de referencia en `src/engine/__tests__/snapshot.test.ts`
 - [X] T033 Actualizar `docs/02-arquitectura-tecnica.md` y `docs/registro/` con la refinación de `FasePartida` y la decisión D5
 - [X] T034 Ejecutar `npm run check` y corregir cualquier fallo (tipos, lint, tests)

@@ -7,8 +7,6 @@ const banco: BancoContenido = {
   situaciones: ["A", "B", "C"].map((id) => ({
     id,
     momento: "verano",
-    tipo: "contenido",
-    categoria: "letra",
     titulo: id,
     texto: "",
     opciones: [{ id: `${id}_o`, titulo: id, subtitulo: "" }],
@@ -17,8 +15,6 @@ const banco: BancoContenido = {
     {
       id: "D",
       momento: "verano",
-      tipo: "personaje",
-      categoria: "dinero",
       titulo: "D",
       texto: "",
       opciones: [{ id: "D_o", titulo: "D", subtitulo: "" }],

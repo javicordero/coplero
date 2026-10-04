@@ -5,8 +5,6 @@ export const condicionalesFebrero: Condicional[] = [
   {
     id: "cf_politico",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo: "Un político te contesta en la prensa local",
     texto: "",
     unicaVez: true,
@@ -30,8 +28,6 @@ export const condicionalesFebrero: Condicional[] = [
   {
     id: "cf_tele",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo: "Te llaman de la tele por la polémica",
     texto: "",
     unicaVez: true,
@@ -55,8 +51,6 @@ export const condicionalesFebrero: Condicional[] = [
   {
     id: "cf_excompañero",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "grupo",
     titulo: "Tu antiguo compañero triunfa en otra agrupación",
     texto: "",
     unicaVez: true,
@@ -86,8 +80,6 @@ export const condicionalesFebrero: Condicional[] = [
   {
     id: "cf_documental",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo:
       "Un editor de una tele nacional quiere hacer un documental sobre tu agrupación",
     texto: "",

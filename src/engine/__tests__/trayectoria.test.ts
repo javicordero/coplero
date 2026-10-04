@@ -24,15 +24,10 @@ function opcionesCambioModalidad(): Opcion[] {
   ]
 }
 
-function situacionCambio(
-  id: string,
-  tipo: "contenido" | "personaje",
-): Situacion {
+function situacionCambio(id: string): Situacion {
   return {
     id,
     momento: "verano",
-    tipo,
-    categoria: "carrera",
     titulo: "Salto de modalidad",
     texto: "",
     modalidades: ["comparsista"],
@@ -42,8 +37,8 @@ function situacionCambio(
 
 const bancoCambio: BancoContenido = {
   situaciones: [
-    situacionCambio("cambio_contenido", "contenido"),
-    situacionCambio("cambio_personaje", "personaje"),
+    situacionCambio("cambio_contenido"),
+    situacionCambio("cambio_personaje"),
   ],
   variantes: [
     { id: "comparsa_a", modalidad: "comparsista" },
@@ -124,16 +119,10 @@ describe("cambio de modalidad", () => {
   })
 })
 
-function situacionVariante(
-  id: string,
-  tipo: "contenido" | "personaje",
-  opciones: Opcion[],
-): Situacion {
+function situacionVariante(id: string, opciones: Opcion[]): Situacion {
   return {
     id,
     momento: "verano",
-    tipo,
-    categoria: "musica",
     titulo: "Enfoque del repertorio",
     texto: "",
     modalidades: ["comparsista"],
@@ -143,11 +132,11 @@ function situacionVariante(
 
 const bancoVariante: BancoContenido = {
   situaciones: [
-    situacionVariante("var_contenido", "contenido", [
+    situacionVariante("var_contenido", [
       { id: "a", titulo: "A", subtitulo: "a" },
       { id: "b", titulo: "B", subtitulo: "b", cambiaVariante: "comparsa_b" },
     ]),
-    situacionVariante("var_personaje", "personaje", [
+    situacionVariante("var_personaje", [
       { id: "a", titulo: "A", subtitulo: "a" },
       { id: "b", titulo: "B", subtitulo: "b", cambiaVariante: "comparsa_b" },
     ]),
@@ -179,7 +168,7 @@ describe("cambio de variante", () => {
   it("elegir la variante vigente no registra cambio", () => {
     const banco: BancoContenido = {
       situaciones: [
-        situacionVariante("var_contenido", "contenido", [
+        situacionVariante("var_contenido", [
           { id: "a", titulo: "A", subtitulo: "a" },
           {
             id: "mismo",
@@ -188,7 +177,7 @@ describe("cambio de variante", () => {
             cambiaVariante: "comparsa_a",
           },
         ]),
-        situacionVariante("var_personaje", "personaje", [
+        situacionVariante("var_personaje", [
           { id: "b", titulo: "B", subtitulo: "b" },
           {
             id: "mismo",

@@ -47,7 +47,7 @@ export type ErrorMotor =
   | { codigo: "VERSION_INCOMPATIBLE"; versionRecibida: number; versionEsperada: number }
   | { codigo: "OPCION_INVALIDA"; opcionId: string }
   | { codigo: "VARIANTE_INVALIDA"; varianteId: string }
-  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento; tipo: TipoDecision }
+  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento }
 
 export interface ResumenCarrera {
   // ...campos existentes...

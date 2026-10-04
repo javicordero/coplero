@@ -87,7 +87,7 @@ Quien termina su carrera genera un enlace para compartirlo y, al abrirlo otra pe
 - **FR-002**: La prueba MUST crear un personaje con nombre y confirmarlo, y MUST comprobar que se accede a la elección de modalidad.
 - **FR-003**: La prueba MUST elegir una modalidad y comprobar que se accede a la elección de variante.
 - **FR-004**: La prueba MUST elegir una variante y comprobar que la carrera arranca.
-- **FR-005**: La prueba MUST completar varias decisiones, incluyendo al menos una de contenido y una de personaje, a lo largo de varios años.
+- **FR-005**: La prueba MUST completar varias decisiones de verano y de febrero a lo largo de varios años.
 - **FR-006**: La prueba MUST completar la carrera entera resolviendo todas las pantallas intermedias del bucle (decisiones, resultados anuales y posibles cambios de variante) hasta el final.
 - **FR-007**: Al terminar, la prueba MUST comprobar que aparece la tarjeta final y que contiene el nombre del personaje.
 - **FR-008**: La prueba MUST recargar la página a mitad de carrera y comprobar que se ofrece continuar y que la partida se retoma en el mismo punto observable.

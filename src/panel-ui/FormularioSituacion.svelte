@@ -1,9 +1,7 @@
 <script lang="ts">
   import {
-    CATEGORIAS,
     MOMENTOS,
     MODALIDADES,
-    TIPOS_DECISION,
     type Modalidad,
   } from "../content/modalidades"
   import type { Opcion, Situacion } from "../content/schema"
@@ -30,8 +28,6 @@
   const situacionVacia = (): Situacion => ({
     id: "",
     momento: "verano",
-    tipo: "contenido",
-    categoria: "letra",
     titulo: "",
     texto: "",
     opciones: [opcionVacia(), opcionVacia()],
@@ -111,32 +107,6 @@
       </select>
     </label>
 
-    <label>
-      tipo
-      <select
-        value={borrador.tipo}
-        onchange={(e) =>
-          (borrador.tipo = e.currentTarget.value as Situacion["tipo"])}
-      >
-        {#each TIPOS_DECISION as tipo (tipo)}
-          <option value={tipo}>{tipo}</option>
-        {/each}
-      </select>
-    </label>
-
-    <label>
-      categoría
-      <select
-        value={borrador.categoria}
-        onchange={(e) =>
-          (borrador.categoria = e.currentTarget.value as Situacion["categoria"])}
-      >
-        {#each CATEGORIAS as categoria (categoria)}
-          <option value={categoria}>{categoria}</option>
-        {/each}
-      </select>
-    </label>
-
     <label class="ancha">
       título
       <input
@@ -180,7 +150,7 @@
               : Number(e.currentTarget.value))}
       />
       <small class="ayuda">
-        Probabilidad relativa frente a otras del mismo momento y tipo. Vacío = 1;
+        Probabilidad relativa frente a otras del mismo momento. Vacío = 1;
         2 = el doble de probable; 0,5 = la mitad.
       </small>
     </label>

@@ -24,21 +24,9 @@ describe("integridad del banco real", () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it("toda situación declara momento, tipo y categoría válidos", () => {
+  it("toda situación declara un momento válido", () => {
     for (const s of TODAS) {
       expect(["verano", "febrero"]).toContain(s.momento)
-      expect(["contenido", "personaje"]).toContain(s.tipo)
-      expect([
-        "letra",
-        "musica",
-        "puestaEnEscena",
-        "jurado",
-        "dinero",
-        "grupo",
-        "prensa",
-        "carrera",
-        "concurso",
-      ]).toContain(s.categoria)
     }
   })
 
@@ -72,12 +60,10 @@ describe("integridad del banco real", () => {
     }
   })
 
-  it("hay cobertura común por cada momento y tipo", () => {
+  it("hay cobertura común por cada momento", () => {
     const cob = cobertura(bancoContenido)
     for (const momento of ["verano", "febrero"] as const) {
-      for (const tipo of ["contenido", "personaje"] as const) {
-        expect(cob[momento][tipo]).toBeGreaterThan(0)
-      }
+      expect(cob[momento]).toBeGreaterThan(0)
     }
   })
 

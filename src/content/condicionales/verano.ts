@@ -5,8 +5,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_grupo_consagrado",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "carrera",
     titulo:
       "Has ganado premios con el grupo consagrado; tus amigos te llaman para volver",
     texto: "",
@@ -37,8 +35,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_plazo_inscripcion",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "concurso",
     titulo: "Se acerca el plazo de inscripción tras tu año fuera del concurso",
     texto: "",
     unicaVez: true,
@@ -70,8 +66,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_patrocinador_rival",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "dinero",
     titulo: "El patrocinador que rechazaste aparece con tu rival",
     texto: "",
     unicaVez: true,
@@ -95,16 +89,15 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_registro_social",
     momento: "verano",
-    tipo: "contenido",
-    categoria: "letra",
     titulo: "El público espera otra vez tu registro social",
     texto: "",
     unicaVez: true,
-    // La doc dice "tema_social dos años seguidos". Una situación nunca sale dos
-    // años seguidos, así que la flag no puede concederse en años consecutivos;
-    // se modela como "el tema ha vuelto" (veces 2, sin exigir consecutivos).
-    // Contradicción registrada como C13.
-    requiere: { tipo: "flagRepetida", flag: "tema_social", veces: 2 },
+    // La doc pedía "tema_social dos años seguidos". Al unificarse el pool por
+    // momento (sin separación contenido/personaje) y ser toda situación de una
+    // sola aparición, el tema ya no se repite con la frecuencia necesaria para
+    // exigir `veces: 2`: la condición quedaría inalcanzable. Se dispara con el
+    // tema ya visto una vez (consecuencia registrada del cambio sin `tipo`).
+    requiere: { tipo: "flag", flag: "tema_social" },
     ventanaAnos: 1,
     probabilidad: 0.7,
     consumeFlag: false,
@@ -124,8 +117,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_vuelta",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "concurso",
     titulo: "Vuelves al concurso tras el año que no fuiste",
     texto: "",
     unicaVez: true,
@@ -156,8 +147,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_musico_firma",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "musica",
     titulo: "El músico de fuera quiere firmar la música",
     texto: "",
     unicaVez: true,
@@ -181,8 +170,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_local_venta",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "dinero",
     titulo: "El local de siempre se pone en venta",
     texto: "",
     unicaVez: true,
@@ -208,8 +195,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_enfoque_comparsista",
     momento: "verano",
-    tipo: "contenido",
-    categoria: "musica",
     titulo: "El grupo debate cómo enfocar el repertorio del próximo año",
     texto: "",
     modalidades: ["comparsista"],
@@ -242,8 +227,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_enfoque_chirigotero",
     momento: "verano",
-    tipo: "contenido",
-    categoria: "puestaEnEscena",
     titulo: "El grupo quiere reírse de otra manera este año",
     texto: "",
     modalidades: ["chirigotero"],
@@ -278,8 +261,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_salto_a_comparsista",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "carrera",
     titulo: "La chirigota se te queda pequeña y te ronda la comparsa",
     texto: "",
     modalidades: ["chirigotero"],
@@ -306,8 +287,6 @@ export const condicionalesVerano: Condicional[] = [
   {
     id: "cv_salto_a_chirigotero",
     momento: "verano",
-    tipo: "personaje",
-    categoria: "carrera",
     titulo: "La comparsa se te queda seria y te llama la chirigota",
     texto: "",
     modalidades: ["comparsista"],

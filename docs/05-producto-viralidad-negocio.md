@@ -7,7 +7,7 @@
 ## 1. Interfaz y experiencia de juego
 
 - **Mobile-first real:** la UI se diseña para móvil y en escritorio se mantiene el mismo layout con un ancho máximo contenido (tipo 420-480 px centrados). No hay versión de escritorio distinta.
-- **Indicador de contexto permanente:** en cada decisión se ve el año, el momento (verano / febrero) y el tipo (contenido / personaje). Así el jugador entiende el sistema sin leer nada.
+- **Indicador de contexto permanente:** en cada decisión se ve el año y el momento (verano / febrero). Así el jugador entiende el sistema sin leer nada.
 - **"Continuar donde lo dejaste"** como acción principal de la home cuando hay partida guardada, y "Empezar de cero" como secundaria.
 - **Transiciones entre años** cortas (200-300 ms) que sugieran paso del tiempo sin alargar la partida. Nunca bloqueantes: se pueden saltar tocando.
 - **Modo oscuro / claro** con detección de preferencia del sistema y conmutador manual.
@@ -134,6 +134,6 @@ Es la mitad del producto: la tarjeta final es el anuncio del juego.
 
 | Fase | Qué entra |
 | --- | --- |
-| v1 (lanzamiento) | Mobile-first, indicador de momento y tipo, continuar partida, tarjeta final con PNG 9:16 y 1:1, Web Share API, OG dinámico, watermark, código de partida, footer con enlaces, página de contacto, analítica sin cookies, política de privacidad, enlace desde acordesgaditanos |
+| v1 (lanzamiento) | Mobile-first, indicador de momento, continuar partida, tarjeta final con PNG 9:16 y 1:1, Web Share API, OG dinámico, watermark, código de partida, footer con enlaces, página de contacto, analítica sin cookies, política de privacidad, enlace desde acordesgaditanos |
 | v1.1 | Modo oscuro, buzón de sugerencias, favoritos, Buy Me a Coffee en la tarjeta, formatos de compartir por momento, páginas de contexto y FAQ para AdSense |
 | Más adelante | Reto diario con racha, cuentas opcionales, modo rápido (1 decisión/año) y modo lento (4 por año), tercera y cuarta modalidad (corista y cuartetero), año de debut elegible con situaciones de época, cronología exportable tipo libro, A/B testing, panel interno |

@@ -6,7 +6,7 @@ import type { ParametrosMotor } from "./parametros"
 import { resolverParametros } from "./parametros"
 import { resolverPremios } from "./premios"
 import { rngPara } from "./seed"
-import { seleccionarSituacion, tipoActual, toPublica } from "./selector"
+import { seleccionarSituacion, toPublica } from "./selector"
 import { construirTarjeta } from "./tarjeta"
 import {
   crearTrayectoria,
@@ -88,7 +88,6 @@ export function siguientePaso(p: Partida, banco: BancoContenido): Paso {
         error: {
           codigo: "CONTENIDO_INSUFICIENTE",
           momento: p.momento,
-          tipo: tipoActual(p),
         },
       }
     }
@@ -101,7 +100,6 @@ export function siguientePaso(p: Partida, banco: BancoContenido): Paso {
       error: {
         codigo: "CONTENIDO_INSUFICIENTE",
         momento: p.momento,
-        tipo: tipoActual(p),
       },
     }
   }
@@ -129,7 +127,6 @@ export function elegir(
       error: {
         codigo: "CONTENIDO_INSUFICIENTE",
         momento: p.momento,
-        tipo: tipoActual(p),
       },
     }
   }

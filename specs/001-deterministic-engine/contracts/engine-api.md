@@ -13,7 +13,7 @@ export type Resultado<T, E> =
 export type ErrorMotor =
   | { codigo: "VERSION_INCOMPATIBLE"; versionRecibida: number; versionEsperada: number }
   | { codigo: "OPCION_INVALIDA"; opcionId: string }
-  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento; tipo: TipoDecision };
+  | { codigo: "CONTENIDO_INSUFICIENTE"; momento: Momento };
 ```
 
 ## Constantes
@@ -104,8 +104,6 @@ export type Paso =
 export interface SituacionPublica {
   id: string;
   momento: Momento;
-  tipo: TipoDecision;
-  categoria: Categoria;
   titulo: string;
   texto: string;
   opciones: { id: string; titulo: string; subtitulo: string }[];
@@ -135,7 +133,7 @@ export interface ResumenCarrera {
    `Date.now`; el banco llega por parámetro (`FR-014`, `FR-022`).
 4. **Serialización**: `serializar` produce **JSON plano** con `version`; `deserializar(serializar(p))`
    es equivalente a `p`; versión distinta devuelve `VERSION_INCOMPATIBLE` (`FR-003`, `FR-027`).
-5. **Selección**: `siguientePaso` respeta `momento`, `tipo`, `modalidad`, `variante`, `minAno` y
+5. **Selección**: `siguientePaso` respeta `momento`, `modalidad`, `variante`, `minAno` y
    `unicaVez`; aplica la degradación B→D antes de fallar (`FR-006`, `FR-018`).
 6. **Resultado temporada**: se calcula con el estado previo a la decisión de febrero; esa decisión no
    altera el resultado de la temporada (`FR-024`).

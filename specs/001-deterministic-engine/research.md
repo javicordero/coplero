@@ -55,7 +55,13 @@ consumidor (`localStorage` en la web).
 **Alternatives considered**: migración automática (compleja y prematura); descarte silencioso (pérdida
 de datos sin control del consumidor).
 
-## D5 · Orden y tipo de las decisiones dentro del año
+## D5 · Ranuras fijas por momento (revisado 2026-10-04)
+
+- **Decision**: la decisión del año se elige por **momento**: una situación de `verano` y otra de `febrero`, del pool completo de cada momento. Se retira el reparto por **tipo** (contenido/personaje) que esta decisión describía.
+- **Rationale**: el tipo no aportaba mecánica (solo era una regla artificial de reparto); cada momento es un único pool (ver `docs/01` §5).
+- **Alternatives considered**: mantener el reparto por tipo — descartado por complejidad sin valor.
+
+## D5 (histórico) · Orden y tipo de las decisiones dentro del año
 
 **Decision**: El año tiene dos ranuras (verano, febrero). Se garantiza **una situación de contenido y
 una de personaje por año**. En vez de forzar "verano = contenido" (que dejaría sin usar medio banco
@@ -116,9 +122,9 @@ compartible. Mantiene el motor sin dependencias de runtime.
 ## D9 · Degradación cuando no hay candidatas
 
 **Decision**: Al no haber situaciones que cumplan todos los filtros, se aplica la cadena B→D: (1)
-relajar filtros opcionales (`modalidades`, `variantes`, `minAno`, `requiereFase`); (2) si sigue sin
-haber, reutilizar las vistas menos recientes ignorando `unicaVez`. `momento` y `tipo` nunca se
-relajan. Si aun así no hay ninguna, `CONTENIDO_INSUFICIENTE`.
+relajar filtros opcionales (`modalidades`, `variantes`, `minAno`); (2) si sigue sin haber candidatas,
+reutilizar las vistas menos recientes ignorando `unicaVez`. El `momento` nunca se
+relaja. Si aun así no hay ninguna, `CONTENIDO_INSUFICIENTE`.
 
 **Rationale**: Clarificación Q4 (B→D) y `FR-018`.
 

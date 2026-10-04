@@ -16,8 +16,6 @@ import { type Almacen, VERSION_ALMACEN } from "../esquema"
 const situacion = (id: string): Situacion => ({
   id,
   momento: "verano",
-  tipo: "personaje",
-  categoria: "dinero",
   titulo: `Título ${id}`,
   texto: "",
   opciones: [

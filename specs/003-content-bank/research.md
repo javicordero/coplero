@@ -19,7 +19,7 @@ Fase 0. Resuelve las incógnitas de diseño antes de modelar los datos. Todas la
   | `ano_callejero` **o** `ano_de_gira` | `{ tipo: "alguna", de: [flag ano_callejero, flag ano_de_gira] }` |
   | `year_sabatico` **o** `ano_callejero` **o** `ano_de_gira` | `{ tipo: "alguna", de: [3 flags] }` |
   | `historico_se_fue` **o** `fiche_fuera` | `{ tipo: "alguna", de: [2 flags] }` |
-  | `tema_social` **dos años seguidos** | `{ tipo: "flagRepetida", flag: "tema_social", veces: 2, consecutivos: true }` |
+  | `tema_social` **visto una vez** | `{ tipo: "flag", flag: "tema_social" }` (revisado 2026-10-04; antes `flagRepetida veces:2`) |
   | "Haber llegado a la final alguna vez" | `{ tipo: "faseAlcanzada", fase: "final" }` |
 
 - **Rationale**: el motor ya implementa exactamente estas variantes (`condicionales.ts`); ninguna exige cambios.
@@ -43,7 +43,13 @@ Fase 0. Resuelve las incógnitas de diseño antes de modelar los datos. Todas la
 - **Rationale**: evita repetición hasta agotar el pool y no inventa restricciones.
 - **Alternatives considered**: `unicaVez` omitido (equivale a true, pero menos explícito).
 
-## D6 · Categoría de cada situación
+## D6 · Retirada de tipos y categorías (2026-10-04)
+
+- **Decision**: eliminar `tipo` (`contenido`/`personaje`) y `categoria` del modelo de situación. El análisis de categorías (D6 original) queda **obsoleto**: ya no se asigna ninguna.
+- **Rationale**: no aportaban mecánica (la categoría solo documentaba/agrupaba y el reparto por tipo era una regla artificial); cada momento es un único pool. Ver `docs/01` §5.
+- **Consequence**: `cv_registro_social` pasa a dispararse con `tema_social` visto una vez (antes `veces: 2`).
+
+## D6 (histórico) · Categoría de cada situación
 
 - **Decision**: asignar la categoría según el encabezado de la doc y el efecto dominante:
   - Verano · "Letra" → `letra`; "Música y puesta en escena" → `puestaEnEscena` si el eje es el tipo/vestuario (p. ej. "El tipo no convence") y `musica` si es el sonido o el arreglo.

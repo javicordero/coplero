@@ -23,7 +23,8 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Consumo de flags | Consumir **no borra** del historial: la marca como consumida y desactiva su disparo | 01 §6, 02 §7 |
 | Opciones que saltan el COAC | Campo `saltaCOAC` en `Opcion` | 02 §7 |
 | Temporada | Guarda `fase`, **`puesto`**, `premios` y `fueraDeConcurso` | 02 §7 |
-| Categorías | `letra`, `musica`, **`puestaEnEscena`**, `jurado`, `dinero`, `grupo`, `prensa`, **`carrera`**, **`concurso`** | 01 §5, 02 §7 |
+| Sin tipos ni categorías (2026-10-04) | Se **retiran** `tipo` (`contenido`/`personaje`) y `categoria` de las situaciones: cada momento es un único pool y el motor elige una situación de verano y una de febrero sin reparto por tipo. Desaparece el catálogo `src/content/categorias.ts` y la pantalla «Categorías» del panel. Consecuencia: `cv_registro_social` pasa a dispararse con `tema_social` visto una vez (antes exigía `veces: 2`, ya inalcanzable sin la repetición que daba el pool de contenido) | 01 §4–5, 02 §7/§9/§11 |
+| Temporadas por año | Cada año natural tiene una decisión de verano y una de febrero | 01 §4, 02 §9 |
 | Duración | Número **fijo** de años, todavía por determinar (referencia: 20/40) | 01 §7 |
 | Decisiones por año | **Parametrizable** (v1: 2; modos rápido/lento más adelante) | 01 §4, 02 §8 |
 | Año de la partida (2026-10-04) | Los años de la carrera son **años naturales de carnaval**, no índices: arranca en **2027** (`ANO_PRIMER_CARNAVAL`, se pasa al motor vía `anoInicio`) y `generarDestino` ancla `anoPico` a `anoInicio`. El indicador muestra el año natural del momento: **verano = año del carnaval − 1**, febrero/resultado = año del carnaval. La timeline, los hitos y la OG usan el año del carnaval | 01 §4, 02 §7–8 |
@@ -71,9 +72,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Calibración de premios (2026-09-19) | **Azar puro** (sin afinidad por atributos/flags). Aguja de oro: final ≈21% y tramo excepcional desde semis ≈0,5% (`umbralPuestoExcepcional`/`probabilidadExcepcional`); Coplas y Candela: ≈15% por aparición desde semis. Medido con 8.000 carreras: aguja 0,74/carrera, coplas 1,98, candela 1,99 | 01 §3 |
 | Decisiones por año | 2: una en verano (año anterior) y una en febrero | 01 §4 |
 | Opciones por decisión | 2 normalmente, 3 en algunos casos; siempre título + subtítulo | 01 §4 |
-| Momento | Campo obligatorio `verano \| febrero`; el motor filtra por él | 01 §4 |
-| Set de categorías | Contenido (Letra, Música, Puesta en escena) y Personaje (Jurado, Dinero, Grupo, Prensa, Carrera, Concurso) | 01 §5 |
-| Reparto por año | Una decisión de contenido + una de personaje, nunca dos del mismo tipo | 01 §5 |
+| Momento | Campo obligatorio `verano \| febrero`; el motor filtra por él. Cada momento es un pool único, sin tipos ni categorías | 01 §4 |
 | Flags | No se borran nunca; caduca su ventana de disparo | 01 §6 |
 | Condicionales | No obligatorias; requisito + ventana + probabilidad; pueden consumir flag; pueden encadenarse | 01 §6 |
 | Distribución objetivo | Tabla de resultados objetivo a lo largo de la carrera | 01 §7 |
@@ -84,7 +83,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Decisión | Detalle | Fuente |
 |---|---|---|
 | Mobile-first real | Móvil primero; escritorio mismo layout, 420-480 px centrados | 05 §1 |
-| Indicador de contexto | Año, momento y tipo siempre visibles en la decisión | 05 §1 |
+| Indicador de contexto | Año y momento siempre visibles en la decisión | 05 §1 |
 | Continuar partida | Acción principal de la home si hay partida guardada | 05 §1 |
 | Transiciones | 200-300 ms, no bloqueantes, saltables | 05 §1 |
 | Modo oscuro/claro | Detección de sistema + conmutador manual. **Aclarado (2026-09-21): v1 es solo tema oscuro**; el conmutador sigue en v1.1 (ver «Presentación») | 05 §1 |
@@ -93,7 +92,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Tarjeta final · composición y código (2026-09-20) | Adaptación de la referencia externa (copero.com) como tarjeta-póster **sin número héroe**; fila de trayectoria (chips inicio → cambios → final) y datos destacados separados y nunca sumados (COAC · mejor posición cuando no hay premio · otros premios por tipo con recuento, omitiendo tipos no ganados). Código **autocontenido y sin `seed`** (`VERSION_CODIGO`), con `TarjetaFinal` ya derivada; rutas `/r/:codigo` y `/api/og/:codigo.png?t=og\|9x16\|1x1` on-demand; acciones de compartir. La opción de ocultar el nombre (`sinNombre`, FR-027 de `specs/007`) se retiró el 2026-09-21 por no aportar valor. WCAG 2.2 AA | 01 §2, 02 §8/§10 |
 | Decisiones sin efecto (2026-09-20) | Las decisiones **no cambian el resultado**: lo fijan el `destino` oculto y el azar. Los atributos parten de un valor estándar y solo los mueven unas pocas **excepciones declaradas** (`Opcion.excepcion`, con intercambio visible). Retirados los 80 `efectos` del banco; recalibrado **solo por parámetros** (pesos `7/3/47/16/18/9`, umbrales `42/45/48/54/57`, volatilidad 0,4–1,3, `bonoAnoPico` 14, crack 0,003/12) manteniendo el objetivo de `01` §7. Fuera de alcance: efecto diferido y resultado incierto 60/40. Feature 008; cierra C15 | 01 §2, 02 §8 |
 | Panel de contenido (2026-09-21) | Panel **local solo-dev** (`/panel`, 404 en producción por guard `import.meta.env.DEV`) para ver/crear/editar/eliminar situaciones; su almacén JSON `content-admin/data/situaciones.json` es la **fuente de verdad** versionada (backups ignorados) y `npm run panel:volcar` regenera `src/content/decisiones/**` de forma determinista y sin pérdida. Se descarta `json-server`; sin BD, sin dependencias nuevas y reutilizando los esquemas Zod del juego. Feature 009 | 02 §11 |
-| Categorías gestionables (2026-09-21) | **B2**: las categorías de situación se pueden **añadir/eliminar desde el panel** («Categorías»). Fuente única: `src/content/categorias.ts` (generado y gestionado por el panel); `modalidades.ts` lo reexporta. No se puede borrar una categoría **en uso** (situación o condicional) ni dejar el catálogo vacío; el renombrado queda fuera de alcance. El tipo `Categoria` del motor pasa a `string` porque el motor no puede importar de `content` (la validación fuerte la hace Zod). FR-023 | 01 §2, 02 §11 |
+| Categorías gestionables (retirada, 2026-10-04) | Se **elimina** la pantalla «Categorías» y el catálogo `src/content/categorias.ts`: al retirar el campo `categoria` de las situaciones (ver «Sin tipos ni categorías») desaparece el concepto. El panel vuelve a agrupar por momento | 01 §5, 02 §11 |
 | Buy Me a Coffee (2026-10-04, feature 023) | Reutilizar la cuenta de acordesgaditanos con `?utm_source=coplero`; implementado en la portada (botón dentro del bloque del ejemplo), en `/colaborar` y en la pantalla final. El buzón de sugerencias (Formspree) vive en `/colaborar` (v1.1 de `docs/05` §9) | 05 §5, §9 |
 | Analítica | Recomendada sin cookies (Plausible/Umami/Cloudflare); sin banner | 05 §7 |
 | AdSense | Exige dominio propio y CMP con Consent Mode | 05 §7, 06 |

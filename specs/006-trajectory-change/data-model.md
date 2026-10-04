@@ -111,7 +111,7 @@ decisión con opción cambiaVariante
 
 ## Reglas de validación
 
-1. Toda `Situacion`/`Condicional` debe declarar `momento`, `tipo` y `categoria` (ya existente).
+1. Toda `Situacion`/`Condicional` debe declarar `momento` (ya existente). *(El `tipo`/`categoria` se retiraron el 2026-10-04.)*
 2. `peso`, si existe, MUST ser un número > 0.
 3. `cambiaModalidad`, si existe, MUST ser una modalidad válida y distinta de la vigente en la situación que la declara (validado en integridad por contexto de modalidad).
 4. `cambiaModalidad` MUST NOT aparecer en situaciones de febrero.

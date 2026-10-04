@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Situacion } from "../content/schema"
-  import type { GrupoCategoria } from "../panel/resumen"
+  import type { GrupoMomento } from "../panel/resumen"
 
   let {
     grupos,
@@ -8,28 +8,28 @@
     alEditar,
     alEliminar,
   }: {
-    grupos: GrupoCategoria[]
+    grupos: GrupoMomento[]
     alAbrir: (s: Situacion) => void
     alEditar: (s: Situacion) => void
     alEliminar: (s: Situacion) => void
   } = $props()
 </script>
 
-{#each grupos as grupo (grupo.categoria)}
-  <section class="categoria">
+{#each grupos as grupo (grupo.momento)}
+  <section class="momento">
     <h2>
-      {grupo.categoria}
+      {grupo.momento}
       <span class="recuento">{grupo.total}</span>
     </h2>
 
     {#if grupo.total === 0}
-      <p class="vacio">Sin situaciones en esta categoría.</p>
+      <p class="vacio">Sin situaciones en este momento.</p>
     {:else}
       <table>
         <thead>
           <tr>
             <th>Situación</th>
-            <th>Momento / tipo</th>
+            <th>Momento</th>
             <th>Opción 1</th>
             <th>Opción 2</th>
             <th>Acciones</th>
@@ -48,7 +48,7 @@
                 </button>
                 <span class="id">{situacion.id}</span>
               </td>
-              <td>{situacion.momento} · {situacion.tipo}</td>
+              <td>{situacion.momento}</td>
               <td>{situacion.opciones[0]?.titulo ?? "—"}</td>
               <td>{situacion.opciones[1]?.titulo ?? "—"}</td>
               <td class="acciones">
@@ -68,7 +68,7 @@
 {/each}
 
 <style>
-  .categoria {
+  .momento {
     margin-bottom: 2rem;
   }
   h2 {

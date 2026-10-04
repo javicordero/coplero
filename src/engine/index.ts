@@ -62,8 +62,6 @@ export {
 } from "./seed"
 export {
   seleccionarSituacion,
-  tipoActual,
-  tiposDelAno,
   toPublica,
 } from "./selector"
 export { deserializar, serializar } from "./serializar"

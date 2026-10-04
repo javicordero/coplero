@@ -19,10 +19,10 @@ Fase 1. Modelo de datos del `engine`. Tipos TS puros, serializables y sin clases
 - `Atributo = 'letra' | 'musica' | 'puestaEnEscena' | 'popularidad' | 'cohesion' | 'dinero'`.
 - `Atributos = Record<Atributo, number>`, entero `0..100` con clamp (`FR-008`).
 
-### `Momento`, `TipoDecision`, `Categoria`
+### `Momento`
 - `Momento = 'verano' | 'febrero'`.
-- `TipoDecision = 'contenido' | 'personaje'`.
-- `Categoria = 'letra' | 'musica' | 'puestaEnEscena' | 'jurado' | 'dinero' | 'grupo' | 'prensa' | 'carrera' | 'concurso'`.
+
+> `TipoDecision` y `Categoria` se **retiraron** el 2026-10-04 (el motor selecciona por momento, sin reparto por tipo ni etiqueta de categoría).
 
 ### `Genero`, `Modalidad`, `VarianteId`
 - `Genero = 'masculino' | 'femenino' | 'no_binario'` → título dinámico Coplero/Coplera/Coplere.
@@ -53,8 +53,6 @@ Fase 1. Modelo de datos del `engine`. Tipos TS puros, serializables y sin clases
 |---|---|---|
 | `id` | string | único global |
 | `momento` | `Momento` | obligatorio (`FR-005`) |
-| `tipo` | `TipoDecision` | obligatorio (`FR-006`) |
-| `categoria` | `Categoria` | — |
 | `titulo`, `texto` | string | — |
 | `opciones` | `[Opcion, Opcion, Opcion?]` | 2 o 3 |
 | `modalidades` | `Modalidad[]?` | filtro opcional (ausente = común) |
@@ -158,9 +156,8 @@ fin --resumen--> (resumen mínimo)
 Reglas de transición:
 - El resultado de la temporada se calcula al entrar en `coac`, con el **snapshot posterior a verano y
   previo a la decisión de febrero** (`FR-024`, D10), y se expone después de la decisión de febrero.
-- Cada año: exactamente una situación de contenido y una de personaje (`FR-006`); el reparto entre
-  verano/febrero lo decide el motor (D5). Una opción `saltaCOAC` consume la decisión de su momento sin
-  romper el reparto anual (`FR-017`).
+- Cada año: exactamente una situación de verano y una de febrero (`FR-006`); las ranuras son fijas
+  (D5). Una opción `saltaCOAC` consume la decisión de su momento sin romper el reparto anual (`FR-017`).
 - `saltaCOAC`: la temporada pasa a `fueraDeConcurso`, sin fase ni premios (`FR-017`).
 - La retirada se evalúa al cierre del año (tras `coac`): si se alcanzan los años de carrera,
   `fase = 'fin'`; no hay retirada a mitad de año (`FR-020`).

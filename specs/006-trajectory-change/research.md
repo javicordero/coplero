@@ -82,11 +82,11 @@ Flujo: en verano, una opción con `cambiaModalidad` actualiza `Partida.modalidad
 
 **Decisión**: Añadir al banco de verano:
 
-- **2 situaciones de cambio de modalidad** (tipo personaje, categoría `carrera`), una por dirección:
+- **2 situaciones de cambio de modalidad**, una por dirección:
   - `v_salto_a_comparsista` (filtrada a `modalidades: ["chirigotero"]`) → opción que aplica `cambiaModalidad: "comparsista"`.
   - `v_salto_a_chirigotero` (filtrada a `modalidades: ["comparsista"]`) → opción que aplica `cambiaModalidad: "chirigotero"`.
   - Ambas con 2 opciones (seguir / cambiar), `minAno` ≥ 4 y frecuencia baja. **No** `unicaVez`: pueden reaparecer tras rechazarlas y permiten cambiar y volver.
-- **Situaciones de cambio de variante** (tipo contenido o personaje según el caso), filtradas por la variante de partida, con una opción que aplica `cambiaVariante` a otra variante de la misma modalidad, en cualquier dirección y repetibles. Se arranca con un conjunto semilla revisable (2-4 situaciones) y el catálogo completo crece en el backlog de contenido. Para el jugador son decisiones normales (el título no menciona la variante).
+- **Situaciones de cambio de variante**, filtradas por la variante de partida, con una opción que aplica `cambiaVariante` a otra variante de la misma modalidad, en cualquier dirección y repetibles. Se arranca con un conjunto semilla revisable (2-4 situaciones) y el catálogo completo crece en el backlog de contenido. Para el jugador son decisiones normales (el título no menciona la variante).
 
 **Rationale**: desbloquea la evolución narrable que necesita la tarjeta (007) y permite ir y volver entre variantes, con el mínimo contenido revisable; el catálogo completo de transiciones queda como backlog de contenido.
 

@@ -4,8 +4,6 @@
     {
       "id": "f_cuple",
       "momento": "febrero",
-      "tipo": "contenido",
-      "categoria": "letra",
       "titulo": "Un cuplé no ha entrado en preliminares",
       "texto": "",
       "opciones": [
@@ -31,8 +29,6 @@
     {
       "id": "f_fuera_por_punto",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "jurado",
       "titulo": "Te dejan fuera por un punto",
       "texto": "",
       "opciones": [
@@ -58,8 +54,6 @@
     {
       "id": "f_grada",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "prensa",
       "titulo": "El público del Falla te pide un tema puntual",
       "texto": "",
       "opciones": [
@@ -85,8 +79,6 @@
     {
       "id": "f_jurado",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "jurado",
       "titulo": "Sientes que el jurado te trata injustamente",
       "texto": "",
       "opciones": [
@@ -113,8 +105,6 @@
     {
       "id": "f_popurri_cierre",
       "momento": "febrero",
-      "tipo": "contenido",
-      "categoria": "musica",
       "titulo": "Hay que cerrar el popurrí de la final",
       "texto": "",
       "opciones": [
@@ -143,8 +133,6 @@
     {
       "id": "f_primera_sesion",
       "momento": "febrero",
-      "tipo": "contenido",
-      "categoria": "letra",
       "titulo": "Te toca actuar en la primera sesión de la fase",
       "texto": "",
       "opciones": [
@@ -170,8 +158,6 @@
     {
       "id": "f_radio",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "prensa",
       "titulo": "Una radio local te pide entrevista en plena semana de cuartos",
       "texto": "",
       "opciones": [
@@ -197,8 +183,6 @@
     {
       "id": "f_repesca",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "jurado",
       "titulo": "Pasas a la siguiente fase con lo justo",
       "texto": "",
       "opciones": [
@@ -224,8 +208,6 @@
     {
       "id": "f_viral",
       "momento": "febrero",
-      "tipo": "personaje",
-      "categoria": "prensa",
       "titulo": "Una letra se ha hecho viral, mal interpretada",
       "texto": "",
       "opciones": [
@@ -251,8 +233,6 @@
     {
       "id": "v_arreglo",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "musica",
       "titulo": "Te ofrecen un arreglo musical firmado por un músico de fuera del carnaval",
       "texto": "",
       "opciones": [
@@ -278,8 +258,6 @@
     {
       "id": "v_enfado_coac",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "concurso",
       "titulo": "Te enfadas con el COAC por unos resultados que consideras injustos",
       "texto": "",
       "opciones": [
@@ -315,8 +293,6 @@
     {
       "id": "v_fichaje",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "Te ofrecen fichar por otra agrupación más grande",
       "texto": "",
       "opciones": [
@@ -342,8 +318,6 @@
     {
       "id": "v_filtracion",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "Alguien graba un ensayo y lo sube a redes antes de tiempo",
       "texto": "",
       "opciones": [
@@ -369,8 +343,6 @@
     {
       "id": "v_grupo_consagrado",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "carrera",
       "titulo": "Llevas muchos años con tu grupo de amigos y un grupo consagrado y puntero te ofrece ser su autor",
       "texto": "",
       "opciones": [
@@ -396,8 +368,6 @@
     {
       "id": "v_historico",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "Un componente histórico quiere dejar el grupo",
       "texto": "",
       "opciones": [
@@ -423,8 +393,6 @@
     {
       "id": "v_letra_duro",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "letra",
       "titulo": "Un pasodoble ha quedado muy duro con un político local",
       "texto": "",
       "opciones": [
@@ -450,8 +418,6 @@
     {
       "id": "v_letra_tema",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "letra",
       "titulo": "Toca elegir tema para el repertorio",
       "texto": "",
       "opciones": [
@@ -477,8 +443,6 @@
     {
       "id": "v_local",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "dinero",
       "titulo": "El local de ensayo sube el alquiler",
       "texto": "",
       "opciones": [
@@ -504,8 +468,6 @@
     {
       "id": "v_patrocinador",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "dinero",
       "titulo": "Un patrocinador ofrece dinero a cambio de suavizar la crítica",
       "texto": "",
       "opciones": [
@@ -531,8 +493,6 @@
     {
       "id": "v_plantilla",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "Hay que cerrar la plantilla del año",
       "texto": "",
       "opciones": [
@@ -570,8 +530,6 @@
     {
       "id": "v_popurri_cierre",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "musica",
       "titulo": "El popurrí necesita un cierre",
       "texto": "",
       "opciones": [
@@ -597,8 +555,6 @@
     {
       "id": "v_protagonismo",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "Un componente se ha hecho más conocido que tú dentro del grupo",
       "texto": "",
       "opciones": [
@@ -635,8 +591,6 @@
     {
       "id": "v_ritmo",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "grupo",
       "titulo": "El carnaval te está comiendo la vida de casa",
       "texto": "",
       "opciones": [
@@ -660,37 +614,8 @@
       "unicaVez": true
     },
     {
-      "id": "v_ruptura_grupo",
-      "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "letra",
-      "titulo": "Te separas de tu grupo tras varios años y toca escribir",
-      "texto": "",
-      "opciones": [
-        {
-          "id": "emotivo",
-          "titulo": "Pasodoble emotivo",
-          "subtitulo": "Buscando emocionar",
-          "flags": [
-            "ruptura_elegante"
-          ]
-        },
-        {
-          "id": "cañi",
-          "titulo": "Cuplé con carga de Cádiz",
-          "subtitulo": "Llamándoles de todo",
-          "flags": [
-            "ruptura_a_saco"
-          ]
-        }
-      ],
-      "unicaVez": true
-    },
-    {
       "id": "v_tipo",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "puestaEnEscena",
       "titulo": "El tipo no acaba de convencer al grupo a un mes del concurso",
       "texto": "",
       "opciones": [
@@ -716,8 +641,6 @@
     {
       "id": "v_tono",
       "momento": "verano",
-      "tipo": "contenido",
-      "categoria": "musica",
       "titulo": "Un componente pide bajar el tono del pasodoble para poder cantarlo",
       "texto": "",
       "opciones": [
@@ -743,8 +666,6 @@
     {
       "id": "v_vestuario",
       "momento": "verano",
-      "tipo": "personaje",
-      "categoria": "dinero",
       "titulo": "Hay que decidir el presupuesto de vestuario",
       "texto": "",
       "opciones": [
@@ -762,6 +683,31 @@
           "subtitulo": "Que hable la letra, no el disfraz",
           "flags": [
             "vestuario_humilde"
+          ]
+        }
+      ],
+      "unicaVez": true
+    },
+    {
+      "id": "v_ruptura_grupo",
+      "momento": "verano",
+      "titulo": "Te separas de tu grupo tras varios años y toca escribir",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "emotivo",
+          "titulo": "Pasodoble emotivo",
+          "subtitulo": "Buscando emocionar",
+          "flags": [
+            "ruptura_elegante"
+          ]
+        },
+        {
+          "id": "cañi",
+          "titulo": "Cuplé con carga de Cádiz",
+          "subtitulo": "Llamándoles de todo",
+          "flags": [
+            "ruptura_a_saco"
           ]
         }
       ],

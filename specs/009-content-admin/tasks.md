@@ -52,18 +52,18 @@ Proyecto único Astro: `src/`, `scripts/`, `content-admin/` en la raíz. Ver `pl
 
 ---
 
-## Phase 3: User Story 1 - Ver el banco por categorías (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - Ver el banco por momento (Priority: P1) 🎯 MVP
 
-**Goal**: tablas por categoría con recuento y situación + opción 1/2, y detalle de todos los campos.
+**Goal**: tablas por momento con recuento y situación + opción 1/2, y detalle de todos los campos.
 
 **Independent Test**: abrir `/panel` con el banco importado y comprobar tablas, recuentos y detalle.
 
 ### Implementation for User Story 1
 
-- [x] T013 [US1] Crear `src/panel/resumen.ts` con `agruparPorCategoria(situaciones)` pura (categoría → situaciones + recuento)
-- [x] T014 [P] [US1] Escribir `src/panel/__tests__/resumen.test.ts`: cada situación aparece una sola vez, el recuento por categoría es exacto y la suma iguala el total (SC-001)
+- [x] T013 [US1] Crear `src/panel/resumen.ts` con `agruparPorMomento(situaciones)` pura (momento → situaciones + recuento)
+- [x] T014 [P] [US1] Escribir `src/panel/__tests__/resumen.test.ts`: cada situación aparece una sola vez, el recuento por momento es exacto y la suma iguala el total (SC-001)
 - [x] T015 [P] [US1] Crear `src/pages/api/panel/situaciones.ts` con `GET` (dev-only) que devuelve `{ situaciones }` del almacén, según `contracts/panel.md`
-- [x] T016 [P] [US1] Crear `src/panel-ui/TablasCategorias.svelte`: una tabla por categoría, encabezado con recuento y filas con título, momento/tipo y opción 1 y 2
+- [x] T016 [P] [US1] Crear `src/panel-ui/TablasMomentos.svelte`: una tabla por momento, encabezado con recuento y filas con título, momento y opción 1 y 2
 - [x] T017 [US1] Crear `src/panel-ui/DetalleSituacion.svelte` que muestre todos los campos de la situación y de cada opción
 - [x] T018 [US1] Conectar en `src/panel-ui/Panel.svelte` la carga (`fetch` a `/api/panel/situaciones`), el agrupado con `resumen.ts` y la apertura del detalle
 
@@ -83,7 +83,7 @@ Proyecto único Astro: `src/`, `scripts/`, `content-admin/` en la raíz. Ver `pl
 - [x] T020 [P] [US2] Escribir `src/panel/__tests__/crud.test.ts`: alta/edición/borrado correctos; <2 opciones, id de opción duplicado, `efectos` sin `excepcion` y variante fuera de catálogo se rechazan sin tocar el almacén (SC-003)
 - [x] T021 [US2] Implementar `POST` (crear, 201/422/500) en `src/pages/api/panel/situaciones.ts` (secuencial tras T015: mismo fichero)
 - [x] T022 [P] [US2] Crear `src/pages/api/panel/situaciones/[id].ts` con `PUT` (200/404/422/500) y `DELETE` (200/404/500)
-- [x] T023 [P] [US2] Crear `src/panel-ui/FormularioSituacion.svelte` con todos los campos de `Situacion` y catálogos cerrados (momentos, tipos, categorías, modalidades, variantes)
+- [x] T023 [P] [US2] Crear `src/panel-ui/FormularioSituacion.svelte` con todos los campos de `Situacion` y catálogos cerrados (momentos, modalidades, variantes)
 - [x] T024 [P] [US2] Crear `src/panel-ui/FormularioOpcion.svelte` con `titulo`, `subtitulo`, `excepcion`+`efectos`, `flags`, `consume`, `peso`, `saltaCOAC`, `cambiaModalidad`, `cambiaVariante` (lista dinámica, mínimo 2)
 - [x] T025 [US2] Conectar en `src/panel-ui/Panel.svelte` el alta, la edición y el borrado con confirmación, y mostrar los errores de validación por campo y en resumen (FR-011, FR-012)
 
@@ -120,16 +120,16 @@ Proyecto único Astro: `src/`, `scripts/`, `content-admin/` en la raíz. Ver `pl
 
 ## Phase 7: Anexo — Ayudas, botón volver y categorías gestionables
 
-Petición posterior a la implementación (2026-09-21). No altera FR-001..FR-022; añade **FR-023**.
+Petición posterior a la implementación (2026-09-21). No altera FR-001..FR-022; añadió **FR-023**. **Retirada el 2026-10-04** junto con el `tipo`/`categoria` (los ficheros y la pantalla de categorías se eliminaron).
 
 - [x] T035 [P] Ayudas en el formulario (`id`, `peso`, `flags`, `consume`) en `src/panel-ui/FormularioSituacion.svelte` y `src/panel-ui/FormularioOpcion.svelte`
 - [x] T036 [P] Botón "← Volver al panel" en `src/panel-ui/FormularioSituacion.svelte`
-- [x] T037 [P] Crear `src/content/categorias.ts` (catálogo generado) y reexportar `CATEGORIAS`/`Categoria` desde `src/content/modalidades.ts`
-- [x] T038 [P] Relajar `Categoria` a `string` en `src/engine/types.ts` (el motor no puede importar de `content`)
-- [x] T039 Crear `src/panel/categorias.ts` (leer/generar/agregar/eliminar + `categoriasEnUso`) y `src/panel/__tests__/categorias.test.ts`
-- [x] T040 Crear `src/pages/api/panel/categorias.ts` (GET/POST) y `src/pages/api/panel/categorias/[id].ts` (DELETE)
-- [x] T041 Crear `src/panel-ui/Categorias.svelte` y añadir el botón "Categorías" en `src/panel-ui/Panel.svelte`
-- [x] T042 Actualizar `docs/01` §2, `docs/02` §11 y registrar la decisión **B2** en `docs/registro/decisiones-cerradas.md`
+- [x] T037 [P] ~~Crear `src/content/categorias.ts`~~ (eliminado)
+- [x] T038 [P] ~~Relajar `Categoria` a `string`~~ (eliminado)
+- [x] T039 ~~Crear `src/panel/categorias.ts`~~ (eliminado)
+- [x] T040 ~~Crear rutas de categorías del panel~~ (eliminadas)
+- [x] T041 ~~Crear `src/panel-ui/Categorias.svelte`~~ (eliminado)
+- [x] T042 Actualizar `docs/01` §2, `docs/02` §11 y registrar la decisión **B2** — **superseded el 2026-10-04** (categorías retiradas).
 
 ---
 
@@ -179,7 +179,7 @@ Task: "Crear src/panel-ui/FormularioOpcion.svelte"
 ### MVP First (User Story 1)
 
 1. Fase 1 (Setup) → Fase 2 (Foundational, con `panel:importar`).
-2. Fase 3 (US1): ver el banco por categorías.
+2. Fase 3 (US1): ver el banco por momento.
 3. **PARAR Y VALIDAR** con el quickstart (pasos 1–2).
 4. US1 ya aporta valor (leer el banco de un vistazo).
 

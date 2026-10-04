@@ -1,12 +1,31 @@
 // GENERADO por `npm run panel:volcar` — no editar a mano.
-import type { Situacion } from "../../schema"
+import type { Situacion } from "../schema"
 
-export const situacionesFebreroPersonaje: Situacion[] = [
+export const situacionesFebrero: Situacion[] = [
+  {
+    id: "f_cuple",
+    momento: "febrero",
+    titulo: "Un cuplé no ha entrado en preliminares",
+    texto: "",
+    opciones: [
+      {
+        id: "cambiar",
+        titulo: "Cambiarlo para cuartos",
+        subtitulo: "Si no ríe, fuera",
+        flags: ["cuple_cambiado"],
+      },
+      {
+        id: "mantener",
+        titulo: "Mantenerlo",
+        subtitulo: "El chiste necesita otra grada",
+        flags: ["cuple_mantenido"],
+      },
+    ],
+    unicaVez: true,
+  },
   {
     id: "f_fuera_por_punto",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "jurado",
     titulo: "Te dejan fuera por un punto",
     texto: "",
     opciones: [
@@ -28,8 +47,6 @@ export const situacionesFebreroPersonaje: Situacion[] = [
   {
     id: "f_grada",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo: "El público del Falla te pide un tema puntual",
     texto: "",
     opciones: [
@@ -51,8 +68,6 @@ export const situacionesFebreroPersonaje: Situacion[] = [
   {
     id: "f_jurado",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "jurado",
     titulo: "Sientes que el jurado te trata injustamente",
     texto: "",
     opciones: [
@@ -73,10 +88,51 @@ export const situacionesFebreroPersonaje: Situacion[] = [
     unicaVez: true,
   },
   {
+    id: "f_popurri_cierre",
+    momento: "febrero",
+    titulo: "Hay que cerrar el popurrí de la final",
+    texto: "",
+    opciones: [
+      {
+        id: "cai",
+        titulo: "Vámonos por Cai",
+        subtitulo: "Al 3x4 de Cádiz, a lo grande",
+        flags: ["cierre_himno"],
+      },
+      {
+        id: "esdrujulas",
+        titulo: "Canto a la vida",
+        subtitulo: "Apóyate en las esdrújulas, la fórmula más auténtica",
+        flags: ["cierre_esdrujulas"],
+      },
+    ],
+    modalidades: ["chirigotero"],
+    unicaVez: true,
+  },
+  {
+    id: "f_primera_sesion",
+    momento: "febrero",
+    titulo: "Te toca actuar en la primera sesión de la fase",
+    texto: "",
+    opciones: [
+      {
+        id: "sacar",
+        titulo: "Sacar el mejor pasodoble ya",
+        subtitulo: "Que se hable de nosotros desde el día uno",
+        flags: ["ensenar_las_cartas"],
+      },
+      {
+        id: "guardar",
+        titulo: "Guardarlo para la siguiente fase",
+        subtitulo: "Reservar la bala buena",
+        flags: ["guardo_la_bala"],
+      },
+    ],
+    unicaVez: true,
+  },
+  {
     id: "f_radio",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo: "Una radio local te pide entrevista en plena semana de cuartos",
     texto: "",
     opciones: [
@@ -98,8 +154,6 @@ export const situacionesFebreroPersonaje: Situacion[] = [
   {
     id: "f_repesca",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "jurado",
     titulo: "Pasas a la siguiente fase con lo justo",
     texto: "",
     opciones: [
@@ -121,8 +175,6 @@ export const situacionesFebreroPersonaje: Situacion[] = [
   {
     id: "f_viral",
     momento: "febrero",
-    tipo: "personaje",
-    categoria: "prensa",
     titulo: "Una letra se ha hecho viral, mal interpretada",
     texto: "",
     opciones: [

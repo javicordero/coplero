@@ -125,11 +125,11 @@ La carrera recuerda de dónde venía el personaje y por dónde pasó: la modalid
 
 ## Assumptions
 
-- **Tipo y categoría de las situaciones de cambio de modalidad**: se añaden como situaciones de verano del tipo personaje (categoría "carrera"), **repetibles** y nunca en el primer año, con baja frecuencia (peso o probabilidad bajos) para que no aparezcan de forma sistemática. Los valores concretos se calibran con el simulador en el plan.
+- **Tipo y categoría de las situaciones de cambio de modalidad**: se añaden como situaciones de verano, **repetibles** y nunca en el primer año, con baja frecuencia (peso o probabilidad bajos) para que no aparezcan de forma sistemática. Los valores concretos se calibran con el simulador en el plan. *(El `tipo`/`categoria` se retiraron el 2026-10-04.)*
 - **Situaciones de cambio de variante**: se apoyan en el mismo efecto interno y pueden ser situaciones nuevas o adaptaciones de las existentes; permiten cambios libres y repetibles entre las variantes de la modalidad, con baja frecuencia. El número y el texto exactos se detallan en el plan. Para el jugador no son distintas de una decisión normal.
 - **Reutilización de la elección de variante**: el paso de elegir la nueva variante tras un cambio de modalidad reutiliza la pantalla de elección de variante ya existente.
 - **Modalidades**: solo las 2 actuales (comparsista y chirigotero); corista y cuartetero siguen fuera de alcance.
 - **Sin tarjeta final en esta feature**: los cambios se registran y se aplican, pero su presentación en la tarjeta final corresponde a la feature 007.
 - **Persistencia**: la trayectoria se añade al estado serializable y hereda el comportamiento de guardado/restauración ya definido (`docs/02` §10).
 - **El destino permanece interno**: la trayectoria no incluye ni expone el techo ni ningún otro campo oculto.
-- **Dependencia de contenido**: las situaciones nuevas deben cumplir las reglas del banco (momento, tipo, categoría, título + subtítulo, flags coherentes) y validarse con Zod.
+- **Dependencia de contenido**: las situaciones nuevas deben cumplir las reglas del banco (momento, título + subtítulo, flags coherentes) y validarse con Zod.

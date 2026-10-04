@@ -75,7 +75,7 @@ src/
 │   ├── Juego.svelte                # isla raíz: monta el estado y enruta por pantalla
 │   ├── estado.svelte.ts            # estado reactivo (runes) que envuelve el engine
 │   ├── persistencia.ts             # localStorage + versión de esquema (almacén inyectable)
-│   ├── presentacion.ts             # etiquetas/títulos (fase, momento, tipo, premios, género)
+│   ├── presentacion.ts             # etiquetas/títulos (fase, momento, premios, género)
 │   ├── pantallas/
 │   │   ├── Intro.svelte
 │   │   ├── CrearPersonaje.svelte

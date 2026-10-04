@@ -23,7 +23,7 @@ export const respuesta404 = (): Response => new Response("Not Found", { status: 
 
 ### `GET` → `200 { situaciones: Situacion[] }`
 
-Devuelve el almacén íntegro (el agrupado por categoría lo hace la isla). Si no hay almacén,
+Devuelve el almacén íntegro (el agrupado por momento lo hace la isla). Si no hay almacén,
 `{ situaciones: [] }`.
 
 ### `POST` (crea)

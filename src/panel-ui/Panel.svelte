@@ -1,11 +1,10 @@
 <script lang="ts">
   import type { Situacion } from "../content/schema"
   import type { ErrorValidacion } from "../panel/esquema"
-  import { agruparPorCategoria } from "../panel/resumen"
-  import Categorias from "./Categorias.svelte"
+  import { agruparPorMomento } from "../panel/resumen"
   import DetalleSituacion from "./DetalleSituacion.svelte"
   import FormularioSituacion from "./FormularioSituacion.svelte"
-  import TablasCategorias from "./TablasCategorias.svelte"
+  import TablasMomentos from "./TablasMomentos.svelte"
 
   let situaciones = $state<Situacion[]>([])
   let cargando = $state(true)
@@ -16,9 +15,8 @@
   let guardando = $state(false)
   let importando = $state(false)
   let erroresFormulario = $state<ErrorValidacion[]>([])
-  let vista = $state<"situaciones" | "categorias">("situaciones")
 
-  const grupos = $derived(agruparPorCategoria(situaciones))
+  const grupos = $derived(agruparPorMomento(situaciones))
   const total = $derived(situaciones.length)
   const enFormulario = $derived(creando || editando !== null)
 
@@ -64,7 +62,6 @@
   }
 
   function abrirNueva() {
-    vista = "situaciones"
     seleccionada = null
     editando = null
     creando = true
@@ -72,7 +69,6 @@
   }
 
   function abrirEditar(situacion: Situacion) {
-    vista = "situaciones"
     seleccionada = null
     creando = false
     editando = situacion
@@ -147,9 +143,6 @@
   <header class="cabecera">
     <h1>Panel de situaciones</h1>
     <p class="total">{total} situaciones</p>
-    <button type="button" onclick={() => (vista = "categorias")}>
-      Categorías
-    </button>
     <button type="button" class="principal" onclick={abrirNueva}>
       Nueva situación
     </button>
@@ -159,8 +152,6 @@
     <p>Cargando…</p>
   {:else if error}
     <p class="error">No se pudo cargar el banco: {error}</p>
-  {:else if vista === "categorias"}
-    <Categorias alVolver={() => (vista = "situaciones")} />
   {:else if enFormulario}
     {#key editando?.id ?? "nueva"}
       <FormularioSituacion
@@ -186,7 +177,7 @@
         alCerrar={() => (seleccionada = null)}
       />
     {/if}
-    <TablasCategorias
+    <TablasMomentos
       {grupos}
       alAbrir={(s) => (seleccionada = s)}
       alEditar={abrirEditar}

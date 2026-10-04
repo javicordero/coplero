@@ -41,7 +41,7 @@ Proyecto único Astro: `src/`, `tests/` en la raíz.
 **⚠️ CRITICAL**: Ninguna historia puede empezar hasta terminar esta fase
 
 - [X] T004 Añadir el catálogo de variantes como datos en `src/content/variantes.ts` (interfaz `Variante`, `VARIANTES`, `variantesDe(modalidad)` según `docs/01` §2) y re-exportarlo en `src/content/index.ts`
-- [X] T005 [P] Implementar `src/juego/presentacion.ts`: `tituloDelJuego`, `etiquetaMomento`, `etiquetaTipo`, `etiquetaFase`, `etiquetaPremio`, `normalizarNombre` (trim + colapsar + máx. 24)
+- [X] T005 [P] Implementar `src/juego/presentacion.ts`: `tituloDelJuego`, `etiquetaMomento`, `etiquetaFase`, `etiquetaPremio`, `normalizarNombre` (trim + colapsar + máx. 24). `etiquetaTipo` se retiró el 2026-10-04.
 - [X] T006 Implementar `src/juego/persistencia.ts` según `contracts/estado.md`: `Almacen`, `guardar`, `cargar`, `borrar`, clave `coplero:partida`, versión de esquema y descarte sin lanzar
 - [X] T007 Implementar `src/juego/estado.svelte.ts`: fábrica `crearJuego()` con runes y acciones (`empezar`, `crearPersonaje`, `elegirModalidad`, `elegirVariante`, `elegirOpcion`, `continuar`, `reiniciar`, `continuarPartida`) que delegan en el motor y auto-guardan
 - [X] T008 Crear `src/pages/jugar.astro` (shell estático que monta `<Juego client:load />`) y `src/juego/Juego.svelte` (raíz que enruta por `estado.pantalla`, sin lógica de juego)
@@ -79,11 +79,11 @@ Proyecto único Astro: `src/`, `tests/` en la raíz.
 
 **Goal**: Indicador de contexto permanente y resultado de temporada legible.
 
-**Independent Test**: recorrer decisiones comprobando que el indicador cambia con año/momento/tipo y que el resultado muestra fase, puesto y premios.
+**Independent Test**: recorrer decisiones comprobando que el indicador cambia con año/momento y que el resultado muestra fase, puesto y premios.
 
 ### Implementation for User Story 2
 
-- [X] T021 [P] [US2] Crear `src/juego/pantallas/IndicadorContexto.svelte` (año, momento y tipo con `presentacion.ts`)
+- [X] T021 [P] [US2] Crear `src/juego/pantallas/IndicadorContexto.svelte` (año y momento con `presentacion.ts`)
 - [X] T022 [US2] Integrar el indicador en `Decision.svelte` y `Resultado.svelte`, y completar `Resultado.svelte` con fase alcanzada, puesto y premios del año
 - [X] T023 [P] [US2] Ampliar `src/juego/__tests__/presentacion.test.ts` con la composición del indicador y las etiquetas de fase/puesto/premios
 

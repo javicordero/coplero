@@ -7,8 +7,6 @@ import { chooserSimulado, jugarCarrera } from "./helpers"
 const situacionNueva: Situacion = {
   id: "v_extra",
   momento: "verano",
-  tipo: "contenido",
-  categoria: "letra",
   titulo: "Situación añadida",
   texto: "Añadir contenido no debe tocar el motor.",
   opciones: [
@@ -32,12 +30,10 @@ describe("extensibilidad del contenido", () => {
     const extraContenido: Situacion = {
       ...situacionNueva,
       id: "v_extra_c",
-      tipo: "contenido",
     }
     const extraPersonaje: Situacion = {
       ...situacionNueva,
       id: "v_extra_p",
-      tipo: "personaje",
     }
     const bancoSoloExtra: BancoContenido = {
       situaciones: [extraContenido, extraPersonaje],

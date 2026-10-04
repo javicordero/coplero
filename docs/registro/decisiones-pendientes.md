@@ -22,7 +22,7 @@ No se resuelve en silencio. Queda **pendiente del primer deploy** para confirmar
 
 ### C13 · "tema_social dos años seguidos" frente a `unicaVez: true` ✅ Resuelta
 
-`docs/03` pide `tema_social` **dos años seguidos** para el condicional "El público espera otra vez tu registro social", pero la clarificación Q2 de CONTENT-001 marca todas las situaciones con `unicaVez: true`: la situación que concede la flag (`v_letra_tema`) no se repite en años consecutivos, así que `flagRepetida` con `consecutivos: true` sería **inalcanzable**. **Decisión confirmada por diseño:** modelar el requisito como `flagRepetida` `veces: 2` **sin** exigir consecutivos ("el tema ha vuelto"), que sí es alcanzable. La regla de repetición queda: una situación **no** sale dos años seguidos, pero puede volver más tarde (reciclado); las flags se acumulan aunque no en años consecutivos.
+`docs/03` pedía `tema_social` **dos años seguidos** para el condicional "El público espera otra vez tu registro social". Al **retirar los tipos** (2026-10-04) el pool de verano pasó a un único conjunto y toda situación sigue siendo `unicaVez: true`; el tema ya no se repite con la frecuencia necesaria para exigir `veces: 2`, así que la condición quedaría **inalcanzable**. **Decisión:** el condicional `cv_registro_social` se dispara con `tema_social` visto **una vez** (`{ tipo: "flag", flag: "tema_social" }`). La regla de repetición general se mantiene: una situación **no** sale dos años seguidos, pero puede volver más tarde por reciclado.
 
 ### Derogación del aviso de guardado descartado (feature 005 → feature 018) ✅ Resuelta (2026-10-01)
 
@@ -33,6 +33,12 @@ La feature **005** decidió mostrar un **aviso puntual** cuando un guardado no s
 Diseño: las decisiones **no afectan al resultado**; lo fijan el `destino` oculto y el azar. Los **atributos parten de un valor estándar** y solo cambian por **excepciones declaradas** (unas pocas, con intercambio visible). Implementado en la feature **008**: se añadió `Opcion.excepcion` (regla Zod `efectos` ⇔ `excepcion`), se retiraron **los 80 `efectos`** del banco (quedan 4 opciones excepción en 2 situaciones) y se **recalibró** solo con parámetros, **sin tocar `coac.ts` ni las situaciones**.
 
 Calibración final (`parametros.ts`, 10.000 carreras): pesos del techo `7/3/47/16/18/9`; umbrales `42/45/48/54/57`; `volatilidad` 0,4–1,3; `bonoAnoPico` 14; `probabilidadCrack` 0,003 / `bonusCrack` 12. Resultado: final 43,6 % · no cuartos 10,4 % · no preliminares 7,1 % · ≥1 primer premio 26,1 % · ≥3 11,4 % · ≥5 6,3 % · ≥10 0,4 % · ≥15 0,1 %. Actualizados `docs/01` §2 y `docs/02` §8. El efecto diferido y el 60/40 quedan fuera de alcance.
+
+### T23 · Racha de posiciones idénticas en el borde del objetivo (feature 013)
+
+Tras retirar los **tipos y categorías** (2026-10-04) la selección cambia de situación por año, lo que **desplaza ligeramente el RNG de desenlace**: en el mismo conjunto de 10.000 carreras (`seedBase: "forma-carrera"`) la peor racha de posición idéntica pasó de **8 a 9 años** (una sola carrera; media 2,47; racha >4 años 5,0 %). El resto de métricas de forma y de dificultad siguen dentro de los objetivos de `docs/01` §7 (final 43,5 %, no cuartos 13,7 %, ≥1 primer premio 25,2 %, ≥3 8,6 %). El test `forma-carrera` S-01/S-07 está calibrado a 8 y ahora falla por ese caso aislado.
+
+**No se resuelve en silencio.** Se ajustará **solo con parámetros de forma** (p. ej. `amplitudForma`), nunca tocando situaciones, o se documentará que el objetivo pasa a ≤ 9. Medición pendiente de decidir.
 
 ---
 
@@ -84,6 +90,7 @@ El endpoint `/api/og/[codigo].png` (OG-001, feature 007) usa `satori` + `@resvg/
 
 - [ ] Ampliar el banco a 60-80 situaciones (30-40 por momento).
 - [ ] Marcar situaciones exclusivas por modalidad/variante (`modalidades`).
+- [ ] Reducir la situación "Te separas de tu grupo" a una sola variante de texto (quedó duplicada al unificar contenido y personaje en un único pool de verano).
 - [ ] Escribir el cierre de popurrí equivalente de comparsa (`04`).
 - [ ] Añadir más cadenas condicionales de 3 eslabones.
 - [ ] Añadir más decisiones de 3 opciones.

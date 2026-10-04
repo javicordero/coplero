@@ -17,10 +17,6 @@
     <dd>{situacion.id}</dd>
     <dt>momento</dt>
     <dd>{situacion.momento}</dd>
-    <dt>tipo</dt>
-    <dd>{situacion.tipo}</dd>
-    <dt>categoría</dt>
-    <dd>{situacion.categoria}</dd>
     <dt>texto</dt>
     <dd>{situacion.texto || "—"}</dd>
     <dt>modalidades</dt>

@@ -1,16 +1,10 @@
 import { describe, expect, it } from "vitest"
-import { CATEGORIAS } from "../../content/modalidades"
 import type { Situacion } from "../../content/schema"
-import { agruparPorCategoria } from "../resumen"
+import { agruparPorMomento } from "../resumen"
 
-const situacion = (
-  id: string,
-  categoria: Situacion["categoria"],
-): Situacion => ({
+const situacion = (id: string, momento: Situacion["momento"]): Situacion => ({
   id,
-  momento: "verano",
-  tipo: "contenido",
-  categoria,
+  momento,
   titulo: `Título ${id}`,
   texto: "",
   opciones: [
@@ -19,36 +13,36 @@ const situacion = (
   ],
 })
 
-describe("agrupar por categoría", () => {
+describe("agrupar por momento", () => {
   const situaciones = [
-    situacion("s1", "letra"),
-    situacion("s2", "letra"),
-    situacion("s3", "dinero"),
+    situacion("s1", "verano"),
+    situacion("s2", "verano"),
+    situacion("s3", "febrero"),
   ]
 
-  it("cubre todas las categorías en orden", () => {
-    expect(agruparPorCategoria(situaciones).map((g) => g.categoria)).toEqual([
-      ...CATEGORIAS,
+  it("cubre todos los momentos en orden", () => {
+    expect(agruparPorMomento(situaciones).map((g) => g.momento)).toEqual([
+      "verano",
+      "febrero",
     ])
   })
 
   it("la suma de recuentos iguala el total (SC-001)", () => {
-    const grupos = agruparPorCategoria(situaciones)
+    const grupos = agruparPorMomento(situaciones)
     expect(grupos.reduce((n, g) => n + g.total, 0)).toBe(situaciones.length)
   })
 
   it("cada situación aparece exactamente una vez", () => {
-    const ids = agruparPorCategoria(situaciones).flatMap((g) =>
+    const ids = agruparPorMomento(situaciones).flatMap((g) =>
       g.situaciones.map((s) => s.id),
     )
     expect(ids.sort()).toEqual(["s1", "s2", "s3"])
     expect(new Set(ids).size).toBe(situaciones.length)
   })
 
-  it("cuenta bien por categoría", () => {
-    const grupos = agruparPorCategoria(situaciones)
-    expect(grupos.find((g) => g.categoria === "letra")?.total).toBe(2)
-    expect(grupos.find((g) => g.categoria === "dinero")?.total).toBe(1)
-    expect(grupos.find((g) => g.categoria === "grupo")?.total).toBe(0)
+  it("cuenta bien por momento", () => {
+    const grupos = agruparPorMomento(situaciones)
+    expect(grupos.find((g) => g.momento === "verano")?.total).toBe(2)
+    expect(grupos.find((g) => g.momento === "febrero")?.total).toBe(1)
   })
 })

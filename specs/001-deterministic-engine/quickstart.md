@@ -35,7 +35,7 @@ misma secuencia de decisiones produce el mismo estado final.
 
 ### 3. Ciclo estacional y decisiones (US2, FR-005/FR-006)
 
-En cada año se ofrecen una situación de contenido y una de personaje; nunca dos del mismo tipo; las de
+En cada año se ofrecen una situación de verano y una de febrero; las de
 verano no aparecen en febrero ni al revés.
 
 - Ejecutar: `npm run test -- selector`

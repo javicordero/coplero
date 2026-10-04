@@ -7,11 +7,11 @@
 | Regla | Comprobación |
 |---|---|
 | Ids únicos | `Set(ids).size === ids.length` |
-| Campos obligatorios | Toda situación tiene `momento`, `tipo`, `categoria` válidos |
+| Campos obligatorios | Toda situación tiene `momento` válido |
 | Opciones | `>= 2`, con `titulo` y `subtitulo` no vacíos |
 | Flags consistentes | Toda flag referenciada existe en `opciones[].flags` |
 | Modalidades/variantes | Valores permitidos |
-| Cobertura | `> 0` situaciones comunes por `momento × tipo` |
+| Cobertura | `> 0` situaciones comunes por momento |
 | `saltaCOAC` | Toda opción que no concursa lo declara |
 | Sin inventar | Recuento esperado de `docs/03`+`docs/04` |
 
@@ -25,7 +25,7 @@
 
 ```text
 Situaciones de verano: 18
-Situaciones de febrero: 6
+Situaciones de febrero: 9
 Condicionales: 11
 Flags declaradas: <n>  -> <lista>
 Flags referenciadas: <n> -> <lista>

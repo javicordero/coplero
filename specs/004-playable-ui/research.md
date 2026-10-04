@@ -51,7 +51,7 @@ Fase 0. Decisiones de diseño para la primera UI. Ninguna introduce reglas de ju
 
 ## D8 · Título dinámico y etiquetas centralizadas
 
-- **Decision**: `src/juego/presentacion.ts` concentra los textos de presentación: título según género (Coplero/Coplera/Coplere), nombres de fase, momento y tipo, y etiquetas de premios. Son funciones puras y testables.
+- **Decision**: `src/juego/presentacion.ts` concentra los textos de presentación: título según género (Coplero/Coplera/Coplere), nombres de fase, momento y etiquetas de premios. Son funciones puras y testables. (`etiquetaTipo` retirado el 2026-10-04.)
 - **Rationale**: evita dispersar cadenas por las pantallas y facilita testearlas sin DOM.
 - **Alternatives considered**: literales en cada `.svelte` — difícil de mantener y de testear.
 

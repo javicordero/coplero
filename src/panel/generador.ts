@@ -10,7 +10,7 @@ import {
   BancoContenidoSchema,
   bancoContenido,
 } from "../content"
-import type { Momento, TipoDecision } from "../content/modalidades"
+import type { Momento } from "../content/modalidades"
 import type { Situacion } from "../content/schema"
 import {
   type Almacen,
@@ -23,48 +23,27 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..", "..")
 
 export const DIRECTORIO_DECISIONES = join(RAIZ, "src", "content", "decisiones")
 
-export type Fichero =
-  | "verano/contenido"
-  | "verano/personaje"
-  | "febrero/contenido"
-  | "febrero/personaje"
+export type Fichero = "verano" | "febrero"
 
 export interface DefinicionFichero {
   clave: Fichero
   momento: Momento
-  tipo: TipoDecision
   ruta: string
   exportacion: string
 }
 
 export const FICHEROS: DefinicionFichero[] = [
   {
-    clave: "verano/contenido",
+    clave: "verano",
     momento: "verano",
-    tipo: "contenido",
-    ruta: "verano/contenido.ts",
-    exportacion: "situacionesVeranoContenido",
+    ruta: "verano.ts",
+    exportacion: "situacionesVerano",
   },
   {
-    clave: "verano/personaje",
-    momento: "verano",
-    tipo: "personaje",
-    ruta: "verano/personaje.ts",
-    exportacion: "situacionesVeranoPersonaje",
-  },
-  {
-    clave: "febrero/contenido",
+    clave: "febrero",
     momento: "febrero",
-    tipo: "contenido",
-    ruta: "febrero/contenido.ts",
-    exportacion: "situacionesFebreroContenido",
-  },
-  {
-    clave: "febrero/personaje",
-    momento: "febrero",
-    tipo: "personaje",
-    ruta: "febrero/personaje.ts",
-    exportacion: "situacionesFebreroPersonaje",
+    ruta: "febrero.ts",
+    exportacion: "situacionesFebrero",
   },
 ]
 
@@ -111,14 +90,14 @@ function serializarValor(valor: unknown, nivel: number): string {
   return "undefined"
 }
 
-/** Agrupa por momento+tipo y ordena por id (determinista). */
+/** Agrupa por momento y ordena por id (determinista). */
 export function agrupar(
   situaciones: Situacion[],
 ): Record<Fichero, Situacion[]> {
   const grupos = {} as Record<Fichero, Situacion[]>
   for (const fichero of FICHEROS) {
     grupos[fichero.clave] = situaciones
-      .filter((s) => s.momento === fichero.momento && s.tipo === fichero.tipo)
+      .filter((s) => s.momento === fichero.momento)
       .slice()
       .sort((a, b) => a.id.localeCompare(b.id))
   }
@@ -130,7 +109,7 @@ export function serializar(
   situaciones: Situacion[],
 ): string {
   const cabecera = "// GENERADO por `npm run panel:volcar` — no editar a mano."
-  const importacion = 'import type { Situacion } from "../../schema"'
+  const importacion = 'import type { Situacion } from "../schema"'
   const declaracion = `export const ${fichero.exportacion}: Situacion[] = ${serializarValor(situaciones, 0)}`
   return `${[cabecera, importacion, "", declaracion].join("\n")}\n`
 }
