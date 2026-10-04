@@ -37,8 +37,8 @@ let sinPuesto = $derived(tarjeta.mejorPuesto === null)
 const COLUMNAS_POR_DEFECTO = 5
 const CELDA_MIN = 3.2 // rem
 const ALTO_HITO = 2.9 // rem
-const HUECO_FILA = 0.75 // rem (= --esp-3)
-const HUECO_FILA_COMPACTO = 0.5 // rem (= --esp-2), en móviles < 375px
+const HUECO_FILA = 0.3 // rem
+const HUECO_FILA_COMPACTO = 0.3 // rem, en móviles < 375px
 const NODO_Y = 1.45 // rem desde el borde superior del hito
 const RADIO_NODO = 0.35 // rem (mitad de 0.7rem del .hito__nodo)
 const RADIO_BRONCE = 0.35 + 0.156 // nodo + halo (2.5px)
@@ -137,7 +137,7 @@ let carril = $derived.by(() => {
       <span class="mejor__rombo"></span>
       <span class="mejor__linea"></span>
     </span>
-    <span class="mejor__etiqueta">Mejor posición</span>
+    <span class="mejor__etiqueta">Mejor puesto</span>
     <span
       class="mejor__puesto"
       style={sinPuesto ? "--tam-puesto: clamp(1.75rem, 9vw, 2.25rem)" : null}

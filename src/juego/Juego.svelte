@@ -277,10 +277,17 @@ $effect(() => {
     justify-content: center;
   }
 
-  /* En móviles muy estrechos (< 375px), menos aire arriba. */
-  @media (max-width: 374px) {
+  /* Menos aire arriba en móviles (< 420px). */
+  @media (max-width: 419px) {
     main[data-pantalla="fin"] {
       padding-top: var(--esp-3);
+    }
+  }
+
+  /* En móviles muy estrechos (< 375px), aún menos aire arriba. */
+  @media (max-width: 374px) {
+    main[data-pantalla="fin"] {
+      padding-top: var(--esp-1);
     }
   }
 

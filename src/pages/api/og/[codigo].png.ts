@@ -157,7 +157,7 @@ const HALO: Record<string, { ancho: number; alfa: number } | undefined> = {
 /** Geometría de la línea temporal (Tarjeta.svelte, en rem). */
 const CELDA_MIN = 3.2
 const ALTO_HITO = 2.9
-const HUECO_FILA = 0.75
+const HUECO_FILA = 0.3
 const NODO_Y = 1.45
 const RADIO_NODO = 0.35
 
@@ -306,7 +306,7 @@ function mejorPosicion(tarjeta: TarjetaFinal, esc: Esc, ancho: number): Nodo {
     },
     [
       ornamento(esc, color, 0, anchoOrnamento),
-      texto("Mejor posición", {
+      texto("Mejor puesto", {
         fontFamily: FAMILIA_TEXTO,
         fontWeight: 500,
         fontSize: esc(0.75),

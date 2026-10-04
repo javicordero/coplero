@@ -171,7 +171,7 @@ export const DIRECCION_JUEGO = "coplero.app"
  * Versión del diseño de la imagen OG. Súbela al cambiar el aspecto de la
  * tarjeta para invalidar la caché `immutable` (navegador y crawlers).
  */
-export const VERSION_OG = "3"
+export const VERSION_OG = "4"
 
 /** URL de la imagen OG de un código, con formato opcional (`og`, `9x16`, `1x1`). */
 export function urlImagenOg(

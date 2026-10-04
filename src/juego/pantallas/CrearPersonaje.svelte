@@ -33,7 +33,7 @@ function enviar(evento: SubmitEvent) {
 <section class="pantalla" data-testid="crear-personaje">
   <div class="pantalla__cabecera">
     <h2>Crea tu personaje</h2>
-    <p>Inicia tu carrera como autor de carnaval</p>
+    <p>Inicia tu carrera en el carnaval de Cádiz</p>
   </div>
 
   <div class="pantalla__cuerpo">
