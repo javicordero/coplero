@@ -1,6 +1,6 @@
-// Generación de los ficheros de contenido del juego a partir del almacén (009).
+// Generación de los ficheros de contenido del juego a partir del almacén (009/024).
 // Reutiliza la validación del banco y produce una salida determinista.
-// Ver specs/009-content-admin/contracts/generador.md.
+// Ver specs/024-form-ux-improvements/contracts/generador.md.
 
 import { mkdirSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
@@ -11,7 +11,6 @@ import {
   bancoContenido,
 } from "../content"
 import type { Momento } from "../content/modalidades"
-import type { Situacion } from "../content/schema"
 import {
   type Almacen,
   type ErrorValidacion,
@@ -22,28 +21,52 @@ import {
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..", "..")
 
 export const DIRECTORIO_DECISIONES = join(RAIZ, "src", "content", "decisiones")
+export const DIRECTORIO_CONDICIONALES = join(
+  RAIZ,
+  "src",
+  "content",
+  "condicionales",
+)
 
-export type Fichero = "verano" | "febrero"
-
-export interface DefinicionFichero {
-  clave: Fichero
+export interface FicheroPorMomento {
   momento: Momento
+  directorio: string
   ruta: string
   exportacion: string
+  tipoImportado: "Situacion" | "Condicional"
 }
 
-export const FICHEROS: DefinicionFichero[] = [
+export const FICHEROS_SITUACIONES: FicheroPorMomento[] = [
   {
-    clave: "verano",
     momento: "verano",
+    directorio: DIRECTORIO_DECISIONES,
     ruta: "verano.ts",
     exportacion: "situacionesVerano",
+    tipoImportado: "Situacion",
   },
   {
-    clave: "febrero",
     momento: "febrero",
+    directorio: DIRECTORIO_DECISIONES,
     ruta: "febrero.ts",
     exportacion: "situacionesFebrero",
+    tipoImportado: "Situacion",
+  },
+]
+
+export const FICHEROS_CONDICIONALES: FicheroPorMomento[] = [
+  {
+    momento: "verano",
+    directorio: DIRECTORIO_CONDICIONALES,
+    ruta: "verano.ts",
+    exportacion: "condicionalesVerano",
+    tipoImportado: "Condicional",
+  },
+  {
+    momento: "febrero",
+    directorio: DIRECTORIO_CONDICIONALES,
+    ruta: "febrero.ts",
+    exportacion: "condicionalesFebrero",
+    tipoImportado: "Condicional",
   },
 ]
 
@@ -91,43 +114,47 @@ function serializarValor(valor: unknown, nivel: number): string {
 }
 
 /** Agrupa por momento y ordena por id (determinista). */
-export function agrupar(
-  situaciones: Situacion[],
-): Record<Fichero, Situacion[]> {
-  const grupos = {} as Record<Fichero, Situacion[]>
-  for (const fichero of FICHEROS) {
-    grupos[fichero.clave] = situaciones
-      .filter((s) => s.momento === fichero.momento)
+export function agruparPorMomento<T extends { momento: Momento; id: string }>(
+  entidades: T[],
+): Record<Momento, T[]> {
+  return {
+    verano: entidades
+      .filter((e) => e.momento === "verano")
       .slice()
-      .sort((a, b) => a.id.localeCompare(b.id))
+      .sort((a, b) => a.id.localeCompare(b.id)),
+    febrero: entidades
+      .filter((e) => e.momento === "febrero")
+      .slice()
+      .sort((a, b) => a.id.localeCompare(b.id)),
   }
-  return grupos
 }
 
 export function serializar(
-  fichero: DefinicionFichero,
-  situaciones: Situacion[],
+  fichero: FicheroPorMomento,
+  entidades: unknown[],
 ): string {
   const cabecera = "// GENERADO por `npm run panel:volcar` — no editar a mano."
-  const importacion = 'import type { Situacion } from "../schema"'
-  const declaracion = `export const ${fichero.exportacion}: Situacion[] = ${serializarValor(situaciones, 0)}`
+  const importacion = `import type { ${fichero.tipoImportado} } from "../schema"`
+  const declaracion = `export const ${fichero.exportacion}: ${fichero.tipoImportado}[] = ${serializarValor(entidades, 0)}`
   return `${[cabecera, importacion, "", declaracion].join("\n")}\n`
+}
+
+export interface FicheroVolcado {
+  fichero: FicheroPorMomento
+  contenido: string
+  entidades: unknown[]
 }
 
 export interface ResultadoVolcado {
   banco: BancoContenido
-  ficheros: {
-    fichero: DefinicionFichero
-    contenido: string
-    situaciones: Situacion[]
-  }[]
+  ficheros: FicheroVolcado[]
 }
 
 /** Valida el banco completo y devuelve los ficheros a escribir (sin tocar disco). */
 export function volcar(almacen: Almacen): ResultadoVolcado {
   const resultado = BancoContenidoSchema.safeParse({
     situaciones: almacen.situaciones,
-    condicionales: bancoContenido.condicionales,
+    condicionales: almacen.condicionales,
     variantes: bancoContenido.variantes,
     modalidades: bancoContenido.modalidades,
     textosTarjeta: bancoContenido.textosTarjeta,
@@ -135,21 +162,29 @@ export function volcar(almacen: Almacen): ResultadoVolcado {
   if (!resultado.success)
     throw new ErrorVolcado(mensajesDeError(resultado.error))
 
-  const grupos = agrupar(almacen.situaciones)
-  return {
-    banco: resultado.data,
-    ficheros: FICHEROS.map((fichero) => ({
+  const gruposSituaciones = agruparPorMomento(almacen.situaciones)
+  const gruposCondicionales = agruparPorMomento(almacen.condicionales)
+
+  const ficheros: FicheroVolcado[] = [
+    ...FICHEROS_SITUACIONES.map((fichero) => ({
       fichero,
-      contenido: serializar(fichero, grupos[fichero.clave] ?? []),
-      situaciones: grupos[fichero.clave] ?? [],
+      contenido: serializar(fichero, gruposSituaciones[fichero.momento]),
+      entidades: gruposSituaciones[fichero.momento],
     })),
-  }
+    ...FICHEROS_CONDICIONALES.map((fichero) => ({
+      fichero,
+      contenido: serializar(fichero, gruposCondicionales[fichero.momento]),
+      entidades: gruposCondicionales[fichero.momento],
+    })),
+  ]
+
+  return { banco: resultado.data, ficheros }
 }
 
 export function escribirVolcado(resultado: ResultadoVolcado): string[] {
   const escritos: string[] = []
   for (const { fichero, contenido } of resultado.ficheros) {
-    const destino = join(DIRECTORIO_DECISIONES, fichero.ruta)
+    const destino = join(fichero.directorio, fichero.ruta)
     mkdirSync(dirname(destino), { recursive: true })
     writeFileSync(destino, contenido, "utf8")
     escritos.push(destino)

@@ -56,12 +56,12 @@ Reglas de dependencia (nunca se rompen):
 1. **Son datos, no código.** Añadir situaciones no debe requerir tocar el engine.
 2. Se escriben como `.ts` en `src/content/` y se validan con **Zod** en build time.
 3. Toda situación y condicional lleva `momento: verano | febrero` **obligatorio**.
-4. Cada año sale **una decisión de contenido + una de personaje** (nunca dos del mismo tipo).
-5. Cada opción tiene **título + subtítulo**, efectos sobre atributos y la flag que deja.
+4. Cada año sale **una decisión de verano y una de febrero**; no hay tipos (contenido/personaje).
+5. Cada opción tiene **título + subtítulo** y la flag que deja; por defecto **no** mueve atributos (solo las excepciones declaradas).
 6. Filtros opcionales: `modalidades` y `variantes` (si no existen, la situación es común).
-7. Las flags **no se borran nunca**; lo que caduca es su ventana de disparo. "Consumir" una flag no la borra: la marca como consumida y desactiva su disparo.
+7. Las flags **no se borran nunca**; lo que caduca es su ventana de disparo. Al dispararse un condicional, este se agota a sí mismo: marca como consumidas **solo para él** las flags activas de su requisito (no gasta las compartidas). No hay consumo manual.
 8. No usar nombres reales de personas ni agrupaciones al inspirarse en hechos reales.
-9. Categorías: contenido (`letra`, `musica`, `puestaEnEscena`) y personaje (`jurado`, `dinero`, `grupo`, `prensa`, `carrera`, `concurso`).
+9. Las situaciones **no tienen `tipo` ni `categoría`**: se filtran solo por momento, modalidad, variante y año mínimo.
 10. Las opciones que implican no concursar se marcan con `saltaCOAC: true`.
 
 ## 6. Reglas de la UI
@@ -230,5 +230,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/023-colaborar-page/plan.md
+at specs/025-conditional-consumption/plan.md
 <!-- SPECKIT END -->

@@ -67,7 +67,6 @@ export interface Opcion {
   subtitulo: string
   efectos?: Partial<Atributos>
   flags?: string[]
-  consume?: string[]
   peso?: number
   saltaCOAC?: boolean
   /** Efecto interno: cambia la modalidad vigente y abre la elección de variante. */
@@ -108,7 +107,6 @@ export interface Condicional extends Situacion {
   requiere: Requisito
   ventanaAnos: number
   probabilidad: number
-  consumeFlag: boolean
   prioridad?: number
 }
 
@@ -130,7 +128,7 @@ export interface BancoContenido {
 export interface Flag {
   ano: number
   veces: number
-  consumida: boolean
+  consumidaPor: string[]
   anosConsecutivos: number
 }
 
@@ -343,6 +341,6 @@ export type ErrorMotor =
 
 export type Resultado<T, E> = { ok: true; valor: T } | { ok: false; error: E }
 
-export const VERSION_PARTIDA = 2
+export const VERSION_PARTIDA = 3
 export const VERSION_TARJETA = 1
 export const ANO_BASE = 1

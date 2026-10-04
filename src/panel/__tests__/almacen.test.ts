@@ -27,6 +27,7 @@ const situacion = (id: string): Situacion => ({
 const conSituaciones = (...ids: string[]): Almacen => ({
   version: VERSION_ALMACEN,
   situaciones: ids.map(situacion),
+  condicionales: [],
 })
 
 describe("almacén local", () => {
@@ -94,5 +95,19 @@ describe("almacén local", () => {
     expect(() => disco.escribir(conSituaciones("s1", "s1"))).toThrow(
       /duplicado/,
     )
+  })
+
+  it("migra un almacén v1 a v2 al leer (condicionales vacíos)", () => {
+    writeFileSync(
+      ruta,
+      JSON.stringify({ version: 1, situaciones: [situacion("s1")] }),
+      "utf8",
+    )
+    const disco = crearAlmacenEnDisco(ruta)
+    expect(disco.leer()).toEqual({
+      version: VERSION_ALMACEN,
+      situaciones: [situacion("s1")],
+      condicionales: [],
+    })
   })
 })

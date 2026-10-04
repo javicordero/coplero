@@ -156,7 +156,7 @@ Cada opción deja una **flag** en el historial del personaje. Una situación con
 - **Ventana:** número de años durante los que la situación puede aparecer desde que se activó la flag. Si pasa la ventana, se cierra.
 - **Probabilidad:** si la flag está activa y estamos dentro de la ventana, se tira dado cada año. Si no sale, puede volver a tirarse el año siguiente mientras dure la ventana.
 - Una condicional **ocupa la decisión del año**, la de su momento.
-- Una condicional puede **consumir** la flag (aparece una sola vez) o dejarla activa si es de rasgo permanente. **Consumir no borra la flag del historial**: la marca como consumida y desactiva su capacidad de disparar; sigue disponible para la tarjeta final y los logros.
+- Un condicional que se dispara **se agota a sí mismo**: consume, **solo para él**, las flags de su requisito que estén activas, de modo que no vuelve a salir; **no** gasta la flag para otros condicionales que la compartan. **Consumir no borra la flag del historial**: sigue disponible para la tarjeta final y los logros. No hay consumo manual.
 - Las condicionales también dejan flags: se pueden encadenar cadenas de 2-3 situaciones.
 
 > ✅ **¿Caducan las flags?** Resuelto: las flags **no se borran nunca** del historial, porque la tarjeta final y los logros necesitan la carrera completa. Lo que caduca es su **capacidad de disparar condicionales**, mediante la ventana de años. Una flag fuera de ventana sigue en el historial pero ya no abre nada.

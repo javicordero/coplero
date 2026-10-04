@@ -152,9 +152,13 @@ export function elegir(
       : undefined
   const atributos = aplicarEfectos(p.atributos, opcion.efectos)
   let flags = actualizarFlags(p.flags, opcion, ano)
-  const esCondicional = "requiere" in situacion
-  if (esCondicional && (situacion as Condicional).consumeFlag) {
-    flags = consumirFlagsDeRequisito(flags, (situacion as Condicional).requiere)
+  if ("requiere" in situacion) {
+    const condicional = situacion as Condicional
+    flags = consumirFlagsDeRequisito(
+      flags,
+      condicional.requiere,
+      condicional.id,
+    )
   }
   const vistas = p.vistas.includes(situacion.id)
     ? p.vistas

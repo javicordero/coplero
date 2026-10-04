@@ -1,18 +1,31 @@
 <script lang="ts">
-  import type { Situacion } from "../content/schema"
+  import type { Momento } from "../content/modalidades"
   import type { GrupoMomento } from "../panel/resumen"
+
+  interface EntidadListable {
+    id: string
+    momento: Momento
+    titulo: string
+    opciones: { titulo: string }[]
+    ventanaAnos?: number
+    probabilidad?: number
+  }
 
   let {
     grupos,
+    tipo,
     alAbrir,
     alEditar,
     alEliminar,
   }: {
-    grupos: GrupoMomento[]
-    alAbrir: (s: Situacion) => void
-    alEditar: (s: Situacion) => void
-    alEliminar: (s: Situacion) => void
+    grupos: GrupoMomento<EntidadListable>[]
+    tipo: "situación" | "condicional"
+    alAbrir: (e: EntidadListable) => void
+    alEditar: (e: EntidadListable) => void
+    alEliminar: (e: EntidadListable) => void
   } = $props()
+
+  const esCondicional = $derived(tipo === "condicional")
 </script>
 
 {#each grupos as grupo (grupo.momento)}
@@ -23,39 +36,48 @@
     </h2>
 
     {#if grupo.total === 0}
-      <p class="vacio">Sin situaciones en este momento.</p>
+      <p class="vacio">Sin {tipo}s en este momento.</p>
     {:else}
       <table>
         <thead>
           <tr>
-            <th>Situación</th>
+            <th>{tipo}</th>
             <th>Momento</th>
             <th>Opción 1</th>
             <th>Opción 2</th>
+            {#if esCondicional}
+              <th>Ventana / Prob.</th>
+            {/if}
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {#each grupo.situaciones as situacion (situacion.id)}
+          {#each grupo.entidades as entidad (entidad.id)}
             <tr>
               <td>
                 <button
                   type="button"
                   class="enlace"
-                  onclick={() => alAbrir(situacion)}
+                  onclick={() => alAbrir(entidad)}
                 >
-                  {situacion.titulo}
+                  {entidad.titulo}
                 </button>
-                <span class="id">{situacion.id}</span>
+                <span class="id">{entidad.id}</span>
               </td>
-              <td>{situacion.momento}</td>
-              <td>{situacion.opciones[0]?.titulo ?? "—"}</td>
-              <td>{situacion.opciones[1]?.titulo ?? "—"}</td>
+              <td>{entidad.momento}</td>
+              <td>{entidad.opciones[0]?.titulo ?? "—"}</td>
+              <td>{entidad.opciones[1]?.titulo ?? "—"}</td>
+              {#if esCondicional}
+                <td>
+                  {entidad.ventanaAnos ?? "—"} años /
+                  {entidad.probabilidad ?? "—"}
+                </td>
+              {/if}
               <td class="acciones">
-                <button type="button" onclick={() => alEditar(situacion)}>
+                <button type="button" onclick={() => alEditar(entidad)}>
                   Editar
                 </button>
-                <button type="button" onclick={() => alEliminar(situacion)}>
+                <button type="button" onclick={() => alEliminar(entidad)}>
                   Eliminar
                 </button>
               </td>

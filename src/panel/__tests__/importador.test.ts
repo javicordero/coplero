@@ -17,14 +17,20 @@ describe("importación del banco actual", () => {
     rmSync(dir, { recursive: true, force: true })
   })
 
-  it("importa todas las situaciones campo a campo y ordenadas por id", () => {
+  it("importa situaciones y condicionales, ordenados por id", () => {
     const disco = crearAlmacenEnDisco(join(dir, "situaciones.json"))
     const { importadas } = importarBancoActual(disco)
-    const esperadas = [...bancoContenido.situaciones].sort((a, b) =>
+    const esperadasSituaciones = [...bancoContenido.situaciones].sort((a, b) =>
       a.id.localeCompare(b.id),
     )
-    expect(importadas).toBe(esperadas.length)
-    expect(disco.leer().situaciones).toEqual(esperadas)
+    const esperadosCondicionales = [
+      ...(bancoContenido.condicionales ?? []),
+    ].sort((a, b) => a.id.localeCompare(b.id))
+    expect(importadas).toBe(
+      esperadasSituaciones.length + esperadosCondicionales.length,
+    )
+    expect(disco.leer().situaciones).toEqual(esperadasSituaciones)
+    expect(disco.leer().condicionales).toEqual(esperadosCondicionales)
   })
 
   it("es determinista: dos importaciones producen el mismo JSON", () => {
@@ -35,8 +41,11 @@ describe("importación del banco actual", () => {
     expect(readFileSync(ruta, "utf8")).toBe(primera)
   })
 
-  it("leerBancoActual devuelve el banco ordenado por id", () => {
-    const ids = leerBancoActual().map((s) => s.id)
-    expect([...ids].sort()).toEqual(ids)
+  it("leerBancoActual devuelve ambas listas ordenadas por id", () => {
+    const { situaciones, condicionales } = leerBancoActual()
+    const idsSituaciones = situaciones.map((s) => s.id)
+    const idsCondicionales = condicionales.map((c) => c.id)
+    expect([...idsSituaciones].sort()).toEqual(idsSituaciones)
+    expect([...idsCondicionales].sort()).toEqual(idsCondicionales)
   })
 })

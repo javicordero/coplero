@@ -5,6 +5,7 @@ import {
   leerAlmacen,
 } from "../../../panel/almacen"
 import { crear } from "../../../panel/crud"
+import { catalogoFlags } from "../../../panel/flags"
 import { bloqueoFueraDeDesarrollo } from "../../../panel/guard"
 
 export const prerender = false
@@ -22,7 +23,12 @@ export const GET: APIRoute = () => {
   const bloqueo = bloqueoFueraDeDesarrollo()
   if (bloqueo) return bloqueo
   try {
-    return json({ situaciones: leerAlmacen().situaciones })
+    const almacen = leerAlmacen()
+    return json({
+      situaciones: almacen.situaciones,
+      condicionales: almacen.condicionales,
+      flags: catalogoFlags(almacen),
+    })
   } catch (error) {
     if (error instanceof ErrorAlmacen) return errorAlmacen(error)
     throw error

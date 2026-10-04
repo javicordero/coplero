@@ -247,7 +247,6 @@ export const bancoPrueba: BancoContenido = {
       requiere: { tipo: "flag", flag: "rechazo_patrocinio" },
       ventanaAnos: 2,
       probabilidad: 0.5,
-      consumeFlag: false,
       prioridad: 5,
       opciones: [
         {

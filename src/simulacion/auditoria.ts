@@ -86,7 +86,7 @@ export function auditarCarrera(
 
   const introducidas = new Set(registro.decisiones.flatMap((d) => d.flags))
   for (const [id, flag] of Object.entries(p.flags)) {
-    if (flag.consumida && !introducidas.has(id)) {
+    if (flag.consumidaPor.length > 0 && !introducidas.has(id)) {
       add("flagConsumidaSinRegistro", id)
     }
   }

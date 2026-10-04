@@ -15,7 +15,6 @@ function decision(over: Partial<DecisionRegistrada> = {}): DecisionRegistrada {
     situacionId: "s",
     opcionId: "o",
     flags: [],
-    consume: [],
     saltaCOAC: false,
     ...over,
   }
@@ -69,7 +68,12 @@ describe("auditarCarrera", () => {
   it("detecta flag consumida sin registro", () => {
     const partida = partidaFalsa({
       flags: {
-        perdida: { ano: 1, veces: 1, consumida: true, anosConsecutivos: 1 },
+        perdida: {
+          ano: 1,
+          veces: 1,
+          consumidaPor: ["c_alguno"],
+          anosConsecutivos: 1,
+        },
       },
     })
     expect(reglas(registroFalso({ partida }))).toContain(

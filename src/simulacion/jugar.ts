@@ -114,7 +114,6 @@ export function jugarCarrera(args: {
         situacionId: situacion.id,
         opcionId: opcion.id,
         flags: opcion.flags ?? [],
-        consume: opcion.consume ?? [],
         saltaCOAC: opcion.saltaCOAC === true,
       })
       p = resultado.valor

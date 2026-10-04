@@ -6,6 +6,7 @@
   } from "../content/modalidades"
   import type { Opcion, Situacion } from "../content/schema"
   import { VARIANTES } from "../content/variantes"
+  import { derivarId, derivarIdUnico } from "../panel/identificadores"
   import type { ErrorValidacion } from "../panel/esquema"
   import FormularioOpcion from "./FormularioOpcion.svelte"
 
@@ -13,12 +14,16 @@
     inicial,
     guardando,
     errores,
+    usados = new Set<string>(),
+    flags = [],
     alGuardar,
     alCancelar,
   }: {
     inicial?: Situacion | null
     guardando: boolean
     errores: ErrorValidacion[]
+    usados?: Set<string>
+    flags?: string[]
     alGuardar: (s: Situacion) => void
     alCancelar: () => void
   } = $props()
@@ -38,11 +43,49 @@
   const borrador = $state<Situacion>(clonar(inicial ?? situacionVacia()))
   const editando = Boolean(inicial)
 
+  // Catálogo local de flags: parte del del banco y crece si se crea una nueva.
+  let flagsLocales = $state<string[]>([...flags])
+  function agregarFlag(flag: string) {
+    if (!flagsLocales.includes(flag)) {
+      flagsLocales = [...flagsLocales, flag].sort()
+    }
+  }
+
+  // Al crear, el id se deriva del título mientras el diseñador no lo toque a mano.
+  let idTocado = $state(editando)
+  let avisoGuardado = $state<string | null>(null)
+
+  const idAjustado = $derived(
+    !editando &&
+      !idTocado &&
+      borrador.id !== "" &&
+      borrador.id !== derivarId(borrador.titulo),
+  )
+
+  // "repetible" es la vista invertida de `unicaVez`: por defecto, una sola vez.
+  const repetible = $derived(borrador.unicaVez === false)
+
   const variantesVisibles = $derived(
     borrador.modalidades && borrador.modalidades.length > 0
       ? VARIANTES.filter((v) => borrador.modalidades?.includes(v.modalidad))
       : VARIANTES,
   )
+
+  function cambiarTitulo(valor: string) {
+    borrador.titulo = valor
+    if (!editando && !idTocado) {
+      borrador.id = derivarIdUnico(derivarId(valor), usados)
+    }
+  }
+
+  function idsDeOtrasOpciones(indice: number): Set<string> {
+    return new Set(
+      borrador.opciones
+        .filter((_, i) => i !== indice)
+        .map((o) => o.id)
+        .filter((id) => id !== ""),
+    )
+  }
 
   function alternarModalidad(modalidad: Modalidad, marcada: boolean) {
     const actuales = borrador.modalidades ?? []
@@ -62,6 +105,13 @@
 
   function enviar(evento: SubmitEvent) {
     evento.preventDefault()
+    const opcionSinId = borrador.opciones.some((o) => o.id.trim() === "")
+    if (borrador.id.trim() === "" || opcionSinId) {
+      avisoGuardado =
+        "Cada situación y cada opción necesitan un identificador. Escribe un título para generarlo."
+      return
+    }
+    avisoGuardado = null
     alGuardar($state.snapshot(borrador) as Situacion)
   }
 </script>
@@ -82,6 +132,10 @@
     </ul>
   {/if}
 
+  {#if avisoGuardado}
+    <p class="errores" role="alert">{avisoGuardado}</p>
+  {/if}
+
   <div class="rejilla">
     <label>
       id
@@ -89,9 +143,22 @@
         value={borrador.id}
         disabled={editando}
         placeholder="v_mi_situacion"
-        oninput={(e) => (borrador.id = e.currentTarget.value)}
+        oninput={(e) => {
+          borrador.id = e.currentTarget.value
+          idTocado = true
+        }}
       />
-      <small class="ayuda">Único y en minúsculas con guion bajo. No se puede cambiar al editar.</small>
+      {#if idAjustado}
+        <small class="ayuda"
+          >Se ha ajustado a «{borrador.id}» para no repetir un id existente.</small
+        >
+      {:else if editando}
+        <small class="ayuda">El id no se puede cambiar al editar.</small>
+      {:else}
+        <small class="ayuda"
+          >Se rellena solo a partir del título. Puedes ajustarlo.</small
+        >
+      {/if}
     </label>
 
     <label>
@@ -111,7 +178,7 @@
       título
       <input
         value={borrador.titulo}
-        oninput={(e) => (borrador.titulo = e.currentTarget.value)}
+        oninput={(e) => cambiarTitulo(e.currentTarget.value)}
       />
     </label>
 
@@ -158,11 +225,15 @@
     <label class="casilla">
       <input
         type="checkbox"
-        checked={borrador.unicaVez ?? false}
+        checked={repetible}
         onchange={(e) =>
-          (borrador.unicaVez = e.currentTarget.checked || undefined)}
+          (borrador.unicaVez = e.currentTarget.checked ? false : undefined)}
       />
-      única vez
+      repetible
+      <small class="ayuda"
+        >Por defecto, una situación sale una sola vez por partida. Marca esta
+        casilla solo si debe poder repetirse.</small
+      >
     </label>
   </div>
 
@@ -201,6 +272,9 @@
     <FormularioOpcion
       bind:opcion={borrador.opciones[indice]}
       {indice}
+      flags={flagsLocales}
+      usados={idsDeOtrasOpciones(indice)}
+      alAgregar={agregarFlag}
       puedeEliminar={borrador.opciones.length > 2}
       alEliminar={() =>
         (borrador.opciones = borrador.opciones.filter((_, i) => i !== indice))}

@@ -2,28 +2,37 @@
   import { ATRIBUTOS, MODALIDADES, type Atributo } from "../content/modalidades"
   import type { Opcion } from "../content/schema"
   import { VARIANTES } from "../content/variantes"
+  import { derivarId, derivarIdUnico } from "../panel/identificadores"
+  import SelectorFlags from "./SelectorFlags.svelte"
 
   let {
     opcion = $bindable(),
     indice,
     puedeEliminar,
     alEliminar,
+    flags = [],
+    usados = new Set<string>(),
+    alAgregar,
   }: {
     opcion: Opcion
     indice: number
     puedeEliminar: boolean
     alEliminar: () => void
+    flags?: string[]
+    usados?: Set<string>
+    alAgregar?: (flag: string) => void
   } = $props()
 
-  const textoALista = (valor: string): string[] =>
-    valor
-      .split(",")
-      .map((parte) => parte.trim())
-      .filter((parte) => parte.length > 0)
+  // Si la opción ya tiene id (edición), no se sobrescribe; si no, se deriva del título.
+  let idTocado = $state(opcion.id !== "")
 
-  function listaOpcional(valor: string): string[] | undefined {
-    const lista = textoALista(valor)
-    return lista.length > 0 ? lista : undefined
+  const idAjustado = $derived(
+    !idTocado && opcion.id !== "" && opcion.id !== derivarId(opcion.titulo),
+  )
+
+  function cambiarTitulo(valor: string) {
+    opcion.titulo = valor
+    if (!idTocado) opcion.id = derivarIdUnico(derivarId(valor), usados)
   }
 
   function numeroOpcional(valor: string): number | undefined {
@@ -66,15 +75,26 @@
       id
       <input
         value={opcion.id}
-        oninput={(e) => (opcion.id = e.currentTarget.value)}
+        placeholder="id_de_la_opcion"
+        oninput={(e) => {
+          opcion.id = e.currentTarget.value
+          idTocado = true
+        }}
       />
+      {#if idAjustado}
+        <small class="ayuda"
+          >Se ha ajustado a «{opcion.id}» para no repetir.</small
+        >
+      {:else}
+        <small class="ayuda">Se rellena solo a partir del título.</small>
+      {/if}
     </label>
 
     <label>
       título
       <input
         value={opcion.titulo}
-        oninput={(e) => (opcion.titulo = e.currentTarget.value)}
+        oninput={(e) => cambiarTitulo(e.currentTarget.value)}
       />
     </label>
 
@@ -135,33 +155,16 @@
     <p class="nota">No afecta al resultado (caso por defecto).</p>
   {/if}
 
+  <SelectorFlags
+    etiqueta="flags (lo que deja la opción)"
+    bind:seleccion={opcion.flags}
+    disponibles={flags}
+    permiteNuevas={true}
+    {alAgregar}
+    ayuda="Huellas que deja la opción en el historial (no se borran). Sirven de requisito a los condicionales."
+  />
+
   <div class="rejilla">
-    <label>
-      flags (separadas por comas)
-      <input
-        value={opcion.flags?.join(", ") ?? ""}
-        placeholder="tema_social, pasodoble_duro"
-        oninput={(e) => (opcion.flags = listaOpcional(e.currentTarget.value))}
-      />
-      <small class="ayuda">
-        Huellas que deja la opción en el historial (no se borran). Sirven de
-        requisito a los condicionales.
-      </small>
-    </label>
-
-    <label>
-      consume (flags, por comas)
-      <input
-        value={opcion.consume?.join(", ") ?? ""}
-        placeholder="autor_grupo_consagrado"
-        oninput={(e) => (opcion.consume = listaOpcional(e.currentTarget.value))}
-      />
-      <small class="ayuda">
-        Flags que esta opción marca como consumidas (no las borra): impide que
-        su condicional vuelva a dispararse. Normalmente vacío.
-      </small>
-    </label>
-
     <label>
       cambia modalidad
       <select

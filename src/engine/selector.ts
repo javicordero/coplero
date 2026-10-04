@@ -48,7 +48,7 @@ export function seleccionarSituacion(
         (!c.modalidades || c.modalidades.includes(p.modalidad)) &&
         (!c.variantes || c.variantes.includes(p.variante)) &&
         (c.minAno === undefined || p.anoActual - p.anoInicio + 1 >= c.minAno) &&
-        requisitoCumplido(c.requiere, p) &&
+        requisitoCumplido(c.requiere, p, c.id) &&
         dentroDeVentana(c.requiere, p, c.ventanaAnos) &&
         noVistaPermitida(c, p),
     )

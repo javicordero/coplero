@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest"
 import { bancoContenido } from "../../content"
-import type { Situacion } from "../../content/schema"
+import type { Condicional, Situacion } from "../../content/schema"
 import { type Almacen, VERSION_ALMACEN } from "../esquema"
 import {
-  agrupar,
+  agruparPorMomento,
   ErrorVolcado,
-  FICHEROS,
+  FICHEROS_CONDICIONALES,
+  FICHEROS_SITUACIONES,
   serializar,
   volcar,
 } from "../generador"
@@ -13,6 +14,7 @@ import {
 const base = (): Almacen => ({
   version: VERSION_ALMACEN,
   situaciones: [...bancoContenido.situaciones],
+  condicionales: [...(bancoContenido.condicionales ?? [])],
 })
 
 const nueva = (id: string, overrides: Partial<Situacion> = {}): Situacion => ({
@@ -28,42 +30,45 @@ const nueva = (id: string, overrides: Partial<Situacion> = {}): Situacion => ({
 })
 
 describe("generador del volcado", () => {
-  it("agrupar no pierde ninguna situación (SC-005)", () => {
+  it("agruparPorMomento no pierde ninguna situación (SC-005)", () => {
     const almacen = base()
-    const grupos = agrupar(almacen.situaciones)
-    const recuperadas = FICHEROS.flatMap((f) => grupos[f.clave] ?? [])
+    const grupos = agruparPorMomento(almacen.situaciones)
+    const recuperadas = [...grupos.verano, ...grupos.febrero]
     const ordenar = (xs: Situacion[]) =>
       [...xs].sort((a, b) => a.id.localeCompare(b.id))
     expect(ordenar(recuperadas)).toEqual(ordenar(almacen.situaciones))
   })
 
-  it("cada situación cae en el fichero de su momento", () => {
-    const grupos = agrupar(base().situaciones)
-    for (const fichero of FICHEROS) {
-      for (const situacion of grupos[fichero.clave] ?? []) {
+  it("agruparPorMomento no pierde ningún condicional", () => {
+    const almacen = base()
+    const grupos = agruparPorMomento(almacen.condicionales)
+    expect([...grupos.verano, ...grupos.febrero]).toHaveLength(
+      almacen.condicionales.length,
+    )
+  })
+
+  it("cada entidad cae en el fichero de su momento", () => {
+    const grupos = agruparPorMomento(base().situaciones)
+    for (const fichero of FICHEROS_SITUACIONES) {
+      for (const situacion of grupos[fichero.momento]) {
         expect(situacion.momento).toBe(fichero.momento)
       }
     }
   })
 
   it("serializar es determinista y ordena por id (SC-006)", () => {
-    const fichero = FICHEROS.find((f) => f.clave === "verano")
+    const fichero = FICHEROS_SITUACIONES.find((f) => f.momento === "verano")
     if (!fichero) throw new Error("sin fichero de verano")
     const situaciones = [nueva("zeta"), nueva("alfa")]
-    const primera = serializar(
-      fichero,
-      agrupar(situaciones)[fichero.clave] ?? [],
-    )
-    const segunda = serializar(
-      fichero,
-      agrupar(situaciones)[fichero.clave] ?? [],
-    )
+    const grupos = agruparPorMomento(situaciones)
+    const primera = serializar(fichero, grupos[fichero.momento])
+    const segunda = serializar(fichero, grupos[fichero.momento])
     expect(primera).toBe(segunda)
     expect(primera.indexOf('"alfa"')).toBeLessThan(primera.indexOf('"zeta"'))
   })
 
   it("escapa caracteres especiales en los textos (tildes, comillas, llaves)", () => {
-    const fichero = FICHEROS[0]
+    const fichero = FICHEROS_SITUACIONES[0]
     if (!fichero) throw new Error("sin ficheros")
     const titulo = 'Ni "flamenco" ni {nada}: ¡caña al carnaval!'
     const texto = serializar(fichero, [nueva("especial", { titulo })])
@@ -72,7 +77,6 @@ describe("generador del volcado", () => {
 
   it("un banco inválido no genera contenido (SC-004)", () => {
     const almacen = base()
-    // Sin ninguna situación de verano se rompe la cobertura común del momento.
     const almacenRoto: Almacen = {
       ...almacen,
       situaciones: almacen.situaciones.filter((s) => s.momento !== "verano"),
@@ -80,10 +84,22 @@ describe("generador del volcado", () => {
     expect(() => volcar(almacenRoto)).toThrow(ErrorVolcado)
   })
 
-  it("el volcado válido incluye los dos ficheros", () => {
+  it("un condicional inválido tampoco genera contenido", () => {
+    const almacen = base()
+    const primero = almacen.condicionales[0]
+    if (!primero) throw new Error("sin condicionales")
+    const roto: Condicional = { ...primero, probabilidad: 2 }
+    const almacenRoto: Almacen = {
+      ...almacen,
+      condicionales: [roto, ...almacen.condicionales.slice(1)],
+    }
+    expect(() => volcar(almacenRoto)).toThrow(ErrorVolcado)
+  })
+
+  it("el volcado válido incluye los cuatro ficheros con cabecera", () => {
     const resultado = volcar(base())
-    expect(resultado.ficheros.map((f) => f.fichero.clave)).toEqual(
-      FICHEROS.map((f) => f.clave),
+    expect(resultado.ficheros).toHaveLength(
+      FICHEROS_SITUACIONES.length + FICHEROS_CONDICIONALES.length,
     )
     for (const { contenido } of resultado.ficheros) {
       expect(contenido).toContain("no editar a mano")

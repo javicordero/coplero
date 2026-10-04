@@ -1,4 +1,6 @@
 import { importarBancoActual } from "../src/panel/importador"
 
 const { importadas } = importarBancoActual()
-console.log(`Importadas ${importadas} situaciones al almacén local.`)
+console.log(
+  `Importadas ${importadas} entidades (situaciones + condicionales) al almacén local.`,
+)

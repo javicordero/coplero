@@ -81,7 +81,6 @@ export interface DecisionRegistrada {
   situacionId: string
   opcionId: string
   flags: string[]
-  consume: string[]
   saltaCOAC: boolean
 }
 

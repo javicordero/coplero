@@ -16,6 +16,7 @@ import {
   AlmacenSchema,
   formatearErrores,
   mensajesDeError,
+  migrarAlmacen,
   VERSION_ALMACEN,
 } from "./esquema"
 
@@ -39,7 +40,7 @@ export class ErrorAlmacen extends Error {
 }
 
 export function almacenVacio(): Almacen {
-  return { version: VERSION_ALMACEN, situaciones: [] }
+  return { version: VERSION_ALMACEN, situaciones: [], condicionales: [] }
 }
 
 const mensajeDe = (error: unknown): string =>
@@ -99,7 +100,7 @@ export function crearAlmacenEnDisco(
         `El almacén tiene un JSON corrupto (${ruta}): ${mensajeDe(error)}`,
       )
     }
-    return validar(datos, ruta)
+    return validar(migrarAlmacen(datos), ruta)
   }
 
   const escribir = (almacen: Almacen): void => {

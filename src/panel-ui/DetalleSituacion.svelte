@@ -25,8 +25,8 @@
     <dd>{situacion.variantes?.join(", ") || "—"}</dd>
     <dt>minAno</dt>
     <dd>{situacion.minAno ?? "—"}</dd>
-    <dt>unicaVez</dt>
-    <dd>{situacion.unicaVez ? "sí" : "no"}</dd>
+    <dt>repetible</dt>
+    <dd>{situacion.unicaVez === false ? "sí" : "no"}</dd>
     <dt>peso</dt>
     <dd>{situacion.peso ?? "—"}</dd>
   </dl>
@@ -55,8 +55,6 @@
         </dd>
         <dt>flags</dt>
         <dd>{opcion.flags?.join(", ") || "—"}</dd>
-        <dt>consume</dt>
-        <dd>{opcion.consume?.join(", ") || "—"}</dd>
         <dt>peso</dt>
         <dd>{opcion.peso ?? "—"}</dd>
         <dt>saltaCOAC</dt>

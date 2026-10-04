@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { Situacion } from "../../content/schema"
+import type { Condicional, Situacion } from "../../content/schema"
 import { agruparPorMomento } from "../resumen"
 
 const situacion = (id: string, momento: Situacion["momento"]): Situacion => ({
@@ -13,7 +13,17 @@ const situacion = (id: string, momento: Situacion["momento"]): Situacion => ({
   ],
 })
 
-describe("agrupar por momento", () => {
+const condicional = (
+  id: string,
+  momento: Situacion["momento"],
+): Condicional => ({
+  ...situacion(id, momento),
+  requiere: { tipo: "flag", flag: "x" },
+  ventanaAnos: 1,
+  probabilidad: 0.5,
+})
+
+describe("agruparPorMomento (situaciones)", () => {
   const situaciones = [
     situacion("s1", "verano"),
     situacion("s2", "verano"),
@@ -32,9 +42,9 @@ describe("agrupar por momento", () => {
     expect(grupos.reduce((n, g) => n + g.total, 0)).toBe(situaciones.length)
   })
 
-  it("cada situación aparece exactamente una vez", () => {
+  it("cada entidad aparece exactamente una vez", () => {
     const ids = agruparPorMomento(situaciones).flatMap((g) =>
-      g.situaciones.map((s) => s.id),
+      g.entidades.map((s) => s.id),
     )
     expect(ids.sort()).toEqual(["s1", "s2", "s3"])
     expect(new Set(ids).size).toBe(situaciones.length)
@@ -44,5 +54,20 @@ describe("agrupar por momento", () => {
     const grupos = agruparPorMomento(situaciones)
     expect(grupos.find((g) => g.momento === "verano")?.total).toBe(2)
     expect(grupos.find((g) => g.momento === "febrero")?.total).toBe(1)
+  })
+})
+
+describe("agruparPorMomento (condicionales)", () => {
+  const condicionales = [
+    condicional("c1", "verano"),
+    condicional("c2", "febrero"),
+    condicional("c3", "febrero"),
+  ]
+
+  it("cuenta y agrupa condicionales por momento", () => {
+    const grupos = agruparPorMomento(condicionales)
+    expect(grupos.reduce((n, g) => n + g.total, 0)).toBe(condicionales.length)
+    expect(grupos.find((g) => g.momento === "verano")?.total).toBe(1)
+    expect(grupos.find((g) => g.momento === "febrero")?.total).toBe(2)
   })
 })

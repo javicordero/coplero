@@ -90,7 +90,7 @@ Al terminar, se genera un informe con el recuento de situaciones por momento, el
 - **FR-003**: Todo el contenido MUST validarse con Zod antes de considerarse usable; un contenido inválido MUST hacer fallar la comprobación de calidad del proyecto.
 - **FR-004**: Los identificadores de situación y de condicional MUST ser únicos en todo el banco.
 - **FR-005**: Toda flag referenciada por un requisito MUST existir como flag declarada por alguna opción.
-- **FR-006**: Las flags MUST NOT borrarse; las opciones pueden declarar flags y marcar flags como consumidas, y el banco MUST respetar esa semántica.
+- **FR-006**: Las flags MUST NOT borrarse; las opciones declaran las flags que dejan, y el motor consume automáticamente (y **por condicional**) las flags de un requisito al dispararse. *(Revisado 2026-10-05, feature 025: se retira el consumo manual.)*
 - **FR-007**: Cada opción MUST tener título y subtítulo, y declarar sus efectos sobre atributos y las flags que deja.
 - **FR-008**: Las opciones que implican no concursar MUST quedar marcadas con `saltaCOAC: true`.
 - **FR-009**: Los filtros opcionales `modalidades` y `variantes` MUST usarse solo donde la documentación los describa; su ausencia significa que la situación es común.

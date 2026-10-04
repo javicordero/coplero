@@ -45,7 +45,6 @@ Entidades y reglas del banco. Los nombres de campos coinciden con `src/engine/ty
 | `requiere` | `Requisito` | Mapeado desde la doc (D2). |
 | `ventanaAnos` | `number` | Tomado de la columna "Ventana / prob.". |
 | `probabilidad` | `number` | `0..1`, tomado de la doc. |
-| `consumeFlag` | `boolean` | `false` en este banco. |
 | `prioridad` | `number` | Opcional; no usado salvo que dos condicionales compitan. |
 
 ### `Requisito` (unión)
@@ -54,7 +53,7 @@ Entidades y reglas del banco. Los nombres de campos coinciden con `src/engine/ty
 
 ## Entidad: `Flag`
 
-Estado en partida, no en el banco: `{ ano, veces, consumida, anosConsecutivos }`. El banco solo **declara** flags (en `opciones[].flags`) y las **referencia** (en `requiere`). Regla: las flags no se borran; "consumir" solo marca `consumida` (ninguna opción del banco consume).
+Estado en partida, no en el banco: `{ ano, veces, consumidaPor, anosConsecutivos }`. El banco solo **declara** flags (en `opciones[].flags`) y las **referencia** (en `requiere`). Regla: las flags no se borran; al dispararse un condicional se marca `consumidaPor` **para ese condicional** (revisado 2026-10-05, feature 025).
 
 ## Entidad: `BancoContenido`
 
@@ -73,7 +72,7 @@ Estado en partida, no en el banco: `{ ano, veces, consumida, anosConsecutivos }`
 
 ## Ciclo de vida de una flag
 
-`declarada por una opción` → al elegirla se registra `{ano, veces, consumida:false}` → si otra situación la referencia y se dispara, puede marcarse `consumida:true` (no se borra) → su ventana de disparo caduca con `ventanaAnos`, pero la flag permanece en el historial.
+`declarada por una opción` → al elegirla se registra `{ano, veces, consumidaPor: []}` → si un condicional la referencia y se dispara, se añade su id a `consumidaPor` (no se borra) → su ventana de disparo caduca con `ventanaAnos`, pero la flag permanece en el historial.
 
 ## Inventario importado (esperado)
 

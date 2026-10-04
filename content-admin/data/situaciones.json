@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 3,
   "situaciones": [
     {
       "id": "f_cuple",
@@ -614,6 +614,31 @@
       "unicaVez": true
     },
     {
+      "id": "v_ruptura_grupo",
+      "momento": "verano",
+      "titulo": "Te separas de tu grupo tras varios años y toca escribir",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "emotivo",
+          "titulo": "Pasodoble emotivo",
+          "subtitulo": "Buscando emocionar",
+          "flags": [
+            "ruptura_elegante"
+          ]
+        },
+        {
+          "id": "cañi",
+          "titulo": "Cuplé con carga de Cádiz",
+          "subtitulo": "Llamándoles de todo",
+          "flags": [
+            "ruptura_a_saco"
+          ]
+        }
+      ],
+      "unicaVez": true
+    },
+    {
       "id": "v_tipo",
       "momento": "verano",
       "titulo": "El tipo no acaba de convencer al grupo a un mes del concurso",
@@ -687,31 +712,469 @@
         }
       ],
       "unicaVez": true
-    },
+    }
+  ],
+  "condicionales": [
     {
-      "id": "v_ruptura_grupo",
-      "momento": "verano",
-      "titulo": "Te separas de tu grupo tras varios años y toca escribir",
+      "id": "cf_documental",
+      "momento": "febrero",
+      "titulo": "Un editor de una tele nacional quiere hacer un documental sobre tu agrupación",
       "texto": "",
       "opciones": [
         {
-          "id": "emotivo",
-          "titulo": "Pasodoble emotivo",
-          "subtitulo": "Buscando emocionar",
+          "id": "abrir",
+          "titulo": "Abrir las puertas",
+          "subtitulo": "Que se vea el carnaval de dentro"
+        },
+        {
+          "id": "no",
+          "titulo": "Decir no",
+          "subtitulo": "El ensayo es sagrado"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "faseAlcanzada",
+        "fase": "final"
+      },
+      "ventanaAnos": 2,
+      "probabilidad": 0.08
+    },
+    {
+      "id": "cf_excompañero",
+      "momento": "febrero",
+      "titulo": "Tu antiguo compañero triunfa en otra agrupación",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "llamar",
+          "titulo": "Llamarlo para volver",
+          "subtitulo": "La puerta sigue abierta"
+        },
+        {
+          "id": "camino",
+          "titulo": "Seguir tu camino",
+          "subtitulo": "Aquí no falta nadie"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "alguna",
+        "de": [
+          {
+            "tipo": "flag",
+            "flag": "historico_se_fue"
+          },
+          {
+            "tipo": "flag",
+            "flag": "fiche_fuera"
+          }
+        ]
+      },
+      "ventanaAnos": 3,
+      "probabilidad": 0.4
+    },
+    {
+      "id": "cf_politico",
+      "momento": "febrero",
+      "titulo": "Un político te contesta en la prensa local",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "doblar",
+          "titulo": "Doblar la apuesta",
+          "subtitulo": "Otro pasodoble al mismo"
+        },
+        {
+          "id": "dejar",
+          "titulo": "Dejarlo estar",
+          "subtitulo": "Ya lo dije cantando"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "pasodoble_duro"
+      },
+      "ventanaAnos": 2,
+      "probabilidad": 0.6
+    },
+    {
+      "id": "cf_tele",
+      "momento": "febrero",
+      "titulo": "Te llaman de la tele por la polémica",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "ir",
+          "titulo": "Ir al programa",
+          "subtitulo": "Aprovechar el foco"
+        },
+        {
+          "id": "no_ir",
+          "titulo": "No ir",
+          "subtitulo": "Yo hablo en el Falla"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "deje_correr_polemica"
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.5
+    },
+    {
+      "id": "cv_enfoque_chirigotero",
+      "momento": "verano",
+      "titulo": "El grupo quiere reírse de otra manera este año",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "clasico",
+          "titulo": "Seguir con el humor de siempre",
+          "subtitulo": "Lo que funciona no se toca",
+          "cambiaVariante": "clasico_chirigotero"
+        },
+        {
+          "id": "visual",
+          "titulo": "Apoyarse en el gesto, casi sin hablar",
+          "subtitulo": "Que el cuerpo cuente el chiste",
+          "cambiaVariante": "lolosedismo"
+        },
+        {
+          "id": "personaje",
+          "titulo": "No salirse del personaje ni un segundo",
+          "subtitulo": "Todo el rato dentro del tipo",
+          "cambiaVariante": "interpretar_personaje"
+        }
+      ],
+      "modalidades": [
+        "chirigotero"
+      ],
+      "unicaVez": false,
+      "requiere": {
+        "tipo": "ninguna",
+        "de": []
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.05
+    },
+    {
+      "id": "cv_enfoque_comparsista",
+      "momento": "verano",
+      "titulo": "El grupo debate cómo enfocar el repertorio del próximo año",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "clasico",
+          "titulo": "Mantener lo que siempre ha funcionado",
+          "subtitulo": "Fiel a la tradición",
+          "cambiaVariante": "clasico_comparsista"
+        },
+        {
+          "id": "nuevo",
+          "titulo": "Darle una vuelta a todo",
+          "subtitulo": "Buscar un sonido que no se haya oído",
+          "cambiaVariante": "nueva_escuela"
+        },
+        {
+          "id": "raices",
+          "titulo": "Cambiar sin perder la esencia",
+          "subtitulo": "Progresar con la raíz intacta",
+          "cambiaVariante": "evolucion_con_raices"
+        }
+      ],
+      "modalidades": [
+        "comparsista"
+      ],
+      "unicaVez": false,
+      "requiere": {
+        "tipo": "ninguna",
+        "de": []
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.05
+    },
+    {
+      "id": "cv_grupo_consagrado",
+      "momento": "verano",
+      "titulo": "Has ganado premios con el grupo consagrado; tus amigos te llaman para volver",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "volver",
+          "titulo": "Volver con los tuyos",
+          "subtitulo": "Más piña, menos cartel",
+          "efectos": {
+            "popularidad": -1,
+            "cohesion": 3
+          },
+          "excepcion": true,
           "flags": [
-            "ruptura_elegante"
+            "regreso_a_la_pena"
           ]
         },
         {
-          "id": "cañi",
-          "titulo": "Cuplé con carga de Cádiz",
-          "subtitulo": "Llamándoles de todo",
+          "id": "seguir",
+          "titulo": "Seguir donde se gana",
+          "subtitulo": "Más cartel, menos piña",
+          "efectos": {
+            "letra": 1,
+            "popularidad": 1,
+            "cohesion": -1
+          },
+          "excepcion": true,
           "flags": [
-            "ruptura_a_saco"
+            "carrera_de_elite"
           ]
         }
       ],
-      "unicaVez": true
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "autor_grupo_consagrado"
+      },
+      "ventanaAnos": 4,
+      "probabilidad": 0.5
+    },
+    {
+      "id": "cv_local_venta",
+      "momento": "verano",
+      "titulo": "El local de siempre se pone en venta",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "comprar",
+          "titulo": "Comprarlo entre todos",
+          "subtitulo": "Casa propia"
+        },
+        {
+          "id": "mudarse",
+          "titulo": "Mudarse por fin",
+          "subtitulo": "Toca soltar"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "local_de_siempre"
+      },
+      "ventanaAnos": 3,
+      "probabilidad": 0.4
+    },
+    {
+      "id": "cv_musico_firma",
+      "momento": "verano",
+      "titulo": "El músico de fuera quiere firmar la música",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "compartir",
+          "titulo": "Compartir la firma",
+          "subtitulo": "Lo justo es lo justo"
+        },
+        {
+          "id": "negar",
+          "titulo": "Negarte",
+          "subtitulo": "La música es de la agrupación"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "musico_externo"
+      },
+      "ventanaAnos": 2,
+      "probabilidad": 0.5
+    },
+    {
+      "id": "cv_patrocinador_rival",
+      "momento": "verano",
+      "titulo": "El patrocinador que rechazaste aparece con tu rival",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "cuple",
+          "titulo": "Cuplé al asunto",
+          "subtitulo": "Que se ría Cádiz"
+        },
+        {
+          "id": "no_trapo",
+          "titulo": "No entrar al trapo",
+          "subtitulo": "Cada uno con lo suyo"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "rechazo_patrocinio"
+      },
+      "ventanaAnos": 2,
+      "probabilidad": 0.5
+    },
+    {
+      "id": "cv_plazo_inscripcion",
+      "momento": "verano",
+      "titulo": "Se acerca el plazo de inscripción tras tu año fuera del concurso",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "volver",
+          "titulo": "Volver al COAC",
+          "subtitulo": "Lo echaba de menos",
+          "flags": [
+            "regreso_al_coac"
+          ]
+        },
+        {
+          "id": "fuera",
+          "titulo": "Seguir fuera",
+          "subtitulo": "Calle o teatro, pero sin jurado",
+          "flags": [
+            "sigo_fuera"
+          ]
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "alguna",
+        "de": [
+          {
+            "tipo": "flag",
+            "flag": "ano_callejero"
+          },
+          {
+            "tipo": "flag",
+            "flag": "ano_de_gira"
+          }
+        ]
+      },
+      "ventanaAnos": 2,
+      "probabilidad": 0.8
+    },
+    {
+      "id": "cv_registro_social",
+      "momento": "verano",
+      "titulo": "El público espera otra vez tu registro social",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "repetir",
+          "titulo": "Repetir registro",
+          "subtitulo": "Es lo que soy"
+        },
+        {
+          "id": "romper",
+          "titulo": "Romper con lo esperado",
+          "subtitulo": "Que no me encasillen"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "flag",
+        "flag": "tema_social"
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.7
+    },
+    {
+      "id": "cv_salto_a_chirigotero",
+      "momento": "verano",
+      "titulo": "La comparsa se te queda seria y te llama la chirigota",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "seguir",
+          "titulo": "Seguir con la comparsa",
+          "subtitulo": "Donde estás cómodo y donde te conocen"
+        },
+        {
+          "id": "cambiar",
+          "titulo": "Dar el salto a la chirigota",
+          "subtitulo": "Otro registro, otra guerra",
+          "cambiaModalidad": "chirigotero"
+        }
+      ],
+      "modalidades": [
+        "comparsista"
+      ],
+      "minAno": 4,
+      "unicaVez": false,
+      "requiere": {
+        "tipo": "ninguna",
+        "de": []
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.04
+    },
+    {
+      "id": "cv_salto_a_comparsista",
+      "momento": "verano",
+      "titulo": "La chirigota se te queda pequeña y te ronda la comparsa",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "seguir",
+          "titulo": "Seguir con la chirigota",
+          "subtitulo": "Donde estás cómodo y donde te conocen"
+        },
+        {
+          "id": "cambiar",
+          "titulo": "Dar el salto a la comparsa",
+          "subtitulo": "Otro registro, otra guerra",
+          "cambiaModalidad": "comparsista"
+        }
+      ],
+      "modalidades": [
+        "chirigotero"
+      ],
+      "minAno": 4,
+      "unicaVez": false,
+      "requiere": {
+        "tipo": "ninguna",
+        "de": []
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 0.04
+    },
+    {
+      "id": "cv_vuelta",
+      "momento": "verano",
+      "titulo": "Vuelves al concurso tras el año que no fuiste",
+      "texto": "",
+      "opciones": [
+        {
+          "id": "humildad",
+          "titulo": "Entrar con humildad",
+          "subtitulo": "Un año fuera enseña"
+        },
+        {
+          "id": "saco",
+          "titulo": "Entrar a saco",
+          "subtitulo": "Vengo a cobrarme lo mío"
+        }
+      ],
+      "unicaVez": true,
+      "requiere": {
+        "tipo": "alguna",
+        "de": [
+          {
+            "tipo": "flag",
+            "flag": "year_sabatico"
+          },
+          {
+            "tipo": "flag",
+            "flag": "ano_callejero"
+          },
+          {
+            "tipo": "flag",
+            "flag": "ano_de_gira"
+          }
+        ]
+      },
+      "ventanaAnos": 1,
+      "probabilidad": 1
     }
   ]
 }

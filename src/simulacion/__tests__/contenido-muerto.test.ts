@@ -21,7 +21,6 @@ const banco: BancoContenido = {
       requiere: { tipo: "flag", flag: "x" },
       ventanaAnos: 1,
       probabilidad: 0.5,
-      consumeFlag: false,
     },
   ],
 }

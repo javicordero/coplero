@@ -81,14 +81,6 @@ describe("integridad del banco real", () => {
     }
   })
 
-  it("ninguna opción usa `consume` (las flags no se borran)", () => {
-    for (const s of TODAS) {
-      for (const o of s.opciones) {
-        expect(o.consume ?? []).toEqual([])
-      }
-    }
-  })
-
   it("no aparecen nombres reales prohibidos", () => {
     for (const s of TODAS) {
       const textos = [

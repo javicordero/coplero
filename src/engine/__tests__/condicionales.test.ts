@@ -7,8 +7,6 @@ import {
 } from "../condicionales"
 import type { Flag, Opcion, Requisito } from "../types"
 
-const sinFlags = { flags: {}, atributos: {}, temporadas: [] }
-
 describe("condicionales", () => {
   it("evalúa flag, todas, alguna, ninguna y atributo", () => {
     const estado = {
@@ -73,28 +71,14 @@ describe("condicionales", () => {
       consecutivos: true,
     }
     const noConsecutivo = {
-      flags: {
-        tema_social: {
-          ano: 5,
-          veces: 2,
-          consumida: false,
-          anosConsecutivos: 1,
-        },
-      },
+      flags: { tema_social: flag(5, 2, 1) },
       atributos: {},
       temporadas: [],
     }
     expect(requisitoCumplido(total, noConsecutivo)).toBe(true)
     expect(requisitoCumplido(conse, noConsecutivo)).toBe(false)
     const consecutivo = {
-      flags: {
-        tema_social: {
-          ano: 6,
-          veces: 2,
-          consumida: false,
-          anosConsecutivos: 2,
-        },
-      },
+      flags: { tema_social: flag(6, 2, 2) },
       atributos: {},
       temporadas: [],
     }
@@ -132,20 +116,80 @@ describe("condicionales", () => {
     ).toBe(false)
   })
 
-  it("consumir no borra la flag", () => {
-    const flags = { x: flag(3, 2) }
-    const consumidas = consumirFlagsDeRequisito(flags, {
-      tipo: "flag",
-      flag: "x",
-    })
-    expect(consumidas.x).toBeDefined()
-    expect(consumidas.x.consumida).toBe(true)
+  it("consumo por condicional: c no vuelve a cumplir; d sí", () => {
+    const estado = {
+      flags: { compartida: flag(3, 1) },
+      atributos: {},
+      temporadas: [],
+    }
+    const req: Requisito = { tipo: "flag", flag: "compartida" }
+    const consumidas = consumirFlagsDeRequisito(estado.flags, req, "c")
+
+    // El condicional c ya no la ve; d (y sin consumidor) sí.
+    expect(requisitoCumplido(req, { ...estado, flags: consumidas }, "c")).toBe(
+      false,
+    )
+    expect(requisitoCumplido(req, { ...estado, flags: consumidas }, "d")).toBe(
+      true,
+    )
+    expect(requisitoCumplido(req, { ...estado, flags: consumidas })).toBe(true)
+    // La flag no se borra.
+    expect(consumidas.compartida).toBeDefined()
+    expect(consumidas.compartida.consumidaPor).toEqual(["c"])
+  })
+
+  it("no duplica el id del condicional en consumidaPor", () => {
+    const flags = { x: flag(1, 1) }
+    const req: Requisito = { tipo: "flag", flag: "x" }
+    const una = consumirFlagsDeRequisito(flags, req, "c")
+    const dos = consumirFlagsDeRequisito(una, req, "c")
+    expect(dos.x.consumidaPor).toEqual(["c"])
+  })
+
+  it("alguna consume solo la flag activa", () => {
+    const estado = { flags: { a: flag(1, 1) }, atributos: {}, temporadas: [] }
+    const req: Requisito = {
+      tipo: "alguna",
+      de: [
+        { tipo: "flag", flag: "a" },
+        { tipo: "flag", flag: "b" },
+      ],
+    }
+    const consumidas = consumirFlagsDeRequisito(estado.flags, req, "c")
+    expect(consumidas.a.consumidaPor).toEqual(["c"])
+    expect(consumidas.b).toBeUndefined()
+  })
+
+  it("ninguna y requisito vacío no consumen nada", () => {
+    const flags = { x: flag(1, 1) }
+    const ninguna: Requisito = {
+      tipo: "ninguna",
+      de: [{ tipo: "flag", flag: "x" }],
+    }
+    const vacio: Requisito = { tipo: "ninguna", de: [] }
     expect(
-      requisitoCumplido(
-        { tipo: "flag", flag: "x" },
-        { ...sinFlags, flags: consumidas },
-      ),
-    ).toBe(true)
+      consumirFlagsDeRequisito(flags, ninguna, "c").x.consumidaPor,
+    ).toEqual([])
+    expect(consumirFlagsDeRequisito(flags, vacio, "c").x.consumidaPor).toEqual(
+      [],
+    )
+  })
+
+  it("re-ganar una flag no limpia consumidaPor", () => {
+    const opcion: Opcion = {
+      id: "o",
+      titulo: "t",
+      subtitulo: "s",
+      flags: ["f"],
+    }
+    const uno = actualizarFlags({}, opcion, 1)
+    const consumidas = consumirFlagsDeRequisito(
+      uno,
+      { tipo: "flag", flag: "f" },
+      "c",
+    )
+    const dos = actualizarFlags(consumidas, opcion, 2)
+    expect(dos.f.consumidaPor).toEqual(["c"])
   })
 
   it("actualizarFlags acumula veces y consecutivos", () => {
@@ -157,6 +201,7 @@ describe("condicionales", () => {
     }
     const uno = actualizarFlags({}, opcion, 1)
     expect(uno.f.veces).toBe(1)
+    expect(uno.f.consumidaPor).toEqual([])
     const dos = actualizarFlags(uno, opcion, 2)
     expect(dos.f.veces).toBe(2)
     expect(dos.f.anosConsecutivos).toBe(2)
@@ -165,6 +210,6 @@ describe("condicionales", () => {
   })
 })
 
-function flag(ano: number, veces: number): Flag {
-  return { ano, veces, consumida: false, anosConsecutivos: 1 }
+function flag(ano: number, veces: number, anosConsecutivos = 1): Flag {
+  return { ano, veces, consumidaPor: [], anosConsecutivos }
 }

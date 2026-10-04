@@ -32,11 +32,11 @@ describe("serialización", () => {
     if (!res.ok) expect(res.error.codigo).toBe("VERSION_INCOMPATIBLE")
   })
 
-  it("V-09 · la forma del estado no cambia con la curva de carrera", () => {
-    // 013: la curva y la forma se calculan, no se guardan. `Partida` conserva
-    // exactamente las mismas claves y `VERSION_PARTIDA` sigue siendo 2, así que
-    // una partida guardada a medias puede continuar sin migración.
-    expect(VERSION_PARTIDA).toBe(2)
+  it("V-09 · la forma del estado y su versión (025)", () => {
+    // 025: cambia la forma de `Flag` (consumida → consumidaPor), así que
+    // `VERSION_PARTIDA` sube a 3; una partida guardada con la versión anterior
+    // se rechaza (no se migra). Las claves de `Partida` no cambian.
+    expect(VERSION_PARTIDA).toBe(3)
     const partida = crearPartida(inputPrueba, bancoPrueba)
     expect(Object.keys(partida).sort()).toEqual([
       "anoActual",
@@ -63,5 +63,17 @@ describe("serialización", () => {
       "version",
       "vistas",
     ])
+  })
+
+  it("rechaza una partida de la versión anterior", () => {
+    const res = deserializar(JSON.stringify({ version: 2, seed: "x" }))
+    expect(res.ok).toBe(false)
+    if (!res.ok) {
+      expect(res.error.codigo).toBe("VERSION_INCOMPATIBLE")
+      if (res.error.codigo === "VERSION_INCOMPATIBLE") {
+        expect(res.error.versionRecibida).toBe(2)
+        expect(res.error.versionEsperada).toBe(3)
+      }
+    }
   })
 })

@@ -1,17 +1,15 @@
 <!--
 Sync Impact Report
-- Version change: template (unversioned) → 1.0.0
+- Version change: 1.1.0 → 1.2.0
 - Ratification: 2026-09-18
-- Modified principles: N/A (adopción inicial)
-- Added principles:
-  I.   Motor independiente y determinista
-  II.  Contenido como datos, no código
-  III. Verificación determinista y balance por simulación
-  IV.  Rendimiento y mobile-first como requisito de producto
-  V.   Simplicidad arquitectónica y proyecto único
-- Added sections:
-  - Restricciones técnicas y de producto
-  - Flujo de desarrollo y puertas de calidad
+- Last amended: 2026-10-05
+- Modified principles: II. Contenido como datos, no código (redefinición de "consumir" una flag:
+  pasa de marca global a consumo **por condicional**, automático; se retira el consumo manual)
+- Reason: feature 025. El consumo manual (`consume` en la opción, `consumeFlag` en el condicional) se
+  retira; al dispararse un condicional se marcan sus flags activas como consumidas por ese condicional,
+  sin gastar las flags compartidas. `Flag.consumida` → `Flag.consumidaPor: string[]`; `VERSION_PARTIDA`
+  2→3.
+- Added sections: None
 - Removed sections: None
 - Templates reviewed:
   - .specify/templates/plan-template.md    (✅ Constitution Check ya es genérico)
@@ -19,6 +17,10 @@ Sync Impact Report
   - .specify/templates/tasks-template.md   (✅ nota de tests alineada con el Principio III)
   - .specify/templates/commands/*          (N/A: el directorio no existe)
 - Follow-up TODOs: None
+--
+Histórico:
+- 1.0.0 (2026-09-18): adopción inicial (principios I–V).
+- 1.1.0 (2026-10-05): retirada de `tipo`/`categoría` del Principio II y del flujo de desarrollo.
 -->
 
 # Coplero Constitution
@@ -51,14 +53,14 @@ El banco de situaciones vive como datos validados, no como lógica.
 - `content` MUST NOT contener lógica de juego; son objetos de datos.
 - Todo contenido MUST validarse con Zod en build time.
 - Toda situación y condicional MUST declarar `momento: verano | febrero`; el motor filtra por ese campo.
-- Cada año MUST resolver una decisión de contenido y una de personaje, nunca dos del mismo tipo.
+- Cada año MUST resolver una decisión de verano y una de febrero, nunca dos del mismo momento.
 - Las situaciones MUST poder filtrarse por `modalidades` y `variantes` opcionales; ausencia de esos campos significa que la situación es común.
 - Las flags MUST persistir en el historial durante toda la carrera; lo que caduca MUST ser su ventana de disparo, no la flag.
-- "Consumir" una flag MUST NOT borrarla: MUST marcarla como consumida y desactivar su disparo.
+- "Consumir" una flag MUST NOT borrarla: MUST marcarla como consumida **por el condicional que la consume** y desactivar solo su disparo para ese condicional, nunca para otros que compartan la flag. El consumo manual MUST NOT existir: es automático al dispararse un condicional (feature 025).
 - Las opciones que implican no concursar MUST marcarse con `saltaCOAC: true`.
 - MUST NOT usarse nombres reales de personas o agrupaciones al inspirarse en hechos reales.
 
-**Rationale:** añadir situaciones no debe obligar a tocar código; la separación por momento y tipo
+**Rationale:** añadir situaciones no debe obligar a tocar código; la separación por momento
 mantiene la coherencia narrativa del Carnaval y del COAC.
 
 ### III. Verificación determinista y balance por simulación
@@ -118,7 +120,7 @@ monorepo y de dos ecosistemas; el aislamiento lógico se logra con carpetas disc
 
 - Ante una duda no resuelta por la documentación, MUST consultarse el registro o preguntar; MUST NOT inventarse reglas.
 - Las contradicciones MUST registrarse en `docs/registro/decisiones-pendientes.md`; MUST NOT resolverse en silencio.
-- Toda situación nueva MUST archivarse en su momento, tipo y categoría, con `id` único, título y subtítulo, y flags coherentes.
+- Toda situación nueva MUST archivarse en su momento (`verano`/`febrero`), con `id` único, título y subtítulo, y flags coherentes.
 - Los valores numéricos MUST calibrarse con el simulador, nunca a ojo.
 - Los commits MUST seguir Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`); MUST NOT commitearse sin petición explícita.
 - Antes de commitear MUST revisarse `git status`, `git diff` y el estilo reciente, sin incluir secretos.
@@ -135,4 +137,4 @@ monorepo y de dos ecosistemas; el aislamiento lógico se logra con carpetas disc
 - Toda revisión de plan o PR MUST verificar el cumplimiento de estos principios; cualquier violación MUST justificarse en la tabla **Complexity Tracking** de `.specify/templates/plan-template.md`.
 - La guía de desarrollo en tiempo de ejecución vive en `AGENTS.md` y `docs/`; esta constitución no la duplica.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-18 | **Last Amended**: 2026-09-18
+**Version**: 1.2.0 | **Ratified**: 2026-09-18 | **Last Amended**: 2026-10-05

@@ -88,7 +88,7 @@ describe("premios ajenos", () => {
         tema_social: {
           ano: 1,
           veces: 1,
-          consumida: false,
+          consumidaPor: [],
           anosConsecutivos: 1,
         },
       },

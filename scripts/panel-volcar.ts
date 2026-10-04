@@ -18,10 +18,14 @@ try {
   } else {
     const rutas = escribirVolcado(resultado)
     formatearConBiome(rutas)
-    for (const { fichero, situaciones } of resultado.ficheros) {
-      console.log(`${fichero.clave}: ${situaciones.length} situaciones`)
+    for (const { fichero, entidades } of resultado.ficheros) {
+      console.log(
+        `${fichero.tipoImportado} ${fichero.momento}: ${entidades.length}`,
+      )
     }
-    console.log(`Escritos ${rutas.length} ficheros en src/content/decisiones/.`)
+    console.log(
+      `Escritos ${rutas.length} ficheros en src/content/{decisiones,condicionales}/.`,
+    )
   }
 } catch (error) {
   if (error instanceof ErrorVolcado) {

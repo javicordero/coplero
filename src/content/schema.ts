@@ -21,7 +21,6 @@ export interface Opcion {
   /** Marca la opción como excepción: única vía por la que una decisión mueve atributos. */
   excepcion?: boolean
   flags?: string[]
-  consume?: string[]
   peso?: number
   saltaCOAC?: boolean
   cambiaModalidad?: Modalidad
@@ -59,7 +58,6 @@ export interface Condicional extends Situacion {
   requiere: Requisito
   ventanaAnos: number
   probabilidad: number
-  consumeFlag: boolean
   prioridad?: number
 }
 
@@ -127,7 +125,6 @@ export const OpcionSchema: z.ZodType<Opcion> = z
     efectos: EfectosSchema.optional(),
     excepcion: z.boolean().optional(),
     flags: z.array(z.string().min(1)).optional(),
-    consume: z.array(z.string().min(1)).optional(),
     peso: z.number().optional(),
     saltaCOAC: z.boolean().optional(),
     cambiaModalidad: z.enum(MODALIDADES).optional(),
@@ -215,7 +212,6 @@ const CondicionalBase = SituacionBase.extend({
   requiere: RequisitoSchema,
   ventanaAnos: z.number().int().positive(),
   probabilidad: z.number().min(0).max(1),
-  consumeFlag: z.boolean(),
   prioridad: z.number().optional(),
 })
 

@@ -44,7 +44,6 @@ Fase 1. Modelo de datos del `engine`. Tipos TS puros, serializables y sin clases
 | `subtitulo` | string | — |
 | `efectos` | `Partial<Atributos>` | se aplican con clamp (`FR-008`) |
 | `flags` | `string[]?` | flags que deja (`FR-009`) |
-| `consume` | `string[]?` | flags que quedan **consumidas**, sin borrarse (`FR-009`) |
 | `peso` | number? | peso para la selección/balance |
 | `saltaCOAC` | boolean? | la temporada no resuelve COAC (`FR-017`) |
 
@@ -72,7 +71,6 @@ Fase 1. Modelo de datos del `engine`. Tipos TS puros, serializables y sin clases
 | `requiere` | `Requisito` | árbol lógico (`FR-007`) |
 | `ventanaAnos` | number | años desde la activación de la flag |
 | `probabilidad` | number | `0..1`, tirada anual |
-| `consumeFlag` | boolean | marca consumida, no borra |
 | `prioridad` | number? | orden si compiten varias |
 
 ### `Requisito` (árbol)
@@ -90,7 +88,7 @@ Fase 1. Modelo de datos del `engine`. Tipos TS puros, serializables y sin clases
 ### `Flag`
 - `ano: number` — año de activación.
 - `veces: number` — nº de activaciones.
-- `consumida: boolean` — desactiva el disparo; permanece en el historial (`FR-009`).
+- `consumidaPor: string[]` — ids de los condicionales que la han consumido; desactiva el disparo **solo para esos** condicionales; permanece en el historial (`FR-009`, revisado 2026-10-05).
 
 ### `Destino` (oculto — nunca se expone, `FR-002`)
 - `techo: FaseCOAC`, `suelo: FaseCOAC`, `anoPico: number`, `anosCarrera: number`,

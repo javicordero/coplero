@@ -21,10 +21,10 @@ export const respuesta404 = (): Response => new Response("Not Found", { status: 
 
 ## `/api/panel/situaciones` (`prerender = false`)
 
-### `GET` → `200 { situaciones: Situacion[] }`
+### `GET` → `200 { situaciones: Situacion[], condicionales: Condicional[], flags: string[] }`
 
-Devuelve el almacén íntegro (el agrupado por momento lo hace la isla). Si no hay almacén,
-`{ situaciones: [] }`.
+Devuelve el almacén íntegro (el agrupado por momento lo hace la isla) y el catálogo de flags
+declaradas para el selector. Si no hay almacén, listas vacías.
 
 ### `POST` (crea)
 
@@ -48,12 +48,29 @@ inmutable).
 - **200** `{ id }` · **404** si no existe · **500** fallo de escritura.
 - La confirmación previa es responsabilidad de la isla (FR-011).
 
+## `/api/panel/condicionales` (`prerender = false`)
+
+> Añadido por la feature 024.
+
+### `GET` → `200 { condicionales: Condicional[] }`
+
+### `POST` (crea) → `201 { condicional }` · **422** · **500**
+
+Cuerpo: `{ condicional: Condicional }`.
+
+## `/api/panel/condicionales/:id` (`prerender = false`)
+
+### `PUT` → `200 { condicional }` · **404** · **422** · **500**
+
+### `DELETE` → `200 { id }` · **404** · **500**
+
 ## `/api/panel/importar` (`prerender = false`)
 
 ### `POST` → `200 { importadas: number }`
 
 Ejecuta `importarBancoActual()` (ver `importador.md`): copia de seguridad e importación desde
-`src/content/decisiones/**`. **422/500** con `{ errores }` si el banco actual no se puede leer.
+`src/content/{decisiones,condicionales}/**`. `importadas` es el total (situaciones + condicionales).
+**422/500** con `{ errores }` si el banco actual no se puede leer.
 
 ## Formato de errores
 
