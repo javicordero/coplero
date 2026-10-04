@@ -52,22 +52,23 @@ let llegada = $derived(
         </div>
       {/if}
     {/if}
-
-    <button
-      type="button"
-      class="primario"
-      onclick={onContinuar}
-      data-testid="continuar-ano"
-    >
-      Continuar
-    </button>
   </div>
+
+  <button
+    type="button"
+    class="primario"
+    onclick={onContinuar}
+    data-testid="continuar-ano"
+  >
+    Continuar
+  </button>
 </section>
 
 <style>
   .resultado {
     display: flex;
     flex-direction: column;
+    gap: var(--esp-4);
   }
 
   /* Panel de las pantallas de creación: superficie, borde y sombra. */
@@ -169,5 +170,6 @@ let llegada = $derived(
 
   button.primario {
     width: 100%;
+    font-size: var(--texto-lg);
   }
 </style>

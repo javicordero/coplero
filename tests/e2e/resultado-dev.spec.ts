@@ -49,13 +49,16 @@ test("un caso desconocido muestra el caso por defecto", async ({ page }) => {
   expect(desconocido).toBe(porDefecto)
 })
 
-test("«Continuar» va dentro del panel, no avanza en dev y no persiste", async ({
+test("«Continuar» va fuera del panel, no avanza en dev y no persiste", async ({
   page,
 }) => {
   await abrirResultado(page)
   await expect(page.locator(".panel")).toBeVisible()
   await expect(
     page.locator('.panel [data-testid="continuar-ano"]'),
+  ).toHaveCount(0)
+  await expect(
+    page.locator('.resultado > [data-testid="continuar-ano"]'),
   ).toHaveCount(1)
 
   await page.getByTestId("continuar-ano").click()
