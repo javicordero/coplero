@@ -54,6 +54,36 @@ test("la portada fusiona qué es y cómo funciona, y no tiene modalidades/FAQ/ci
   await expect(page.locator("#faq")).toHaveCount(0)
 })
 
+test("los bloques usan ornamento en lugar del compás", async ({ page }) => {
+  await page.goto("/")
+
+  for (const id of ["#que-es", "#ejemplo"]) {
+    await expect(page.locator(`${id} svg.regla-compas`)).toHaveCount(0)
+    await expect(page.locator(`${id} [data-separador]`)).toHaveCount(1)
+  }
+})
+
+test("el ejemplo muestra la carrera larga y sus distinciones", async ({
+  page,
+}) => {
+  await page.goto("/")
+
+  const tarjeta = page.getByTestId("tarjeta")
+  await expect(tarjeta).toBeVisible()
+
+  await expect(
+    page.locator('[data-testid="tarjeta-premios"] .hito'),
+  ).toHaveCount(7)
+  await expect(
+    page.locator('[data-testid="tarjeta-distinciones"] .roseta'),
+  ).toHaveCount(3)
+  await expect(
+    page.locator('[data-testid="tarjeta-mejor-posicion"]'),
+  ).toHaveAttribute("data-tono", "oro")
+
+  await expect(tarjeta).toContainText("2038")
+})
+
 test("los enlaces internos de la portada apuntan a rutas existentes", async ({
   page,
 }) => {

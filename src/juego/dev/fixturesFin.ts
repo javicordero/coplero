@@ -26,7 +26,7 @@ function esCasoFin(valor: string | null): valor is CasoFin {
   return valor !== null && (CASOS_FIN as readonly string[]).includes(valor)
 }
 
-/** Tarjeta de ejemplo: carrera ganadora, con cambios y premios ajenos. */
+/** Tarjeta de ejemplo: carrera ganadora, larga y con distinciones. */
 const CAMPEON: TarjetaFinal = {
   nombre: "El Bauti",
   modalidadInicial: "comparsista",
@@ -36,35 +36,30 @@ const CAMPEON: TarjetaFinal = {
   cambios: [
     { ano: 2031, modalidad: "comparsista", variante: "evolucion_con_raices" },
   ],
-  anosDeCarrera: 8,
-  anosEnActivo: 7,
-  anosSinConcursar: [2031],
+  anosDeCarrera: 14,
+  anosEnActivo: 14,
+  anosSinConcursar: [],
   mejorFase: "final",
   mejorPuesto: 1,
   primerosPremios: [
-    { ano: 2031, puesto: 3, tipo: "podio" },
-    { ano: 2032, puesto: 1, tipo: "primer_premio" },
-    { ano: 2033, puesto: 2, tipo: "podio" },
-    { ano: 2034, puesto: 1, tipo: "primer_premio" },
-    { ano: 2035, puesto: 2, tipo: "podio" },
-    { ano: 2036, puesto: 3, tipo: "podio" },
-    { ano: 2037, puesto: 1, tipo: "primer_premio" },
+    { ano: 2037, puesto: 3, tipo: "podio" },
+    { ano: 2038, puesto: 1, tipo: "primer_premio" },
+    { ano: 2040, puesto: 2, tipo: "podio" },
   ],
   hitosProgreso: [
     { ano: 2027, fase: "preliminares", debut: true },
-    { ano: 2028, fase: "cuartos", debut: false },
-    { ano: 2029, fase: "semifinales", debut: false },
-    { ano: 2030, fase: "final", debut: false },
+    { ano: 2029, fase: "cuartos", debut: false },
+    { ano: 2032, fase: "semifinales", debut: false },
+    { ano: 2035, fase: "final", debut: false },
   ],
   otrosPremios: [
-    { tipo: "aguja_de_oro", veces: 1, anos: [2032] },
-    { tipo: "copla_para_andalucia", veces: 2, anos: [2030, 2033] },
-    { tipo: "candela_y_espino", veces: 1, anos: [2031] },
+    { tipo: "aguja_de_oro", veces: 2, anos: [2036, 2039] },
+    { tipo: "copla_para_andalucia", veces: 1, anos: [2034] },
   ],
   hitos: [
-    { tipo: "debut", ano: 2029, texto: "Debutaste en 2029" },
-    { tipo: "cambio_variante", ano: 2031, texto: "Cambió tu estilo en 2031" },
-    { tipo: "ganar_coac", ano: 2034, texto: "Ganaste el COAC en 2034" },
+    { tipo: "debut", ano: 2027, texto: "Debutaste en 2027" },
+    { tipo: "ganar_coac", ano: 2038, texto: "Ganaste el COAC en 2038" },
+    { tipo: "duracion", ano: null, texto: "14 años de carrera" },
   ],
   fraseCierre: "Lo tocaste todo.",
 }

@@ -1,5 +1,4 @@
 ---
-import ReglaCompas from "../components/ReglaCompas.svelte"
 import { DIRECCION_JUEGO, urlImagenOg } from "../juego/presentacion"
 import Tarjeta from "../juego/Tarjeta.svelte"
 import { CODIGO_EJEMPLO, EJEMPLO_TARJETA } from "../landing/ejemploTarjeta"
@@ -24,27 +23,32 @@ const descripcion =
   }}
 >
   <main>
-    <section class="hero">
-      <h1>Coplero</h1>
-      <p class="claim">
-        Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
-        Cada partida es una historia distinta.
-      </p>
-      <a class="cta" href="/jugar">Empezar a jugar</a>
-      <p class="micro">Gratis y sin registro · unos minutos</p>
+    <section class="apertura">
+      <div class="apertura__contenido">
+        <p class="eyebrow">Juego narrativo del Carnaval de Cádiz</p>
+        <h1>Coplero</h1>
+        <p class="de">
+          Del creador de <a
+            href={ACORDES_GADITANOS}
+            target="_blank"
+            rel="noopener noreferrer">Acordes Gaditanos</a
+          >
+        </p>
+        <p class="claim">
+          Crea tu personaje, elige modalidad y construye tu carrera en el COAC.
+          Cada partida es una historia distinta.
+        </p>
+        <a class="cta" href="/jugar">Empezar a jugar</a>
+      </div>
     </section>
 
     <section id="que-es" class="bloque">
-      <ReglaCompas class="compas-seccion" />
+      <span class="separador" data-separador aria-hidden="true"></span>
       <h2>Qué es Coplero y cómo funciona</h2>
       <p>
-        Coplero es un juego narrativo sobre el Carnaval de Cádiz. Eliges
-        comparsista o chirigotero, montas tu agrupación y, año tras año, decides
-        en verano qué preparar y en febrero cómo jugártela en el concurso.
-      </p>
-      <p>
-        No se trata de ganar: se trata de ver hasta dónde llega tu historia. Al
-        final recibes una tarjeta con toda tu carrera lista para compartir.
+        Coplero es un juego narrativo sobre el Carnaval de Cádiz. Crea tu
+        personaje y, año tras año, decides en verano qué preparar y en febrero
+        cómo jugártela en el concurso.
       </p>
       <ol class="pasos">
         {
@@ -59,23 +63,16 @@ const descripcion =
           ))
         }
       </ol>
-      <p class="autor">
-        Es el hermano pequeño de <a
-          href={ACORDES_GADITANOS}
-          target="_blank"
-          rel="noopener noreferrer">Acordes Gaditanos</a
-        >, la web de acordes del Carnaval de Cádiz. Mismo creador, misma afición.
-      </p>
     </section>
 
     <section id="ejemplo" class="bloque">
-      <ReglaCompas class="compas-seccion" />
+      <span class="separador" data-separador aria-hidden="true"></span>
       <h2>Tu tarjeta final</h2>
       <p>
-        Así termina una carrera: un póster con tu trayectoria, tus premios y los
-        momentos que la hicieron tuya.
+        Así termina una carrera: una tarjeta que recoge tu trayectoria y
+        distinciones.
       </p>
-      <div class="ejemplo">
+      <div class="marco">
         <Tarjeta tarjeta={EJEMPLO_TARJETA} />
       </div>
       <a class="cta" href="/jugar">Empezar a jugar</a>
@@ -84,80 +81,217 @@ const descripcion =
 </Layout>
 
 <style>
+  /* `main` a todo el ancho: así el hero puede llevar fondo a sangre y el
+     contenido de cada bloque se centra en el marco de 680 px. */
   main {
+    width: 100%;
+    padding: 0 0 var(--esp-6);
+  }
+
+  /* Entrada principal: ocupa la primera pantalla (100% menos la cabecera),
+     con la escena nocturna a sangre (idea del hero de Claude). */
+  .apertura {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: calc(100vh - var(--alto-cabecera, 2.75rem));
+    min-height: calc(100svh - var(--alto-cabecera, 2.75rem));
+
+    background:
+      radial-gradient(
+        circle at 80% 12%,
+        color-mix(in srgb, var(--c-invierno-luna) 12%, transparent),
+        transparent 26%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--c-invierno-nube) 60%, var(--c-fondo)) 0%,
+        var(--c-invierno-nube) 50%,
+        color-mix(in srgb, var(--c-carnaval-violeta) 25%, var(--c-invierno-nube))
+          80%,
+        var(--c-fondo) 100%
+      );
+  }
+
+  /* Velo: oscurece por la izquierda (donde va el texto) y funde el borde
+     inferior con la página, sin cortes ni «manchas». */
+  .apertura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--c-fondo) 55%, transparent) 0%,
+        transparent 65%
+      ),
+      linear-gradient(180deg, transparent 86%, var(--c-fondo) 100%);
+  }
+
+  .apertura__contenido {
+    position: relative;
+    z-index: 1;
+
     width: 100%;
     max-width: var(--ancho-marco);
     margin: 0 auto;
-    padding: 0 var(--esp-4) var(--esp-6);
-  }
-  .hero {
+    padding: var(--esp-6) var(--esp-4);
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
     gap: var(--esp-4);
-    min-height: 60vh;
-    padding: var(--esp-6) 0;
   }
+
+  .eyebrow {
+    margin: 0 0 calc(-1 * var(--esp-2));
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Titular grande como el de Claude, pero acotado al marco y sin romper el
+     zoom (el máximo en `rem` no fuerza ancho: `min(22vw, 7rem)`). */
   h1 {
-    font-size: var(--texto-3xl);
-    line-height: var(--interlinea-apretada);
+    font-family: var(--fuente-display);
+    font-size: min(22vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    text-shadow: 0 2px 18px
+      color-mix(in srgb, var(--c-fondo) 70%, transparent);
   }
+
   h2 {
+    font-family: var(--fuente-display);
     font-size: var(--texto-2xl);
+    line-height: var(--interlinea-apretada);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    /* Sombra dura, como `.pantalla__cabecera h2` del juego. */
+    text-shadow: 2px 2px 0 var(--c-superficie);
     margin-bottom: var(--esp-4);
   }
+
   h3 {
-    font-size: var(--texto-lg);
+    font-size: var(--texto-xl);
   }
+
   .claim {
     font-size: var(--texto-lg);
-    color: var(--c-texto-suave);
+    color: var(--c-texto);
     max-width: 34ch;
   }
+
+  /* Subtítulo pegado al título. */
+  .de {
+    margin-top: calc(-1 * var(--esp-3));
+    color: color-mix(in srgb, var(--c-texto-suave) 70%, var(--c-fondo));
+    font-size: var(--texto-base);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .de a {
+    color: var(--c-acento);
+    text-decoration: none;
+  }
+
+  /* En móviles, el subtítulo cabe en una sola línea. */
+  @media (max-width: 429px) {
+    .de {
+      font-size: var(--texto-sm);
+      letter-spacing: 0.1em;
+    }
+  }
+
   .cta {
-    display: inline-block;
+    display: block;
+    width: 100%;
+    min-height: 3rem;
     padding: var(--esp-3) var(--esp-5);
     background: var(--c-acento);
     color: var(--c-sobre-acento);
     border-radius: var(--radio-pill);
     text-decoration: none;
+    font-size: var(--texto-lg);
     font-weight: var(--peso-fuerte);
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: none;
     transition: background-color var(--dur-1) var(--ease-sal);
   }
+
   .cta:hover {
     background: var(--c-acento-fuerte);
   }
-  .micro {
-    font-size: var(--texto-sm);
-    color: var(--c-texto-suave);
-  }
+
+  /* Cada bloque se centra en el marco; sin cortes ni filetes. */
   .bloque {
-    padding: var(--esp-6) 0;
-    border-top: 1px solid var(--c-separador);
+    max-width: var(--ancho-marco);
+    margin: 0 auto;
+    padding: var(--esp-6) var(--esp-4);
   }
-  .compas-seccion {
-    max-width: 7rem;
-    margin-bottom: var(--esp-4);
+
+  /* Ornamento tipográfico decorativo que sustituye al compás (FR-003). */
+  .separador {
+    display: block;
+    margin-bottom: var(--esp-3);
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-lg);
+    letter-spacing: 0.3em;
+    line-height: 1;
   }
+
+  .separador::before {
+    content: "///";
+  }
+
   p {
     color: var(--c-texto-suave);
     line-height: var(--interlinea-holgada);
     margin-bottom: var(--esp-3);
   }
+
+  /* Bloque principal y descripción del ejemplo: un punto más grandes; los
+     subtítulos de los pasos van aparte, más apretados (1.2). */
+  .bloque p {
+    font-size: var(--texto-lg);
+    line-height: var(--interlinea-normal);
+  }
+
   .pasos {
     list-style: none;
     padding: 0;
-    margin: var(--esp-2) 0 var(--esp-4);
+    margin: var(--esp-5) 0 0;
     display: flex;
     flex-direction: column;
     gap: var(--esp-4);
   }
+
   .pasos li {
     display: flex;
     gap: var(--esp-3);
     align-items: flex-start;
   }
+
+  .pasos li p {
+    margin: 0;
+    line-height: 1.3;
+  }
+
   .numero {
     flex: 0 0 2rem;
     height: 2rem;
@@ -166,19 +300,21 @@ const descripcion =
     justify-content: center;
     border-radius: var(--radio-pill);
     background: var(--c-superficie-alta);
+    border: 1px solid var(--c-separador);
     color: var(--c-acento);
     font-weight: var(--peso-fuerte);
   }
-  .autor {
-    color: var(--c-texto-suave);
-    font-size: var(--texto-sm);
-  }
-  .autor a {
-    color: var(--c-acento);
-  }
-  .ejemplo {
+
+  /* El ejemplo realza la tarjeta con el lenguaje del juego. `overflow: hidden`
+     contiene el carril de la trayectoria durante el primer render (aún sin
+     medir), igual que hacía el antiguo `.ejemplo`. */
+  .marco {
     overflow: hidden;
+    background: var(--c-superficie);
+    border: 1px solid var(--c-separador);
     border-radius: var(--radio-md);
+    padding: var(--esp-4);
+    box-shadow: var(--sombra-2);
     margin-bottom: var(--esp-5);
   }
 </style>

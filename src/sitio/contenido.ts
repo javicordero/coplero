@@ -31,26 +31,25 @@ export const PASOS: PasoComoFunciona[] = [
   {
     numero: 1,
     titulo: "Crea tu personaje",
-    texto:
-      "Ponle nombre o apodo, edad y localidad. No hace falta registrarse ni saber carnaval.",
+    texto: "Ponle nombre o apodo, edad y localidad.",
   },
   {
     numero: 2,
     titulo: "Elige modalidad y estilo",
     texto:
-      "Comparsista o chirigotero. Y dentro de cada una, el estilo con el que quieres sonar.",
+      "Comparsista o chirigotero. Y, dentro de cada una, escoge tu estilo.",
   },
   {
     numero: 3,
     titulo: "Decide cada año",
     texto:
-      "Cada temporada trae una decisión de verano y otra de febrero: letra, música, jurado, dinero, grupo…",
+      "Cada año toma una decisión en verano y otra en febrero: letra, música, grupo, contratos, dinero...",
   },
   {
     numero: 4,
     titulo: "Recibe tu tarjeta",
     texto:
-      "Al final de la carrera recibes un póster con tu historia, listo para compartir.",
+      "Al final de la carrera recibes una tarjeta con tu historia, lista para compartir.",
   },
 ]
 
