@@ -3,6 +3,7 @@
   import type { Opcion } from "../content/schema"
   import { VARIANTES } from "../content/variantes"
   import { derivarId, derivarIdUnico } from "../panel/identificadores"
+  import Seccion from "./Seccion.svelte"
   import SelectorFlags from "./SelectorFlags.svelte"
 
   let {
@@ -29,6 +30,8 @@
   const idAjustado = $derived(
     !idTocado && opcion.id !== "" && opcion.id !== derivarId(opcion.titulo),
   )
+
+  const hayFlags = $derived((opcion.flags?.length ?? 0) > 0)
 
   function cambiarTitulo(valor: string) {
     opcion.titulo = valor
@@ -60,15 +63,18 @@
   }
 </script>
 
-<fieldset class="opcion">
-  <legend>
-    Opción {indice + 1}
+<section class="opcion">
+  <header class="cabecera-opcion">
+    <h4>
+      Opción {indice + 1}
+      <span class="id">{opcion.id || "sin id"}</span>
+    </h4>
     {#if puedeEliminar}
       <button type="button" class="eliminar" onclick={alEliminar}>
         Eliminar opción
       </button>
     {/if}
-  </legend>
+  </header>
 
   <div class="rejilla">
     <label>
@@ -114,7 +120,9 @@
         placeholder="1"
         oninput={(e) => (opcion.peso = numeroOpcional(e.currentTarget.value))}
       />
-      <small class="ayuda">Opcional. Hoy el motor no usa el peso de una opción.</small>
+      <small class="ayuda"
+        >Opcional. Hoy el motor no usa el peso de una opción.</small
+      >
     </label>
 
     <label class="casilla">
@@ -139,9 +147,9 @@
 
   {#if opcion.excepcion}
     <div class="efectos">
-      <span>Efectos:</span>
+      <span class="etiqueta-efectos">Efectos</span>
       {#each ATRIBUTOS as atributo (atributo)}
-        <label>
+        <label class="efecto">
           {atributo}
           <input
             type="number"
@@ -150,19 +158,25 @@
           />
         </label>
       {/each}
+      <p class="ayuda-efectos">
+        Cuánto sube (+) o baja (−) cada atributo al elegir esta opción. Vacío =
+        sin cambio; por defecto ninguna opción mueve atributos y solo las
+        excepciones declaradas lo hacen (valores pequeños, p. ej. ±1).
+      </p>
     </div>
   {:else}
     <p class="nota">No afecta al resultado (caso por defecto).</p>
   {/if}
 
-  <SelectorFlags
-    etiqueta="flags (lo que deja la opción)"
-    bind:seleccion={opcion.flags}
-    disponibles={flags}
-    permiteNuevas={true}
-    {alAgregar}
-    ayuda="Huellas que deja la opción en el historial (no se borran). Sirven de requisito a los condicionales."
-  />
+  <Seccion titulo="Flags" tieneContenido={hayFlags}>
+    <SelectorFlags
+      bind:seleccion={opcion.flags}
+      disponibles={flags}
+      permiteNuevas={true}
+      {alAgregar}
+      ayuda="Huellas que deja la opción en el historial (no se borran). Sirven de requisito a los condicionales."
+    />
+  </Seccion>
 
   <div class="rejilla">
     <label>
@@ -196,31 +210,63 @@
       </select>
     </label>
   </div>
-</fieldset>
+</section>
 
 <style>
   .opcion {
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid var(--f-border, #e5e7eb);
+    border-radius: 10px;
+    background: var(--f-surface, #fff);
     margin: 0.75rem 0;
-    padding: 0.75rem;
+    padding: 0.85rem;
   }
-  legend {
+  .cabecera-opcion {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
-    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  h4 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .id {
+    color: var(--f-muted, #6b7280);
+    font-size: 0.72rem;
+    font-weight: normal;
   }
   .rejilla {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-    gap: 0.5rem 1rem;
+    gap: 0.6rem 1rem;
   }
   label {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-    font-size: 0.85rem;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--f-muted, #6b7280);
+  }
+  input,
+  select {
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--f-text, #111827);
+    background: var(--f-surface, #fff);
+    border: 1px solid var(--f-border, #e5e7eb);
+    border-radius: 7px;
+    padding: 0.4rem 0.55rem;
+  }
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--f-primary, #4f46e5);
+    outline-offset: 1px;
+    border-color: var(--f-primary, #4f46e5);
   }
   .ancha {
     grid-column: 1 / -1;
@@ -230,31 +276,60 @@
     align-items: center;
     gap: 0.4rem;
   }
+  .casilla input {
+    width: auto;
+  }
   .efectos {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 0.5rem 0;
-    font-size: 0.85rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: 0.55rem 0.75rem;
+    margin: 0.7rem 0;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--f-border, #e5e7eb);
   }
-  .efectos label {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.3rem;
+  .etiqueta-efectos {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--f-muted, #6b7280);
   }
-  .efectos input {
-    width: 4rem;
+  .efecto {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .efecto input {
+    width: 100%;
+  }
+  .ayuda-efectos {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--f-muted, #6b7280);
+    font-size: 0.72rem;
+    line-height: 1.35;
   }
   .nota {
-    color: #777;
-    font-size: 0.85rem;
+    color: var(--f-muted, #6b7280);
+    font-size: 0.82rem;
+    margin: 0.4rem 0;
   }
   .eliminar {
+    font: inherit;
     font-size: 0.75rem;
+    border: 1px solid var(--f-danger, #b91c1c);
+    background: var(--f-surface, #fff);
+    color: var(--f-danger, #b91c1c);
+    border-radius: 7px;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+  }
+  .eliminar:hover {
+    background: #fef2f2;
   }
   .ayuda {
-    color: #888;
+    color: var(--f-muted, #6b7280);
     font-size: 0.72rem;
   }
 </style>

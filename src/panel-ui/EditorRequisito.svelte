@@ -191,27 +191,44 @@
     flex-wrap: wrap;
     gap: 0.5rem 1rem;
     align-items: flex-end;
-    border: 1px dashed #ccc;
-    border-radius: 6px;
-    padding: 0.5rem;
   }
   label {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-    font-size: 0.82rem;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--f-muted, #6b7280);
+  }
+  select,
+  input,
+  textarea {
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--f-text, #111827);
+    background: var(--f-surface, #fff);
+    border: 1px solid var(--f-border, #e5e7eb);
+    border-radius: 7px;
+    padding: 0.4rem 0.55rem;
+  }
+  select:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--f-primary, #4f46e5);
+    outline-offset: 1px;
+    border-color: var(--f-primary, #4f46e5);
   }
   .ancha {
     flex-basis: 100%;
   }
   textarea {
     width: 100%;
-    font-family: monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 0.8rem;
   }
   .error {
     flex-basis: 100%;
-    color: #a11;
+    color: var(--f-danger, #b91c1c);
     font-size: 0.8rem;
   }
 </style>

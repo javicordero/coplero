@@ -7,7 +7,7 @@
     alAgregar,
     ayuda,
   }: {
-    etiqueta: string
+    etiqueta?: string
     seleccion: string[] | undefined
     disponibles: string[]
     permiteNuevas?: boolean
@@ -41,15 +41,17 @@
   }
 </script>
 
-<fieldset class="selector">
-  <legend>{etiqueta}</legend>
+<div class="selector">
+  {#if etiqueta}
+    <span class="etiqueta">{etiqueta}</span>
+  {/if}
 
   {#if opciones.length === 0 && !permiteNuevas}
     <p class="vacio">Todavía no hay ninguna flag en el banco.</p>
   {:else if opciones.length > 0}
     <div class="lista">
       {#each opciones as flag (flag)}
-        <label class="casilla">
+        <label class="chip">
           <input
             type="checkbox"
             checked={marcadas.has(flag)}
@@ -75,51 +77,89 @@
           }
         }}
       />
-      <button type="button" onclick={anadirNueva}>Añadir flag</button>
+      <button type="button" class="secundario" onclick={anadirNueva}>
+        Añadir flag
+      </button>
     </div>
   {/if}
 
   {#if ayuda}
     <small class="ayuda">{ayuda}</small>
   {/if}
-</fieldset>
+</div>
 
 <style>
   .selector {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    margin: 0.5rem 0;
-    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .etiqueta {
+    font-size: 0.8rem;
+    color: var(--f-muted, #6b7280);
   }
   .lista {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem 0.75rem;
+    gap: 0.4rem;
   }
-  .casilla {
+  .chip {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
+    border: 1px solid var(--f-border, #e5e7eb);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
     font-size: 0.82rem;
+    color: var(--f-text, #111827);
+    background: var(--f-surface, #fff);
+  }
+  .chip input {
+    width: auto;
+    margin: 0;
   }
   .nueva {
     display: flex;
     gap: 0.4rem;
-    margin-top: 0.4rem;
   }
   .nueva input {
+    box-sizing: border-box;
     flex: 1;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--f-text, #111827);
+    background: var(--f-surface, #fff);
+    border: 1px solid var(--f-border, #e5e7eb);
+    border-radius: 7px;
+    padding: 0.4rem 0.55rem;
+  }
+  .nueva input:focus-visible {
+    outline: 2px solid var(--f-primary, #4f46e5);
+    outline-offset: 1px;
+    border-color: var(--f-primary, #4f46e5);
+  }
+  .secundario {
+    font: inherit;
+    font-size: 0.82rem;
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    background: var(--f-surface, #fff);
+    color: var(--f-text, #111827);
+    border: 1px solid var(--f-border, #e5e7eb);
+  }
+  .secundario:hover {
+    background: var(--f-hover, #f9fafb);
   }
   .vacio {
-    color: #777;
+    margin: 0;
+    color: var(--f-muted, #6b7280);
     font-size: 0.82rem;
     font-style: italic;
   }
   .ayuda {
-    display: block;
-    color: #888;
+    color: var(--f-muted, #6b7280);
     font-size: 0.72rem;
-    margin-top: 0.3rem;
   }
 </style>
