@@ -3,6 +3,7 @@ import { type BancoContenido, decodificar } from "../../engine/index"
 import { tarjetaFinDev } from "../dev/fixturesFin"
 import { crearJuego } from "../estado.svelte"
 import { type Almacen, CLAVE_GUARDADO } from "../persistencia"
+import { ANO_PRIMER_CARNAVAL } from "../presentacion"
 
 function bancoConCambio(): BancoContenido {
   const opciones = [
@@ -108,6 +109,24 @@ describe("estado del juego", () => {
     const juego = nuevoJuego(almacenMemoria())
     expect(juego.estadoGuardado).toBe("ninguno")
     expect(juego.pantalla).toBe("crear-personaje")
+  })
+
+  it("la carrera arranca en el primer año natural (2027)", () => {
+    const juego = nuevoJuego(almacenMemoria())
+    iniciar(juego, "El Chato")
+    expect(juego.partida?.anoInicio).toBe(ANO_PRIMER_CARNAVAL)
+    expect(juego.partida?.anoActual).toBe(ANO_PRIMER_CARNAVAL)
+  })
+
+  it("la tarjeta final muestra años naturales, no índices de carrera", () => {
+    const juego = nuevoJuego(almacenMemoria())
+    jugarCarrera(juego)
+    expect(juego.tarjeta?.hitosProgreso[0]?.ano).toBe(ANO_PRIMER_CARNAVAL)
+    for (const hito of juego.tarjeta?.hitos ?? []) {
+      if (hito.ano === null) continue
+      expect(hito.ano).toBeGreaterThanOrEqual(ANO_PRIMER_CARNAVAL)
+      expect(hito.texto).toContain(String(hito.ano))
+    }
   })
 
   it("con una partida en curso arranca en la pantalla de reanudación", () => {

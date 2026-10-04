@@ -71,7 +71,7 @@ test("«Continuar» va fuera del panel, no avanza en dev y no persiste", async (
   expect(guardado).toBeNull()
 })
 
-test("el indicador dice «Año N · Resultado» y nunca «Febrero»", async ({
+test("el indicador dice «N · Resultado» y nunca «Febrero»", async ({
   page,
 }) => {
   await abrirResultado(page)

@@ -1,7 +1,7 @@
 import type { ParametrosMotor } from "./parametros"
 import { elegirPonderado, rngPara } from "./seed"
 import type { Destino, NivelCOAC, Personaje } from "./types"
-import { NIVELES_COAC } from "./types"
+import { ANO_BASE, NIVELES_COAC } from "./types"
 
 function carismaBase(personaje: Personaje, params: ParametrosMotor): number {
   const localidad = personaje.localidad.trim().toLowerCase()
@@ -22,6 +22,7 @@ export function generarDestino(
   seed: string,
   personaje: Personaje,
   params: ParametrosMotor,
+  anoInicio: number = ANO_BASE,
 ): Destino {
   const rng = rngPara(seed, "destino")
   const techo = elegirPonderado<NivelCOAC>(
@@ -32,7 +33,10 @@ export function generarDestino(
     })),
   )
   const anosCarrera = params.anosCarreraPorDefecto
-  const anoPico = 2 + Math.floor(rng() * Math.max(1, anosCarrera - 3))
+  // `anoPico` es absoluto (año de carnaval), igual que `anoActual` en la
+  // partida: se ancla al año de inicio para que la curva lo alcance.
+  const anoPico =
+    anoInicio + 1 + Math.floor(rng() * Math.max(1, anosCarrera - 3))
   const volatilidad =
     params.volatilidadMin +
     rng() * (params.volatilidadMax - params.volatilidadMin)

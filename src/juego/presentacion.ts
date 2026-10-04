@@ -53,6 +53,21 @@ export function etiquetaMomento(momento: Momento | "resultado"): string {
   return MOMENTOS[momento]
 }
 
+/** Año del primer carnaval de una carrera: los años son naturales, no índices. */
+export const ANO_PRIMER_CARNAVAL = 2027
+
+/**
+ * Año natural visible en un momento. La decisión de verano pertenece al año
+ * anterior al carnaval y la de febrero al año del carnaval (docs/01 §4); el
+ * resultado cierra el año del carnaval.
+ */
+export function anoDelMomento(
+  ano: number,
+  momento: Momento | "resultado",
+): number {
+  return momento === "verano" ? ano - 1 : ano
+}
+
 export function etiquetaTipo(tipo: TipoDecision): string {
   return TIPOS[tipo]
 }

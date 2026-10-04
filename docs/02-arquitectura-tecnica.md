@@ -262,8 +262,8 @@ export interface Partida {
   modalidad: Modalidad;
   variante: VarianteId;
 
-  anoActual: number;                 // año del carnaval en curso
-  anoInicio: number;
+  anoActual: number;                 // año natural del carnaval en curso (p. ej. 2027)
+  anoInicio: number;                 // primer carnaval de la carrera (año natural)
   momento: Momento;
   fase: FasePartida;                 // 'creacion' | 'decision' | 'coac' | 'fin'
 
@@ -280,7 +280,7 @@ export interface Partida {
 export interface Destino {
   techo: FaseCOAC;          // hasta dónde puede llegar como máximo
   suelo: FaseCOAC;          // por debajo no baja en la resolución normal (el batacazo sí puede atravesarlo)
-  anoPico: number;          // año de su mejor carnaval
+  anoPico: number;          // año natural de su mejor carnaval (anclado a `anoInicio`)
   anosCarrera: number;      // duración total antes del retiro
   volatilidad: number;      // 0..1, cuánto ruido hay en sus resultados
   carisma: number;          // modificador oculto de popularidad
@@ -362,7 +362,7 @@ const techo = elegirPonderado(rng, [
 ]);
 ```
 
-Estos pesos están calibrados contra la distribución objetivo del diseño (~45% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~7% no pasan de preliminares, ~27% ganan al menos un primer premio, ~11% ganan 3 o más). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final y decae. Los **umbrales de nivel** (`umbralesNivel`, `42/45/48/54/57`) traducen puntuación a nivel, y un pequeño porcentaje de carreras nace como **crack** (`probabilidadCrack`/`bonusCrack`: carisma extra oculto que genera carreras legendarias). Todo se calibra con el simulador; si no reproduce la distribución, se ajustan pesos, umbrales y ruido, nunca las situaciones.
+Estos pesos están calibrados contra la distribución objetivo del diseño (~45% de carreras pisan la final alguna vez, ~10% no pasan nunca de cuartos, ~7% no pasan de preliminares, ~27% ganan al menos un primer premio, ~11% ganan 3 o más). El techo es el *máximo* de la carrera, no el resultado de cada año: con `anoPico` y el ruido anual, un techo de "final" produce una carrera que sube, toca la final y decae. `anoPico` es un **año natural anclado a `anoInicio`** (el primer carnaval, 2027), de modo que la curva y el `bonoAnoPico` lo alcanzan siempre dentro de la carrera. Los **umbrales de nivel** (`umbralesNivel`, `42/45/48/54/57`) traducen puntuación a nivel, y un pequeño porcentaje de carreras nace como **crack** (`probabilidadCrack`/`bonusCrack`: carisma extra oculto que genera carreras legendarias). Todo se calibra con el simulador; si no reproduce la distribución, se ajustan pesos, umbrales y ruido, nunca las situaciones.
 
 Modificadores leves y legibles según la creación de personaje, para que esas primeras elecciones importen sin romper la sorpresa: edad joven suma un año de carrera, ser de Cádiz capital suma carisma base, etc. Nunca deterministas.
 

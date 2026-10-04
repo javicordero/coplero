@@ -113,6 +113,8 @@ Cada año de carnaval plantea **2 decisiones**:
 
 Es decir, si el carnaval es el de 2027, la primera decisión ocurre en verano de 2026 y la segunda en febrero de 2027.
 
+**La carrera empieza siempre en el carnaval de 2027** (año natural, no un contador). Por eso el indicador de contexto muestra el año natural de cada momento: **verano de 2026 · febrero de 2027** para la primera temporada, escrito sin la palabra «Año» (**«2026 · Verano»**, **«2027 · Febrero»**, **«2027 · Resultado»**). El resto de la carrera avanza año a año (2027, 2028, …).
+
 ### Reglas del sistema
 
 - Cada decisión ofrece **2 opciones**, y en algunos casos **3**.

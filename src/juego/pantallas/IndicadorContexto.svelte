@@ -6,7 +6,7 @@ let { indicador }: { indicador: Indicador } = $props()
 </script>
 
 <p class="indicador" data-testid="indicador" data-momento={indicador.momento}>
-  Año {indicador.ano} · {etiquetaMomento(indicador.momento)}
+  {indicador.ano} · {etiquetaMomento(indicador.momento)}
 </p>
 
 <style>

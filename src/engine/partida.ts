@@ -69,7 +69,7 @@ export function crearPartida(
     saltaTemporada: false,
     resultadoPendiente: null,
     trayectoria: crearTrayectoria(input.modalidad, input.variante),
-    destino: generarDestino(input.seed, input.personaje, params),
+    destino: generarDestino(input.seed, input.personaje, params, anoInicio),
   }
 }
 

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
+  ANO_PRIMER_CARNAVAL,
+  anoDelMomento,
   DIRECCION_JUEGO,
   enFilas,
   etiquetaEstilo,
@@ -40,6 +42,20 @@ describe("presentacion", () => {
     expect(normalizarNombre("  El   Chato  ")).toBe("El Chato")
     expect(normalizarNombre("a".repeat(40))).toHaveLength(24)
     expect(normalizarNombre("   ")).toBe("")
+  })
+
+  it("el primer carnaval es un año natural (2027)", () => {
+    expect(ANO_PRIMER_CARNAVAL).toBe(2027)
+  })
+
+  it("el año visible retrasa el verano un año respecto al carnaval", () => {
+    expect(anoDelMomento(ANO_PRIMER_CARNAVAL, "verano")).toBe(2026)
+    expect(anoDelMomento(ANO_PRIMER_CARNAVAL, "febrero")).toBe(
+      ANO_PRIMER_CARNAVAL,
+    )
+    expect(anoDelMomento(ANO_PRIMER_CARNAVAL, "resultado")).toBe(
+      ANO_PRIMER_CARNAVAL,
+    )
   })
 
   it("ofrece las dos modalidades con el nombre de la modalidad y la cita", () => {

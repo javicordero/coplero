@@ -28,7 +28,7 @@ import {
   type EstadoGuardado,
   guardar,
 } from "./persistencia"
-import { normalizarNombre } from "./presentacion"
+import { ANO_PRIMER_CARNAVAL, normalizarNombre } from "./presentacion"
 
 export type Pantalla =
   | "reanudar"
@@ -187,7 +187,16 @@ export function crearJuego(
 
   function elegirVariante(variante: VarianteId): void {
     if (!personaje || !modalidad) return
-    partida = crearPartida({ seed, personaje, modalidad, variante }, banco)
+    partida = crearPartida(
+      {
+        seed,
+        personaje,
+        modalidad,
+        variante,
+        anoInicio: ANO_PRIMER_CARNAVAL,
+      },
+      banco,
+    )
     refrescarPaso()
     persistir()
   }

@@ -5,6 +5,7 @@ import { almacenNavegador } from "./persistencia"
 import { arranqueDevDesdeUrl } from "./dev/arranque"
 import {
   type Indicador,
+  anoDelMomento,
   mensajeError,
   MODALIDADES_INFO,
   SUBTITULO_VARIANTE,
@@ -84,11 +85,16 @@ const GOTAS = [
 let indicadorActual = $derived.by<Indicador | null>(() => {
   if (juego.pantalla === "resultado") {
     const ano = juego.partida?.anoActual ?? anoResultadoDev
-    return ano == null ? null : { ano, momento: "resultado" }
+    return ano == null
+      ? null
+      : { ano: anoDelMomento(ano, "resultado"), momento: "resultado" }
   }
   if (!juego.partida) return null
   if (juego.pantalla === "decision" && juego.paso?.tipo === "decision") {
-    return { ano: juego.partida.anoActual, momento: juego.paso.momento }
+    return {
+      ano: anoDelMomento(juego.partida.anoActual, juego.paso.momento),
+      momento: juego.paso.momento,
+    }
   }
   return null
 })

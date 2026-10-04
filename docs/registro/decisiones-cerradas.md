@@ -26,6 +26,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 | Categorías | `letra`, `musica`, **`puestaEnEscena`**, `jurado`, `dinero`, `grupo`, `prensa`, **`carrera`**, **`concurso`** | 01 §5, 02 §7 |
 | Duración | Número **fijo** de años, todavía por determinar (referencia: 20/40) | 01 §7 |
 | Decisiones por año | **Parametrizable** (v1: 2; modos rápido/lento más adelante) | 01 §4, 02 §8 |
+| Año de la partida (2026-10-04) | Los años de la carrera son **años naturales de carnaval**, no índices: arranca en **2027** (`ANO_PRIMER_CARNAVAL`, se pasa al motor vía `anoInicio`) y `generarDestino` ancla `anoPico` a `anoInicio`. El indicador muestra el año natural del momento: **verano = año del carnaval − 1**, febrero/resultado = año del carnaval. La timeline, los hitos y la OG usan el año del carnaval | 01 §4, 02 §7–8 |
 | Batacazo | Puede **atravesar el `suelo`**; el `clamp` solo aplica a la resolución normal | 02 §8 |
 | Reciclaje de pool | Si el pool se agota, recicla las menos recientes **ignorando `unicaVez`** como último recurso | 02 §9 |
 | Techo oculto | Predeterminado por RNG al crear la partida; nunca se muestra; no se serializa; **6 niveles** | 01 §4, 02 §8 |
