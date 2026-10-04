@@ -7,81 +7,232 @@ import { AUTOR } from "../../sitio/contenido"
   title="Política de privacidad · Coplero"
   description="Qué datos trata Coplero y cuáles no."
 >
-  <main class="legal">
-    <h1>Política de privacidad</h1>
+  <main>
+    <section class="apertura">
+      <div class="apertura__contenido">
+        <p class="eyebrow">Legal</p>
+        <h1>Política de privacidad</h1>
+        <p class="claim">
+          Coplero es un juego gratuito que funciona en tu navegador. No hay
+          cuentas ni inicio de sesión.
+        </p>
+      </div>
+    </section>
 
-    <p>
-      Coplero es un juego gratuito que funciona en tu navegador. No hay cuentas
-      ni inicio de sesión.
-    </p>
+    <section class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Qué datos se tratan</h2>
+      <p>
+        Para jugar, Coplero <strong>no recoge datos personales</strong> ni los
+        envía a ningún servidor: la partida se guarda <strong>solo en tu propio
+        dispositivo</strong> mediante el almacenamiento local del navegador
+        (<code>localStorage</code>). La única excepción es el formulario de
+        sugerencias (ver más abajo).
+      </p>
+    </section>
 
-    <h2>Qué datos se tratan</h2>
-    <p>
-      Coplero <strong>no recoge datos personales</strong> ni los envía a ningún
-      servidor. La única información que se guarda es tu partida en curso, y se
-      guarda <strong>solo en tu propio dispositivo</strong> mediante el
-      almacenamiento local del navegador (<code>localStorage</code>).
-    </p>
+    <section class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Qué no se hace</h2>
+      <ul>
+        <li>No hay analítica ni seguimiento de usuarios.</li>
+        <li>No hay cookies de terceros ni publicidad.</li>
+        <li>
+          No se comparte ningún dato con terceros, salvo el texto del formulario
+          de sugerencias, que gestiona un proveedor externo (ver abajo).
+        </li>
+      </ul>
+    </section>
 
-    <h2>Qué no se hace</h2>
-    <ul>
-      <li>No hay analítica ni seguimiento de usuarios.</li>
-      <li>No hay cookies de terceros ni publicidad.</li>
-      <li>No se comparte ningún dato con terceros.</li>
-    </ul>
+    <section class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Formulario de sugerencias</h2>
+      <p>
+        Si usas el formulario de sugerencias, el mensaje que escribas y, si lo
+        indicas, tu email se envían a <strong>Formspree</strong>, un proveedor
+        externo que nos hace llegar la propuesta. El envío es voluntario y el
+        email solo se usa para contestarte si hace falta.
+      </p>
+    </section>
 
-    <h2>Cómo borrar tus datos</h2>
-    <p>
-      Puedes eliminar la partida guardada borrando los datos del sitio desde los
-      ajustes de tu navegador. Al hacerlo, la partida en curso se pierde.
-    </p>
+    <section class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Cómo borrar tus datos</h2>
+      <p>
+        Puedes eliminar la partida guardada borrando los datos del sitio desde
+        los ajustes de tu navegador. Al hacerlo, la partida en curso se pierde.
+      </p>
+    </section>
 
-    <h2>Responsable</h2>
-    <p>
-      Este proyecto lo mantiene {AUTOR}. Para cualquier duda sobre privacidad,
-      puedes escribir a través de <a
-        href="https://acordesgaditanos.com"
-        target="_blank"
-        rel="noopener noreferrer">Acordes Gaditanos</a
-      >.
-    </p>
-
-    <p class="fecha">Última actualización: septiembre de 2026.</p>
+    <section class="bloque">
+      <span class="separador" data-separador aria-hidden="true"></span>
+      <h2>Responsable</h2>
+      <p>
+        Este proyecto lo mantiene {AUTOR}. Para cualquier duda sobre privacidad,
+        puedes escribir a través de <a
+          href="https://acordesgaditanos.com"
+          target="_blank"
+          rel="noopener noreferrer">Acordes Gaditanos</a
+        >.
+      </p>
+      <p class="fecha">Última actualización: octubre de 2026.</p>
+    </section>
   </main>
 </Layout>
 
 <style>
-  .legal {
+  /* Mismo lenguaje que la portada y /colaborar. */
+  main {
+    width: 100%;
+    padding: 0 0 var(--esp-6);
+  }
+
+  .apertura {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+      radial-gradient(
+        circle at 80% 12%,
+        color-mix(in srgb, var(--c-invierno-luna) 12%, transparent),
+        transparent 26%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--c-invierno-nube) 60%, var(--c-fondo)) 0%,
+        var(--c-invierno-nube) 50%,
+        color-mix(in srgb, var(--c-carnaval-violeta) 25%, var(--c-invierno-nube))
+          80%,
+        var(--c-fondo) 100%
+      );
+  }
+
+  .apertura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--c-fondo) 55%, transparent) 0%,
+        transparent 65%
+      ),
+      linear-gradient(180deg, transparent 86%, var(--c-fondo) 100%);
+  }
+
+  .apertura__contenido {
+    position: relative;
+    z-index: 1;
+
     width: 100%;
     max-width: var(--ancho-marco);
     margin: 0 auto;
-    padding: var(--esp-6) var(--esp-4);
-    line-height: var(--interlinea-holgada);
+    padding: var(--esp-7) var(--esp-4);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--esp-3);
   }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
   h1 {
+    font-family: var(--fuente-display);
+    font-size: min(18vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    text-shadow: 0 2px 18px
+      color-mix(in srgb, var(--c-fondo) 70%, transparent);
+  }
+
+  .claim {
+    font-size: var(--texto-lg);
+    color: var(--c-texto);
+    max-width: 34ch;
+    margin: 0;
+  }
+
+  .bloque {
+    max-width: var(--ancho-marco);
+    margin: 0 auto;
+    padding: var(--esp-6) var(--esp-4);
+  }
+
+  .separador {
+    display: block;
+    margin-bottom: var(--esp-3);
+    color: var(--c-acento);
+    font-family: var(--fuente-display);
+    font-size: var(--texto-lg);
+    letter-spacing: 0.3em;
+    line-height: 1;
+  }
+
+  .separador::before {
+    content: "///";
+  }
+
+  h2 {
+    font-family: var(--fuente-display);
+    font-size: var(--texto-2xl);
+    line-height: var(--interlinea-apretada);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-texto-fuerte);
+    text-shadow: 2px 2px 0 var(--c-superficie);
     margin-bottom: var(--esp-4);
   }
-  h2 {
-    font-family: var(--fuente-texto);
-    font-weight: var(--peso-fuerte);
-    font-size: var(--texto-lg);
-    margin: var(--esp-5) 0 var(--esp-2);
-  }
+
   p,
   li {
     color: var(--c-texto-suave);
   }
+
+  p {
+    line-height: var(--interlinea-holgada);
+    margin-bottom: var(--esp-3);
+  }
+
+  .bloque p,
+  .bloque li {
+    font-size: var(--texto-lg);
+    line-height: var(--interlinea-normal);
+  }
+
   ul {
     padding-left: var(--esp-5);
   }
+
   a {
     color: var(--c-acento);
   }
+
+  .bloque p a {
+    text-decoration: none;
+  }
+
   code {
     background: var(--c-superficie-alta);
     padding: 0 var(--esp-1);
     border-radius: var(--radio-sm);
   }
+
   .fecha {
     margin-top: var(--esp-5);
     color: var(--c-texto-suave);
