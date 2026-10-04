@@ -1,6 +1,6 @@
 ---
 import ReglaCompas from "../components/ReglaCompas.svelte"
-import { DIRECCION_JUEGO } from "../juego/presentacion"
+import { DIRECCION_JUEGO, urlImagenOg } from "../juego/presentacion"
 import Tarjeta from "../juego/Tarjeta.svelte"
 import { CODIGO_EJEMPLO, EJEMPLO_TARJETA } from "../landing/ejemploTarjeta"
 import Layout from "../layouts/Layout.astro"
@@ -19,7 +19,7 @@ const descripcion =
   og={{
     title: titulo,
     description: descripcion,
-    imageUrl: `${URL_SITIO}/api/og/${CODIGO_EJEMPLO}.png`,
+    imageUrl: urlImagenOg(URL_SITIO, CODIGO_EJEMPLO),
     url: `${URL_SITIO}/`,
   }}
 >

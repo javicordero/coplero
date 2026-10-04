@@ -275,9 +275,9 @@ $effect(() => {
     );
   }
 
-  /* La pantalla final se ancla arriba; el padding superior lo hereda del global. */
+  /* La pantalla final se centra verticalmente; el padding lo hereda del global. */
   main[data-pantalla="fin"] {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   /* En móviles muy estrechos (< 375px), menos aire arriba. */

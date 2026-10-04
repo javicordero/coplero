@@ -25,12 +25,12 @@ Dos rutas on-demand (`export const prerender = false`) con el adapter `@astrojs/
 
 | Aspecto | Contrato |
 |---|---|
-| Parámetro | `t=og\|9x16\|1x1` (por defecto `og`). Valor desconocido ⇒ `og`. |
+| Parámetro | `t=og\|9x16\|1x1` (por defecto `og`). Valor desconocido ⇒ `og`. `v=<versión>` es un testigo de caché (ver abajo). |
 | Tamaños | `og` 1200×630 · `9x16` 1080×1920 · `1x1` 1080×1080. |
 | Render | `satori` (árbol de elementos, sin React) + `@resvg/resvg-js`; tipografía TTF desde `public/fonts/`. |
-| Contenido | Nombre/apodo (salvo `null`), modalidad, variante, años, mejor fase, primeros premios, otros premios y **marca de agua discreta** con la URL del juego (FR-022). Nunca datos ocultos ni texto sin sanear (FR-019/FR-020). |
+| Contenido | Calca el palmarés de `Tarjeta.svelte`: identidad (modalidad, nombre y estilo), mejor posición (puesto con ordinal o fase, con ornamento), trayectoria (hitos y premios con carril y medallas) y distinciones (una roseta por victoria, agrupadas por tipo), más un **pie de marca** con la URL del juego. Nunca datos ocultos ni texto sin sanear (FR-019/FR-020). |
 | Código inválido | Devuelve una imagen genérica del juego (200) para no romper previsualizaciones; la página sí muestra el aviso amable. |
-| Caché | `Cache-Control: public, max-age=31536000, immutable` (el contenido depende solo del código). |
+| Caché | `Cache-Control: public, max-age=31536000, immutable`. El contenido depende del código **y de la versión del diseño**, así que la URL se versiona con `?v=` (`VERSION_OG` en `presentacion.ts`); al cambiar el aspecto de la imagen hay que subir esa constante. `urlImagenOg()` construye la URL con el testigo. |
 | Respuesta | `Content-Type: image/png`. |
 
 ## Orden de prioridad de la tarjeta (resumen)

@@ -127,6 +127,24 @@ export const SUBTITULO_VARIANTE = "Elige tu estilo"
 /** Dirección del juego para la marca de agua de la tarjeta y las imágenes. */
 export const DIRECCION_JUEGO = "coplero.app"
 
+/**
+ * Versión del diseño de la imagen OG. Súbela al cambiar el aspecto de la
+ * tarjeta para invalidar la caché `immutable` (navegador y crawlers).
+ */
+export const VERSION_OG = "2"
+
+/** URL de la imagen OG de un código, con formato opcional (`og`, `9x16`, `1x1`). */
+export function urlImagenOg(
+  origen: string | URL,
+  codigo: string,
+  formato?: "og" | "9x16" | "1x1",
+): string {
+  const url = new URL(`/api/og/${codigo}.png`, origen)
+  if (formato) url.searchParams.set("t", formato)
+  url.searchParams.set("v", VERSION_OG)
+  return url.href
+}
+
 /** Título del estilo (variante) para la tarjeta final. */
 export function etiquetaEstilo(id: VarianteId): string {
   return VARIANTES.find((variante) => variante.id === id)?.titulo ?? id

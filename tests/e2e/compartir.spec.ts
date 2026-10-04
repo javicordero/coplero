@@ -87,6 +87,40 @@ test("la tarjeta y la página de resultado pasan WCAG 2.2 AA", async ({
   expect(await violacionesGraves(page)).toEqual([])
 })
 
+test("la imagen OG se genera en los formatos 9:16, apaisado y 1:1", async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(60_000)
+  await jugarHastaFin(page)
+
+  const codigo = await page.getByTestId("fin").getAttribute("data-codigo")
+  expect(codigo).toBeTruthy()
+
+  const formatos = [
+    { t: "9x16", ancho: 1080, alto: 1920 },
+    { t: "og", ancho: 1200, alto: 630 },
+    { t: "1x1", ancho: 1080, alto: 1080 },
+  ]
+
+  for (const formato of formatos) {
+    const respuesta = await request.get(`/api/og/${codigo}.png?t=${formato.t}`)
+    expect(respuesta.status(), formato.t).toBe(200)
+    expect(respuesta.headers()["content-type"], formato.t).toContain(
+      "image/png",
+    )
+
+    const bytes = await respuesta.body()
+    // Firma PNG.
+    expect(bytes.subarray(0, 8).toString("hex"), formato.t).toBe(
+      "89504e470d0a1a0a",
+    )
+    // Cabecera IHDR: ancho y alto (big-endian) en los offsets 16 y 20.
+    expect(bytes.readUInt32BE(16), formato.t).toBe(formato.ancho)
+    expect(bytes.readUInt32BE(20), formato.t).toBe(formato.alto)
+  }
+})
+
 test("la tarjeta válida es indexable y el código inválido no", async ({
   page,
 }) => {

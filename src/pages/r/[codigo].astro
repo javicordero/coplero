@@ -1,6 +1,6 @@
 ---
 import { decodificar } from "../../engine/index"
-import { DIRECCION_JUEGO } from "../../juego/presentacion"
+import { DIRECCION_JUEGO, urlImagenOg } from "../../juego/presentacion"
 import Tarjeta from "../../juego/Tarjeta.svelte"
 import Layout from "../../layouts/Layout.astro"
 
@@ -10,7 +10,7 @@ const { codigo } = Astro.params
 const resultado = decodificar(codigo ?? "")
 const tarjeta = resultado.ok ? resultado.valor : null
 
-const imagen = new URL(`/api/og/${codigo}.png`, Astro.url).href
+const imagen = urlImagenOg(Astro.url, codigo ?? "")
 const titulo = tarjeta
   ? `Carrera de ${tarjeta.nombre ?? "un coplero"}`
   : "Tarjeta no disponible"
@@ -58,6 +58,9 @@ const descripcion = tarjeta
     display: flex;
     flex-direction: column;
     gap: var(--esp-4);
+    min-height: calc(100vh - var(--alto-cabecera, 0px));
+    min-height: calc(100svh - var(--alto-cabecera, 0px));
+    justify-content: center;
   }
 
   .aviso {

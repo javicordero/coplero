@@ -6,7 +6,7 @@ import {
   textoCompartir,
   urlResultado,
 } from "../../utilities/compartir"
-import { DIRECCION_JUEGO } from "../presentacion"
+import { DIRECCION_JUEGO, urlImagenOg } from "../presentacion"
 import Tarjeta from "../Tarjeta.svelte"
 
 let {
@@ -44,7 +44,7 @@ async function alCompartir() {
 async function alDescargar() {
   if (!codigo) return
   const ok = await descargarImagen(
-    `${origen()}/api/og/${codigo}.png?t=9x16`,
+    urlImagenOg(origen(), codigo, "9x16"),
     "coplero-9x16.png",
   )
   avisoAccion = ok ? "Imagen descargada." : "No se pudo descargar la imagen."
@@ -66,7 +66,7 @@ async function alDescargar() {
         Compartir
       </button>
       <button type="button" onclick={alDescargar} data-testid="descargar-9x16">
-        Imagen 9:16
+        Descargar imagen
       </button>
     </div>
 
