@@ -148,14 +148,6 @@ let carril = $derived.by(() => {
         {tarjeta.mejorPuesto}<span class="mejor__ordinal">º</span>
       {/if}
     </span>
-    <span
-      class="mejor__ornamento mejor__ornamento--abajo"
-      aria-hidden="true"
-    >
-      <span class="mejor__linea"></span>
-      <span class="mejor__rombo"></span>
-      <span class="mejor__linea"></span>
-    </span>
   </div>
 
   {#if eventos.length > 0}
@@ -364,11 +356,6 @@ let carril = $derived.by(() => {
   .mejor__ordinal {
     font-size: 0.4em;
     vertical-align: 0.55em;
-  }
-
-  /* Base de la placa: mismo ornamento que arriba. */
-  .mejor__ornamento--abajo {
-    margin-top: var(--esp-1);
   }
 
   /* Título de sección con separador ornamental sutil. */

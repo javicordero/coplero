@@ -116,7 +116,7 @@ Notas de contrato:
 | `.mejor` | disposición | Placa centrada: ornamento + etiqueta + puesto |
 | `.mejor[data-tono]` | color | `--tono`: `--c-carnaval-oro` (1º), `--c-carnaval-plata` (2º), `--c-carnaval-bronce` (3º); por fase: `--c-carnaval-verde-claro` (Debut), `--c-carnaval-azul-claro` (CF), `--c-carnaval-azul` (SF), `--c-carnaval-violeta` (F) |
 | `.mejor__puesto` | tipografía | `--fuente-display`, 40–48 px (`clamp(2.5rem, 12vw, 3rem)`) |
-| `.mejor__ornamento` / `.mejor::after` | ornamento | Arriba: línea — rombo — línea; abajo: línea simple. `--c-separador`, 12 rem máx. |
+| `.mejor__ornamento` | ornamento | Línea — rombo — línea sobre la etiqueta. `--c-separador`, 12 rem máx. |
 | `.linea` | disposición | Filas (`.fila`) en grid; columnas automáticas; la primera fila llena el ancho si está completa |
 | `.carril` | carril | SVG: tramos horizontales por fila, de borde a borde; sin conexión entre filas |
 | `.hito` | celda | Etiqueta / nodo / año en columna |

@@ -260,7 +260,7 @@ function identidad(tarjeta: TarjetaFinal, esc: Esc): Nodo {
   )
 }
 
-/** Placa de honor: ornamento + etiqueta + puesto (o fase) + ornamento. */
+/** Placa de honor: ornamento + etiqueta + puesto (o fase). */
 function mejorPosicion(tarjeta: TarjetaFinal, esc: Esc, ancho: number): Nodo {
   const color = tonoMejor(tarjeta)
   const puesto = tarjeta.mejorPuesto
@@ -315,7 +315,6 @@ function mejorPosicion(tarjeta: TarjetaFinal, esc: Esc, ancho: number): Nodo {
         color: COLOR.textoSuave,
       }),
       protagonista,
-      ornamento(esc, color, esc(0.25), anchoOrnamento),
     ],
   )
 }
