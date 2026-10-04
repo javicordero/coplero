@@ -50,11 +50,20 @@ Guía para comprobar el rediseño de extremo a extremo. No incluye implementaci�
 
 ## Escenario 6 — Acciones y coherencia
 
-1. Comprobar que hay **Compartir**, **Imagen 9:16** y **Empezar de nuevo**; y que **no** hay «Copiar texto», «Imagen 1:1» ni «Copiar enlace».
+1. Comprobar que hay **Compartir**, **Descargar imagen** y **Jugar de nuevo**; y que **no** hay «Copiar texto», «Imagen 1:1» ni «Copiar enlace».
 2. Abrir `/` (ejemplo de portada) y `/r/<codigo>`: deben mostrar el mismo palmarés.
-3. Ejecutar axe (WCAG 2.2 AA) sobre `fin` y `/r/<codigo>`: sin violaciones graves.
+3. Comprobar que el palmarés aparece **centrado verticalmente** (isla y `/r`).
+4. Ejecutar axe (WCAG 2.2 AA) sobre `fin` y `/r/<codigo>`: sin violaciones graves.
 
 **Esperado**: tres superficies coherentes y accesibles.
+
+## Escenario 7 — Imagen compartible (espejo del palmarés)
+
+1. Desde la pantalla final, pulsar **«Descargar imagen»**: descarga `coplero-9x16.png`, que reproduce el palmarés (identidad, mejor posición, trayectoria y distinciones) con el pie de marca **dentro** de la tarjeta.
+2. Pedir `/api/og/<codigo>.png?t=og`, `?t=9x16` y `?t=1x1`: los tres devuelven `image/png` con 1200×630, 1080×1920 y 1080×1080.
+3. Comprobar que la URL de la imagen incluye `?v=` (`VERSION_OG`): subir esa constante al cambiar el diseño fuerza a navegador y crawlers a pedirla de nuevo.
+
+**Esperado**: la imagen descargada y la previsualización del enlace se ven como el palmarés, no como una pieza aparte.
 
 ## Comandos de verificación
 

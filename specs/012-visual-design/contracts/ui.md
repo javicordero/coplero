@@ -86,5 +86,5 @@ Reglas de importación:
 |---|---|---|---|
 | Estáticas (`/`, `/como-jugar`, legales, `/r/[codigo]`) | **0 kB** | display `latin` | todos los tokens |
 | Isla (`/jugar`) | sin nuevas dependencias | display `latin` | todos los tokens |
-| OG (`api/og/[codigo].png`) | servidor | TTF de marca | paleta y familias vía `tokens.ts` |
+| OG (`api/og/[codigo].png`) | servidor | TTF de marca | paleta, familias y composición (espejo del palmarés) vía `tokens.ts` |
 | Panel (`src/panel-ui/**`) | fuera | fuera | **excluido** |

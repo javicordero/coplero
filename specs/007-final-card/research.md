@@ -48,6 +48,8 @@ Todas las incógnitas del Technical Context quedan resueltas aquí. No quedan `N
 
 **Rationale**: `satori` + `resvg-js` es la decisión cerrada (`docs/02` §10) y las dependencias ya están instaladas. `@resvg/resvg-js` es un addon nativo Node, por lo que las rutas se despliegan como **funciones on-demand** (el `prerender = false` que exige la constitución); no se usa el runtime edge de Deno.
 
+> **Actualización (2026-10-04, feature 020)**: la imagen OG deja de ser una composición propia y **calca el palmarés de `Tarjeta.svelte`** (identidad, mejor posición, trayectoria y distinciones; títulos de sección en Anton; pie de marca dentro de la tarjeta), definida en `rem` y escalada por formato. La URL se **versiona** (`?v=`, `VERSION_OG` + `urlImagenOg()`).
+
 **Alternativas consideradas**:
 - `resvg-wasm` en edge: añade complejidad y una segunda ruta de render sin necesidad.
 - Generar PNG en el cliente: no cubre la previsualización social (la crawler no ejecuta JS).

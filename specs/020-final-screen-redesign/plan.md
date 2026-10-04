@@ -6,13 +6,13 @@
 
 ## Summary
 
-Convertir la pantalla de fin de carrera en un **palmarés de Carnaval**: composición **vertical y aireada** sobre negro con la identidad de Coplero (blanco para la información, naranja en destacados, **dorado solo en el primer premio**, separadores ornamentales sutiles). La sección **Premios** pasa a una **línea temporal vertical** (un año con premio por fila, orden cronológico, sin interacción); las **Distinciones** pasan a una **colección de rosetas** (una por victoria, con el icono del premio, todas al mismo peso); y se añade una **frase de cierre** breve antes de los botones. Se retira el lenguaje de panel de formulario. Se conservan las acciones **Compartir**, **Imagen 9:16** y **Empezar de nuevo**. El cambio vive en la UI (`src/juego`): el componente compartido `Tarjeta.svelte` (pantalla de fin, ejemplo de portada y página de resultado), `FinCarrera.svelte` y el fondo neutro de `Juego.svelte`. Del `engine` solo se añade un campo derivado (`TarjetaFinal.hitosProgreso`); no se toca `content`. La imagen OG se mantiene como pieza hermana.
+Convertir la pantalla de fin de carrera en un **palmarés de Carnaval**: composición **vertical y aireada** sobre negro con la identidad de Coplero (blanco para la información, naranja en destacados, **dorado solo en el primer premio**, separadores ornamentales sutiles). La sección **Premios** pasa a una **línea temporal vertical** (un año con premio por fila, orden cronológico, sin interacción); las **Distinciones** pasan a una **colección de rosetas** (una por victoria, con el icono del premio, todas al mismo peso); y se añade una **frase de cierre** breve antes de los botones. Se retira el lenguaje de panel de formulario. Se conservan las acciones **Compartir**, **Descargar imagen** y **Jugar de nuevo**. El cambio vive en la UI (`src/juego`): el componente compartido `Tarjeta.svelte` (pantalla de fin, ejemplo de portada y página de resultado), `FinCarrera.svelte` y el fondo neutro de `Juego.svelte`. Del `engine` solo se añade un campo derivado (`TarjetaFinal.hitosProgreso`); no se toca `content`. La imagen OG (pieza hermana) **se actualiza para calcar el mismo palmarés** en sus tres formatos, con la URL versionada para invalidar caché.
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5.x; Astro + Svelte 5 (runes)
 
-**Primary Dependencies**: ninguna nueva; tokens CSS existentes (`src/ui/tokens.css`), utilidades de compartir (`src/utilities/compartir.ts`), endpoint OG intacto (`satori` + `resvg-js`) e iconos SVG propios
+**Primary Dependencies**: ninguna nueva; tokens CSS existentes (`src/ui/tokens.css`), utilidades de compartir (`src/utilities/compartir.ts`), endpoint OG (`satori` + `resvg-js`, ahora espejo del palmarés) e iconos SVG propios
 
 **Storage**: N/A
 
@@ -24,9 +24,9 @@ Convertir la pantalla de fin de carrera en un **palmarés de Carnaval**: composi
 
 **Performance Goals**: 0 kB de JavaScript añadido; la portada y `/r/[codigo]` siguen siendo HTML estático; sin peticiones nuevas
 
-**Constraints**: no tocar `content` (el motor solo gana `hitosProgreso`); una sola isla; WCAG 2.2 AA; sin scroll horizontal a 320 px; dorado solo en el primer premio; se conservan fuentes y tokens; el endpoint OG no cambia
+**Constraints**: no tocar `content` (el motor solo gana `hitosProgreso`); una sola isla; WCAG 2.2 AA; sin scroll horizontal a 320 px; dorado solo en el primer premio; se conservan fuentes y tokens; el endpoint OG **se alinea con el palmarés** (mismos `rem`, fuentes y pesos), sin cambiar su contrato de datos
 
-**Scale/Scope**: 1 componente compartido (`Tarjeta.svelte`) + `FinCarrera.svelte` + fondo de `Juego.svelte`; 3 iconos SVG de distinción; ~3 specs E2E y 1 unit
+**Scale/Scope**: 1 componente compartido (`Tarjeta.svelte`) + `FinCarrera.svelte` + fondo de `Juego.svelte` + el endpoint OG (`api/og/[codigo].png.ts`); 3 iconos SVG de distinción; ~3 specs E2E y 1 unit
 
 ## Constitution Check
 
@@ -72,6 +72,9 @@ src/juego/
 ├── presentacion.ts                      # Textos/formatos: mejor posición, medallas, agrupaciones y frase
 └── Juego.svelte                         # Fondo neutro en `fin` (sin estacional)
 
+src/pages/api/og/
+└── [codigo].png.ts                      # Imagen OG (espejo del palmarés; formatos og/9x16/1x1)
+
 public/rosetas/
 ├── roseta_andalucia.svg                 # Roseta verde/blanca (Copla para Andalucía)
 ├── roseta_aguja_oro.svg                 # Roseta dorada (Aguja de oro)
@@ -96,7 +99,7 @@ tests/e2e/
 4. **Línea temporal de Premios** (si hay): ver abajo.
 5. **Colección de Distinciones** (si hay): ver abajo.
 6. **Frase de cierre** (cursiva, con separadores ornamentales).
-7. **Acciones**: Compartir, Imagen 9:16, Empezar de nuevo.
+7. **Acciones**: Compartir, Descargar imagen, Jugar de nuevo.
 
 Sin panel de formulario: contenedor sutil (o inexistente), mucho aire, separadores ornamentales entre secciones.
 
@@ -125,11 +128,18 @@ Sin panel de formulario: contenedor sutil (o inexistente), mucho aire, separador
 
 Negro base + blanco info + naranja Coplero en destacados + **dorado solo en el 1º premio**; separadores ornamentales sutiles (compás); fuentes y tokens actuales; sin tarjetas pesadas ni aspecto de dashboard.
 
+### Imagen OG (espejo del palmarés)
+
+- El endpoint `/api/og/[codigo].png` **calca el palmarés** en sus tres formatos: identidad, mejor posición, trayectoria y distinciones, con el **pie de marca dentro** de la tarjeta.
+- Se define en las mismas unidades `rem` que la web y se multiplica por la escala del formato (`9x16` 2.7, `1x1` 1.5, `og` 1.35 apaisado); los **títulos de sección** van en Anton, como los `<h3>`.
+- La URL se **versiona** (`?v=`, `VERSION_OG` + `urlImagenOg()`) para poder invalidar la caché `immutable` al cambiar el diseño.
+- La acción de la pantalla final pasa a llamarse **«Descargar imagen»**; la isla y `/r` **centran** el palmarés verticalmente.
+
 ### Tests
 
 - **`pantalla-final.spec.ts`**: zonas del palmarés; línea temporal (un año por premio, orden cronológico, 1º dorado, sin años sin premio); distinciones (rosetas, una por victoria); ausencia de bloques retirados; 320 px; axe.
 - **`pantalla-final-fondo.spec.ts`**: fondo neutro en `fin` y antetítulo fuera de la tarjeta.
-- **`compartir.spec.ts`**: acciones (Compartir/9:16/Empezar de nuevo), enlace por `data-codigo` y axe en fin y `/r`.
+- **`compartir.spec.ts`**: acciones (Compartir/Descargar imagen/Jugar de nuevo), enlace por `data-codigo`, endpoint OG en los tres formatos y axe en fin y `/r`.
 - **Unit**: formatos de presentación (puesto/medalla, agrupaciones) y frase.
 
 ## Complexity Tracking

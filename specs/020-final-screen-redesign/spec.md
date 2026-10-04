@@ -35,7 +35,7 @@ ya luego estructuramos y vamos dandole forma bien"
 - Q: ¿Qué opciones de orden de premios hay? → A: **Opción 1**: agrupados por puesto y, dentro, por año. **Opción 2**: solo por año. **Opción 3** (activa): medalla + todos los años de ese puesto seguidos, separados por comas. Pendiente de decisión del usuario.
 - Q: ¿Qué años muestra la línea temporal de «Premios» (rediseño en exploración)? → A: **Solo los años con premio del COAC** (podio/1º); no se muestran los años sin premio.
 - Q: ¿La línea temporal es interactiva? → A: **No**; palmarés estático, sin tocar años/premios.
-- Q: ¿La pantalla se convierte directamente en la imagen 9:16? → A: **No**; la imagen la genera el endpoint OG (satori) como pieza hermana, con el **mismo lenguaje visual**.
+- Q: ¿La pantalla se convierte directamente en la imagen 9:16? → A: **No**; la imagen la genera el endpoint OG (satori) **calcando el palmarés**, con el **mismo lenguaje visual**.
 - Q: ¿Hay jerarquía entre distinciones? → A: **No**; todas al **mismo peso** visual, sin destacar ninguna.
 - Q: ¿Nivel de decoración carnavalesca? → A: **Sutil**: separadores ornamentales discretos, algún detalle SVG y dorados puntuales, sin recargar.
 - Q: ¿Qué pasa si no hay premios de un tipo? → A: **Se oculta la sección** correspondiente (sin ceros ni placeholders).
@@ -54,6 +54,9 @@ ya luego estructuramos y vamos dandole forma bien"
 - Q: ¿Frase de cierre? → A: Frase breve en cursiva **antes de los botones**, con separadores ornamentales; por defecto **«La copla termina. La historia queda.»** (tono elegante; hay alternativas por tono documentadas). No debe decir «has ganado».
 - Q: ¿Se mantiene la tipografía y los tokens actuales? → A: **Sí**; se conservan las fuentes (Anton + Atkinson) y los tokens de Coplero.
 - Q: ¿Se muestra la frase de cierre? → A: **No de momento**; se retira temporalmente para ganar espacio y que el palmarés quepa a simple vista. El texto se conserva para más adelante.
+- Q: ¿La imagen compartible (OG) reproduce el palmarés? → A: Sí; el endpoint OG **calca** `Tarjeta.svelte` en sus tres formatos (9:16, apaisado y 1:1), con los títulos de sección en Anton y el pie de marca dentro de la tarjeta. Su URL se **versiona** (`?v=`, `VERSION_OG`) para invalidar la caché al cambiar el diseño.
+- Q: ¿Cómo se llama la acción de imagen? → A: **«Descargar imagen»** (antes «Imagen 9:16»); sigue generando el PNG 9:16.
+- Q: ¿Dónde se sitúa el palmarés en la pantalla? → A: **Centrado verticalmente** en la isla y en la página de resultado `/r`; el pie de la página queda bajo el pliegue hasta hacer scroll.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -101,8 +104,8 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 
 **Acceptance Scenarios**:
 
-1. **Given** la pantalla final rediseñada, **When** el jugador pulsa «Compartir» o descarga la «Imagen 9:16», **Then** la acción funciona con un código de partida válido.
-2. **Given** la pantalla final rediseñada, **When** el jugador pulsa «Empezar de nuevo», **Then** vuelve al inicio para crear un personaje nuevo.
+1. **Given** la pantalla final rediseñada, **When** el jugador pulsa «Compartir» o «Descargar imagen», **Then** la acción funciona con un código de partida válido.
+2. **Given** la pantalla final rediseñada, **When** el jugador pulsa «Jugar de nuevo», **Then** vuelve al inicio para crear un personaje nuevo.
 
 ---
 
@@ -128,7 +131,7 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 - **FR-005**: La tarjeta final MUST representar las **Distinciones** como una **colección de rosetas**: por cada tipo, **una roseta por victoria** (SVG propio del premio), agrupadas por tipo; el nombre y el recuento van ocultos para lectores de pantalla; todas al **mismo peso**. MUST NOT parecer una pantalla genérica de logros.
 - **FR-006**: La tarjeta final MUST NOT mostrar la trayectoria en fichas, los años en activo, los años sin concursar, el relato de hitos, el compás decorativo ni la marca de agua.
 - **FR-007**: Las secciones de premios y distinciones MUST omitirse cuando no haya datos, sin placeholders ni ceros.
-- **FR-008**: La pantalla final MUST ofrecer las acciones **Compartir**, **Imagen 9:16** y **Empezar de nuevo**, generando un código de partida válido; MUST NOT mostrar «Copiar texto», «Imagen 1:1» ni «Copiar enlace».
+- **FR-008**: La pantalla final MUST ofrecer las acciones **Compartir**, **Descargar imagen** (PNG 9:16) y **Jugar de nuevo**, generando un código de partida válido; MUST NOT mostrar «Copiar texto», «Imagen 1:1» ni «Copiar enlace».
 - **FR-009**: La pantalla MUST presentar una estética **elegante, oscura y aireada** (negro base, blanco para la información, naranja de Coplero en destacados, dorado puntual en el primer premio) con **separadores ornamentales sutiles**; MUST NOT parecer un formulario administrativo ni un dashboard. Se conservan fuentes y tokens actuales.
 - **FR-010**: La pantalla MUST ser mobile-first, mantener el ancho máximo de lectura existente y no provocar scroll horizontal desde 320 px.
 - **FR-011**: La pantalla MUST cumplir WCAG 2.2 AA (contraste, estructura semántica y foco operable).
@@ -153,7 +156,7 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 - **SC-001**: La pantalla muestra exactamente las zonas del palmarés (nombre, modalidad, estilo, mejor posición, línea temporal, distinciones y frase) y **0** zonas de las eliminadas.
 - **SC-002**: El **100%** de las carreras, con o sin premios/distinciones, se muestran sin secciones vacías ni marcadores «0».
 - **SC-003**: **0** problemas de scroll horizontal a 320 px y **0** violaciones graves de accesibilidad (WCAG 2.2 AA).
-- **SC-004**: El **100%** de las acciones disponibles (Compartir, Imagen 9:16 y Empezar de nuevo) funciona correctamente.
+- **SC-004**: El **100%** de las acciones disponibles (Compartir, Descargar imagen y Jugar de nuevo) funciona correctamente.
 - **SC-005**: **0** rasgos de formulario administrativo o dashboard; el **dorado** se usa **solo** en el primer premio de la línea temporal.
 - **SC-006**: La página de resultado compartido se mantiene tan ligera como hoy, sin ganar interactividad.
 - **SC-007**: **0** capas de fondo estacional (verano o febrero) visibles en la pantalla final.
@@ -169,7 +172,7 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 - **Línea temporal**: solo años con premio del COAC; sin interacción; orden cronológico; 1º en dorado.
 - **Frase de cierre**: **retirada temporalmente** (no se muestra) para que el palmarés quepa a simple vista; el texto («La copla termina. La historia queda.») se conserva para más adelante.
 - **Estética**: elegante, oscura y aireada; se conservan tipografía y tokens de Coplero; decoración sutil.
-- **Imagen 9:16**: la genera el endpoint OG (satori) como pieza hermana, con el mismo lenguaje visual.
+- **Imagen 9:16**: la genera el endpoint OG (satori) **calcando el palmarés** (mismo lenguaje visual), con la URL versionada (`?v=`, `VERSION_OG`).
 - **Sin cambios en `content`**: el motor solo añade el campo derivado `hitosProgreso`.
 
 ## Presentación del palmarés (decidida)

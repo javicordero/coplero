@@ -26,7 +26,7 @@ No hay entidades persistidas. La feature es de presentación, con un único aña
 | 5 | Línea temporal | `primerosPremios`, `hitosProgreso` | Premios (medallas) + hitos de progresión; cronológico |
 | 6 | Distinciones | `otrosPremios` | Rosetas: una por victoria, agrupadas por tipo; mismo peso |
 | 7 | Frase de cierre | texto por defecto | Cursiva antes de los botones |
-| 8 | Acciones | — | Compartir, Imagen 9:16, Empezar de nuevo |
+| 8 | Acciones | — | Compartir, Descargar imagen, Jugar de nuevo |
 
 La zona 6 se omite si no hay datos; la 5, si no hay eventos.
 
@@ -84,9 +84,9 @@ La zona 6 se omite si no hay datos; la 5, si no hay eventos.
 - Las distinciones se muestran como rosetas (una por victoria), agrupadas por tipo; **0** distinciones destacadas por encima del resto.
 - Existe una frase de cierre antes de los botones; **0** menciones a haber ganado.
 - Sin scroll horizontal a 320 px; axe sin violaciones graves en `fin` y `/r`.
-- La imagen OG no cambia. El motor solo añade el campo derivado `hitosProgreso`.
+- La imagen OG **calca el palmarés** (misma composición, fuentes y pesos). El motor solo añade el campo derivado `hitosProgreso`.
 
 ## Estados
 
 - Sin estado de selección ni interacción; solo el aviso transitorio de la última acción de compartir/descarga.
-- «Empezar de nuevo» vuelve a la creación de personaje.
+- «Jugar de nuevo» vuelve a la creación de personaje.

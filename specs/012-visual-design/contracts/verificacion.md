@@ -43,7 +43,7 @@ Define qué demuestra que la fase está terminada. Los umbrales son normativos: 
 | ID | Prueba | Criterio |
 |---|---|---|
 | M-01 | Tarjeta final en 9:16 y 1:1 | se lee entera, con jerarquía clara y sin recortes (SC-008) |
-| M-02 | Vista previa del enlace compartido (OG `og`) | misma paleta y tipografía que la web (FR-014) |
+| M-02 | Vista previa del enlace compartido (OG `og`) | misma paleta, tipografía y composición (palmarés) que la web (FR-014) |
 | M-03 | Zoom de navegador al 200 % | sin scroll horizontal ni solapamientos (FR-005) — cubierto por E-08 |
 | M-04 | Core Web Vitals tras el deploy | sin regresión respecto al baseline previo a la fase (FR-015) |
 

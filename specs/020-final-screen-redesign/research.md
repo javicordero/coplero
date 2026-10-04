@@ -59,14 +59,15 @@
 **Alternatives considered**:
 - *Mantener el panel*: descartado por contradecir la nueva dirección.
 
-## R6. Imagen OG como pieza hermana
+## R6. Imagen OG espejo del palmarés
 
-**Decision**: la imagen 9:16 la sigue generando el endpoint OG (satori); la pantalla no se captura. Se alinean el lenguaje visual.
+**Decision**: la imagen 9:16 la sigue generando el endpoint OG (satori); la pantalla no se captura. La imagen **calca el palmarés** (identidad, mejor posición, trayectoria y distinciones), definida en `rem` y escalada por formato, con la URL versionada (`?v=`, `VERSION_OG`).
 
-**Rationale**: evita capturar el DOM, respeta el stack y mantiene `/r` y el PNG sin dependencias nuevas.
+**Rationale**: evita capturar el DOM, respeta el stack y mantiene `/r` y el PNG sin dependencias nuevas; al compartir los `rem` y las fuentes, la imagen y la web no divergen.
 
 **Alternatives considered**:
 - *Capturar el DOM*: descartado por complejidad (fuentes, alturas, scroll).
+- *Mantener una composición propia del OG*: descartado por divergir de la tarjeta.
 
 ## R7. Escalado con muchos años y muchas distinciones
 

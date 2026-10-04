@@ -34,13 +34,15 @@ Reutilizado por la isla (`FinCarrera.svelte`) y por `/r/[codigo].astro`. Sin dir
 |---|---|---|
 | Compartir nativo | `navigator.share` con texto + URL; añade la imagen cuando el destino la admite | FR-021, FR-030 |
 | Copiar | Copia texto y enlace al portapapeles | FR-030 |
-| Descargar imagen | Descarga el PNG (`/api/og/<codigo>.png?t=9x16` o `1x1`) | FR-019, FR-030 |
+| Descargar imagen | Descarga el PNG 9:16 (`/api/og/<codigo>.png?t=9x16`, vía `urlImagenOg`) | FR-019, FR-030 |
 | Enlace | Copia o abre `/r/<codigo>` | FR-018, FR-030 |
 | Ocultar nombre | Toggle que aplica `sinNombre(tarjeta)` y re-codifica antes de compartir | FR-027 |
 
 - El código y la URL se calculan con el codec del motor (`codificar`), no en la vista.
 - Sin fallback para navegadores sin Web Share (T16).
 - El texto a compartir no contiene datos técnicos ni internos (FR-023).
+- La acción de imagen se renombró a **«Descargar imagen»** (feature 020) y solo ofrece 9:16.
+- La imagen OG (endpoint) **calca la tarjeta** (`Tarjeta.svelte`); ver `rutas.md`.
 
 ## Estado (`estado.svelte.ts`)
 

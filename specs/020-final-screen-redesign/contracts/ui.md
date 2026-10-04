@@ -91,9 +91,9 @@ Notas de contrato:
   <div class="pie">
     <div class="acciones" role="group" aria-label="Compartir la tarjeta">
       <button type="button" data-testid="compartir">Compartir</button>
-      <button type="button" data-testid="descargar-9x16">Imagen 9:16</button>
+      <button type="button" data-testid="descargar-9x16">Descargar imagen</button>
     </div>
-    <button type="button" data-testid="reiniciar">Empezar de nuevo</button>
+    <button type="button" data-testid="reiniciar">Jugar de nuevo</button>
   </div>
 
   <p class="aviso" aria-live="polite" data-testid="aviso-accion">…</p>
@@ -172,4 +172,4 @@ Tokens nuevos: `--c-carnaval-plata`, `--c-carnaval-bronce`, `--c-carnaval-azul-c
 ## Reglas de dependencia
 
 - El cambio vive en `web` (`src/juego`); del `engine` solo consume `TarjetaFinal.hitosProgreso` (derivado, puro); no afecta a `content`.
-- La imagen OG (`api/og/[codigo].png.ts`) queda fuera de este contrato (pieza hermana).
+- La imagen OG (`api/og/[codigo].png.ts`) **calca este palmarés** en sus tres formatos (mismos `rem`, fuentes y pesos; títulos de sección en Anton; pie dentro de la tarjeta). Su contrato detallado vive en `specs/007-final-card/contracts/rutas.md`.

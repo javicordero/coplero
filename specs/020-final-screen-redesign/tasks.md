@@ -115,6 +115,23 @@ description: "Task list for feature 020-final-screen-redesign (palmarés)"
 
 ---
 
+## Phase 7: Imagen OG espejo del palmarés y ajustes finales
+
+**Goal**: la imagen compartible (9:16, apaisado y 1:1) replica el palmarés; la caché queda versionada; la pantalla final se centra y la acción de imagen se renombra.
+
+**Independent Test**: pedir `/api/og/<codigo>.png` en los tres formatos y comprobar firma PNG y dimensiones; usar el botón «Descargar imagen» desde la pantalla final; comprobar el centrado de la isla y de `/r`.
+
+- [X] T018 [US3] Reescribir `src/pages/api/og/[codigo].png.ts` para calcar `Tarjeta.svelte`: identidad, mejor posición (ordinal 0.4em/0.55em), trayectoria (rejilla 1rem/0.9rem/1rem, nodo 0.7rem, halos y carril de borde a borde) y distinciones (rosetas agrupadas), con los títulos de sección en Anton y el pie de marca dentro de la tarjeta. Todo en `rem`, escalado por formato (`og` 1.35 apaisado, `9x16` 2.7, `1x1` 1.5).
+- [X] T019 [US3] Añadir `VERSION_OG` y `urlImagenOg()` en `src/juego/presentacion.ts` y usarlos en `src/pages/index.astro`, `src/pages/r/[codigo].astro` y `src/juego/pantallas/FinCarrera.svelte` (URL versionada `?v=`).
+- [X] T020 [US3] Renombrar la acción de imagen a **«Descargar imagen»** en `src/juego/pantallas/FinCarrera.svelte`.
+- [X] T021 [US2] Centrar verticalmente el palmarés: `main[data-pantalla="fin"]` en `src/juego/Juego.svelte` y `.resultado` de `src/pages/r/[codigo].astro`.
+- [X] T022 [P] [US3] Añadir a `tests/e2e/compartir.spec.ts` la verificación del endpoint OG en los tres formatos (status, `image/png`, firma PNG y dimensiones).
+- [X] T023 Actualizar `specs/007-final-card/contracts/rutas.md` (contenido espejo y caché versionada) y `docs/02` §10 / `docs/registro/decisiones-cerradas.md`.
+
+**Checkpoint**: la imagen descargada y la previsualización del enlace reproducen el palmarés; `npm run check` y el E2E de compartir en verde.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -125,6 +142,7 @@ description: "Task list for feature 020-final-screen-redesign (palmarés)"
 - **US2 (Fase 4)**: puede empezar tras Setup; comparte ficheros con US1 (`Tarjeta.svelte`, `FinCarrera.svelte`) → ejecutar después de US1 o coordinadamente.
 - **US3 (Fase 5)**: depende de Fase 2; `compartir.spec.ts` es independiente.
 - **Polish (Fase 6)**: depende de las historias entregadas.
+- **Imagen OG (Fase 7)**: depende de US1/US2 (el palmarés que se calca) y de US3 (la acción de descarga); se puede cerrar de forma independiente al resto.
 
 ### Within Each User Story
 
@@ -165,6 +183,6 @@ Task: "Añadir tests unitarios en src/juego/__tests__/presentacion.test.ts (T005
 ## Notes
 
 - `[P]` = ficheros distintos, sin dependencias pendientes.
-- No tocar `content` ni endpoints OG; el motor solo añade `hitosProgreso`.
+- No tocar `content`; el motor solo añade `hitosProgreso`. El endpoint OG **ahora es espejo del palmarés** (Fase 7), no una pieza aparte.
 - Se retira el lenguaje de panel de formulario y las antiguas «opciones de lista» de premios.
 - `npm run check` es la puerta de calidad final.

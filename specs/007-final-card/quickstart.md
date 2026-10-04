@@ -75,7 +75,7 @@ npm run dev
 1. Terminar una carrera y comprobar la **tarjeta-póster**: identidad, datos destacados (COAC / mejor posición / otros premios por tipo), fila de trayectoria, tres hitos, frase y pie con la marca de agua. Sin número héroe.
 2. Probar el **toggle de nombre** y ver que la tarjeta se re-renderiza sin el nombre.
 3. Compartir/copiar/descargar: obtener el enlace `/r/<codigo>` y abrirlo en una ventana limpia (sin `localStorage`); la tarjeta debe reproducirse íntegra.
-4. Abrir `/api/og/<codigo>.png`, `?t=9x16` y `?t=1x1`: formatos y marca de agua correctos.
+4. Abrir `/api/og/<codigo>.png`, `?t=9x16` y `?t=1x1`: formatos, pie de marca y **composición espejo del palmarés** (la URL incluye `?v=`, `VERSION_OG`).
 5. Provocar un código inválido (`/r/xx`) y comprobar la página amable con enlace a `/jugar`.
 
 ## 7. E2E
