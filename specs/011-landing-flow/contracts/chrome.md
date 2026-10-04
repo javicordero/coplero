@@ -21,18 +21,19 @@ Estructura **idéntica a la de acordesgaditanos**, en este orden:
 
 | # | Bloque | Marcado | Contenido |
 |---|---|---|---|
-| 1 | Redes sociales | `<nav aria-label="Redes sociales">` + `<h3>` | X, YouTube, TikTok, Instagram (SVG en línea, `aria-label`) |
-| 2 | Autor | `<address>` | «Desarrollado por Javier Cordero Toscano» + LinkedIn y GitHub |
-| 3 | Legal | fila de enlaces | Política de privacidad · Política de cookies (páginas existentes) |
+| 1 | Redes sociales | `<nav aria-label="Redes sociales">` + `<h3>` | X, YouTube, TikTok, Instagram (SVG en línea de 22 px, `aria-label`) |
+| 2 | Autor | `<address>` | «Desarrollado por Javier Cordero Toscano» + LinkedIn y GitHub + **chip-enlace a Acordes Gaditanos** |
+| 3 | Legal | fila de enlaces | Colaborar · Política de privacidad · Política de cookies (páginas existentes) |
 | 4 | Copyright | `<p>` | `© {año en build} Coplero` |
 
 Reglas:
 
 - Todos los enlaces externos: `target="_blank" rel="noopener noreferrer"` + nombre accesible.
 - **Sin enlaces rotos**: los enlaces legales apuntan a páginas que existen.
-- Mantiene la **referencia a acordesgaditanos** como proyecto del mismo autor.
+- Mantiene la **referencia a acordesgaditanos** como proyecto del mismo autor, en forma de **chip** dentro del bloque del autor.
 - Ancho del contenedor: 680 px en escritorio; ancho completo en móvil.
-- Fondo oscuro coherente con el tema; contraste AA.
+- **Estilo**: fondo en degradado de `--c-superficie` a `--c-fondo`; bloques compactos con `gap` uniforme; filete (`--c-separador`) antes de la franja legal; contraste AA.
+- **Objetivos táctiles** de 44 × 44 px (los márgenes negativos compactan la fila de iconos sin reducir el área de pulsación).
 
 ## Integración en `Layout.astro`
 

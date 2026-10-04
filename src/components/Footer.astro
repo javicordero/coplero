@@ -39,7 +39,7 @@ const REDES_AUTOR = REDES.filter((r) => ["linkedin", "github"].includes(r.id))
                 rel="noopener noreferrer"
                 aria-label={red.nombre}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d={ICONOS[red.id]} />
                 </svg>
               </a>
@@ -62,53 +62,78 @@ const REDES_AUTOR = REDES.filter((r) => ["linkedin", "github"].includes(r.id))
               rel="noopener noreferrer"
               aria-label={red.nombre}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d={ICONOS[red.id]} />
               </svg>
             </a>
           </li>
         ))
       }
+      <li>
+        <a
+          class="chip"
+          href={ACORDES_GADITANOS}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="chip__cara">
+            <svg
+              class="chip__icono"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <path d="M15 3h6v6" />
+              <path d="m10 14 11-11" />
+            </svg>
+            Acordes Gaditanos
+          </span>
+        </a>
+      </li>
     </ul>
-    <p class="small">
-      El mismo creador de <a
-        href={ACORDES_GADITANOS}
-        target="_blank"
-        rel="noopener noreferrer">Acordes Gaditanos</a
-      >.
-    </p>
   </address>
 
-  <div class="wrap politics">
-    <a href="/colaborar">Colaborar</a>
-    <a href="/politicas/politica-de-privacidad">Política de privacidad</a>
-    <a href="/politicas/politica-de-cookies">Política de cookies</a>
-  </div>
+  <div class="legal">
+    <div class="wrap politics">
+      <a href="/colaborar">Colaborar</a>
+      <a href="/politicas/politica-de-privacidad">Política de privacidad</a>
+      <a href="/politicas/politica-de-cookies">Política de cookies</a>
+    </div>
 
-  <div class="wrap bottom">
-    <p>© {ANIO} Coplero</p>
-    <p class="creditos">
-      Tipografías: <a
-        href="https://fonts.google.com/specimen/Anton"
-        target="_blank"
-        rel="noopener noreferrer">Anton</a
-      > y <a
-        href="https://fonts.google.com/specimen/Atkinson+Hyperlegible"
-        target="_blank"
-        rel="noopener noreferrer">Atkinson Hyperlegible</a
-      >, con licencia OFL.
-    </p>
+    <div class="wrap bottom">
+      <p>© {ANIO} Coplero</p>
+      <p class="creditos">
+        Tipografías: <a
+          href="https://fonts.google.com/specimen/Anton"
+          target="_blank"
+          rel="noopener noreferrer">Anton</a
+        > y <a
+          href="https://fonts.google.com/specimen/Atkinson+Hyperlegible"
+          target="_blank"
+          rel="noopener noreferrer">Atkinson Hyperlegible</a
+        >, con licencia OFL.
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
   footer {
-    background: var(--c-superficie);
+    /* Banda que arranca como AG y se funde con el fondo de la página. */
+    background: linear-gradient(180deg, var(--c-superficie) 0%, var(--c-fondo) 100%);
     color: var(--c-texto);
-    padding: var(--esp-5) 0;
+    padding-block: var(--esp-6);
     display: flex;
     flex-direction: column;
-    gap: var(--esp-3);
+    /* Separación uniforme entre bloques: redes · autor · legal. */
+    gap: var(--esp-5);
   }
   .wrap {
     width: 100%;
@@ -119,42 +144,94 @@ const REDES_AUTOR = REDES.filter((r) => ["linkedin", "github"].includes(r.id))
   h3 {
     font-family: var(--fuente-texto);
     font-size: var(--texto-sm);
-    margin: 0 0 var(--esp-2);
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-texto);
+    margin: 0 0 var(--esp-1);
   }
   .iconos {
     display: flex;
-    gap: var(--esp-3);
+    flex-wrap: wrap;
+    gap: 0;
     list-style: none;
     padding: 0;
-    margin: 0;
+    /* Compensa el relleno interno de los enlaces (objetivo táctil 44 px) para
+       que la fila quede compacta y pegada al texto, sin perder área de pulsación. */
+    margin: -0.75rem 0 -0.75rem -0.5rem;
+  }
+  /* El margen va en el `li` (el elemento flexible): junta los iconos sin
+     reducir el objetivo táctil de 44 × 44 del enlace. */
+  .iconos li {
+    margin-inline: -0.25rem;
+  }
+  /* Bloque del autor: la fila respira un poco más arriba para que el chip de
+     Acordes Gaditanos no toque el texto; abajo se mantiene compacta. */
+  address .iconos {
+    margin-top: -0.25rem;
   }
   .iconos a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    /* Objetivo táctil 44 × 44 (E-03). */
     min-width: 44px;
     min-height: 44px;
     color: var(--c-texto-suave);
-    transition: color var(--dur-2) var(--ease-sal),
-      transform var(--dur-2) var(--ease-sal);
+    transition: color var(--dur-2) var(--ease-sal);
   }
   .iconos a:hover {
     color: var(--c-acento);
-    transform: scale(1.15);
   }
   address {
     font-style: normal;
     display: flex;
     flex-direction: column;
-    gap: var(--esp-2);
+    gap: var(--esp-1);
     font-size: var(--texto-sm);
     color: var(--c-texto-suave);
   }
   .small {
     margin: 0;
   }
-  .small a {
+  /* Chip destacado a Acordes Gaditanos junto a los iconos del autor. El enlace
+     conserva 44 px de alto (E-03); la píldora visible es algo más baja. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-inline: var(--esp-2);
+    text-decoration: none;
+  }
+  .chip__cara {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--esp-1);
+    padding: var(--esp-2) var(--esp-3);
+    border: 1px solid var(--c-separador);
+    border-radius: var(--radio-pill);
+    color: var(--c-texto-suave);
+    font-size: var(--texto-xs);
+    letter-spacing: 0.02em;
+    transition:
+      color var(--dur-2) var(--ease-sal),
+      border-color var(--dur-2) var(--ease-sal),
+      background-color var(--dur-2) var(--ease-sal);
+  }
+  .chip__icono {
+    flex: 0 0 auto;
+  }
+  .chip:hover .chip__cara {
     color: var(--c-acento);
+    border-color: var(--c-acento);
+    background: color-mix(in srgb, var(--c-acento) 10%, transparent);
+  }
+  .legal {
+    border-top: 1px solid var(--c-separador);
+    padding-top: var(--esp-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-1);
   }
   .politics {
     display: flex;
@@ -165,7 +242,10 @@ const REDES_AUTOR = REDES.filter((r) => ["linkedin", "github"].includes(r.id))
   .politics a {
     display: inline-flex;
     align-items: center;
+    /* Objetivo táctil 44 px (E-03); el margen vertical negativo evita que la
+       fila infle el bloque con aire de más. */
     min-height: 44px;
+    margin-block: -0.375rem;
     color: var(--c-texto-suave);
     text-decoration: none;
     transition: color var(--dur-2) var(--ease-sal);

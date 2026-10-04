@@ -72,7 +72,7 @@ const descripcion =
         Así termina una carrera: una tarjeta que recoge tu trayectoria y
         distinciones.
       </p>
-      <div class="marco">
+      <div class="tarjeta-ejemplo">
         <Tarjeta tarjeta={EJEMPLO_TARJETA} />
       </div>
       <a class="cta" href="/jugar">Empezar a jugar</a>
@@ -326,16 +326,12 @@ const descripcion =
     font-weight: var(--peso-fuerte);
   }
 
-  /* El ejemplo realza la tarjeta con el lenguaje del juego. `overflow: hidden`
-     contiene el carril de la trayectoria durante el primer render (aún sin
-     medir), igual que hacía el antiguo `.ejemplo`. */
-  .marco {
+  /* Envoltorio del ejemplo: sin panel propio (la tarjeta ya trae el suyo).
+     `overflow: hidden` contiene el carril de la trayectoria durante el primer
+     render (aún sin medir), igual que hacía el antiguo `.ejemplo`. */
+  .tarjeta-ejemplo {
     overflow: hidden;
-    background: var(--c-superficie);
-    border: 1px solid var(--c-separador);
-    border-radius: var(--radio-md);
-    padding: var(--esp-4);
-    box-shadow: var(--sombra-2);
-    margin-bottom: var(--esp-5);
+    /* Aire entre la tarjeta de ejemplo y el CTA. */
+    margin-bottom: var(--esp-4);
   }
 </style>
