@@ -131,6 +131,7 @@ async function alDescargar() {
   @media (max-width: 374px) {
     .fin button {
       padding: var(--esp-2) var(--esp-3);
+      text-wrap: nowrap;
     }
   }
 </style>
