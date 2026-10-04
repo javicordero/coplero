@@ -30,4 +30,9 @@ let { indicador }: { indicador: Indicador } = $props()
   .indicador[data-momento="verano"] {
     color: var(--c-acento-texto);
   }
+
+  /* En el resultado, el indicador comparte el tono del texto suave de la pantalla. */
+  .indicador[data-momento="resultado"] {
+    color: var(--c-texto-suave);
+  }
 </style>

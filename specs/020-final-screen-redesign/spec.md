@@ -31,7 +31,7 @@ ya luego estructuramos y vamos dandole forma bien"
 - Q: ¿Cómo se muestra la lista de «Premios»? → A: **Medalla + año**, en ese orden y separados por un espacio (🥇 / 🥈 / 🥉 según el puesto del COAC).
 - Q: ¿En qué orden se listan los premios? → A: **Por puesto** (primero todos los 1.º, luego los 2.º y luego los 3.º) y, dentro de cada puesto, por **año**.
 - Q: ¿Se renombra «Otros premios»? → A: Sí, pasa a llamarse **«Distinciones»**.
-- Q: ¿Llevan icono las distinciones? → A: Sí: **Aguja de oro** → aguja dorada; **Copla para Andalucía** → bandera de Andalucía; **Candela y espino** → icono por defecto (candela). Formato: **una roseta por victoria** (icono del premio en el centro); sin texto.
+- Q: ¿Llevan icono las distinciones? → A: Sí: **Aguja de oro** → aguja dorada; **Coplas por Andalucía** → bandera de Andalucía; **Candela y espino** → icono por defecto (candela). Formato: **una roseta por victoria** (icono del premio en el centro); sin texto.
 - Q: ¿Qué opciones de orden de premios hay? → A: **Opción 1**: agrupados por puesto y, dentro, por año. **Opción 2**: solo por año. **Opción 3** (activa): medalla + todos los años de ese puesto seguidos, separados por comas. Pendiente de decisión del usuario.
 - Q: ¿Qué años muestra la línea temporal de «Premios» (rediseño en exploración)? → A: **Solo los años con premio del COAC** (podio/1º); no se muestran los años sin premio.
 - Q: ¿La línea temporal es interactiva? → A: **No**; palmarés estático, sin tocar años/premios.
@@ -147,7 +147,7 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 - **Tarjeta final**: resumen visible de una carrera terminada. Atributos relevantes: nombre, modalidad final, estilo final, mejor fase, mejor puesto, premios del COAC y distinciones.
 - **Pantalla final**: contenedor de la tarjeta, la frase de cierre y las acciones.
 - **Premio del COAC**: resultado de concurso con **año** y **puesto** (1º/2º/3º); alimenta la línea temporal.
-- **Distinción**: premio ajeno a la clasificación, por **tipo** (Aguja de Oro, Copla para Andalucía, Candela y espino) con su **número de veces**.
+- **Distinción**: premio ajeno a la clasificación, por **tipo** (Aguja de Oro, Coplas por Andalucía, Candela y espino) con su **número de veces**.
 
 ## Success Criteria *(mandatory)*
 
@@ -166,7 +166,7 @@ El jugador puede compartir su palmarés, descargarlo como imagen 9:16 y empezar 
 
 - **Alcance del rediseño**: se rediseña la pantalla de fin y, por ser la misma tarjeta, el ejemplo de la portada y la página de resultado compartido.
 - **"Premios"**: son los premios/posiciones del COAC (año y puesto).
-- **"Distinciones"** (antes «otros premios»): premios ajenos a la clasificación (Copla para Andalucía, Aguja de oro, Candela y espino), con su recuento y su icono.
+- **"Distinciones"** (antes «otros premios»): premios ajenos a la clasificación (Coplas por Andalucía, Aguja de oro, Candela y espino), con su recuento y su icono.
 - **"Estilo"**: la variante de trabajo vigente al terminar la carrera.
 - **Modalidad y estilo mostrados**: los **finales**.
 - **Línea temporal**: solo años con premio del COAC; sin interacción; orden cronológico; 1º en dorado.

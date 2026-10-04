@@ -12,6 +12,8 @@ import {
   MODALIDADES_INFO,
   mensajeError,
   normalizarNombre,
+  ordenarDistinciones,
+  ROSETAS,
   textoPuesto,
   tituloDelJuego,
   trayectoria,
@@ -26,6 +28,8 @@ describe("presentacion", () => {
 
   it("traduce momento, tipo, fase, modalidad y premio", () => {
     expect(etiquetaMomento("verano")).toBe("Verano")
+    expect(etiquetaMomento("febrero")).toBe("Febrero")
+    expect(etiquetaMomento("resultado")).toBe("Resultado")
     expect(etiquetaTipo("contenido")).toBe("Contenido")
     expect(etiquetaFase("semifinales")).toBe("Semifinales")
     expect(etiquetaModalidad("chirigotero")).toBe("Chirigotero")
@@ -62,6 +66,30 @@ describe("presentacion", () => {
     expect(etiquetaEstilo("evolucion_con_raices")).toBe("Evolución con raíces")
     expect(etiquetaEstilo("lolosedismo")).toBe("Lolosedismo")
     expect(etiquetaEstilo("desconocida")).toBe("desconocida")
+  })
+
+  it("asigna una roseta a cada tipo de premio", () => {
+    expect(Object.keys(ROSETAS).sort()).toEqual([
+      "aguja_de_oro",
+      "candela_y_espino",
+      "copla_para_andalucia",
+    ])
+    for (const ruta of Object.values(ROSETAS)) {
+      expect(ruta).toMatch(/^\/rosetas\/roseta_.+\.svg$/)
+    }
+  })
+
+  it("ordena las distinciones dejando la Coplas por Andalucía al final", () => {
+    const premios = [
+      { tipo: "copla_para_andalucia" as const, ano: 2036 },
+      { tipo: "candela_y_espino" as const, ano: 2036 },
+      { tipo: "aguja_de_oro" as const, ano: 2036 },
+    ]
+    expect(ordenarDistinciones(premios).map((p) => p.tipo)).toEqual([
+      "aguja_de_oro",
+      "candela_y_espino",
+      "copla_para_andalucia",
+    ])
   })
 
   it("numera el puesto del COAC", () => {

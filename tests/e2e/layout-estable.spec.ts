@@ -210,7 +210,7 @@ test("INV-5 · el resultado conserva el indicador alineado", async ({
       expect(indDecision, "sin muestra de decisión").not.toBeNull()
       expect(Math.abs(ind.y - (indDecision ?? 0))).toBeLessThanOrEqual(TOL)
       expect(texto).toMatch(/Año\s*\d+/i)
-      expect(texto).toMatch(/Verano|Febrero/i)
+      expect(texto).toMatch(/Resultado/i)
       expect(texto).not.toMatch(/contenido|personaje/i)
       return
     }

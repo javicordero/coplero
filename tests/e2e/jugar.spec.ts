@@ -34,7 +34,7 @@ test("los resultados de una carrera son variados", async ({ page }) => {
 
     if (clavePrevia.split("|")[0] === "resultado") {
       const texto = await page.getByTestId("resultado").innerText()
-      const coincidencia = /puesto (\d+)/.exec(texto)
+      const coincidencia = /puesto\s*(\d+)/i.exec(texto)
       if (coincidencia) puestos.push(Number(coincidencia[1]))
     }
 

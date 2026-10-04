@@ -56,12 +56,12 @@ Interfaz interna (UI) de la pantalla de fin y de la tarjeta-palmarés. Aplica a 
         </span>
         <span class="oculto">Aguja de oro: 1</span>
       </li>
-      <li class="distincion" data-tipo="copla_para_andalucia" title="Copla para Andalucía: 2">
+      <li class="distincion" data-tipo="copla_para_andalucia" title="Coplas por Andalucía: 2">
         <span class="distincion__rosetas" aria-hidden="true">
           <img class="roseta" src="/rosetas/roseta_andalucia.svg" alt="">
           <img class="roseta" src="/rosetas/roseta_andalucia.svg" alt="">
         </span>
-        <span class="oculto">Copla para Andalucía: 2</span>
+        <span class="oculto">Coplas por Andalucía: 2</span>
       </li>
       <li class="distincion" data-tipo="candela_y_espino" title="Candela y espino: 1">
         <span class="distincion__rosetas" aria-hidden="true">

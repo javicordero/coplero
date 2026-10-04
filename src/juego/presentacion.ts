@@ -21,9 +21,10 @@ const TITULOS_POR_GENERO: Record<Genero, string> = {
   no_binario: "Coplere",
 }
 
-const MOMENTOS: Record<Momento, string> = {
+const MOMENTOS: Record<Momento | "resultado", string> = {
   verano: "Verano",
   febrero: "Febrero",
+  resultado: "Resultado",
 }
 
 const TIPOS: Record<TipoDecision, string> = {
@@ -39,7 +40,7 @@ const FASES: Record<FaseCOAC, string> = {
 }
 
 const PREMIOS: Record<PremioTipo, string> = {
-  copla_para_andalucia: "Copla para Andalucía",
+  copla_para_andalucia: "Coplas por Andalucía",
   aguja_de_oro: "Aguja de oro",
   candela_y_espino: "Candela y espino",
 }
@@ -48,7 +49,7 @@ export function tituloDelJuego(genero: Genero): string {
   return TITULOS_POR_GENERO[genero]
 }
 
-export function etiquetaMomento(momento: Momento): string {
+export function etiquetaMomento(momento: Momento | "resultado"): string {
   return MOMENTOS[momento]
 }
 
@@ -62,6 +63,29 @@ export function etiquetaFase(fase: FaseCOAC): string {
 
 export function etiquetaPremio(tipo: PremioTipo): string {
   return PREMIOS[tipo]
+}
+
+/** Roseta propia de cada distinción (una por victoria). */
+export const ROSETAS: Record<PremioTipo, string> = {
+  copla_para_andalucia: "/rosetas/roseta_andalucia.svg",
+  aguja_de_oro: "/rosetas/roseta_aguja_oro.svg",
+  candela_y_espino: "/rosetas/roseta_candela.svg",
+}
+
+/** Orden canónico de presentación: la Coplas por Andalucía va siempre al final. */
+const ORDEN_DISTINCION: Record<PremioTipo, number> = {
+  aguja_de_oro: 0,
+  candela_y_espino: 1,
+  copla_para_andalucia: 2,
+}
+
+/** Ordena las distinciones por su orden canónico de presentación. */
+export function ordenarDistinciones<T extends { tipo: PremioTipo }>(
+  premios: T[],
+): T[] {
+  return [...premios].sort(
+    (a, b) => ORDEN_DISTINCION[a.tipo] - ORDEN_DISTINCION[b.tipo],
+  )
 }
 
 /** Recorta, colapsa espacios y limita a 24 caracteres. Nunca HTML. */
@@ -89,7 +113,8 @@ export interface ModalidadInfo {
 
 export interface Indicador {
   ano: number
-  momento: Momento
+  /** Momento de juego durante las decisiones; `resultado` cierra el año. */
+  momento: Momento | "resultado"
 }
 
 const ETIQUETA_MODALIDAD: Record<Modalidad, string> = {

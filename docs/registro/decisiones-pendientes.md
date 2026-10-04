@@ -42,7 +42,7 @@ Calibración final (`parametros.ts`, 10.000 carreras): pesos del techo `7/3/47/1
 
 Los parámetros de la 013 (`curvaSubida`/`curvaDeclive` 30, `curvaExponente` 2, `objetivoEnTecho` 1, `anchoObjetivo` 12, `memoriaForma` 0,3, `amplitudForma` 4, `aporteAtributosMax` 6) están **calibrados contra los objetivos medibles**: la distribución de `01` §7, las frecuencias de premios de `01` §3 y los objetivos de forma (racha ≤ 4 años en el 90 %, ≥ 6 posiciones distintas, arco en el 60 %). Lo que **no** está validado todavía es el **tacto**: si una carrera de 20 años se sigue haciendo larga, si la racha de 5 años en el 5 % de carreras molesta o si el declive final se percibe demasiado pronto. Se ajustará **solo con parámetros** (nunca tocando situaciones) después de jugar partidas reales.
 
-### T2 · Flags del premio "Copla para Andalucía"
+### T2 · Flags del premio "Coplas por Andalucía"
 
 `01` §3 usa "flags de temática andaluza o de tierra" que aún **no existen** en el banco. Se añadirán al banco en el futuro.
 
@@ -92,7 +92,7 @@ El endpoint `/api/og/[codigo].png` (OG-001, feature 007) usa `satori` + `@resvg/
 - [ ] Definir logros, insignias y finales alternativos por flags.
 - [ ] Cerrar los valores numéricos con el simulador masivo.
 - [ ] Calibrar el techo y la volatilidad contra la distribución objetivo.
-- [ ] Añadir las flags de temática andaluza/tierra para Copla para Andalucía (T2).
+- [ ] Añadir las flags de temática andaluza/tierra para Coplas por Andalucía (T2).
 - [x] Conectar `scripts/simular.ts` al banco real de `content` y retirar el banco de pruebas (T17).
 - [ ] Cambiar por iconos definitivos los que aún usan la **guitarra**: las variantes de **chirigota** («Clásico», «Interpretar el personaje», «Lolosedismo») y confirmar si la guitarra es la definitiva en la **modalidad Comparsa**.
 

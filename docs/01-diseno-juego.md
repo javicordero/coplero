@@ -86,21 +86,21 @@ Se otorga **uno de cada por año**, además de los premios propios del concurso,
 
 | Premio | A qué se da | Condición de acceso |
 | --- | --- | --- |
-| **Copla para Andalucía** | A la mejor letra dedicada a Andalucía del año | Llegar a **semifinales** o más; ~15% por aparición |
+| **Coplas por Andalucía** | A la mejor letra dedicada a Andalucía del año | Llegar a **semifinales** o más; ~15% por aparición |
 | **Aguja de oro** | Al mejor disfraz o tipo del concurso | Llegar a la **final**; ~20-21% por final (rarísima desde semis) |
 | **Candela y espino** | A la agrupación con más carga de crítica social y compromiso político | Llegar a **semifinales** o más; ~15% por aparición |
 
 **Cómo los resuelve el motor.** Cada año, tras resolver la fase alcanzada, y de forma **independiente por premio** (**azar puro**, sin afinidad por atributos ni flags):
 
 1. **Aguja de oro:** hay que **llegar a la final**; cada final da ~20-21% de opciones. Excepcionalmente (≈0,5%) se puede ganar llegando **solo a semifinales**.
-2. **Copla para Andalucía** y **Candela y espino:** se opta desde **semifinales**; ~15% por aparición (semifinal o final). La media ronda **2 por carrera**, pero depende de la asiduidad: quien no llega casi nunca a semis se queda a 0, y hay carreras que la ganan 5 veces.
+2. **Coplas por Andalucía** y **Candela y espino:** se opta desde **semifinales**; ~15% por aparición (semifinal o final). La media ronda **2 por carrera**, pero depende de la asiduidad: quien no llega casi nunca a semis se queda a 0, y hay carreras que la ganan 5 veces.
 3. Un mismo año puede caer más de uno (son independientes).
 
-> 📌 Valores calibrados con el simulador (`src/engine/parametros.ts` → `premios`): aguja ≈0,74 por carrera; Copla ≈2,0 y Candela ≈2,0. El tramo excepcional de la aguja se define con `umbralPuestoExcepcional`/`probabilidadExcepcional`.
+> 📌 Valores calibrados con el simulador (`src/engine/parametros.ts` → `premios`): aguja ≈0,74 por carrera; Coplas ≈2,0 y Candela ≈2,0. El tramo excepcional de la aguja se define con `umbralPuestoExcepcional`/`probabilidadExcepcional`.
 
 Son uno de los mejores generadores de relato: dan algo que contar incluso en carreras que nunca ganan el concurso.
 
-> 📌 El motor deberá **almacenar el puesto** de cada temporada, no solo la fase, para poder aplicar los umbrales top 6-7 / top 10. Las flags temáticas propias de Copla para Andalucía (temática andaluza o de tierra) se añadirán al banco en el futuro.
+> 📌 El motor deberá **almacenar el puesto** de cada temporada, no solo la fase, para poder aplicar los umbrales top 6-7 / top 10. Las flags temáticas propias de Coplas por Andalucía (temática andaluza o de tierra) se añadirán al banco en el futuro.
 
 ---
 
@@ -209,7 +209,7 @@ El arco **no salía solo**: con los atributos quietos y la puntuación recortada
 Consecuencias que conviene recordar al calibrar:
 
 - La **amplitud del arco** importa más que el ruido. Con un arco pequeño (16 puntos) y bandas de 3, la puntuación se queda dentro de la banda del techo muchos años y la carrera vuelve a ser plana; con 30 el techo se toca pocos años.
-- Los **premios ajenos** se miden por aparición desde semifinales. Como el arco reduce los años en la parte alta, sus probabilidades se recalibraron para mantener las frecuencias de §3 (aguja 0,74; copla 1,98; candela 1,99 por carrera).
+- Los **premios ajenos** se miden por aparición desde semifinales. Como el arco reduce los años en la parte alta, sus probabilidades se recalibraron para mantener las frecuencias de §3 (aguja 0,74; coplas 1,98; candela 1,99 por carrera).
 - Las **excepciones de atributos** se acumulan al repetirse la misma situación. Su aporte a la puntuación está acotado, porque un desplazamiento permanente sin límite anula el arco.
 - El simulador informa de la **forma** (racha máxima, posiciones distintas, arco, diversidad de secuencias) además de los agregados. Un fallo como el descrito era invisible en los agregados y evidente en la secuencia.
 - Objetivos de forma: racha máxima ≤ 4 años en el 90 % de las carreras (nunca más de 8), ≥ 6 posiciones distintas de media y arco visible en el 60 % (no en el 100 %: los ascensos rápidos y los éxitos tempranos son parte del diseño).

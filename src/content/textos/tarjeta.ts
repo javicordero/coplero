@@ -17,8 +17,8 @@ export const TEXTOS_TARJETA: TextosTarjeta = {
       "Te dieron la Aguja de oro en {ano}",
     ],
     premio_copla: [
-      "Copla para Andalucía en {ano}",
-      "Copla para Andalucía en {ano}",
+      "Coplas por Andalucía en {ano}",
+      "Coplas por Andalucía en {ano}",
     ],
     premio_candela: [
       "Candela y espino en {ano}",

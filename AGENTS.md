@@ -122,7 +122,7 @@ Estado del scaffold actual y desviaciones de nombres: ver huecos **C10**, **C11*
 - **Personaje:** nombre/apodo, edad, localidad, género. Título dinámico según género.
 - **Modalidad y variante:** 2 modalidades × 3 variantes. La variante puede cambiar durante la carrera.
 - **COAC:** 4 fases por modalidad (preliminares → cuartos → semifinales → final).
-- **Premios ajenos:** Copla para Andalucía, Aguja de oro, Candela y espino.
+- **Premios ajenos:** Coplas por Andalucía, Aguja de oro, Candela y espino.
 - **Decisiones:** 2 por año (verano del año anterior + febrero del año del carnaval), 2-3 opciones.
 - **Atributos:** artísticos (`letra`, `musica`, `puestaEnEscena`) y de personaje (`popularidad`, `cohesion`, `dinero`).
 - **Flags y condicionales:** requisito + ventana + probabilidad.
@@ -200,7 +200,7 @@ Resumen operativo (detalle en `docs/registro/decisiones-cerradas.md`):
 **No resolverlas en silencio.** Ver `docs/registro/decisiones-pendientes.md`. Estado actual:
 
 - **Abiertos:** ninguno.
-- **Diferidos:** T2 (flags de Copla para Andalucía), T5 (eventos), T12 (CI), T13 (valores numéricos).
+- **Diferidos:** T2 (flags de Coplas por Andalucía), T5 (eventos), T12 (CI), T13 (valores numéricos).
 - **Fuera de alcance:** T16 (fallback de Web Share API).
 - **Ya cerrados:** C1–C11 y T1, T3, T4, T6, T7, T8, T9, T10, T11, T14, T15 (ver `decisiones-cerradas.md`).
 - **Backlog de contenido:** ampliar banco a 60-80, cierres de popurrí, textos de fase, tarjeta final, logros.
@@ -230,5 +230,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/020-final-screen-redesign/plan.md
+at specs/021-year-result-screen/plan.md
 <!-- SPECKIT END -->

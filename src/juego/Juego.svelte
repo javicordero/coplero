@@ -2,7 +2,7 @@
 import { variantesDe } from "../content/index"
 import { crearJuego } from "./estado.svelte"
 import { almacenNavegador } from "./persistencia"
-import { arranqueFinDesdeUrl } from "./dev/fixturesFin"
+import { arranqueDevDesdeUrl } from "./dev/arranque"
 import {
   type Indicador,
   mensajeError,
@@ -23,17 +23,26 @@ import IndicadorContexto from "./pantallas/IndicadorContexto.svelte"
 import Reanudar from "./pantallas/Reanudar.svelte"
 import Resultado from "./pantallas/Resultado.svelte"
 
-// Solo en desarrollo: `/jugar?dev=fin` abre directamente la pantalla final con
-// una tarjeta de ejemplo (ver `dev/fixturesFin.ts`). En producción `arranque`
-// es `null` y la rama se elimina del bundle.
+// Solo en desarrollo: `/jugar?dev=fin` abre la pantalla final y
+// `/jugar?dev=resultado` la de resultado, con datos de ejemplo (ver
+// `dev/arranque.ts`). En producción `arranque` es `null` y la rama se elimina
+// del bundle.
 const arranque =
   import.meta.env.DEV && typeof window !== "undefined"
-    ? arranqueFinDesdeUrl(window.location.search)
+    ? arranqueDevDesdeUrl(window.location.search)
     : null
 
 const juego = crearJuego(almacenNavegador(), {
-  tarjetaInicial: arranque?.tarjeta,
+  tarjetaInicial: arranque?.pantalla === "fin" ? arranque.tarjeta : undefined,
+  resultadoInicial:
+    arranque?.pantalla === "resultado"
+      ? { temporada: arranque.temporada, ano: arranque.ano }
+      : undefined,
 })
+
+// Año del resultado en el arranque dev (no hay partida real).
+const anoResultadoDev =
+  arranque?.pantalla === "resultado" ? arranque.ano : null
 
 // Momento para el fondo: en el arranque dev manda el de la URL; el resto del
 // tiempo, el de la partida.
@@ -73,12 +82,13 @@ const GOTAS = [
 // El indicador es un overlay del área de juego (016): se muestra en decisión
 // y en resultado, con año y momento, nunca con el tipo (FR-001, FR-006, FR-014).
 let indicadorActual = $derived.by<Indicador | null>(() => {
+  if (juego.pantalla === "resultado") {
+    const ano = juego.partida?.anoActual ?? anoResultadoDev
+    return ano == null ? null : { ano, momento: "resultado" }
+  }
   if (!juego.partida) return null
   if (juego.pantalla === "decision" && juego.paso?.tipo === "decision") {
     return { ano: juego.partida.anoActual, momento: juego.paso.momento }
-  }
-  if (juego.pantalla === "resultado") {
-    return { ano: juego.partida.anoActual, momento: "febrero" }
   }
   return null
 })
@@ -121,7 +131,7 @@ $effect(() => {
   data-testid="juego"
   data-pantalla={juego.pantalla}
   data-momento={juego.pantalla === "fin" ? "" : (momento ?? "")}
-  data-ano={juego.partida?.anoActual ?? ""}
+  data-ano={juego.partida?.anoActual ?? anoResultadoDev ?? ""}
   data-prepartida={PANTALLAS_PREVIAS.has(juego.pantalla) ? "" : undefined}
 >
   {#if momento === "febrero" && juego.pantalla !== "resultado" && juego.pantalla !== "fin"}
@@ -173,7 +183,7 @@ $effect(() => {
       situacion={juego.paso.situacion}
       onElegir={juego.elegirOpcion}
     />
-  {:else if juego.pantalla === "resultado" && juego.paso?.tipo === "resultado" && juego.partida}
+  {:else if juego.pantalla === "resultado" && juego.paso?.tipo === "resultado"}
     <Resultado
       temporada={juego.paso.temporada}
       onContinuar={juego.continuar}
@@ -253,25 +263,6 @@ $effect(() => {
       120% 55% at 50% 100%,
       rgba(127, 209, 193, 0.1),
       rgba(127, 209, 193, 0) 65%
-    );
-  }
-
-  main[data-pantalla="resultado"] {
-    color-scheme: light;
-    --c-texto: var(--c-acta-tinta);
-    --c-texto-fuerte: var(--c-acta-tinta);
-    --c-texto-suave: var(--c-acta-tinta-suave);
-    --c-superficie: var(--c-acta-papel-alta);
-    --c-superficie-alta: var(--c-acta-papel);
-    --c-separador: var(--c-acta-linea);
-    --c-borde-control: var(--c-acta-tinta-suave);
-    --c-acento-texto: var(--c-acta-sello);
-    --c-acento-2: var(--c-acta-sello);
-    background-color: var(--c-acta-papel);
-    background-image: repeating-linear-gradient(
-      180deg,
-      rgba(30, 34, 38, 0.05) 0 1px,
-      transparent 1px 26px
     );
   }
 

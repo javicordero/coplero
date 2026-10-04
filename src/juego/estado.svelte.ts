@@ -17,6 +17,7 @@ import {
   type Personaje,
   siguientePaso,
   type TarjetaFinal,
+  type Temporada,
   type VarianteId,
 } from "../engine/index"
 import {
@@ -56,6 +57,12 @@ export interface OpcionesJuego {
    * tarjeta, sin recorrer la carrera. Ver `src/juego/dev/fixturesFin.ts`.
    */
   tarjetaInicial?: TarjetaFinal
+  /**
+   * SOLO DEV: arranca la isla directamente en la pantalla de resultado con este
+   * resultado de ejemplo, sin partida real. Ver
+   * `src/juego/dev/fixturesResultado.ts`.
+   */
+  resultadoInicial?: { temporada: Temporada; ano: number }
 }
 
 function seedPorDefecto(): string {
@@ -105,12 +112,18 @@ export function crearJuego(
   let pantalla = $state<Pantalla>(
     opciones.tarjetaInicial
       ? "fin"
-      : estadoInicial === "en-curso"
-        ? "reanudar"
-        : "crear-personaje",
+      : opciones.resultadoInicial
+        ? "resultado"
+        : estadoInicial === "en-curso"
+          ? "reanudar"
+          : "crear-personaje",
   )
   let partida = $state<Partida | null>(null)
-  let paso = $state<Paso | null>(null)
+  let paso = $state<Paso | null>(
+    opciones.resultadoInicial
+      ? { tipo: "resultado", temporada: opciones.resultadoInicial.temporada }
+      : null,
+  )
   let tarjeta = $state<TarjetaFinal | null>(opciones.tarjetaInicial ?? null)
   let error = $state<ErrorMotor | null>(null)
   let personaje = $state<Personaje | null>(null)

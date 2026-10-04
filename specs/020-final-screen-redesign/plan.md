@@ -76,7 +76,7 @@ src/pages/api/og/
 └── [codigo].png.ts                      # Imagen OG (espejo del palmarés; formatos og/9x16/1x1)
 
 public/rosetas/
-├── roseta_andalucia.svg                 # Roseta verde/blanca (Copla para Andalucía)
+├── roseta_andalucia.svg                 # Roseta verde/blanca (Coplas por Andalucía)
 ├── roseta_aguja_oro.svg                 # Roseta dorada (Aguja de oro)
 └── roseta_candela.svg                   # Roseta roja (Candela y espino)
 

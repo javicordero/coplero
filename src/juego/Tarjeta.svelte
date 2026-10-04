@@ -1,21 +1,15 @@
 <script lang="ts">
-import type { PremioTipo, TarjetaFinal } from "../engine/index"
+import type { TarjetaFinal } from "../engine/index"
 import {
   enFilas,
   etiquetaEstilo,
   etiquetaFase,
   etiquetaModalidad,
   etiquetaPremio,
+  ROSETAS,
   textoPuesto,
   trayectoria,
 } from "./presentacion"
-
-/** Roseta propia de cada distinción (una por victoria). */
-const ROSETAS: Record<PremioTipo, string> = {
-  copla_para_andalucia: "/rosetas/roseta_andalucia.svg",
-  aguja_de_oro: "/rosetas/roseta_aguja_oro.svg",
-  candela_y_espino: "/rosetas/roseta_candela.svg",
-}
 
 let { tarjeta }: { tarjeta: TarjetaFinal } = $props()
 

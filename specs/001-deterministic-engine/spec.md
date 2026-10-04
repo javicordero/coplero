@@ -190,7 +190,7 @@ Un consumidor puede ejecutar muchas carreras completas seguidas, con jugadores a
 - El motor garantiza una decisión de contenido y una de personaje por año; el reparto concreto entre verano y febrero lo decide el motor de forma determinista al inicio del año, entre las combinaciones que tengan candidatas (ver research D5). Regla adoptada como definitiva para ENGINE-001.
 - La calibración fina de umbrales y premios es provisional: en esta feature prima que el mecanismo funcione con los valores por defecto; el ajuste se hará con el simulador en una fase posterior.
 - El snapshot de referencia captura el estado serializado completo (incluido el destino) de una carrera con semilla y decisiones fijas; el banco se inyecta y no se captura (ver research D13).
-- Las definiciones de afinidad de premios se inyectan como parámetros; las flags temáticas concretas (por ejemplo, para Copla para Andalucía) se añadirán al banco en una fase posterior.
+- Las definiciones de afinidad de premios se inyectan como parámetros; las flags temáticas concretas (por ejemplo, para Coplas por Andalucía) se añadirán al banco en una fase posterior.
 - El año base (`anoInicio`) y cualquier valor temporal por defecto MUST ser constantes fijas, nunca derivadas del reloj.
 - Las claves de contexto del RNG son tokens estables y versionados; renombrarlas es un cambio incompatible.
 - La selección ponderada (premios y azar de selección) MUST incluir desempate determinista.

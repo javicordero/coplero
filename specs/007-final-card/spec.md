@@ -20,7 +20,7 @@
 - Q: ¿Número "héroe" tipo OVR del ejemplo de copero.com? → A: No se incluye: se descarta la valoración global numérica por no tener sentido en Coplero. La adaptación de la referencia se limita a la estructura de póster y al conjunto de acciones de compartir.
 - Q: ¿Qué muestra la fila "Trayectoria" del ejemplo? → A: Los cambios de modalidad y variante: una secuencia de chips inicio → cambios → final (con año), en orden cronológico.
 - Q: ¿Qué tres datos destacados muestra la barra de estadísticas? → A: Separados y nunca sumados: (1) primeros premios del COAC, (2) mejor posición alcanzada en el COAC —relevante cuando no hay premio del COAC— y (3) otros premios (ajenos).
-- Q: ¿En qué consiste mostrar los premios «separados»? → A: Los «otros premios» se desglosan por tipo con su recuento (p. ej. «Copla para Andalucía: 1», «Candela y espino: 3»); los tipos que no se han ganado no aparecen en absoluto (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran aparte.
+- Q: ¿En qué consiste mostrar los premios «separados»? → A: Los «otros premios» se desglosan por tipo con su recuento (p. ej. «Coplas por Andalucía: 1», «Candela y espino: 3»); los tipos que no se han ganado no aparecen en absoluto (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran aparte.
 - Q: ¿Qué páginas de resultado pueden indexarse en buscadores? → A: Opción A: la tarjeta válida es indexable y expone una URL canónica estable (`/r/<codigo>`); el código inválido, corrupto o de versión incompatible se sirve con `noindex` y sin canónica, para no ensuciar el índice.
 
 > Nota de alcance: las mecánicas que producen los cambios de modalidad y variante se especifican y se implementan en la feature **006 · Cambios de trayectoria**. Esta feature **consume** esos datos para mostrarlos; no los genera.
@@ -107,7 +107,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 - **FR-004**: La tarjeta MUST NOT contener, exponer ni permitir deducir el techo, el suelo, el carisma, la volatilidad, el año pico, el milagro ni ningún otro dato interno del motor.
 - **FR-005**: La tarjeta MUST mostrar el nombre o apodo, la modalidad inicial y la final (si difieren), la variante inicial y los años en activo.
 - **FR-006**: La tarjeta MUST mostrar la mejor fase alcanzada.
-- **FR-007**: La tarjeta MUST mostrar separados los primeros premios del COAC y los otros premios. Los **otros premios** MUST agruparse por tipo con su recuento (p. ej., «Copla para Andalucía: 1», «Candela y espino: 3»); los tipos sin premio MUST omitirse por completo (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran con su año.
+- **FR-007**: La tarjeta MUST mostrar separados los primeros premios del COAC y los otros premios. Los **otros premios** MUST agruparse por tipo con su recuento (p. ej., «Coplas por Andalucía: 1», «Candela y espino: 3»); los tipos sin premio MUST omitirse por completo (nunca «0 premios» ni «0 veces»). Los premios del COAC se muestran con su año.
 - **FR-008**: La tarjeta MUST mostrar la evolución de variante (valor inicial, valor final y año de cada cambio) en orden cronológico, siempre que la variante haya cambiado durante la carrera; los cambios de variante pueden pertenecer a modalidades distintas si hubo cambio de modalidad.
 - **FR-009**: La tarjeta MUST listar, en orden cronológico, cada cambio de modalidad con su año y la modalidad resultante, y MUST derivar de ahí la modalidad inicial y la final; MUST soportar cambios repetidos y la vuelta a una modalidad anterior.
 - **FR-010**: La tarjeta MUST recoger los años sin concursar como parte de la narración, con sus años.
@@ -169,7 +169,7 @@ Al terminar, el jugador quiere enseñar su carrera a alguien de fuera del juego.
 
 ## Assumptions
 
-- **Interpretación de "primeros premios" y "otros premios"**: los *primeros premios* son los resultados de podio/ganador en el COAC; los *otros premios* son los premios ajenos al concurso (Copla para Andalucía, Aguja de oro, Candela y espino). Ambos se muestran por separado y con su año.
+- **Interpretación de "primeros premios" y "otros premios"**: los *primeros premios* son los resultados de podio/ganador en el COAC; los *otros premios* son los premios ajenos al concurso (Coplas por Andalucía, Aguja de oro, Candela y espino). Ambos se muestran por separado y con su año.
 - **Sin edad, localidad ni género en la tarjeta**: no forman parte de los campos solicitados; se dejan fuera salvo que diseño los reclame más adelante.
 - **Orden de prioridad de los hitos**: el motor prioriza ganar el COAC, alcanzar el podio o la final, ganar un premio ajeno (especialmente la Aguja de oro), el cambio de modalidad, el cambio de variante y los años sin concursar; completa con hitos neutros de trayectoria (debut, duración, mejor resultado).
 - **Textos de hitos y frase de cierre**: el motor decide *qué* se narra de forma determinista; los textos concretos podrán vivir como contenido y se irán puliendo; si falta un texto, se usa un texto neutro, nunca un dato oculto.
