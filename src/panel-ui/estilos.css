@@ -1,0 +1,30 @@
+/* Identidad del panel de contenido (feature 027).
+ * Fuente única de la paleta, tipografía y base. Se importa una sola vez desde
+ * `panel.astro`; los componentes la consumen con `var(--panel-*)`.
+ * No se redefine en ningún componente (FR-002). */
+
+:root {
+  --panel-primary: #4f46e5;
+  --panel-primary-hover: #4338ca;
+  --panel-surface: #ffffff;
+  --panel-border: #e5e7eb;
+  --panel-text: #111827;
+  --panel-muted: #6b7280;
+  --panel-hover: #f9fafb;
+  --panel-danger: #b91c1c;
+  --panel-radius: 10px;
+  --panel-gap: 0.6rem;
+  --panel-font:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --panel-bg: #f3f4f6;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--panel-bg);
+  color: var(--panel-text);
+  font-family: var(--panel-font);
+  -webkit-text-size-adjust: 100%;
+}

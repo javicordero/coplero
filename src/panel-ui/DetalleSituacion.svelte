@@ -9,7 +9,7 @@
 <div class="detalle">
   <header>
     <h2>{situacion.titulo}</h2>
-    <button type="button" onclick={alCerrar}>Cerrar</button>
+    <button type="button" class="cerrar" onclick={alCerrar}>Cerrar</button>
   </header>
 
   <dl>
@@ -70,10 +70,11 @@
 
 <style>
   .detalle {
-    border: 2px solid #8a3324;
-    border-radius: 8px;
+    border: 1px solid var(--panel-primary);
+    border-radius: var(--panel-radius);
     padding: 0 1rem 1rem;
-    background: #fffdf8;
+    background: var(--panel-surface);
+    margin-bottom: 1.25rem;
   }
   header {
     display: flex;
@@ -81,36 +82,56 @@
     justify-content: space-between;
     gap: 1rem;
   }
+  h2 {
+    font-size: 1.05rem;
+  }
   dl {
     display: grid;
-    grid-template-columns: 10rem 1fr;
+    grid-template-columns: 9rem 1fr;
     gap: 0.15rem 0.75rem;
     margin: 0.5rem 0 1rem;
     font-size: 0.9rem;
   }
   dt {
-    color: #777;
+    color: var(--panel-muted);
   }
   dd {
     margin: 0;
   }
   .opcion {
-    border-top: 1px solid #e0d8c8;
+    border-top: 1px solid var(--panel-border);
     padding-top: 0.5rem;
   }
   h4 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
     margin: 0.25rem 0;
   }
   .id {
-    color: #999;
+    color: var(--panel-muted);
     font-size: 0.75rem;
     font-weight: normal;
   }
   .marca {
     border-radius: 999px;
-    background: #f0d9a8;
+    background: #fef3c7;
+    color: #92400e;
     padding: 0 0.5rem;
     font-size: 0.7rem;
     text-transform: uppercase;
+  }
+  .cerrar {
+    font: inherit;
+    font-size: 0.82rem;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-surface);
+    color: var(--panel-text);
+    border-radius: 7px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+  }
+  .cerrar:hover {
+    background: var(--panel-hover);
   }
 </style>

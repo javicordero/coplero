@@ -123,8 +123,14 @@
 
 <form onsubmit={enviar}>
   <div class="cabecera-form">
-    <button type="button" class="volver" onclick={alCancelar}>
-      ← Volver al panel
+    <button
+      type="button"
+      class="volver"
+      onclick={alCancelar}
+      aria-label="Volver al panel"
+      title="Volver al panel"
+    >
+      ←
     </button>
     <h2>{editando ? `Editar «${inicial?.id}»` : "Nuevo condicional"}</h2>
   </div>
@@ -340,23 +346,9 @@
 </form>
 
 <style>
-  form {
-    --f-primary: #4f46e5;
-    --f-primary-hover: #4338ca;
-    --f-surface: #ffffff;
-    --f-border: #e5e7eb;
-    --f-text: #111827;
-    --f-muted: #6b7280;
-    --f-hover: #f9fafb;
-    --f-danger: #b91c1c;
-    font-family:
-      system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-      sans-serif;
-    color: var(--f-text);
-  }
   .tarjeta {
-    background: var(--f-surface);
-    border: 1px solid var(--f-border);
+    background: var(--panel-surface);
+    border: 1px solid var(--panel-border);
     border-radius: 10px;
     padding: 0.85rem;
   }
@@ -378,7 +370,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: 0.8rem;
-    color: var(--f-muted);
+    color: var(--panel-muted);
   }
   input,
   select,
@@ -386,18 +378,18 @@
     box-sizing: border-box;
     font: inherit;
     font-size: 0.9rem;
-    color: var(--f-text);
-    background: var(--f-surface);
-    border: 1px solid var(--f-border);
+    color: var(--panel-text);
+    background: var(--panel-surface);
+    border: 1px solid var(--panel-border);
     border-radius: 7px;
     padding: 0.4rem 0.55rem;
   }
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid var(--f-primary);
+    outline: 2px solid var(--panel-primary);
     outline-offset: 1px;
-    border-color: var(--f-primary);
+    border-color: var(--panel-primary);
   }
   .ancha {
     grid-column: 1 / -1;
@@ -420,17 +412,17 @@
     flex-direction: row;
     align-items: center;
     gap: 0.35rem;
-    border: 1px solid var(--f-border);
+    border: 1px solid var(--panel-border);
     border-radius: 999px;
     padding: 0.25rem 0.7rem;
     font-size: 0.82rem;
-    color: var(--f-text);
-    background: var(--f-surface);
+    color: var(--panel-text);
+    background: var(--panel-surface);
   }
   .nota-seccion {
     margin: 0 0 0.5rem;
     font-size: 0.78rem;
-    color: var(--f-muted);
+    color: var(--panel-muted);
   }
   .titulo-opciones {
     display: flex;
@@ -444,16 +436,16 @@
     min-width: 1.5rem;
     justify-content: center;
     border-radius: 999px;
-    background: var(--f-hover);
-    border: 1px solid var(--f-border);
+    background: var(--panel-hover);
+    border: 1px solid var(--panel-border);
     font-size: 0.78rem;
     padding: 0 0.4rem;
   }
   .errores {
-    border: 1px solid var(--f-danger);
+    border: 1px solid var(--panel-danger);
     border-radius: 8px;
     background: #fef2f2;
-    color: var(--f-danger);
+    color: var(--panel-danger);
     padding: 0.5rem 0.5rem 0.5rem 1.5rem;
     font-size: 0.85rem;
   }
@@ -472,45 +464,51 @@
     cursor: pointer;
   }
   .principal {
-    background: var(--f-primary);
+    background: var(--panel-primary);
     color: #fff;
-    border: 1px solid var(--f-primary);
+    border: 1px solid var(--panel-primary);
   }
   .principal:hover {
-    background: var(--f-primary-hover);
+    background: var(--panel-primary-hover);
   }
   .secundario {
-    background: var(--f-surface);
-    color: var(--f-text);
-    border: 1px solid var(--f-border);
+    background: var(--panel-surface);
+    color: var(--panel-text);
+    border: 1px solid var(--panel-border);
   }
   .secundario:hover {
-    background: var(--f-hover);
+    background: var(--panel-hover);
   }
   .tenue {
-    color: var(--f-muted);
+    color: var(--panel-muted);
   }
   .cabecera-form {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
     margin-bottom: 0.75rem;
   }
   .volver {
     font: inherit;
-    font-size: 0.82rem;
-    border: 1px solid var(--f-border);
-    background: var(--f-surface);
-    color: var(--f-text);
+    font-size: 1rem;
+    line-height: 1;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-surface);
+    color: var(--panel-text);
     border-radius: 8px;
-    padding: 0.35rem 0.7rem;
+    padding: 0.4rem 0.6rem;
     cursor: pointer;
   }
   .volver:hover {
-    background: var(--f-hover);
+    background: var(--panel-hover);
+  }
+  .volver:focus-visible {
+    outline: 2px solid var(--panel-primary);
+    outline-offset: 2px;
   }
   .ayuda {
-    color: var(--f-muted);
+    color: var(--panel-muted);
     font-size: 0.72rem;
   }
 </style>

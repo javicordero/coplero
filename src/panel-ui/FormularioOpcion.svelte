@@ -214,9 +214,9 @@
 
 <style>
   .opcion {
-    border: 1px solid var(--f-border, #e5e7eb);
+    border: 1px solid var(--panel-border, #e5e7eb);
     border-radius: 10px;
-    background: var(--f-surface, #fff);
+    background: var(--panel-surface, #fff);
     margin: 0.75rem 0;
     padding: 0.85rem;
   }
@@ -235,7 +235,7 @@
     font-size: 0.9rem;
   }
   .id {
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.72rem;
     font-weight: normal;
   }
@@ -249,24 +249,24 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: 0.8rem;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
   }
   input,
   select {
     box-sizing: border-box;
     font: inherit;
     font-size: 0.9rem;
-    color: var(--f-text, #111827);
-    background: var(--f-surface, #fff);
-    border: 1px solid var(--f-border, #e5e7eb);
+    color: var(--panel-text, #111827);
+    background: var(--panel-surface, #fff);
+    border: 1px solid var(--panel-border, #e5e7eb);
     border-radius: 7px;
     padding: 0.4rem 0.55rem;
   }
   input:focus-visible,
   select:focus-visible {
-    outline: 2px solid var(--f-primary, #4f46e5);
+    outline: 2px solid var(--panel-primary, #4f46e5);
     outline-offset: 1px;
-    border-color: var(--f-primary, #4f46e5);
+    border-color: var(--panel-primary, #4f46e5);
   }
   .ancha {
     grid-column: 1 / -1;
@@ -285,7 +285,7 @@
     gap: 0.55rem 0.75rem;
     margin: 0.7rem 0;
     padding-top: 0.7rem;
-    border-top: 1px solid var(--f-border, #e5e7eb);
+    border-top: 1px solid var(--panel-border, #e5e7eb);
   }
   .etiqueta-efectos {
     grid-column: 1 / -1;
@@ -293,7 +293,7 @@
     font-weight: 600;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
   }
   .efecto {
     flex-direction: column;
@@ -306,21 +306,21 @@
   .ayuda-efectos {
     grid-column: 1 / -1;
     margin: 0;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.72rem;
     line-height: 1.35;
   }
   .nota {
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.82rem;
     margin: 0.4rem 0;
   }
   .eliminar {
     font: inherit;
     font-size: 0.75rem;
-    border: 1px solid var(--f-danger, #b91c1c);
-    background: var(--f-surface, #fff);
-    color: var(--f-danger, #b91c1c);
+    border: 1px solid var(--panel-danger, #b91c1c);
+    background: var(--panel-surface, #fff);
+    color: var(--panel-danger, #b91c1c);
     border-radius: 7px;
     padding: 0.25rem 0.6rem;
     cursor: pointer;
@@ -329,7 +329,7 @@
     background: #fef2f2;
   }
   .ayuda {
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.72rem;
   }
 </style>

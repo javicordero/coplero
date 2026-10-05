@@ -96,7 +96,7 @@
   }
   .etiqueta {
     font-size: 0.8rem;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
   }
   .lista {
     display: flex;
@@ -108,12 +108,12 @@
     flex-direction: row;
     align-items: center;
     gap: 0.35rem;
-    border: 1px solid var(--f-border, #e5e7eb);
+    border: 1px solid var(--panel-border, #e5e7eb);
     border-radius: 999px;
     padding: 0.25rem 0.7rem;
     font-size: 0.82rem;
-    color: var(--f-text, #111827);
-    background: var(--f-surface, #fff);
+    color: var(--panel-text, #111827);
+    background: var(--panel-surface, #fff);
   }
   .chip input {
     width: auto;
@@ -128,16 +128,16 @@
     flex: 1;
     font: inherit;
     font-size: 0.9rem;
-    color: var(--f-text, #111827);
-    background: var(--f-surface, #fff);
-    border: 1px solid var(--f-border, #e5e7eb);
+    color: var(--panel-text, #111827);
+    background: var(--panel-surface, #fff);
+    border: 1px solid var(--panel-border, #e5e7eb);
     border-radius: 7px;
     padding: 0.4rem 0.55rem;
   }
   .nueva input:focus-visible {
-    outline: 2px solid var(--f-primary, #4f46e5);
+    outline: 2px solid var(--panel-primary, #4f46e5);
     outline-offset: 1px;
-    border-color: var(--f-primary, #4f46e5);
+    border-color: var(--panel-primary, #4f46e5);
   }
   .secundario {
     font: inherit;
@@ -145,21 +145,21 @@
     border-radius: 8px;
     padding: 0.4rem 0.75rem;
     cursor: pointer;
-    background: var(--f-surface, #fff);
-    color: var(--f-text, #111827);
-    border: 1px solid var(--f-border, #e5e7eb);
+    background: var(--panel-surface, #fff);
+    color: var(--panel-text, #111827);
+    border: 1px solid var(--panel-border, #e5e7eb);
   }
   .secundario:hover {
-    background: var(--f-hover, #f9fafb);
+    background: var(--panel-hover, #f9fafb);
   }
   .vacio {
     margin: 0;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.82rem;
     font-style: italic;
   }
   .ayuda {
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
     font-size: 0.72rem;
   }
 </style>

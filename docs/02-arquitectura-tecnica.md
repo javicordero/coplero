@@ -243,7 +243,7 @@ El tipo `Requisito` importa: el diseño ya pide *"historico_se_fue o fiche_fuera
 ```tsx
 // src/engine/types.ts — todo serializable, sin clases
 export interface Partida {
-  version: 1;
+  version: 3;
   seed: string;
   personaje: Personaje;              // nombre, edad, localidad, genero
   modalidad: Modalidad;
@@ -255,7 +255,7 @@ export interface Partida {
   fase: FasePartida;                 // 'creacion' | 'decision' | 'coac' | 'fin'
 
   atributos: Atributos;
-  flags: Record<string, { ano: number; veces: number }>;
+  flags: Record<string, { ano: number; veces: number; anosConsecutivos: number; consumidaPor: string[] }>;
   vistas: string[];                  // situaciones ya mostradas
   historial: EventoHistorial[];      // para la cronología y la tarjeta
   temporadas: Temporada[];           // resultado COAC de cada año
@@ -457,7 +457,7 @@ Un solo comando, sin copiar bundles a mano, con hashing y cache-busting automát
 
 El balance se apoya en dos piezas: `src/simulacion/` (módulo puro y testeable que juega carreras, agrega métricas y audita estados imposibles) y `scripts/simular.ts` (CLI delgada). Lanza N carreras automáticas con perfiles y configuraciones variados e imprime la distribución de fases, premios, duración, años de pico, el ranking de situaciones, los condicionales que nunca se disparan, los atributos mínimos/máximos/medios y cualquier estado imposible detectado; puede volcar el mismo informe a JSON. Desde CONTENT-001 la CLI consume el **banco real** de `src/content` (deuda T17 cerrada). El banco se inyecta en el módulo de simulación, que no conoce de dónde procede. Además, `scripts/informe-contenido.ts` (`npm run contenido:informe`) resume recuentos, flags declaradas/referenciadas y situaciones inalcanzables, combinando análisis estático y 10.000 carreras. Sin esto, el balance es a ciegas.
 
-**Panel local de contenido (features 009 y 024).** El banco de contenido (situaciones **y** condicionales) se edita con un panel **solo de desarrollo** en `/panel` (ruta on-demand con guard `import.meta.env.DEV`: fuera de desarrollo responde **404**, aunque el build la compile). El almacén `content-admin/data/situaciones.json` (**v2**) es la **fuente de verdad** y está versionado; las copias van a `content-admin/data/backups/` (ignoradas en git). `npm run panel:importar` vuelca el contenido actual (`src/content/decisiones/**` y `src/content/condicionales/**`) al JSON y `npm run panel:volcar` lo regenera de forma **determinista y sin pérdida**; desde entonces los `.ts` de `decisiones/` y `condicionales/` son **generados** y no se editan a mano. Tanto el panel como los scripts **reutilizan los esquemas Zod** de `src/content/schema.ts` (nada de reglas duplicadas) y el volcado valida el **banco completo** antes de escribir. La isla deriva los identificadores del título (`src/panel/identificadores.ts`), ofrece selectores de flags alimentados por el catálogo de flags declaradas (`src/panel/flags.ts`) y presenta la repetición como una casilla "repetible" (invertida respecto a `unicaVez`, sin migración de datos). La lógica de servidor vive en `src/panel/` (usa `node:fs`, nunca se importa desde el cliente) y la isla Svelte en `src/panel-ui/`. Ver `specs/009-content-admin/` y `specs/024-form-ux-improvements/`.
+**Panel local de contenido (features 009, 024, 026 y 027).** El banco de contenido (situaciones **y** condicionales) se edita con un panel **solo de desarrollo** en `/panel` (ruta on-demand con guard `import.meta.env.DEV`: fuera de desarrollo responde **404**, aunque el build la compile). El almacén `content-admin/data/situaciones.json` (**v3**) es la **fuente de verdad** y está versionado; las copias van a `content-admin/data/backups/` (ignoradas en git). `npm run panel:importar` vuelca el contenido actual (`src/content/decisiones/**` y `src/content/condicionales/**`) al JSON y `npm run panel:volcar` lo regenera de forma **determinista y sin pérdida**; desde entonces los `.ts` de `decisiones/` y `condicionales/` son **generados** y no se editan a mano. Tanto el panel como los scripts **reutilizan los esquemas Zod** de `src/content/schema.ts` (nada de reglas duplicadas) y el volcado valida el **banco completo** antes de escribir. La isla deriva los identificadores del título (`src/panel/identificadores.ts`), ofrece selectores de flags alimentados por el catálogo de flags declaradas (`src/panel/flags.ts`) y presenta la repetición como una casilla "repetible" (invertida respecto a `unicaVez`, sin migración de datos). La **identidad visual es única y compartida** (`src/panel-ui/estilos.css`, tokens `--panel-*`): carcasa, listados, detalle y formularios usan la misma paleta y tipografía (features 026 y 027); en móvil la cabecera se apila, las tablas se desplazan horizontalmente con la **primera columna fija** y los formularios pliegan sus secciones secundarias. La lógica de servidor vive en `src/panel/` (usa `node:fs`, nunca se importa desde el cliente) y la isla Svelte en `src/panel-ui/`. Ver `specs/009-content-admin/`, `specs/024-form-ux-improvements/`, `specs/026-form-redesign/` y `specs/027-panel-redesign/`.
 
 **Tests que sí importan:**
 

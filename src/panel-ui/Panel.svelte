@@ -213,17 +213,20 @@
 
 <section class="panel">
   <header class="cabecera">
-    <h1>Panel de contenido</h1>
-    <p class="total">{total} {vista}</p>
+    <div class="marca">
+      <h1>Panel de contenido</h1>
+      <p class="total">{total} {vista}</p>
+    </div>
     <button type="button" class="principal" onclick={abrirNueva}>
       {vista === "situaciones" ? "Nueva situación" : "Nuevo condicional"}
     </button>
   </header>
 
-  <nav class="vistas">
+  <nav class="vistas" aria-label="Vista">
     <button
       type="button"
       class:activa={vista === "situaciones"}
+      aria-current={vista === "situaciones"}
       onclick={() => (vista = "situaciones")}
     >
       Situaciones ({situaciones.length})
@@ -231,6 +234,7 @@
     <button
       type="button"
       class:activa={vista === "condicionales"}
+      aria-current={vista === "condicionales"}
       onclick={() => (vista = "condicionales")}
     >
       Condicionales ({condicionales.length})
@@ -238,9 +242,9 @@
   </nav>
 
   {#if cargando}
-    <p>Cargando…</p>
+    <p class="estado">Cargando…</p>
   {:else if error}
-    <p class="error">No se pudo cargar el banco: {error}</p>
+    <p class="estado error" role="alert">No se pudo cargar el banco: {error}</p>
   {:else if enFormulario}
     {#if vista === "situaciones"}
       {#key editandoSituacion?.id ?? "nueva"}
@@ -271,7 +275,12 @@
     {#if situaciones.length === 0 && condicionales.length === 0}
       <div class="sin-almacen">
         <p>El almacén está vacío. Importa el banco actual para empezar.</p>
-        <button type="button" onclick={importar} disabled={importando}>
+        <button
+          type="button"
+          class="secundario"
+          onclick={importar}
+          disabled={importando}
+        >
           {importando ? "Importando…" : "Importar el banco actual"}
         </button>
       </div>
@@ -313,56 +322,118 @@
   .panel {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 1.5rem;
-    font-family: system-ui, sans-serif;
+    padding: 1.25rem;
   }
   .cabecera {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .marca {
+    display: flex;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 12rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--panel-text);
   }
   .total {
-    color: #777;
-    margin-right: auto;
+    margin: 0;
+    color: var(--panel-muted);
+    font-size: 0.85rem;
+  }
+  .principal {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: var(--panel-primary);
+    color: #fff;
+    border: 1px solid var(--panel-primary);
+    border-radius: var(--panel-radius);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  .principal:hover {
+    background: var(--panel-primary-hover);
+  }
+  .principal:focus-visible {
+    outline: 2px solid var(--panel-primary);
+    outline-offset: 2px;
   }
   .vistas {
     display: flex;
-    gap: 0.5rem;
-    margin: 0.75rem 0 1rem;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 1rem 0;
   }
   .vistas button {
-    border: 1px solid #8a3324;
-    background: #fff;
-    color: #8a3324;
-    border-radius: 6px;
-    padding: 0.35rem 0.7rem;
+    font: inherit;
+    font-size: 0.85rem;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-surface);
+    color: var(--panel-text);
+    border-radius: var(--panel-radius);
+    padding: 0.45rem 0.9rem;
     cursor: pointer;
+  }
+  .vistas button:hover {
+    background: var(--panel-hover);
   }
   .vistas button.activa {
-    background: #8a3324;
+    background: var(--panel-primary);
+    border-color: var(--panel-primary);
     color: #fff;
   }
-  .principal {
-    background: #8a3324;
-    color: #fff;
-    border: 0;
-    border-radius: 6px;
-    padding: 0.5rem 0.9rem;
-    cursor: pointer;
+  .vistas button:focus-visible {
+    outline: 2px solid var(--panel-primary);
+    outline-offset: 2px;
   }
-  .error {
-    color: #a11;
+  .estado {
+    color: var(--panel-muted);
+  }
+  .estado.error {
+    color: var(--panel-danger);
   }
   .sin-almacen {
-    border: 1px dashed #8a3324;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
+    border: 1px dashed var(--panel-border);
+    border-radius: var(--panel-radius);
+    padding: 1rem;
     margin-bottom: 1rem;
-    background: #fff6ec;
+    background: var(--panel-surface);
+    text-align: center;
   }
-  :global(body) {
-    margin: 0;
-    background: #fbf8f2;
-    color: #241f18;
+  .secundario {
+    font: inherit;
+    font-size: 0.85rem;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-surface);
+    color: var(--panel-text);
+    border-radius: var(--panel-radius);
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+  }
+  .secundario:hover {
+    background: var(--panel-hover);
+  }
+  @media (max-width: 560px) {
+    .cabecera {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .marca {
+      min-width: 0;
+      justify-content: space-between;
+    }
+    .principal {
+      width: 100%;
+    }
+    .vistas button {
+      flex: 1;
+    }
   }
 </style>

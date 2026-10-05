@@ -197,7 +197,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: 0.8rem;
-    color: var(--f-muted, #6b7280);
+    color: var(--panel-muted, #6b7280);
   }
   select,
   input,
@@ -205,18 +205,18 @@
     box-sizing: border-box;
     font: inherit;
     font-size: 0.9rem;
-    color: var(--f-text, #111827);
-    background: var(--f-surface, #fff);
-    border: 1px solid var(--f-border, #e5e7eb);
+    color: var(--panel-text, #111827);
+    background: var(--panel-surface, #fff);
+    border: 1px solid var(--panel-border, #e5e7eb);
     border-radius: 7px;
     padding: 0.4rem 0.55rem;
   }
   select:focus-visible,
   input:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid var(--f-primary, #4f46e5);
+    outline: 2px solid var(--panel-primary, #4f46e5);
     outline-offset: 1px;
-    border-color: var(--f-primary, #4f46e5);
+    border-color: var(--panel-primary, #4f46e5);
   }
   .ancha {
     flex-basis: 100%;
@@ -228,7 +228,7 @@
   }
   .error {
     flex-basis: 100%;
-    color: var(--f-danger, #b91c1c);
+    color: var(--panel-danger, #b91c1c);
     font-size: 0.8rem;
   }
 </style>
