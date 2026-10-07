@@ -58,6 +58,7 @@ Decisiones ya resueltas y documentadas en `docs/01`–`docs/06`. Este registro e
 |---|---|---|
 | Creación de personaje | Nombre/apodo, edad, localidad, sexo/género | 01 §1 |
 | Título dinámico | Coplero / Coplera / Coplere | 01 §1 |
+| Variantes femeninas de textos (2026-10-07) | Campos opcionales `tituloFemenino`/`textoFemenino` (situación) y `tituloFemenino`/`subtituloFemenino` (opción). Resolución **en el motor** (`resolverTexto`, `src/engine/genero.ts`): femenino → variante si existe; masculino → forma por defecto; no binario → azar **determinista por campo** (`rngPara(seed, "genero", situacionId, campo)`). La UI no cambia; el panel edita los cuatro textos; sin cambios de versión (028) | 01 §1, 02 §7 |
 | Modalidades v1 | 2 jugables: Comparsista y Chirigotero | 01 §2 |
 | Variantes | 3 por modalidad, con título y subtítulo | 01 §2 |
 | Variante mutable | Puede cambiar durante la carrera; guarda variante actual e historial | 01 §2 |

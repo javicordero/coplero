@@ -8,7 +8,12 @@ import {
   flagsSinDeclarar,
   situacionesInalcanzablesEstaticas,
 } from "../informe"
-import { BUCKETS_FRASE, flagsDeRequisito, TIPOS_HITO } from "../schema"
+import {
+  BUCKETS_FRASE,
+  flagsDeRequisito,
+  SituacionSchema,
+  TIPOS_HITO,
+} from "../schema"
 
 const TODAS = [
   ...bancoContenido.situaciones,
@@ -110,6 +115,58 @@ describe("integridad del banco real", () => {
   it("las flags declaradas y referenciadas se exponen en el informe", () => {
     expect(flagsDeclaradas(bancoContenido).length).toBeGreaterThan(0)
     expect(flagsReferenciadas(bancoContenido).length).toBeGreaterThan(0)
+  })
+})
+
+describe("variantes femeninas opcionales (feature 028)", () => {
+  const opciones = () => [
+    { id: "a", titulo: "A", subtitulo: "a" },
+    { id: "b", titulo: "B", subtitulo: "b" },
+  ]
+
+  it("acepta una situación con variantes femeninas", () => {
+    const resultado = SituacionSchema.safeParse({
+      id: "s_f",
+      momento: "verano",
+      titulo: "T",
+      texto: "",
+      tituloFemenino: "T fem",
+      textoFemenino: "x fem",
+      opciones: [
+        {
+          id: "a",
+          titulo: "A",
+          subtitulo: "a",
+          tituloFemenino: "A fem",
+          subtituloFemenino: "a fem",
+        },
+        { id: "b", titulo: "B", subtitulo: "b" },
+      ],
+    })
+    expect(resultado.success).toBe(true)
+  })
+
+  it("acepta una situación sin variantes femeninas", () => {
+    const resultado = SituacionSchema.safeParse({
+      id: "s_s",
+      momento: "verano",
+      titulo: "T",
+      texto: "",
+      opciones: opciones(),
+    })
+    expect(resultado.success).toBe(true)
+  })
+
+  it("sigue rechazando un campo desconocido (strict)", () => {
+    const resultado = SituacionSchema.safeParse({
+      id: "s_x",
+      momento: "verano",
+      titulo: "T",
+      texto: "",
+      genero: "femenino",
+      opciones: opciones(),
+    })
+    expect(resultado.success).toBe(false)
   })
 })
 

@@ -33,6 +33,11 @@
 
   const hayFlags = $derived((opcion.flags?.length ?? 0) > 0)
 
+  const hayFemenino = $derived(
+    (opcion.tituloFemenino?.trim() ?? "") !== "" ||
+      (opcion.subtituloFemenino?.trim() ?? "") !== "",
+  )
+
   function cambiarTitulo(valor: string) {
     opcion.titulo = valor
     if (!idTocado) opcion.id = derivarIdUnico(derivarId(valor), usados)
@@ -176,6 +181,28 @@
       {alAgregar}
       ayuda="Huellas que deja la opción en el historial (no se borran). Sirven de requisito a los condicionales."
     />
+  </Seccion>
+
+  <Seccion titulo="Variante femenina" tieneContenido={hayFemenino}>
+    <div class="rejilla">
+      <label>
+        título femenino
+        <input
+          value={opcion.tituloFemenino ?? ""}
+          oninput={(e) =>
+            (opcion.tituloFemenino = e.currentTarget.value || undefined)}
+        />
+      </label>
+
+      <label class="ancha">
+        subtítulo femenino
+        <input
+          value={opcion.subtituloFemenino ?? ""}
+          oninput={(e) =>
+            (opcion.subtituloFemenino = e.currentTarget.value || undefined)}
+        />
+      </label>
+    </div>
   </Seccion>
 
   <div class="rejilla">

@@ -70,6 +70,11 @@
   const hayModalidades = $derived((borrador.modalidades?.length ?? 0) > 0)
   const hayVariantes = $derived((borrador.variantes?.length ?? 0) > 0)
 
+  const hayFemenino = $derived(
+    (borrador.tituloFemenino?.trim() ?? "") !== "" ||
+      (borrador.textoFemenino?.trim() ?? "") !== "",
+  )
+
   const variantesVisibles = $derived(
     borrador.modalidades && borrador.modalidades.length > 0
       ? VARIANTES.filter((v) => borrador.modalidades?.includes(v.modalidad))
@@ -108,6 +113,10 @@
     borrador.variantes = siguientes.length > 0 ? siguientes : undefined
   }
 
+  function limpiarFemenino(valor: string | undefined): string | undefined {
+    return valor !== undefined && valor.trim() !== "" ? valor : undefined
+  }
+
   function enviar(evento: SubmitEvent) {
     evento.preventDefault()
     const opcionSinId = borrador.opciones.some((o) => o.id.trim() === "")
@@ -117,7 +126,15 @@
       return
     }
     avisoGuardado = null
-    alGuardar($state.snapshot(borrador) as Condicional)
+    const limpio = $state.snapshot(borrador) as Condicional
+    limpio.tituloFemenino = limpiarFemenino(limpio.tituloFemenino)
+    limpio.textoFemenino = limpiarFemenino(limpio.textoFemenino)
+    limpio.opciones = limpio.opciones.map((o) => ({
+      ...o,
+      tituloFemenino: limpiarFemenino(o.tituloFemenino),
+      subtituloFemenino: limpiarFemenino(o.subtituloFemenino),
+    }))
+    alGuardar(limpio)
   }
 </script>
 
@@ -304,6 +321,33 @@
           {variante.id} <span class="tenue">({variante.modalidad})</span>
         </label>
       {/each}
+    </div>
+  </Seccion>
+
+  <Seccion titulo="Variante femenina" tieneContenido={hayFemenino}>
+    <p class="nota-seccion">
+      Opcional. Se muestra si el personaje es femenino; vacío = forma por defecto.
+      Con género no binario se alterna entre ambas.
+    </p>
+    <div class="rejilla">
+      <label class="ancha">
+        título femenino
+        <input
+          value={borrador.tituloFemenino ?? ""}
+          oninput={(e) =>
+            (borrador.tituloFemenino = e.currentTarget.value || undefined)}
+        />
+      </label>
+
+      <label class="ancha">
+        texto femenino
+        <textarea
+          rows="3"
+          value={borrador.textoFemenino ?? ""}
+          oninput={(e) =>
+            (borrador.textoFemenino = e.currentTarget.value || undefined)}
+        ></textarea>
+      </label>
     </div>
   </Seccion>
 

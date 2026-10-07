@@ -57,7 +57,7 @@ Reglas de dependencia (nunca se rompen):
 2. Se escriben como `.ts` en `src/content/` y se validan con **Zod** en build time.
 3. Toda situación y condicional lleva `momento: verano | febrero` **obligatorio**.
 4. Cada año sale **una decisión de verano y una de febrero**; no hay tipos (contenido/personaje).
-5. Cada opción tiene **título + subtítulo** y la flag que deja; por defecto **no** mueve atributos (solo las excepciones declaradas).
+5. Cada opción tiene **título + subtítulo** y la flag que deja; por defecto **no** mueve atributos (solo las excepciones declaradas). Las situaciones y opciones pueden declarar **variantes femeninas opcionales** de sus textos (`tituloFemenino`, `textoFemenino`; `tituloFemenino`, `subtituloFemenino`): con género femenino se usan si están escritas; con masculino, siempre la forma por defecto; con no binario, alternan de forma determinista (feature 028).
 6. Filtros opcionales: `modalidades` y `variantes` (si no existen, la situación es común).
 7. Las flags **no se borran nunca**; lo que caduca es su ventana de disparo. Al dispararse un condicional, este se agota a sí mismo: marca como consumidas **solo para él** las flags activas de su requisito (no gasta las compartidas). No hay consumo manual.
 8. No usar nombres reales de personas ni agrupaciones al inspirarse en hechos reales.
@@ -169,6 +169,7 @@ Planificado (documentado, no implementado): `npm run simular`.
 4. Toda flag que se consuma en un requisito debe existir en alguna opción.
 5. No cambiar valores numéricos "a ojo": se calibran con el simulador.
 6. No resolver contradicciones del banco en silencio: registrarlas.
+7. Las **variantes femeninas** son opcionales y se escriben como `tituloFemenino`/`textoFemenino` (situación) y `tituloFemenino`/`subtituloFemenino` (opción). Vacío o en blanco = forma por defecto; no es obligatorio rellenarlas.
 
 ## 13. Reglas de Git
 
@@ -230,5 +231,5 @@ Notas: Biome no lintea `.svelte` (excluidos) y relaja `noUnused*` en `.astro` po
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/027-panel-redesign/plan.md
+at specs/028-gender-text-variants/plan.md
 <!-- SPECKIT END -->

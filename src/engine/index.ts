@@ -37,6 +37,7 @@ export {
 } from "./condicionales"
 export { generarDestino } from "./destino"
 export { forma } from "./forma"
+export { type FuenteAzarGenero, resolverTexto } from "./genero"
 export {
   type DefinicionPremio,
   type ModificadoresCreacion,
@@ -61,6 +62,7 @@ export {
   rngPara,
 } from "./seed"
 export {
+  type ContextoGenero,
   seleccionarSituacion,
   toPublica,
 } from "./selector"

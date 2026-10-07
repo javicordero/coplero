@@ -19,6 +19,10 @@
     <dd>{situacion.momento}</dd>
     <dt>texto</dt>
     <dd>{situacion.texto || "—"}</dd>
+    <dt>título (femenino)</dt>
+    <dd>{situacion.tituloFemenino || "—"}</dd>
+    <dt>texto (femenino)</dt>
+    <dd>{situacion.textoFemenino || "—"}</dd>
     <dt>modalidades</dt>
     <dd>{situacion.modalidades?.join(", ") || "común"}</dd>
     <dt>variantes</dt>
@@ -63,6 +67,10 @@
         <dd>{opcion.cambiaModalidad ?? "—"}</dd>
         <dt>cambiaVariante</dt>
         <dd>{opcion.cambiaVariante ?? "—"}</dd>
+        <dt>título (femenino)</dt>
+        <dd>{opcion.tituloFemenino || "—"}</dd>
+        <dt>subtítulo (femenino)</dt>
+        <dd>{opcion.subtituloFemenino || "—"}</dd>
       </dl>
     </article>
   {/each}

@@ -17,6 +17,10 @@ export interface Opcion {
   id: string
   titulo: string
   subtitulo: string
+  /** Variante femenina opcional del título (si falta, se usa `titulo`). */
+  tituloFemenino?: string
+  /** Variante femenina opcional del subtítulo (si falta, se usa `subtitulo`). */
+  subtituloFemenino?: string
   efectos?: Partial<Record<Atributo, number>>
   /** Marca la opción como excepción: única vía por la que una decisión mueve atributos. */
   excepcion?: boolean
@@ -46,6 +50,10 @@ export interface Situacion {
   momento: Momento
   titulo: string
   texto: string
+  /** Variante femenina opcional del título (si falta, se usa `titulo`). */
+  tituloFemenino?: string
+  /** Variante femenina opcional del texto (si falta, se usa `texto`). */
+  textoFemenino?: string
   opciones: Opcion[]
   modalidades?: Modalidad[]
   variantes?: string[]
@@ -122,6 +130,8 @@ export const OpcionSchema: z.ZodType<Opcion> = z
     id: z.string().min(1),
     titulo: z.string().min(1),
     subtitulo: z.string().min(1),
+    tituloFemenino: z.string().optional(),
+    subtituloFemenino: z.string().optional(),
     efectos: EfectosSchema.optional(),
     excepcion: z.boolean().optional(),
     flags: z.array(z.string().min(1)).optional(),
@@ -182,6 +192,8 @@ const SituacionBase = z.strictObject({
   momento: z.enum(MOMENTOS),
   titulo: z.string().min(1),
   texto: z.string(),
+  tituloFemenino: z.string().optional(),
+  textoFemenino: z.string().optional(),
   opciones: z.array(OpcionSchema).min(2),
   modalidades: z.array(z.enum(MODALIDADES)).optional(),
   variantes: z.array(z.string().min(1)).optional(),

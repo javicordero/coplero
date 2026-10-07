@@ -103,10 +103,17 @@ export function siguientePaso(p: Partida, banco: BancoContenido): Paso {
       },
     }
   }
+  // El azar del modo no binario se deriva de un stream propio (`"genero"`):
+  // no consume el de selección, condicionales ni COAC.
+  const azarGenero = (campo: string) =>
+    rngPara(p.seed, "genero", situacion.id, campo)()
   return {
     tipo: "decision",
     momento: p.momento,
-    situacion: toPublica(situacion),
+    situacion: toPublica(situacion, {
+      genero: p.personaje.genero,
+      azar: azarGenero,
+    }),
   }
 }
 

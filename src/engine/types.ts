@@ -65,6 +65,10 @@ export interface Opcion {
   id: string
   titulo: string
   subtitulo: string
+  /** Variante femenina opcional del título (si falta, se usa `titulo`). */
+  tituloFemenino?: string
+  /** Variante femenina opcional del subtítulo (si falta, se usa `subtitulo`). */
+  subtituloFemenino?: string
   efectos?: Partial<Atributos>
   flags?: string[]
   peso?: number
@@ -80,6 +84,10 @@ export interface Situacion {
   momento: Momento
   titulo: string
   texto: string
+  /** Variante femenina opcional del título (si falta, se usa `titulo`). */
+  tituloFemenino?: string
+  /** Variante femenina opcional del texto (si falta, se usa `texto`). */
+  textoFemenino?: string
   opciones: Opcion[]
   modalidades?: Modalidad[]
   variantes?: VarianteId[]

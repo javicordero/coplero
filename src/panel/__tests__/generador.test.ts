@@ -105,4 +105,39 @@ describe("generador del volcado", () => {
       expect(contenido).toContain("no editar a mano")
     }
   })
+
+  it("serializa las variantes femeninas rellenas y omite las vacías (FR-012)", () => {
+    const fichero = FICHEROS_SITUACIONES.find((f) => f.momento === "verano")
+    if (!fichero) throw new Error("sin fichero de verano")
+    const entidad = nueva("con_femenino", {
+      tituloFemenino: "Título femenino",
+      opciones: [
+        { id: "a", titulo: "A", subtitulo: "a", tituloFemenino: "A fem" },
+        { id: "b", titulo: "B", subtitulo: "b" },
+      ],
+    })
+    const texto = serializar(fichero, [entidad])
+    expect(texto).toContain('tituloFemenino: "Título femenino"')
+    expect(texto).toContain('tituloFemenino: "A fem"')
+    expect(texto).not.toContain("textoFemenino")
+    expect(texto).not.toContain("subtituloFemenino")
+  })
+
+  it("volcar conserva las variantes femeninas de una situación (FR-011)", () => {
+    const almacen = base()
+    almacen.situaciones = [
+      ...almacen.situaciones,
+      nueva("con_femenino", { tituloFemenino: "T fem" }),
+    ]
+    const resultado = volcar(almacen)
+    const verano = resultado.ficheros.find(
+      (f) =>
+        f.fichero.momento === "verano" &&
+        f.fichero.tipoImportado === "Situacion",
+    )
+    const entidad = verano?.entidades.find(
+      (e) => (e as Situacion).id === "con_femenino",
+    ) as Situacion | undefined
+    expect(entidad?.tituloFemenino).toBe("T fem")
+  })
 })

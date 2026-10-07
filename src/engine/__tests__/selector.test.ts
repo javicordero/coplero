@@ -5,8 +5,8 @@ import {
   elegirVarianteDeCambio,
   siguientePaso,
 } from "../partida"
-import { seleccionarSituacion } from "../selector"
-import type { BancoContenido } from "../types"
+import { seleccionarSituacion, toPublica } from "../selector"
+import type { BancoContenido, Condicional, Situacion } from "../types"
 import { bancoPrueba, inputPrueba } from "./fixtures"
 
 describe("selector", () => {
@@ -144,5 +144,61 @@ describe("selector", () => {
     if (!res.ok) return
     expect(res.valor.momento).toBe("febrero")
     expect(res.valor.decisionesTomadasAno).toBe(1)
+  })
+})
+
+describe("toPublica con contexto de género", () => {
+  const situacion: Situacion = {
+    id: "s1",
+    momento: "verano",
+    titulo: "Título",
+    texto: "Texto",
+    tituloFemenino: "Título femenino",
+    textoFemenino: "Texto femenino",
+    opciones: [
+      {
+        id: "a",
+        titulo: "A",
+        subtitulo: "a",
+        tituloFemenino: "A fem",
+        subtituloFemenino: "a fem",
+      },
+      { id: "b", titulo: "B", subtitulo: "b" },
+    ],
+  }
+  const azar = () => 0
+
+  it("sin contexto devuelve las formas por defecto", () => {
+    const pub = toPublica(situacion)
+    expect(pub.titulo).toBe("Título")
+    expect(pub.texto).toBe("Texto")
+    expect(pub.opciones[0].titulo).toBe("A")
+    expect(pub.opciones[0].subtitulo).toBe("a")
+  })
+
+  it("con género femenino usa las variantes escritas y cae a la por defecto", () => {
+    const pub = toPublica(situacion, { genero: "femenino", azar })
+    expect(pub.titulo).toBe("Título femenino")
+    expect(pub.texto).toBe("Texto femenino")
+    expect(pub.opciones[0].titulo).toBe("A fem")
+    expect(pub.opciones[0].subtitulo).toBe("a fem")
+    expect(pub.opciones[1].titulo).toBe("B")
+  })
+
+  it("con género masculino usa siempre las formas por defecto", () => {
+    const pub = toPublica(situacion, { genero: "masculino", azar })
+    expect(pub.titulo).toBe("Título")
+    expect(pub.opciones[0].titulo).toBe("A")
+  })
+
+  it("un condicional (que extiende Situacion) resuelve igual (FR-009)", () => {
+    const condicional: Condicional = {
+      ...situacion,
+      requiere: { tipo: "flag", flag: "x" },
+      ventanaAnos: 2,
+      probabilidad: 0.5,
+    }
+    const pub = toPublica(condicional, { genero: "femenino", azar })
+    expect(pub.titulo).toBe("Título femenino")
   })
 })

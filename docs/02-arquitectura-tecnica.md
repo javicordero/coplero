@@ -200,6 +200,8 @@ export interface Opcion {
   id: string;
   titulo: string;
   subtitulo: string;
+  tituloFemenino?: string;     // variante femenina opcional (si falta, se usa `titulo`)
+  subtituloFemenino?: string;  // variante femenina opcional (si falta, se usa `subtitulo`)
   efectos: Partial<Atributos>;
   flags?: string[];          // flags que deja (nunca se borran)
   peso?: number;             // para autoplay y balance
@@ -211,6 +213,8 @@ export interface Situacion {
   momento: Momento;          // ← el campo que faltaba en el diseño
   titulo: string;
   texto: string;
+  tituloFemenino?: string;   // variante femenina opcional (si falta, se usa `titulo`)
+  textoFemenino?: string;    // variante femenina opcional (si falta, se usa `texto`)
   opciones: [Opcion, Opcion] | [Opcion, Opcion, Opcion];
 
   // filtros opcionales de aparición
@@ -239,6 +243,8 @@ export type Requisito =
 ```
 
 El tipo `Requisito` importa: el diseño ya pide *"historico_se_fue o fiche_fuera"* y *"tema_social dos años seguidos"*. Con un string plano eso no se expresa; con este árbol sí, y sin volver a tocar el motor.
+
+**Nota de implementación (028):** las variantes femeninas de `Opcion` y `Situacion` son **opcionales**. El motor resuelve el texto visible en `src/engine/genero.ts` (`resolverTexto`): femenino + variante escrita → femenino; masculino → forma por defecto; no binario → azar **determinista por campo** (`rngPara(seed, "genero", situacionId, campo)`), sin consumir los streams de selección/condicionales/COAC. La resolución ocurre al construir el paso (`toPublica`), así que la UI no cambia y no se serializa estado nuevo (`VERSION_PARTIDA` sigue en 3).
 
 ```tsx
 // src/engine/types.ts — todo serializable, sin clases

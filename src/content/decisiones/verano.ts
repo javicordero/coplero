@@ -8,17 +8,21 @@ export const situacionesVerano: Situacion[] = [
     titulo:
       "Te ofrecen un arreglo musical firmado por un músico de fuera del carnaval",
     texto: "",
+    tituloFemenino:
+      "Te ofrecen un arreglo musical firmado por una música de fuera del carnaval",
     opciones: [
       {
         id: "aceptar",
         titulo: "Aceptar el arreglo",
         subtitulo: "Sonar distinto a todos",
+        subtituloFemenino: "Sonar distinta a todas",
         flags: ["musico_externo"],
       },
       {
         id: "casa",
         titulo: "Hacerlo en casa",
         subtitulo: "Aquí sabemos lo que hacemos",
+        subtituloFemenino: "Que la copla se note nuestra",
         flags: ["musica_casera"],
       },
     ],

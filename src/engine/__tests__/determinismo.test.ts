@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { crearPartida } from "../partida"
+import { crearPartida, siguientePaso } from "../partida"
 import { serializar } from "../serializar"
 import type { BancoContenido } from "../types"
 import { bancoPrueba, inputPrueba } from "./fixtures"
@@ -66,5 +66,30 @@ describe("determinismo", () => {
         a.temporadas.map((t) => `${t.ano}:${t.fase}:${t.puesto ?? "X"}`),
       )
     }
+  })
+})
+
+describe("determinismo con género (feature 028)", () => {
+  const inputNoBinario = {
+    ...inputPrueba,
+    personaje: { ...inputPrueba.personaje, genero: "no_binario" as const },
+  }
+
+  it("misma semilla + decisiones + género no binario → misma secuencia de pasos", () => {
+    const pasoA = siguientePaso(
+      crearPartida(inputNoBinario, bancoPrueba),
+      bancoPrueba,
+    )
+    const pasoB = siguientePaso(
+      crearPartida(inputNoBinario, bancoPrueba),
+      bancoPrueba,
+    )
+    expect(pasoA).toEqual(pasoB)
+  })
+
+  it("la carrera no binaria es reproducible de principio a fin", () => {
+    const a = jugarCarrera(inputNoBinario, bancoPrueba, primerOpcion)
+    const b = jugarCarrera(inputNoBinario, bancoPrueba, primerOpcion)
+    expect(serializar(a)).toEqual(serializar(b))
   })
 })

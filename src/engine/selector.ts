@@ -1,11 +1,20 @@
 import { dentroDeVentana, requisitoCumplido } from "./condicionales"
+import { resolverTexto } from "./genero"
 import { elegirPonderado, rngPara } from "./seed"
 import type {
   BancoContenido,
+  Genero,
   Partida,
   Situacion,
   SituacionPublica,
 } from "./types"
+
+/** Contexto de género para resolver el texto visible de una decisión. */
+export interface ContextoGenero {
+  genero: Genero
+  /** Azar determinista por campo: mismo campo → mismo número. */
+  azar: (campo: string) => number
+}
 
 function esVista(p: Partida, id: string): boolean {
   return p.vistas.includes(id)
@@ -79,16 +88,38 @@ export function seleccionarSituacion(
   return null
 }
 
-export function toPublica(s: Situacion): SituacionPublica {
+export function toPublica(
+  s: Situacion,
+  contexto?: ContextoGenero,
+): SituacionPublica {
+  const resolver = (
+    porDefecto: string,
+    femenino: string | undefined,
+    campo: string,
+  ): string =>
+    contexto === undefined
+      ? porDefecto
+      : resolverTexto(
+          porDefecto,
+          femenino,
+          contexto.genero,
+          campo,
+          contexto.azar,
+        )
+
   return {
     id: s.id,
     momento: s.momento,
-    titulo: s.titulo,
-    texto: s.texto,
+    titulo: resolver(s.titulo, s.tituloFemenino, "titulo"),
+    texto: resolver(s.texto, s.textoFemenino, "texto"),
     opciones: s.opciones.map((o) => ({
       id: o.id,
-      titulo: o.titulo,
-      subtitulo: o.subtitulo,
+      titulo: resolver(o.titulo, o.tituloFemenino, `opcion:${o.id}:titulo`),
+      subtitulo: resolver(
+        o.subtitulo,
+        o.subtituloFemenino,
+        `opcion:${o.id}:subtitulo`,
+      ),
     })),
   }
 }

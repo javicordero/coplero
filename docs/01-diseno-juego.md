@@ -25,6 +25,16 @@ Es el primer paso de la partida. El jugador define:
 | Femenino | **Coplera** |
 | No binario | **Coplere** |
 
+### Textos de situación según el género
+
+Además del título del juego, las situaciones y sus opciones pueden declarar la **variante femenina** de sus textos (`tituloFemenino`, `textoFemenino`; en las opciones también `tituloFemenino` y `subtituloFemenino`). Son **opcionales**:
+
+- Con género **femenino**, se muestra la variante si está escrita; si no, la forma por defecto.
+- Con género **masculino**, se muestra siempre la forma por defecto.
+- Con género **no binario**, se alterna entre ambas de forma **determinista por campo** (misma semilla → mismo texto).
+
+*(feature 028)*
+
 ---
 
 ## 2. Modalidades y variantes
